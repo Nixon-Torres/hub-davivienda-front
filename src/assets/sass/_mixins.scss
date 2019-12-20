@@ -1,0 +1,127 @@
+// =============================================================================
+// Style Button
+// =============================================================================
+@mixin call-to-action ($width, $height, $line-height, $text-align, $bg-color, $display, $text, $text-color, $border-bottom-size, $border-bottom-color, $font-size, $font-weight, $font-style ) {
+	width: $width;
+	height: $height;
+	text-align: $text-align;
+	background-color: $bg-color;
+	display: $display;
+	line-height: $line-height;
+	text-transform: $text;
+	border-bottom: $border-bottom-size solid $border-bottom-color;
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	color: $text-color;
+	text-decoration: none;
+	font-weight: $font-weight;
+	font-style: $font-style;
+	font-size: $font-size;
+}
+
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+	$index: str-index($string, $search);
+
+	@if $index {
+		@return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+	}
+
+	@return $string;
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+	$src: null;
+
+	$extmods: (
+		eot: "?",
+		svg: "#" + str-replace($name, " ", "_")
+	);
+
+	$formats: (
+		otf: "opentype",
+		ttf: "truetype"
+	);
+
+	@each $ext in $exts {
+		$extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+		$format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+		$src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+	}
+
+	@font-face {
+		font-family: quote($name);
+		font-style: $style;
+		font-weight: $weight;
+		src: $src;
+	}
+}
+
+@mixin display-flex {
+	display: box;
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex; 
+}
+
+@mixin align-items($align) {
+	-webkit-box-align: $align;
+	-webkit-align-items: $align;
+	-ms-flex-align: $align;
+	align-items: $align; 
+}
+
+@mixin border-radius($value) {
+	-webkit-border-radius: $value;
+	-moz-border-radius: $value;
+	border-radius: $value;
+}
+
+@mixin border-radius-left($value) {
+	-webkit-border-radius: $value 0 0 $value;
+	-moz-border-radius: $value 0 0 $value;
+	border-radius: $value 0 0 $value;
+}
+
+@mixin simple-arrow ($width, $height, $color, $weight, $degrees) {
+
+	border-right: $weight solid $color;
+	border-top: $weight solid $color;
+	bottom: 0;
+	color: transparent;
+	cursor: pointer;
+	display: inline-block;
+	height: $height;
+	left: 0;
+	margin: auto;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: $width;
+
+	-ms-	: rotate($degrees);
+	-webkit-transform: rotate($degrees);
+	transform: rotate($degrees);
+}
+
+@mixin arrow-down ($size, $color){
+	border-left: $size solid transparent;
+	border-right: $size solid transparent;
+	border-top: $size solid $color;
+	height: 0; 
+	width: 0; 
+}
+
+ 
+  
