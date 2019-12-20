@@ -22,15 +22,19 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: LayoutComponent,
     children: [
-        {
-            path: '',
-            redirectTo: '/app/principal',
-            pathMatch: 'full'
-        },
-        {
-          path: 'principal',
-          loadChildren: './pages/private/principal/principal.module#PrincipalModule'
-        }
+      {
+        path: '',
+        redirectTo: '/app/principal',
+        pathMatch: 'full'
+      },
+      {
+        path: 'principal',
+        loadChildren: './pages/private/principal/principal.module#PrincipalModule'
+      },
+      {
+        path: 'board',
+        loadChildren: './pages/private/board/board.module#BoardModule'
+      }
     ]
   }
 ];
