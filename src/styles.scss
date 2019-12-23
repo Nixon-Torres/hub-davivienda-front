@@ -23,3 +23,72 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 	margin: auto;
 	width: 88%;	
 }
+
+//Overview Material
+.mat-dialog-container {
+	padding: 0;
+}
+
+//SELECT
+.modal-form {
+
+	.mat-form-field {
+		&.simple {
+			margin-top: 20px;
+		}
+	}
+
+	.mat-select {
+		color: #A5ABB1;
+		font-family: HelveticaNeue, sans-serif;
+		font-size: 0.750em;
+	}
+
+	.mat-form-field-flex {
+		@include border-radius(5px);
+
+		border: 1px solid #C2CBD1;
+	}
+
+	.mat-form-field-infix {
+		border-top: none;
+		width: 400px;
+	}	
+
+	.mat-form-field-appearance-legacy {
+		.mat-form-field-underline {
+			height: 0;
+		}
+
+		.mat-form-field-label {
+			font-size: 0.750em;
+			padding: 8px 20px;
+		}
+	}
+
+	.mat-select-arrow {
+		margin: 0 12px;
+	 	// @include simple-arrow(10px,10px,red,3px,270deg);
+	}
+
+	// .mat-tab-label-active,
+	.mat-tab-label-content {
+		font-size: 0.875em;
+	}		
+}
+
+
+//TABS General
+.tabs {
+	.mat-tab-group {
+		&.mat-primary {
+			.mat-ink-bar {
+				background-color: #0080FF; 
+			}	
+		}	
+	}
+
+	.mat-tab-label-active {
+		color: #0080FF;
+	}	
+}
