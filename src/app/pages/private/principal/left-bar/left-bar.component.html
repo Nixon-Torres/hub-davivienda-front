@@ -2,11 +2,7 @@
 	<div class="options">
 		<p class="options--name icon icon-copy">Mis informes</p>
 		<ul class="options--list">
-			<li class="green"><a href="#">Publicados</a><span class="cnt">1</span></li>
-			<li class="cian"><a href="#">Aprobados sin publicar</a><span class="cnt">10</span></li>
-			<li class="red"><a href="#">Revisado con ajustes</a><span class="cnt">5</span></li>
-			<li class="yellow"><a href="#">En revisión</a><span class="cnt">8</span></li>
-			<li class="gray"><a href="#">Borradores</a><span class="cnt">99</span></li>
+			<li *ngFor="let state of list.states" [ngClass]="state.color"><a href="#">{{state.name}}</a><span class="cnt">1</span></li>
 		</ul>
 	</div>
 	<div class="options">

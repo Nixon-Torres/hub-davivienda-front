@@ -8,7 +8,8 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class LeftBarComponent implements OnInit {
     public list: any = {
-        folders: []
+        folders: [],
+        states: []
     }
 
     constructor(
@@ -17,6 +18,7 @@ export class LeftBarComponent implements OnInit {
 
     ngOnInit() {
         this.loadFolders();
+        this.loadStates();
     }
 
     private loadFolders() {
@@ -24,6 +26,14 @@ export class LeftBarComponent implements OnInit {
             'path': 'folders'
         }).subscribe((response) => {
             this.list.folders = response.body;
+        });
+    }
+
+    private loadStates() {
+        this.http.get({
+            'path': 'states'
+        }).subscribe((response) => {
+            this.list.states = response.body;
         });
     }
 
