@@ -11,8 +11,10 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 	styleUrls: ['./left-bar.component.scss']
 })
 export class LeftBarComponent implements OnInit {
+	
 	public list: any = {
-		folders: []
+		folders: [],
+		states: []
 	}
 
 	constructor(
@@ -34,6 +36,7 @@ export class LeftBarComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadFolders();
+		this.loadStates();
 	}
 
 	private loadFolders() {
@@ -43,5 +46,13 @@ export class LeftBarComponent implements OnInit {
 			this.list.folders = response.body;
 		});
 	}
+
+    private loadStates() {
+        this.http.get({
+            'path': 'states'
+        }).subscribe((response) => {
+            this.list.states = response.body;
+        });
+    }
 
 }
