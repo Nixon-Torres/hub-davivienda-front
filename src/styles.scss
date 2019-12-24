@@ -1,25 +1,80 @@
-
 /* You can add global styles to this file, and also import other style files */
+
 @import '../node_modules/reset-css/reset.css';
 @import '~@angular/material/theming';
 @import 'assets/sass/_mixins';
 @import 'assets/fonts/fonts';
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 .full-wrap {
-	width: 100%;
-	background: #ffffff;
+    width: 100%;
+    background: #ffffff;
+}
+.content-wrap {
+    @include display-flex;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+    justify-content: space-between;
+    margin: auto;
+    width: 88%;
 }
 
-.content-wrap {
-	@include display-flex;
-	align-items: center;
-	flex-direction: row;
+
+/* =====================================================================
+**              GRAPES JS - BUILDER
+** ===================================================================== */
+
+$builder-bg: #f5f7fb;
+.mat-grid-tile:nth-child(2) {
+    &>figure {
+        background-color: $builder-bg;
+        padding-right: 5vw;
+        &>.mat-tab-group {
+            background-color: white;
+        }
+    }
+}
+
+/* ------------------ EDITOR ------------------ */
+.builder {
 	height: 100%;
-	justify-content: space-between;
-	margin: auto;
-	width: 88%;	
+    background-color: $builder-bg;
+    #gjs {
+        border: 1px solid #eee;
+        border-radius: 5px !important;
+        .gjs-editor {
+            border-radius: 10px !important;
+            .gjs-cv-canvas {
+                top: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 5px !important;
+            }
+            .gjs-pn-panel {
+                visibility: hidden;
+            }
+        }
+    }
+}
+
+/* ----------------- TABS PANEL ----------------- */
+.builder-tabs {
+    width: 100%;
+    height: 100%;
+    .mat-tab-labels {
+        .mat-tab-label {
+            width: 33.3% !important;
+            min-width: auto;
+        }
+    }
+}
+
+#row-m {
+    min-height: calc(100vh - (128px + 9vh));
 }
