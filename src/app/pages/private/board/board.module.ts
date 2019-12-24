@@ -10,9 +10,11 @@ const routes: Routes = [
     }
 ];
 
+import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
 const materialModules: any[] = [
+    MatButtonModule,
 	MatToolbarModule,
 	MatGridListModule
 ];

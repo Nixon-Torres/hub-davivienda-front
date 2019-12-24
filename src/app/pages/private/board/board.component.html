@@ -1,41 +1,102 @@
 <section class="grapes-container">
-	<mat-toolbar color="primary">
+	<mat-toolbar>
 		<mat-toolbar-row>
-			<span>Lorem ipsum category</span>
+			<section>
+				<h6>Informe de negocio</h6>
+
+		        <button mat-stroked-button class="btn-white">
+		        	<span class="icon icon-trash-alt"></span>Descartar
+		        </button>
+		        <button mat-stroked-button class="btn-white">
+		        	<span class="icon icon-search-plus"></span>Vista previa
+		        </button>
+		        <button mat-stroked-button class="btn-white">
+		        	<span class="icon icon-clipboard-check"></span>Enviar a revisión
+		        </button>
+		        <button mat-flat-button class="btn-primary">
+		        	<span class="icon icon-save"></span>Guardar
+		        </button>
+				<small><em>Autoguardado hace 10 min</em></small>
+			</section>
 		</mat-toolbar-row>
 
 		<mat-toolbar-row>
-		    <span>Second Line</span>
+			<section>
+	          	<form class="">
+	          		<div class="input-field">
+		          		<input id="reportName" type="text">
+					    <label for="reportName">Nombre informe</label>
+	          		</div>
+				</form>
+				<button mat-button>
+					<span class="icon icon-edit"></span>Editar nombre
+				</button>
+				<button mat-button>
+					<span class="icon icon-save"></span>Guardar nombre
+				</button>
+				<div class="divider"></div>
+				<span>Editado por Andres V...</span>
+			</section>
 		</mat-toolbar-row>
 	</mat-toolbar>
 
 	<mat-grid-list cols="4" id="row-m">
+
 		<mat-grid-tile [colspan]="3" [rowspan]="1" class="builder">
 			<div id="gjs">
 				<h1>Hello World Component!</h1>
 			</div>
 		</mat-grid-tile>
 
-		<mat-grid-tile [colspan]="1" [rowspan]="1">
+		<mat-grid-tile [colspan]="1" [rowspan]="1" class="builder-tabs">
 
+			<div class="row">
+			    <div class="col s12">
+			      	<ul class="tabs">
+				        <li class="tab col s4">
+				        	<a href="#blocks-tab" class="active"><i class="material-icons">extension</i></a>
+				        </li>
+				        <li class="tab col s4">
+				        	<a href="#styles-tab"><span class="icon icon-paint-brush"></span></a>
+				        </li>
+				        <li class="tab col s4">
+				        	<a href="#config-tab"><span class="icon icon-cog"></span></a>
+				        </li>
+			      	</ul>
+			    </div>
 
-
-  <div class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s3"><a href="#test1">Test 1</a></li>
-        <li class="tab col s3"><a class="active" href="#test2">Test 2</a></li>
-        <li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li>
-        <li class="tab col s3"><a href="#test4">Test 4</a></li>
-      </ul>
-    </div>
-    <div id="test1" class="col s12">Test 1</div>
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test3" class="col s12">Test 3</div>
-    <div id="test4" class="col s12">Test 4</div>
-  </div>
-        
-
+			    <div id="blocks-tab" class="col s12">
+			    	<h6>Elementos</h6>
+			    	<div class="blocks-container"></div>
+			    </div>
+			    <div id="styles-tab" class="col s12">
+			    	<h6>Estilos</h6>
+			    	<div class="styles-container"></div>
+			    </div>
+			    <div id="config-tab" class="col s12">
+			    	<h6>Configuración informe</h6>
+			    	<div class="config-container">
+		    		  	<ul class="collapsible">
+						    <li>
+					      		<div class="collapsible-header"><i class="material-icons">filter_drama</i>Tags Categorías</div>
+						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>
+						    <li>
+						      	<div class="collapsible-header"><i class="material-icons">place</i>Seo</div>
+						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>
+						    <li>
+						      	<div class="collapsible-header"><i class="material-icons">whatshot</i>Informes relacionados</div>
+						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>
+						    <li>
+						      	<div class="collapsible-header"><i class="material-icons">whatshot</i>Glosario</div>
+						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+						    </li>
+					  	</ul>
+			    	</div>
+			    </div>
+			</div>
 
 		</mat-grid-tile>
 	</mat-grid-list>

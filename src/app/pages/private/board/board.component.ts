@@ -23,13 +23,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-
     }
 
     ngAfterViewInit() {
         this.initGrapes();
         var toTab = document.querySelectorAll('.tabs');
+        var toCollapse = document.querySelectorAll('.collapsible');
         var instance = M.Tabs.init(toTab);
+        var instances = M.Collapsible.init(toCollapse);
     }
 
     initGrapes() {
