@@ -1,0 +1,201 @@
+@import '../../../../../assets/sass/_mixins';
+
+.modal-form {
+	@include display-flex;
+
+	justify-content: flex-start;
+	width: 100%;
+ 
+	.two-columns {
+		padding: 24px;
+		position: relative;
+		width: 50%;
+		&.diff-color {
+			background: #F5F7FB;
+		}
+	}
+
+	h3 {
+		@include display-flex;
+
+		align-items: center;
+		color: #616161;
+		font-style: 1em;
+		font-weight: bold;
+		line-height: 1.25em;
+
+		&:before {
+			color: #C2CBD1;
+		}
+	}
+
+	.intro {
+		color: #616161;
+		font-size: 0.750em;
+		font-style: italic;
+		margin: 5px 0 20px 0;
+	}
+
+	.group-radio {
+		@include display-flex;
+
+		justify-content: center;
+
+		&--option{
+			@include display-flex;
+
+			flex-direction: column-reverse;
+			margin-right: 6%;
+			width: 27%;
+
+			input {
+				height: 20px;
+				margin: auto;
+				width: 20px;
+			}
+
+			label {
+				@include display-flex;
+
+				color: #A5ABB1;
+				font-size: 0.625em;
+				flex-direction: column;
+				justify-content: center;
+				text-align: center;
+
+				&:after {
+					background: #F0F5FD;
+					border-radius: 5px;
+					content: '\e912';
+					font-family: "icomoon" !important;
+					font-size: 4em;
+					padding: 20px 0;
+					margin: 10px 0;
+					
+				}
+			}
+		}
+	}
+
+	.group-radio-two {
+		@include display-flex;
+
+		flex-wrap: wrap;
+		justify-content: left;
+
+		&--option{
+			@include display-flex;
+
+			flex-direction: column-reverse;
+			margin-right: 6%;
+			width: 27%;
+
+			input {
+				height: 20px;
+				margin: auto;
+				opacity: 0;
+				width: 20px;
+			}
+
+			label {
+				@include display-flex;
+
+				color: #A5ABB1;
+				font-size: 0.625em;
+				flex-direction: column;
+				justify-content: center;
+				text-align: center;
+
+				&:before {
+					background: #F5F7FB;
+					border-radius: 5px;
+					border: 1px solid #C2CBD1;
+					content: "\e914";
+					font-family: "icomoon" !important;
+					font-size: 7em;
+					padding: 20px 0 0 0;
+					margin: 10px 0;
+					color: #ffffff;
+					
+				}
+			}
+		}
+	}
+
+	.authors-box {
+
+		ul {
+			@include display-flex;
+
+			flex-wrap: wrap;
+		}
+
+		li {
+			margin: 20px 20px 0 0;
+			position: relative;
+			text-align: center;
+
+			.del {
+				border-radius: 10px;
+				border: 2px solid #FF003B;				
+				color: #FF003B;
+				cursor: pointer;
+				height: 20px;
+				padding: 2px 2px;
+				position: absolute;
+				text-align: center;
+				top: -10px;
+				right: -10px;
+				width: 20px;
+				&.icon {
+					&:before {
+						margin: 0;
+					}
+				} 		
+			}
+
+			.add {
+				background: #F5F7FB;
+				border-radius: 20px;
+				border: 1px solid #DCE7ED;
+				color: #0080FF;
+				cursor: pointer;
+				display: inline-block;
+				font-size: 1em;
+				height: 40px;
+				margin-left: 30px;
+				padding: 0 10px;
+				vertical-align: middle;
+				width: 40px;
+
+				+p {
+					font-style: italic;
+					text-align: left;
+					color: #B2B9C1;
+					font-size: 0.625em;
+					display: inline-block;
+					margin-left: 10px;
+					vertical-align: middle;
+
+					span {
+						display: block;
+					}
+				}
+			}
+
+
+		}
+		.name {
+			font-weight: bolder;
+		}
+
+		.name,
+		.cargue {
+			color: #616161;
+			font-style: italic;
+			font-size: 0.625em;
+			padding: 1px 0;
+		}
+	}
+
+}

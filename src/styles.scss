@@ -29,7 +29,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 	padding: 0;
 }
 
-//SELECT
 .modal-form {
 
 	.mat-form-field {
@@ -37,6 +36,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 			margin-top: 20px;
 		}
 	}
+
+	.mat-select-value {
+		padding: 0 15px;
+	}	
 
 	.mat-select {
 		color: #A5ABB1;
@@ -74,9 +77,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 	// .mat-tab-label-active,
 	.mat-tab-label-content {
 		font-size: 0.875em;
-	}		
-}
+	}
 
+	.mat-dialog-actions {
+		bottom: 24px;
+		position: absolute;
+		width: 92%;
+
+		.mat-button-base  {
+			width: 48%;
+			background: #FFFFFF;
+			border: 1px solid #E4E7ED;
+			color: #616161;
+			font-size: 0.875em;
+		}
+	}
+		
+}
 
 //TABS General
 .tabs {

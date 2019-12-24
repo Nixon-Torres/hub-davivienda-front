@@ -25,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { FormsModule } from '@angular/forms';
+import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 
 const routes: Routes = [
 	{
@@ -44,11 +45,12 @@ const materialModules: any[] = [
 	MatRadioModule,
 	MatSliderModule,
 	MatSlideToggleModule,
-	MatButtonModule
+	MatButtonModule,
+	MatSelectModule
 ];
 
 @NgModule({
-	declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent],
+	declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent],
 	imports: [
 		CommonModule,
 		materialModules,
@@ -59,7 +61,8 @@ const materialModules: any[] = [
 		materialModules
 	],
 	entryComponents: [
-		DialogBoxComponent
+		DialogBoxComponent,
+		CreateReportDialogComponent
 	]
 })
 export class PrincipalModule { }
