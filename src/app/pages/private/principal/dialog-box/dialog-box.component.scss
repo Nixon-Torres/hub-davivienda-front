@@ -48,14 +48,21 @@
 				background: transparent;
 				border: none;
 				color: transparent;
+				cursor: pointer;
 				margin-right: 20px;
 				width: 25px;
 				&:before {
 					color: #BEC5D0;
 					font-size: 2em;
 				}
+				&:hover {
+					&:before {
+						color: #0080FF;
+					}
+				}
 				&:focus {
 					border: none;
+					outline: 0;
 				}
 			}
 		}		
@@ -64,7 +71,9 @@
 
 	.list {
 		border: 1px solid #E7EAF1;
+		height: 210px;
 		background: #F5F7FB;
+		overflow: scroll;
 		padding: 10px 18px 20px 18px;
 
 		&--left {
@@ -87,17 +96,25 @@
 
 		button {
 			&.icon {
-				background: transparent;
+				background: transparent;	
 				border: none;
 				color: transparent;
+				cursor: pointer;
 				width: 25px;
+				&:hover {
+					&:before {
+						color: #0080FF;
+					}
+				}
 				&:before {
 					color: #BEC5D0;
 				}
 				&:focus {
 					border: none;
+					outline: 0;
 				}
 			}
+
 		}
 
 		&--divider {

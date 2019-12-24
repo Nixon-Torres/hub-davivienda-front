@@ -24,7 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
-
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
 	{
@@ -52,6 +52,7 @@ const materialModules: any[] = [
 	imports: [
 		CommonModule,
 		materialModules,
+		FormsModule,
 		RouterModule.forChild(routes)
 	],
 	exports: [

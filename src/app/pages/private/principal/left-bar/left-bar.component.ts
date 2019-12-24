@@ -26,7 +26,8 @@ export class LeftBarComponent implements OnInit {
 		const dialogRef = this.dialog.open(DialogBoxComponent, {
 			width: '600px',
 			height: 'auto',
-			maxHeight: '500px'
+			maxHeight: '500px',
+			data: this.list.folders
 		});
 
 		dialogRef.afterClosed().subscribe(result => {

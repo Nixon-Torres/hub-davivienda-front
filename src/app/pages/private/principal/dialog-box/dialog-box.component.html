@@ -2,53 +2,26 @@
 	<h1 mat-dialog-title>Editar y crear carpeta</h1>
 	<div mat-dialog-content>
 		<form class="form-box">
-			<button class="icon icon-plus-circle">editar</button>
+			<button class="icon icon-plus-circle" (click)="onSaveFolder($event)">editar</button>
 			<mat-form-field>
-				<input matInput placeholder="Crear carpeta nueva">
+				<input matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Crear carpeta nueva">
 			</mat-form-field>
 		</form>
 			<ul class="list">
-				<li>
-					<p class="list--left">Carpeta 01</p>
+				<li *ngFor="let folder of folders;let indice=index ">
+					<p class="list--left">{{folder.name}}</p>
 					<div class="list--right">
-						<span>6 pages</span>
-						<button class="icon icon-edit">editar</button>
+						<span>0 pages</span>
+						<button class="icon icon-edit" (click)="onEditFolder($event,indice)">editar</button>
 						<span class="list--divider">|</span>
-						<button class="icon icon-trash-alt">eliminar</button>
-					</div>
-				</li>
-				<li>
-					<p class="list--left">Carpeta 01</p>
-					<div class="list--right">
-						<span>6 pages</span>
-						<button class="icon icon-edit">editar</button>
-						<span class="list--divider">|</span>
-						<button class="icon icon-trash-alt">eliminar</button>
-					</div>
-				</li>
-				<li>
-					<p class="list--left">Carpeta 04</p>
-					<div class="list--right">
-						<span>6 pages</span>
-						<button class="icon icon-edit">editar</button>
-						<span class="list--divider">|</span>
-						<button class="icon icon-trash-alt">eliminar</button>
-					</div>
-				</li>
-				<li>
-					<p class="list--left">Carpeta 05</p>
-					<div class="list--right">
-						<span>6 pages</span>
-						<button class="icon icon-edit">editar</button>
-						<span class="list--divider">|</span>
-						<button class="icon icon-trash-alt">eliminar</button>
+						<button class="icon icon-trash-alt" (click)="onDeleteFolder($event,indice)">eliminar</button>
 					</div>
 				</li>
 			</ul>
 	</div>
 	<div mat-dialog-actions>
 		<button mat-button (click)="onNoClick()">Cancelar</button>
-		<button class="highligh" mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Agregar</button>
+		<button class="highligh" mat-button [mat-dialog-close]="" cdkFocusInitial>Agregar</button>
 	</div>
 </div>	
 
