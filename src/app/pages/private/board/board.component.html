@@ -1,6 +1,6 @@
 <section class="grapes-container">
-	<mat-toolbar>
-		<mat-toolbar-row>
+	<mat-toolbar id="toolbar">
+		<mat-toolbar-row id="export">
 			<section>
 				<h6>Informe de negocio</h6>
 
@@ -20,7 +20,7 @@
 			</section>
 		</mat-toolbar-row>
 
-		<mat-toolbar-row>
+		<mat-toolbar-row id="actions">
 			<section>
 				<span class="input-label">Nombre informe:   </span>
 	          	<form class="">
@@ -41,7 +41,7 @@
 		</mat-toolbar-row>
 	</mat-toolbar>
 
-	<mat-grid-list cols="4" id="row-m">
+	<mat-grid-list cols="4" id="grapesBox">
 
 		<mat-grid-tile [colspan]="3" [rowspan]="1" class="builder">
 			<div id="gjs">

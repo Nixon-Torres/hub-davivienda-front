@@ -26,98 +26,25 @@ body {
 }
 
 
-/* =====================================================================
-**              GRAPES JS - BUILDER
-** ===================================================================== */
+// GRAPES
+#gjs {
+    border: 1px solid #eee;
+    border-radius: 5px !important;
+    background: red !important;
 
-$builder-bg: #f5f7fb;
+    .gjs-editor {
+        border-radius: 10px !important;
+        background: red !important;
 
-#row-m {
-    min-height: calc(100vh - (128px + 9vh));
-}
-
-.mat-grid-tile:nth-child(2) {
-
-    & > figure {
-        background-color: $builder-bg;
-        padding-right: 5vw;
-
-        & > .mat-tab-group {
-            background-color: white;
+        .gjs-cv-canvas {
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px !important;
+            background: red !important;
         }
-    }
-}
-
-
-/* ------------------ EDITOR ------------------ */
-.builder {
-	height: 100%;
-    background-color: $builder-bg;
-
-    #gjs {
-        border: 1px solid #eee;
-        border-radius: 5px !important;
-
-        .gjs-editor {
-            border-radius: 10px !important;
-
-            .gjs-cv-canvas {
-                top: 0;
-                width: 100%;
-                height: 100%;
-                border-radius: 5px !important;
-            }
-            .gjs-pn-panel {
-                visibility: hidden;
-            }
-        }
-    }
-}
-
-/* ----------------- TABS PANEL ----------------- */
-.builder-tabs {
-    height: 100%;
-
-    .row {
-        margin: 0px;
-        width: 100%;
-        height: 100%;
-
-        .s12 {
-            padding: 0px;
-        }
-
-        h6 {
-            margin: 0;
-            color: #0080ff;
-            padding: 1rem;
-            background-color: #e3f1ff;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .tabs {
-
-            & > li > a:focus {
-                background-color: transparent;
-            }
-
-            & > li > a {
-                color: #0080ff;
-
-                i, span {
-                    line-height: inherit;
-                }
-            }
-
-            .icon::before {
-                margin-right: 0px;
-            }
-
-            .indicator {
-                background-color:#0080ff;
-            }
+        .gjs-pn-panel {
+            visibility: hidden;
         }
     }
 }
