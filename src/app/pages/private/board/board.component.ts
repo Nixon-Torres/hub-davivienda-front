@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Grapes } from "./grapes/grape.config";
+import * as M from "materialize-css/dist/js/materialize";
 
 declare var grapesjs: any;
 
@@ -8,6 +9,7 @@ declare var grapesjs: any;
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.scss']
 })
+
 export class BoardComponent implements OnInit, AfterViewInit {
     public editor: any = null;
     public grapes: any = null;
@@ -26,6 +28,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.initGrapes();
+        var toTab = document.querySelectorAll('.tabs');
+        var instance = M.Tabs.init(toTab);
     }
 
     initGrapes() {

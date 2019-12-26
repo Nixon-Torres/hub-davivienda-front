@@ -10,11 +10,22 @@ const routes: Routes = [
     }
 ];
 
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatGridListModule} from '@angular/material/grid-list';
+const materialModules: any[] = [
+	MatToolbarModule,
+	MatGridListModule
+];
+
 @NgModule({
     declarations: [BoardComponent],
     imports: [
         CommonModule,
+		materialModules,
         RouterModule.forChild(routes)
-    ]
+    ],
+  	exports: [
+		materialModules
+  	]
 })
 export class BoardModule { }

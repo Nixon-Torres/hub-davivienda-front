@@ -30,9 +30,11 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
+              "node_modules/materialize-css/sass/materialize.scss",
               "node_modules/grapesjs/dist/css/grapes.min.css"
             ],
             "scripts": [
+              "node_modules/materialize-css/dist/js/materialize.min.js",
               "node_modules/grapesjs/dist/grapes.min.js"
             ]
           },

@@ -1,49 +1,43 @@
-<section class="row grapes-container">
-	<div class="col s9 builder">
-		<div id="gjs">
-			<h1>Hello World Component!</h1>
-		</div>
-	</div>
+<section class="grapes-container">
+	<mat-toolbar color="primary">
+		<mat-toolbar-row>
+			<span>Lorem ipsum category</span>
+		</mat-toolbar-row>
 
-	<aside class="col s3 builder-panel">
-		<header>
-			<ul class="tabs">
-				<li class="tab col s3"><a href="#swipe-blocks" class="active">Test 1</a></li>
-				<li class="tab col s3"><a href="#swipe-styles">Test 2</a></li>
-				<li class="tab col s3"><a href="#swipe-config">Test 3</a></li>
-			</ul>
-		</header>
+		<mat-toolbar-row>
+		    <span>Second Line</span>
+		</mat-toolbar-row>
+	</mat-toolbar>
 
-		<div class="content white">
-			<div id="swipe-blocks" class="col s12 blocks-container">
-				<h6>Elementos</h6>
+	<mat-grid-list cols="4" id="row-m">
+		<mat-grid-tile [colspan]="3" [rowspan]="1" class="builder">
+			<div id="gjs">
+				<h1>Hello World Component!</h1>
 			</div>
+		</mat-grid-tile>
 
-			<div id="swipe-styles" class="col s12 styles-container">
-				<h6>Estilos</h6>
-			</div>
+		<mat-grid-tile [colspan]="1" [rowspan]="1">
 
-			<div id="swipe-config" class="col s12 config-container">
-				<h6>Configuración informe</h6>
-				<ul class="collapsible">
-					<li>
-						<div class="collapsible-header">Tags Categorias</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-					</li>
-					<li>
-						<div class="collapsible-header">Seo</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-					</li>
-					<li>
-						<div class="collapsible-header">Informes relacionados</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-					</li>
-					<li>
-						<div class="collapsible-header">Glosario</div>
-						<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</aside>
+
+
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#test1">Test 1</a></li>
+        <li class="tab col s3"><a class="active" href="#test2">Test 2</a></li>
+        <li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li>
+        <li class="tab col s3"><a href="#test4">Test 4</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12">Test 1</div>
+    <div id="test2" class="col s12">Test 2</div>
+    <div id="test3" class="col s12">Test 3</div>
+    <div id="test4" class="col s12">Test 4</div>
+  </div>
+        
+
+
+		</mat-grid-tile>
+	</mat-grid-list>
+
 </section>
