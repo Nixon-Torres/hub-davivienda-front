@@ -76,6 +76,7 @@ $builder-bg: #f5f7fb;
 
 /* ----------------- TABS PANEL ----------------- */
 .builder-tabs {
+    height: 100%;
 
     .row {
         margin: 0px;
@@ -94,6 +95,29 @@ $builder-bg: #f5f7fb;
             text-align: left;
             font-size: 14px;
             font-weight: 500;
+        }
+
+        .tabs {
+
+            & > li > a:focus {
+                background-color: transparent;
+            }
+
+            & > li > a {
+                color: #0080ff;
+
+                i, span {
+                    line-height: inherit;
+                }
+            }
+
+            .icon::before {
+                margin-right: 0px;
+            }
+
+            .indicator {
+                background-color:#0080ff;
+            }
         }
     }
 }
