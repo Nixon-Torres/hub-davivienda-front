@@ -22,10 +22,11 @@
 
 		<mat-toolbar-row>
 			<section>
+				<span class="input-label">Nombre informe:   </span>
 	          	<form class="">
 	          		<div class="input-field">
-		          		<input id="reportName" type="text">
-					    <label for="reportName">Nombre informe</label>
+		          		<input id="reportName" type="text" placeholder="Escriba aquí">
+					    <!-- <label for="reportName">Nombre informe</label> -->
 	          		</div>
 				</form>
 				<button mat-button>
@@ -48,7 +49,7 @@
 			</div>
 		</mat-grid-tile>
 
-		<mat-grid-tile [colspan]="1" [rowspan]="1" class="builder-tabs">
+		<mat-grid-tile [colspan]="1" [rowspan]="1" class="builder-tabs" style="overflow: visible;">
 
 			<div class="row">
 			    <div class="col s12">
@@ -76,21 +77,21 @@
 			    <div id="config-tab" class="col s12">
 			    	<h6>Configuración informe</h6>
 			    	<div class="config-container">
-		    		  	<ul class="collapsible">
+		    		  	<ul class="collapsible accordian-panel-bar">
 						    <li>
-					      		<div class="collapsible-header"><i class="material-icons">filter_drama</i>Tags Categorías</div>
+					      		<div class="collapsible-header"><i class="fa fa-tags" aria-hidden="true"></i>Tags Categorías <i class="fa fa-chevron-down accordian-arrow" aria-hidden="true"></i></div>
 						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
 						    </li>
 						    <li>
-						      	<div class="collapsible-header"><i class="material-icons">place</i>Seo</div>
+						      	<div class="collapsible-header"><i class="fa fa-pie-chart" aria-hidden="true"></i>Seo <i class="fa fa-chevron-down accordian-arrow" aria-hidden="true"></i></div>
 						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
 						    </li>
 						    <li>
-						      	<div class="collapsible-header"><i class="material-icons">whatshot</i>Informes relacionados</div>
+						      	<div class="collapsible-header"><i class="fa fa-clipboard" aria-hidden="true"></i>Informes relacionados <i class="fa fa-chevron-down accordian-arrow" aria-hidden="true"></i></div>
 						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
 						    </li>
 						    <li>
-						      	<div class="collapsible-header"><i class="material-icons">whatshot</i>Glosario</div>
+						      	<div class="collapsible-header"><i class="fa fa-folder-open" aria-hidden="true"></i>Glosario <i class="fa fa-chevron-down accordian-arrow" aria-hidden="true"></i></div>
 						      	<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
 						    </li>
 					  	</ul>
