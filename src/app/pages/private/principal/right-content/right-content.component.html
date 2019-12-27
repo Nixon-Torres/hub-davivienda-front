@@ -3,6 +3,12 @@
 		<span class="message">Por revisar (3)</span>
 		<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe</button>
 	</div>
+
+    {{currentFolder}}
+
+    {{currentState}}
+
+    {{deletedFg}}
 	<section class="tabs">
 		<mat-tab-group>
 		  <mat-tab label="Mis Informes">
@@ -10,12 +16,12 @@
 			<div >
 				<ul class="report-list">
 					<li *ngFor="let report of list.reports" (click)="gotoPage(report.id)">
-						<div class="row" [ngClass]="report.state.color">
-							<span class="report--span">{{report.state.name}}</span>
+						<div class="row" [ngClass]="report.state?.color">
+							<span class="report--span">{{report.state?.name}}</span>
 							<input type="checkbox" id="report" value="1">
 							<h2 class="report--title">{{report.name}}</h2>
 							<span class="report--span">28 Dic 2019</span>
-							<span class="report--span">{{report.user.name}}</span>
+							<span class="report--span">{{report.user?.name}}</span>
 							<div class="group-menu">
 								<button class="report--menu icon icon-ellipsis-h"></button>
 								<ul class="report--menu-list">
