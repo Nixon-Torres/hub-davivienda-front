@@ -63,31 +63,30 @@ export class CreateReportDialogComponent implements OnInit {
 		this.http.get({
 			'path': 'templates'
 		}).subscribe((response) => {
-			console.log(response.body);
 			this.list.templates = response.body;
 		});
 	}
 
-	private onUpdateTypes($event,index) {
+	public onUpdateTypes($event,index) {
 		this.list.typeSections = this.list.sections[index].types;
 	}
 
-	private onAddAuthor() {
+	public onAddAuthor() {
 		if (this.selectedAuthor)
 			this.list.authors.push(this.list.users[this.selectedAuthor]); 
 	}
 
-	private onDeleteAuthor(pos) {
+	public onDeleteAuthor(pos) {
 		if (this.selectedAuthor)
 			this.list.authors.splice(pos,1);
 
 	}
 
-	private onOptionsSelected($event) {
+	public onOptionsSelected($event) {
 		this.selectedAuthor;
 	}
 
-	private gotoPage() {
+	public gotoPage() {
 		this.router.navigate(['app/board']);	
 	} 
 
