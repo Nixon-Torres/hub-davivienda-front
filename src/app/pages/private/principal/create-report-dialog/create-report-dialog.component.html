@@ -70,7 +70,7 @@
 		</div>
 		<div mat-dialog-actions>
 			<button mat-button (click)="onNoClick()">Cancelar</button>
-			<button class="highligh" mat-button [mat-dialog-close]="" cdkFocusInitial>Empezar Informe</button>
+			<button class="highligh" mat-button [mat-dialog-close]="" (click)="gotoPage()">Empezar Informe</button>
 		</div>
 	</div>
 </form>

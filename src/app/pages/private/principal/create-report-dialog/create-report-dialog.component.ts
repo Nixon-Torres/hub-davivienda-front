@@ -1,6 +1,7 @@
 import { NgModule, Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { HttpService } from '../../../../services/http.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-create-report-dialog',
@@ -11,7 +12,8 @@ export class CreateReportDialogComponent implements OnInit {
 
 	constructor(
 		public dialogRef: MatDialogRef<CreateReportDialogComponent>,
-		private http: HttpService
+		private http: HttpService,
+		private router: Router
 	){}
 
 	public authors = [
@@ -84,5 +86,9 @@ export class CreateReportDialogComponent implements OnInit {
 	private onOptionsSelected($event) {
 		this.selectedAuthor;
 	}
+
+	private gotoPage() {
+		this.router.navigate(['app/board']);	
+	} 
 
 }
