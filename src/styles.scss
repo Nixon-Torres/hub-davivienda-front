@@ -27,24 +27,68 @@ body {
 
 
 // GRAPES
+$builder-bg: #f5f7fb;
+.gjs-one-bg {
+    background-color: white !important;
+}
+.gjs-two-color {
+    color: #616161 !important;
+}
+
 #gjs {
     border: 1px solid #eee;
     border-radius: 5px !important;
-    background: red !important;
 
     .gjs-editor {
         border-radius: 10px !important;
-        background: red !important;
 
         .gjs-cv-canvas {
             top: 0;
             width: 100%;
             height: 100%;
             border-radius: 5px !important;
-            background: red !important;
         }
+
         .gjs-pn-panel {
             visibility: hidden;
         }
+    }
+}
+
+.mat-grid-tile:nth-child(2) {
+
+    & > figure {
+        background-color: $builder-bg;
+        padding-right: 5vw;
+    }
+}
+
+.builder-tabs {
+    .row {
+        .tabs {
+            .indicator {
+                bottom: 0;
+                height: 2px;
+                position: absolute;
+                background-color:#0080ff;
+                will-change: left, right;
+            }
+        }
+    }
+}
+.blocks-container {
+    .gjs-block {
+        background-color: #e5e5e5  !important;
+        color: #616161;
+        border: none;
+        font-size: 35px;
+    }
+}
+.styles-container {
+
+    .gjs-sm-title,
+    .gjs-sm-field,
+    .gjs-sm-sector {
+        border: none !important;
     }
 }
