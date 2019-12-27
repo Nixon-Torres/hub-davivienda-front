@@ -4,38 +4,36 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { HttpService } from '../../../../services/http.service';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
 import { Router } from '@angular/router';
+import {loopback} from '../../../../models/common/loopback.model'
+import * as qs from 'qs';
 
 @Component({
     selector: 'app-right-content',
     templateUrl: './right-content.component.html',
     styleUrls: ['./right-content.component.scss']
 })
-export class RightContentComponent implements OnInit {
-    icurrentFolder: string;
-    icurrentState: string;
-    ideletedFg = false;
+export class RightContentComponent implements OnInit { 
+
+    icurrentObj: {
+        currentFolder: "",
+        currentState: "",
+        deletedFg : false
+    };  
+
+    ifilter : string;
 
     public list: any = {
         reports: []
     }
 
     @Input()
-    set currentFolder(value: string) {
-        console.log('new folder:', value);
-        this.icurrentFolder = value;
-    }
-
-    @Input()
-    set currentState(value: string) {
+    set currentObj(value: any) {
         console.log('new state:', value);
-        this.icurrentState = value;
-    }
-
-    @Input()
-    set deletedFg(value) {
-        console.log('new fg:', value);
-        this.ideletedFg = value;
-    }
+        this.icurrentObj = value;
+        if(this.icurrentObj) {
+            this.loadReports(this.ifilter);
+        }
+    }   
 
     constructor(
         public dialog: MatDialog,
@@ -54,19 +52,21 @@ export class RightContentComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadReports();
+        //this.loadReports();
     }
 
     private loadReports(filter? : string | null): void {
-        // var query1 = qs.stringify(query,{skipNulls: true }); 
-        // var query1 = qs.parse('filter[include][0][relation]=folder&filter[include][1][relation]=user&filter[include][2][relation]=state&filter[include][3][relation]=section&filter[where][name][like]=98');       
-        var query = 'reports?filter[include][0][relation]=folder&filter[include][1][relation]=user&filter[include][2][relation]=state&filter[include][3][relation]=section'
-        var queryfilter = '&filter[where][name][like]='+filter;
-        if(filter){
-            query+=queryfilter;
-        }
+        this.ifilter=filter;
+        var query = new loopback();        
+        query.filter.include.push({ relation : "folder"},{ relation : "user"}, { relation : "state"} , { relation : "section"} )
+        query.filter.where['folderId'] = this.icurrentObj.currentFolder;
+        query.filter.where['stateId'] = this.icurrentObj.currentState;
+        query.filter.where['trash'] = this.icurrentObj.deletedFg;
+        this.ifilter ? query.filter.where['name'] = {like:this.ifilter} : null ;
+
+        console.log('query',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
         this.http.get({
-            'path': query
+            path: 'reports?'+qs.stringify(query,{skipNulls: true }) 
         }).subscribe((response) => {
             this.list.reports = response.body;
         });
