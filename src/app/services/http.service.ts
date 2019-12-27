@@ -30,13 +30,13 @@ export class HttpService {
     }
 
     public post(input: Request): Observable<HttpResponse<Response>> {
-        return this.http.post<Response>(input.path, input.data, {
+        return this.http.post<Response>(this._URL_API + input.path, input.data, {
             observe: 'response'
         }).pipe(catchError(this.handleError));
     }
 
     public put(input: Request): Observable<HttpResponse<Response>> {
-        return this.http.put<Response>(input.path, input.data, {
+        return this.http.put<Response>(this._URL_API + input.path, input.data, {
             observe: 'response'
         }).pipe(catchError(this.handleError));
     }
@@ -48,7 +48,7 @@ export class HttpService {
                 params.set(key, input.data[key])
             }
         }
-        return this.http.delete<Response>(input.path, {
+        return this.http.delete<Response>(this._URL_API + input.path, {
             observe: 'response'
         }).pipe(catchError(this.handleError));
     }
