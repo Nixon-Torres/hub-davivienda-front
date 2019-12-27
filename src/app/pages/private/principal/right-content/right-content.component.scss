@@ -124,6 +124,14 @@ section {
 			text-align: center;
 			width: auto;
 
+			&:hover {
+				color: #0080FF;
+
+				+ .report--menu-list {
+					display: block;
+				}
+			}
+
 			&:focus {
 				outline: none;
 			}
@@ -151,12 +159,52 @@ section {
 
 			background: #ffffff;
 			border: 1px solid #0080FF;
+			box-sizing: border-box;
 			display: none;
 			position: absolute;
 			padding: 10px 10px 16px 10px;
 			right: 0;
-			width: 150px;
+			width: 130px;
 			z-index: 100;
+
+			&:after {
+					border-right: 1px solid #0080FF;
+				    border-top: 1px solid #0080FF;
+				    color: transparent;
+				    cursor: pointer;
+				    display: inline-block;
+				    height: 10px;
+				    position: absolute;
+				    right: 30px;
+				    top: 0;
+				    width: 10px;
+				    -ms-: rotate(315deg);
+				    transform: rotate(315deg);
+				    position: absolute;
+				    top: -6px;
+					content: '';
+			}
+
+			&:before {
+				content: "";
+				height: 0;
+				border-left: 8px solid transparent;
+				border-right: 8px solid transparent;
+				border-bottom: 8px solid #ffffff;
+				position: absolute;
+				top: -8px;
+				right: 28px;
+				width: 0;
+			}
+
+
+			&:hover {
+				display: block;
+
+				+ .report--menu {
+					color: red;
+				}
+			}
 
 			li {
 				padding: 6px 0;
@@ -164,6 +212,7 @@ section {
 
 				.icon {
 					color: #5C5C5C;
+					cursor: pointer;
 					font-size:0.750em;
 					border: none;
 
@@ -171,6 +220,11 @@ section {
 						color: #0080FF;
 						font-size: 0.833em;
 					};
+
+					&:hover {
+						color: #616161;
+						font-weight: bold;
+					}
 				}
 			}
 
