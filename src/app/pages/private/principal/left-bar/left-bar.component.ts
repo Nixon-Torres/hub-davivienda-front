@@ -2,6 +2,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HttpService} from '../../../../services/http.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {DialogBoxComponent} from '../dialog-box/dialog-box.component';
+import * as qs from 'qs';
+import {loopback} from '../../../../models/common/loopback.model'
 
 @Component({
     selector: 'app-left-bar',
@@ -48,19 +50,27 @@ export class LeftBarComponent implements OnInit {
     }
 
     private loadFolders() {
+        var query = new loopback();        
+        query.filter.include.push({ relation : "reports"});  
+        console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));  
+        
         this.http.get({
-            path: 'folders'
+            path: 'folders?'+qs.stringify(query,{skipNulls: true }) 
         }).subscribe((response) => {
             this.list.folders = response.body;
-        });
+        });          
     }
 
     private loadStates() {
+        var query = new loopback();        
+        query.filter.include.push({ relation : "reports"})  
+        console.log('query states',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));   
+
         this.http.get({
-            path: 'states'
+            path: 'states?'+qs.stringify(query,{skipNulls: true }) 
         }).subscribe((response) => {
             this.list.states = response.body;
-        });
+        });       
     }
 
     setDeletedState() {

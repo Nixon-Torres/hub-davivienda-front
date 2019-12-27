@@ -59,11 +59,10 @@ export class RightContentComponent implements OnInit {
         this.ifilter=filter;
         var query = new loopback();        
         query.filter.include.push({ relation : "folder"},{ relation : "user"}, { relation : "state"} , { relation : "section"} )
-        query.filter.where['folderId'] = this.icurrentObj.currentFolder;
-        query.filter.where['stateId'] = this.icurrentObj.currentState;
+        query.filter.where['folderId'] =  this.icurrentObj.currentFolder; //"5e024997b8287319151c688c";
+        query.filter.where['stateId'] =  this.icurrentObj.currentState; //"5e024bcab8287319151c6897"
         query.filter.where['trash'] = this.icurrentObj.deletedFg;
         this.ifilter ? query.filter.where['name'] = {like:this.ifilter} : null ;
-
         console.log('query',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
         this.http.get({
             path: 'reports?'+qs.stringify(query,{skipNulls: true }) 
