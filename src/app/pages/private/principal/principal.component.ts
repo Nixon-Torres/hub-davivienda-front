@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './principal.component.html',
   styleUrls: ['./principal.component.scss']
 })
-export class PrincipalComponent implements OnInit {
-    currentFolder: string;
-    currentState: string;
-    deletedFg = false;
-
+export class PrincipalComponent implements OnInit { 
+    currentObj = {};
   constructor() { }
 
   ngOnInit() {
@@ -17,8 +14,10 @@ export class PrincipalComponent implements OnInit {
 
   setCurrentState(value: any) {
       console.log(value.state, value.folder, value.deleted);
-      this.currentFolder = value.folder;
-      this.currentState = value.state;
-      this.deletedFg = value.deleted;
+      this.currentObj ={
+        currentFolder: value.folder,
+        currentState: value.state,
+        deletedFg : value.deleted
+      }
   }
 }
