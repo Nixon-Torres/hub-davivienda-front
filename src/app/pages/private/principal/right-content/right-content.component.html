@@ -9,72 +9,21 @@
 			<!-- <h1>Mis informes</h1> -->
 			<div >
 				<ul class="report-list">
-					<li>
-						<div class="row yellow">
-							<span class="report--span">Publicado</span>
+					<li *ngFor="let report of list.reports" (click)="gotoPage(report.id)">
+						<div class="row" [ngClass]="report.state.color">
+							<span class="report--span">{{report.state.name}}</span>
 							<input type="checkbox" id="report" value="1">
-							<h2 class="report--title">Informe Contenido muy largo</h2>
-							<span class="report--span">21 Ago 2018</span>
-							<span class="report--span">Andres Villanueva</span>
+							<h2 class="report--title">{{report.name}}</h2>
+							<span class="report--span">28 Dic 2019</span>
+							<span class="report--span">{{report.user.name}}</span>
 							<div class="group-menu">
 								<button class="report--menu icon icon-ellipsis-h"></button>
 								<ul class="report--menu-list">
 									<li><button class="icon icon-edit">Editar</button></li>
 									<li><button class="icon icon-copy">Duplicar</button></li>
 									<li><button class="icon icon-trash-alt">Eliminar</button></li>
-								</ul>	
-							</div>	
-						</div>
-					</li>
-					<li>
-						<div class="row green">
-							<span class="report--span">Publicado</span>
-							<input type="checkbox" id="report" value="1">
-							<h2 class="report--title">Informe Contenido muy largo</h2>
-							<span class="report--span">21 Ago 2018</span>
-							<span class="report--span">Andres Villanueva</span>
-							<div class="group-menu">
-								<button class="report--menu icon icon-ellipsis-h"></button>
-								<ul class="report--menu-list">
-									<li><button class="icon icon-edit">Editar</button></li>
-									<li><button class="icon icon-copy">Duplicar</button></li>
-									<li><button class="icon icon-trash-alt">Eliminar</button></li>
-								</ul>	
-							</div>	
-						</div>
-					</li>
-					<li>
-						<div class="row cian">
-							<span class="report--span">Publicado</span>
-							<input type="checkbox" id="report" value="1">
-							<h2 class="report--title">Informe Contenido muy largo</h2>
-							<span class="report--span">21 Ago 2018</span>
-							<span class="report--span">Andres Villanueva</span>
-							<div class="group-menu">
-								<button class="report--menu icon icon-ellipsis-h"></button>
-								<ul class="report--menu-list">
-									<li><button class="icon icon-edit">Editar</button></li>
-									<li><button class="icon icon-copy">Duplicar</button></li>
-									<li><button class="icon icon-trash-alt">Eliminar</button></li>
-								</ul>	
-							</div>	
-						</div>
-					</li>
-					<li>
-						<div class="row red">
-							<span class="report--span">Publicado</span>
-							<input type="checkbox" id="report" value="1">
-							<h2 class="report--title">Informe Contenido muy largo</h2>
-							<span class="report--span">21 Ago 2018</span>
-							<span class="report--span">Andres Villanueva</span>
-							<div class="group-menu">
-								<button class="report--menu icon icon-ellipsis-h"></button>
-								<ul class="report--menu-list">
-									<li><button class="icon icon-edit">Editar</button></li>
-									<li><button class="icon icon-copy">Duplicar</button></li>
-									<li><button class="icon icon-trash-alt">Eliminar</button></li>
-								</ul>	
-							</div>	
+								</ul>
+							</div>
 						</div>
 					</li>
 				</ul>
@@ -97,8 +46,8 @@
 									<li><button class="icon icon-edit">Editar</button></li>
 									<li><button class="icon icon-copy">Duplicar</button></li>
 									<li><button class="icon icon-trash-alt">Eliminar</button></li>
-								</ul>	
-							</div>	
+								</ul>
+							</div>
 						</div>
 					</li>
 					<li>
@@ -114,13 +63,13 @@
 									<li><button class="icon icon-edit">Editar</button></li>
 									<li><button class="icon icon-copy">Duplicar</button></li>
 									<li><button class="icon icon-trash-alt">Eliminar</button></li>
-								</ul>	
-							</div>	
+								</ul>
+							</div>
 						</div>
 					</li>
 				</ul>
 			</div>
 		  </mat-tab>
 		</mat-tab-group>
-	</section>	
+	</section>
 </div>
