@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
-import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {URLSearchParams} from '@angular/http';
+import {HttpClient, HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
-import { Request, Response } from "./http.service.model";
-import { environment } from '../../environments/environment';
+import {Request, Response} from './http.service.model';
+import {environment} from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -15,13 +15,14 @@ export class HttpService {
 
     constructor(
         private http: HttpClient
-    ) { }
+    ) {
+    }
 
     public get(input: Request): Observable<HttpResponse<Response>> {
         let params = new URLSearchParams();
         for (let key in input.data) {
             if (input.data.hasOwnProperty(key)) {
-                params.set(key, input.data[key])
+                params.set(key, input.data[key]);
             }
         }
         return this.http.get<Response>(this._URL_API + input.path, {
@@ -45,7 +46,7 @@ export class HttpService {
         let params = new URLSearchParams();
         for (let key in input.data) {
             if (input.data.hasOwnProperty(key)) {
-                params.set(key, input.data[key])
+                params.set(key, input.data[key]);
             }
         }
         return this.http.delete<Response>(this._URL_API + input.path, {
