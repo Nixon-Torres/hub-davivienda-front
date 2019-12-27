@@ -15,7 +15,7 @@ export class RightContentComponent implements OnInit {
 
 	openDialog(): void {
 		const dialogRef = this.dialog.open(CreateReportDialogComponent, {
-			width: '1150px'
+			width: '1500px'
 		});
 
 		dialogRef.afterClosed().subscribe(result => {

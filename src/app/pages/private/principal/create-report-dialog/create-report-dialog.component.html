@@ -1,56 +1,42 @@
+
 <form class="modal-form">
 	<div class="two-columns">
 		<h3 class="title icon icon-list-alt">Sección</h3>
 		<p class="intro">Seleccione la sección para la cual desea hacer su informe</p>
 		<div class="group-radio">
-			<div class="group-radio--option">
-				<input type="radio" name="seccion" id="davivienda">
-				<label for="davivienda">Davivienda</label>
-			</div>	
-
-			<div class="group-radio--option">	
-				<input type="radio" name="seccion" id="corredores">
-				<label for="corredores">Corredores</label>
-			</div>
-				
-			<div class="group-radio--option">	
-				<input type="radio" name="seccion" id="both">
-				<label for="both">Corredores+Davivienda</label>
-			</div>	
-
+			<div class="group-radio--option" *ngFor="let section of list.sections; let indice=index">
+				<input type="radio" name="seccion" id="{{section.name}}" (change)="onUpdateTypes($event, indice)">
+				<label for="{{section.name}}">{{section.name}}</label>
+			</div>			
 		</div>
 		<mat-form-field class="simple">
 			<mat-label>Seleccione el tipo de Informe</mat-label>
 			<mat-select>
-				<mat-option value="1">Informe Empresarial</mat-option>
-				<mat-option value="2">Informe Comercial</mat-option>
-				<mat-option value="3">Informe Especial</mat-option>
+				<mat-option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</mat-option>
 			</mat-select>  
 		</mat-form-field>
-
 		<h3 class="title icon icon-user-alt">Autor(es)</h3>
 		<p class="intro">Agregue / edite el autor o colaborador que participará en el informe</p>
 		<div class="authors-box">
 			<ul>
-				<li>
-					<img src="/assets/images/user/user.png" width="44">
-					<p class="name">Andres Villanueva</p>
-					<p class="cargue">Analista Contenido</p>
-					<button class="del icon icon-times"></button>
+				<li *ngFor="let author of list.authors; let indice=index">
+					<img src="/assets/images/user/{{author.photo}}" width="44">
+					<p class="name">{{author.name}}</p>
+					<p class="cargue">{{author.charge}}</p>
+					<button class="del icon icon-times" (click)=onDeleteAuthor(indice)></button>
 				</li>
 				<li>
-					<button class="add icon icon-plus"></button>
+					<button class="add icon icon-plus" (click)=onAddAuthor()></button>
 					<p>Agregar<span>Autor / Colaborador</span></p>
 				</li>	
 			</ul>
+
 			<mat-form-field class="simple">
-				<mat-label>Seleccione el autor o colaborador</mat-label>
-				<mat-select>
-					<mat-option value="1">Andres Villanueva</mat-option>
-					<mat-option value="2">Andres Villanueva</mat-option>
-					<mat-option value="3">Andres Villanueva</mat-option>
+				<mat-label>Seleccione el author o colaborador</mat-label>
+				<mat-select (selectionChange)="onOptionsSelected($event)" [(value)]="selectedAuthor">
+					<mat-option *ngFor="let user of list.users; index as i" value="{{i}}">{{user.name}}</mat-option>
 				</mat-select>  
-			</mat-form-field>
+			</mat-form-field>	
 		</div>
 	</div>
 	<div class="two-columns diff-color">
@@ -61,20 +47,20 @@
 			  <mat-tab label="Nuevas Plantillas">
 				<div class="group-radio-two">
 					<div class="group-radio-two--option">
-						<input type="radio" name="seccion" id="html">
-						<label class="" for="html">HTML</label>
+						<input type="radio" name="template" id="uno">
+						<label class="" for="uno">HTML</label>
 					</div>
 					<div class="group-radio-two--option">
-						<input type="radio" name="seccion" id="html">
-						<label class="" for="html">HTML / 2 Columnas</label>
+						<input type="radio" name="template" id="dos">
+						<label class="" for="dos">HTML / 2 Columnas</label>
 					</div>
 					<div class="group-radio-two--option">
-						<input type="radio" name="seccion" id="html">
-						<label class="" for="html">HTML + PDF	</label>
+						<input type="radio" name="template" id="tres">
+						<label class="" for="tres">HTML + PDF	</label>
 					</div>
 					<div class="group-radio-two--option">
-						<input type="radio" name="seccion" id="html">
-						<label class="" for="html">HTML + presentación</label>
+						<input type="radio" name="template" id="cuatro">
+						<label class="" for="cuatro">HTML + presentación</label>
 					</div>
 				</div>
 			  </mat-tab>
