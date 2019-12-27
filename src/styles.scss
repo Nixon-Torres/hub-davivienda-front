@@ -1,115 +1,181 @@
-
 /* You can add global styles to this file, and also import other style files */
+
 @import '../node_modules/reset-css/reset.css';
 @import '~@angular/material/theming';
 @import 'assets/sass/_mixins';
 @import 'assets/fonts/fonts';
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 .full-wrap {
-	width: 100%;
-	background: #ffffff;
+    width: 100%;
+    background: #ffffff;
 }
 
 .content-wrap {
-	@include display-flex;
-	align-items: center;
-	flex-direction: row;
-	height: 100%;
-	justify-content: space-between;
-	margin: auto;
-	max-width: 1440px;
-	width: 88%;	
+    @include display-flex;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+    justify-content: space-between;
+    margin: auto;
+    max-width: 1440px;
+    width: 88%; 
 }
 
 //Overview Material
 .mat-dialog-container {
-	padding: 0;
+    padding: 0;
 }
 
 .modal-form {
 
-	.mat-form-field {
-		&.simple {
-			margin-top: 20px;
-		}
-	}
+    .mat-form-field {
+        &.simple {
+            margin-top: 20px;
+        }
+    }
 
-	.mat-select-value {
-		padding: 0 15px;
-	}	
+    .mat-select-value {
+        padding: 0 15px;
+    }   
 
-	.mat-select {
-		color: #A5ABB1;
-		font-family: HelveticaNeue, sans-serif;
-		font-size: 0.750em;
-	}
+    .mat-select {
+        color: #A5ABB1;
+        font-family: HelveticaNeue, sans-serif;
+        font-size: 0.750em;
+    }
 
-	.mat-form-field-flex {
-		@include border-radius(5px);
+    .mat-form-field-flex {
+        @include border-radius(5px);
 
-		border: 1px solid #C2CBD1;
-	}
+        border: 1px solid #C2CBD1;
+    }
 
-	.mat-form-field-infix {
-		border-top: none;
-		width: 400px;
-	}	
+    .mat-form-field-infix {
+        border-top: none;
+        width: 400px;
+    }   
 
-	.mat-form-field-appearance-legacy {
-		.mat-form-field-underline {
-			height: 0;
-		}
+    .mat-form-field-appearance-legacy {
+        .mat-form-field-underline {
+            height: 0;
+        }
 
-		.mat-form-field-label {
-			font-size: 0.750em;
-			padding: 8px 20px;
-		}
-	}
+        .mat-form-field-label {
+            font-size: 0.750em;
+            padding: 8px 20px;
+        }
+    }
 
-	.mat-select-arrow {
-		margin: 0 12px;
-	 	// @include simple-arrow(10px,10px,red,3px,270deg);
-	}
+    .mat-select-arrow {
+        margin: 0 12px;
+        // @include simple-arrow(10px,10px,red,3px,270deg);
+    }
 
-	// .mat-tab-label-active,
-	.mat-tab-label-content {
-		font-size: 0.875em;
-	}
+    // .mat-tab-label-active,
+    .mat-tab-label-content {
+        font-size: 0.875em;
+    }
 
-	.mat-dialog-actions {
-		bottom: 24px;
-		position: absolute;
-		width: 92%;
+    .mat-dialog-actions {
+        bottom: 24px;
+        position: absolute;
+        width: 92%;
 
-		.mat-button-base  {
-			width: 48%;
-			background: #FFFFFF;
-			border: 1px solid #E4E7ED;
-			color: #616161;
-			font-size: 0.875em;
-		}
-	}
-		
+        .mat-button-base  {
+            width: 48%;
+            background: #FFFFFF;
+            border: 1px solid #E4E7ED;
+            color: #616161;
+            font-size: 0.875em;
+        }
+    }
+        
 }
 
 //TABS General
 .tabs {
-	.mat-tab-group {
-		&.mat-primary {
-			.mat-ink-bar {
-				background-color: #0080FF; 
-			}	
-		}	
-	}
+    .mat-tab-group {
+        &.mat-primary {
+            .mat-ink-bar {
+                background-color: #0080FF; 
+            }   
+        }   
+    }
 
-	.mat-tab-label-active {
-		color: #0080FF;
-	}	
+    .mat-tab-label-active {
+        color: #0080FF;
+    }   
 }
 
+// GRAPES
+$builder-bg: #f5f7fb;
+.gjs-one-bg {
+    background-color: white !important;
+}
+.gjs-two-color {
+    color: #616161 !important;
+}
 
-// .modal-form .mat-form-field-appearance-legacy .mat-form-field-label
+#gjs {
+    border: 1px solid #eee;
+    border-radius: 5px !important;
+
+    .gjs-editor {
+        border-radius: 10px !important;
+
+        .gjs-cv-canvas {
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px !important;
+        }
+
+        .gjs-pn-panel {
+            visibility: hidden;
+        }
+    }
+}
+
+.mat-grid-tile:nth-child(2) {
+
+    & > figure {
+        background-color: $builder-bg;
+        padding-right: 5vw;
+    }
+}
+
+.builder-tabs {
+    .row {
+        .tabs {
+            .indicator {
+                bottom: 0;
+                height: 2px;
+                position: absolute;
+                background-color:#0080ff;
+                will-change: left, right;
+            }
+        }
+    }
+}
+.blocks-container {
+    .gjs-block {
+        background-color: #e5e5e5  !important;
+        color: #616161;
+        border: none;
+        font-size: 35px;
+    }
+}
+.styles-container {
+
+    .gjs-sm-title,
+    .gjs-sm-field,
+    .gjs-sm-sector {
+        border: none !important;
+    }
+}

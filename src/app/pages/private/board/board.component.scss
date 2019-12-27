@@ -1,63 +1,236 @@
+@import "../../../../assets/sass/_mixins";
+$builder-bg: #f5f7fb;
+
 .grapes-container {
-    background-color: #f5f7fb;
+    #toolbar {
+        .mat-toolbar-row {
+            padding: 0;
+            border-bottom: solid 1px #EDEDED;
 
-    .builder {
-        padding: 5vh 5vw !important;
+            section {
+                margin: auto;
+                width: 88% !important;
+            }
+        }
 
-        #gjs {
-            border: 1px solid #eee;
-            border-radius: 5px !important;
+        #export {
+            background-color: $builder-bg;
 
-            .gjs-cv-canvas {
-                top: 0;
+            h6 {
+                color: #616161;
+                display: inline;
+                vertical-align: sub;
+                font-size: 1.1rem;
+            }
+
+            small {
+                float: right;
+                color: #acb1b7;
+                margin-top: 4px;
+                margin-right: 10px;
+                font-size: 0.7rem;
+                font-weight: normal;
+                font-style: italic;
+            }
+            
+            button {
+                float: right;
+                padding-top: 2px;
+                margin-left: 10px;
+                font-weight: normal;
+
+                span.icon {
+                    margin: 0 -5px;
+                    vertical-align: text-bottom;
+                }
+            }
+        }
+
+        #actions {
+            color: #616161;
+            background-color: white;
+
+            .form-name {
+                display: inline-block;
+                margin-right: 20px;
+
+                label {
+                    color: #A5ABB1;
+                    font-size: 0.9rem;
+                    margin-right: 15px;
+                    display: inline-block;
+                }
+
+                .input-field {
+                    width: 20vw;
+                    display: inline-block;
+
+                    input {
+                        height: 2rem !important;
+                        border: 1px solid #C2CBD1;
+                        margin-bottom: 0;
+                        padding: 0 5px;
+                        font-size: 14px;
+                        color: #616161;
+                        width: 100%;
+
+                        &:focus {
+                            border-color: #0080FF;
+                            box-shadow: none;
+                        }
+                    }
+                }
+            }
+
+            button:focus {
+                background-color: transparent;
+            }
+
+            button {
+                margin-left: 10px;
+                display: inline-block;
+                font-weight: normal;
+                padding: 0 10px;
+
+                span.icon {
+                    color: #bec5d0;
+                    margin: 0 -5px;
+                    vertical-align: sub;
+                }
+            }
+
+            .divider {
+                height: 40px;
+                margin: 0 26px 0 15px;
+                display: inline-block;
+                vertical-align: middle;
+                border-left: solid 1px #d7dbe2;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+            }
+        }
+    }
+
+    #grapesBox {
+        @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
+
+        min-height: calc(100vh - (128px + 9vh));
+        padding: 0 !important;
+
+        .builder {
+            height: 100%;
+            background-color: $builder-bg;
+            padding: 0 !important;
+        }
+
+        .builder-tabs {
+            height: 100%;
+            overflow: visible;
+            padding: 0 !important;
+
+            .row {
+                margin: 0;
                 width: 100%;
                 height: 100%;
-                border-radius: 5px !important;
+                background-color: white;
 
-                .gjs-editor {
-                    border-radius: 10px !important;
+                .s12 {
+                    padding: 0;
+                }
+
+                h6 {
+                    margin: 0;
+                    color: #0080ff;
+                    padding: 1rem;
+                    background-color: #e3f1ff;
+                    text-align: left;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
+                .tabs {
+                    & > li > a:focus {
+                        background-color: transparent;
+                    }
+
+                    & > li > a {
+                        color: #0080ff;
+
+                        i,
+                        span {
+                            line-height: inherit;
+                        }
+                    }
+
+                    .icon::before {
+                        margin-right: 0;
+                    }
+                }
+            }
+
+            #config-tab {
+                .config-container {
+
+                    & > .mat-expansion-panel-spacing {
+                        margin: 0 !important;
+                    }
+
+                    & > .mat-expansion-panel {
+                        box-shadow: none;
+                        border-bottom: solid 1px #EDEDED;
+                        border-radius: unset;
+
+                        & > .mat-expansion-panel-header {
+                            height: 54px !important;
+
+                            span {
+                                opacity: 0.7;
+                            }
+
+                            .mat-expansion-panel-header-title {
+                                span:nth-child(2) {
+                                    margin-top: 3px;
+                                }
+                            }
+                        }
+                    }
+
+                    .collapsible-header {
+                        font-size: 12px;
+                        font-weight: bold;
+                        color: #616161;
+
+                        i {
+                            margin-right: 0.5rem;
+                            color: #616161;
+                            font-size: 1.1rem;
+                        }
+                    }
                 }
             }
         }
     }
 
-    .builder-panel {
-        & > header {
-            padding: 0;
-            width: 100%;
-            display: flex;
-            position: initial;
-            justify-content: center;
-            justify-content: space-between;
-        }
-
-        & > .content {
-            padding: 0;
-            width: 100%;
-            flex-basis: 230px;
-            position: relative;
-
-            .gjs-block {
-                width: auto;
-                height: auto;
-                min-height: auto;
-            }
-
-            h6 {
-                margin: 0;
-                color: #0080ff;
-                padding: 1.2vh 0 1.5vh;
-                background-color: #e3f1ff;
-                font-weight: bold;
-            }
-        }
+    .float-right {
+        float: right;
     }
-}
-/* element buttons */
-.gjs-one-bg {
-    background-color: white;
-}
 
-.gjs-two-color {
-    color: black;
+    .float-left {
+        float: left;
+    }
+
+    .btn-white {
+        color: #a5abb1;
+        box-shadow: none;
+        background-color: white;
+    }
+
+    .btn-primary {
+        color: white;
+        box-shadow: none;
+        background-color: #0080ff;
+    }
 }
