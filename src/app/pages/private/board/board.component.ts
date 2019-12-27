@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Grapes } from "./grapes/grape.config";
 import { HttpService } from '../../../services/http.service';
 
@@ -31,7 +32,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     };
 
     constructor(
-        private http: HttpService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private http: HttpService
     ) {
         this.grapes = new Grapes({
             selectorManager: '.styles-container',
@@ -41,19 +44,24 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.activatedRoute.paramMap.subscribe((params: any) => {
+            if (params.get("id")) {
+                this.report.id = params.get("id");
+                this.loadReport(this.report.id);
+            }
+        });
     }
 
     ngAfterViewInit() {
-        this.initGrapes();
-        console.log(this.editor);
-        console.log(this.editor.Canvas.getDocument());
-        var toTab = document.querySelectorAll('.tabs');
-        var toCollapse = document.querySelectorAll('.collapsible');
-        var instance = M.Tabs.init(toTab);
-        var instances = M.Collapsible.init(toCollapse);
+        if (!this.report.id) {
+            this.initGrapes();
+        }
     }
 
     private initGrapes(): void {
+        M.Tabs.init(document.querySelectorAll('.tabs'));
+        M.Collapsible.init(document.querySelectorAll('.collapsible'));
+
         this.grapes.activeBlocks([
             'Description', 'Image', 'Title'
         ]);
@@ -65,24 +73,50 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.editor = grapesjs.init(this.grapes.get('config'));
     }
 
+    public loadReport(idReport: string): void {
+        this.http.get({
+            'path': 'reports/' + idReport
+        }).subscribe((response: any) => {
+            this.report.id = response.body.id;
+            this.report.name = response.body.name;
+            this.report.slug = response.body.slug;
+            this.report.trash = response.body.trash;
+            this.report.content = response.body.content;
+            this.report.sectionTypeKey = response.body.sectionTypeKey;
+            this.report.templateId = response.body.templateId;
+            this.report.userId = response.body.userId;
+            this.report.stateId = response.body.stateId;
+            this.report.sectionId = response.body.sectionId;
+            this.report.folderId = response.body.folderId;
+
+            setTimeout(() => {
+                this.initGrapes();
+            }, 0);
+        });
+    }
+
     public onSave(): void {
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
         this.report.content = this.editor.getHtml();
 
         if (this.report.id) {
             this.http.put({
-                'path': 'reports',
+                'path': 'reports/'+this.report.id,
                 'data': this.report
             }).subscribe((response) => {
-                console.log(response);
+                this.gotoPage();
             });
         } else {
             this.http.post({
                 'path': 'reports',
                 'data': this.report
             }).subscribe((response) => {
-                console.log(response);
+                this.gotoPage();
             });
         }
+    }
+
+    private gotoPage() {
+        this.router.navigate(['app/principal']);
     }
 }
