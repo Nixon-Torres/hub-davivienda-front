@@ -101,7 +101,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         if (this.report.id) {
             this.http.put({
-                'path': 'reports',
+                'path': 'reports/'+this.report.id,
                 'data': this.report
             }).subscribe((response) => {
                 this.gotoPage();
