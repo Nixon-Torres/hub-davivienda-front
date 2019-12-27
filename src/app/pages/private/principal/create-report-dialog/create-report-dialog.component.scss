@@ -73,6 +73,7 @@
 				&:after {
 					background: #F0F5FD;
 					border-radius: 5px;
+					border: 1px solid #F0F5FD;
 					content: '\e912';
 					font-family: "icomoon" !important;
 					font-size: 4em;
@@ -181,6 +182,10 @@
 				padding: 0 10px;
 				vertical-align: middle;
 				width: 40px;
+
+				&:hover {
+					color: #BEC5D0;
+				}
 
 				+p {
 					font-style: italic;
