@@ -57,13 +57,23 @@ export class RightContentComponent implements OnInit {
         this.loadReports();
     }
 
-    private loadReports(): void {
+    private loadReports(filter? : string | null): void {
+        // var query1 = qs.stringify(query,{skipNulls: true }); 
+        // var query1 = qs.parse('filter[include][0][relation]=folder&filter[include][1][relation]=user&filter[include][2][relation]=state&filter[include][3][relation]=section&filter[where][name][like]=98');       
+        var query = 'reports?filter[include][0][relation]=folder&filter[include][1][relation]=user&filter[include][2][relation]=state&filter[include][3][relation]=section'
+        var queryfilter = '&filter[where][name][like]='+filter;
+        if(filter){
+            query+=queryfilter;
+        }
         this.http.get({
-            path: 'reports?filter[include][0][relation]=folder&filter[include][1][relation]=' +
-                  'user&filter[include][2][relation]=state&filter[include][3][relation]=section'
+            'path': query
         }).subscribe((response) => {
             this.list.reports = response.body;
         });
+    }
+
+    public filterReports(text : string){
+        this.loadReports(text);
     }
 
     public gotoPage(input: string) {
