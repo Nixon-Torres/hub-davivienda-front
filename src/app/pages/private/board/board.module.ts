@@ -14,6 +14,10 @@ const routes: Routes = [
     {
         path: '',
         component: BoardComponent
+    },
+    {
+        path: ':id',
+        component: BoardComponent
     }
 ];
 const materialModules: any[] = [

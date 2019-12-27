@@ -45,9 +45,7 @@
 	<mat-grid-list cols="4" id="grapesBox">
 
 		<mat-grid-tile [colspan]="3" [rowspan]="1" class="builder">
-			<div id="gjs">
-				<h1>Hello World Component!</h1>
-			</div>
+			<div id="gjs" [innerHtml]="report.content"></div>
 		</mat-grid-tile>
 
 		<mat-grid-tile [colspan]="1" [rowspan]="1" class="builder-tabs">

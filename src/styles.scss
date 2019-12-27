@@ -16,13 +16,19 @@ body {
     background: #ffffff;
 }
 .content-wrap {
-    @include display-flex;
-    align-items: center;
-    flex-direction: row;
-    height: 100%;
-    justify-content: space-between;
-    margin: auto;
-    width: 88%;
+	@include display-flex;
+	align-items: center;
+	flex-direction: row;
+	height: 100%;
+	justify-content: space-between;
+	margin: auto;
+	max-width: 1440px;
+	width: 88%;
+}
+
+//Overview Material
+.mat-dialog-container {
+	padding: 0;
 }
 
 
