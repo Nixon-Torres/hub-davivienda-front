@@ -1,21 +1,29 @@
 <div class="content-bar">
-	<div class="options">
-		<p class="options--name icon icon-copy">Mis informes</p>
-		<ul class="options--list">
-			<li *ngFor="let state of list.states" [ngClass]="state.color"><a href="#">{{state.name}}</a><span class="cnt">1</span></li>
-		</ul>
-	</div>
-	<div class="options">
-		<p class="options--name icon icon-folder variation">Mis carpetas</p>
-		<ul class="options--list">
-			<li *ngFor="let folder of list.folders"><a href="#">{{folder.name}}</a><span class="cnt">1</span></li>
-			<li><button class="icon icon-cog" mat-raised-button (click)="openDialog()">Editar y crear Carpetas</button></li>
-		</ul>
-	</div>
-	<div class="options">
-		<p class="options--name icon icon-file-upload variation">Multimedia</p>
-	</div>
-	<div class="options">
-		<p class="options--name icon icon-trash-alt variation">Eliminados</p>
-	</div>
+    <div class="options">
+        <p class="options--name icon icon-copy">Mis informes</p>
+        <ul class="options--list">
+            <li *ngFor="let state of list.states" [className]="state.color" [ngClass]="{active: isItemActive(state.id)}">
+                <a (click)="setCurrentState(state)">{{state.name}}</a>
+                <span class="cnt">{{state.reports ? state.reports.length : 0}}</span>
+            </li>
+        </ul>
+    </div>
+    <div class="options">
+        <p class="options--name icon icon-folder variation">Mis carpetas</p>
+        <ul class="options--list options-folder">
+            <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}">
+                <a (click)="setCurrentFolder(folder)">{{folder.name}}</a>
+                <span class="cnt">{{folder.reports ? folder.reports.length : 0}}</span></li>
+            <li class="edit-btn-item">
+                <button class="icon icon-cog" mat-raised-button (click)="openDialog()">Editar y crear carpetas</button>
+            </li>
+        </ul>
+    </div>
+    <div class="options">
+        <p class="options--name icon icon-file-upload variation">Multimedia</p>
+    </div>
+    <div class="options delete-section-btn">
+        <p class="options--name icon icon-trash-alt variation" [ngClass]="{active: isDeleteActive()}"
+           (click)="setDeletedState()">Eliminados</p>
+    </div>
 </div>

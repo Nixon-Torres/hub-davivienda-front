@@ -2,6 +2,60 @@
 	width: 100%;
 }
 
+ li.edit-btn-item {
+     padding-bottom: 0px !important;
+     padding-top: 10px !important;
+
+     button  {
+         border-radius: 0px;
+     }
+ }
+
+ .delete-section-btn {
+    cursor: pointer;
+    .active {
+        color: #0080ff;
+        font-weight: 600;
+
+        &:before {
+            color: #0080ff;
+        }
+    }
+ }
+
+ .options-folder {
+     padding-bottom: 10px !important;
+
+     li.active {
+         border-bottom: 1px solid #E7EAF1;
+         padding: 20px 0;
+         position: relative;
+         margin-left: 20px;
+
+         a {
+             color: #0080ff;
+             font-weight: 500;
+         }
+
+         &:before {
+             background: #0080ff;
+             content: "";
+             height: 50%;
+             width: 2px;
+             position: absolute;
+             top: 0;
+             left: 4px;
+             bottom: 0;
+             margin: auto;
+         }
+
+         .cnt  {
+             color: #0080ff;
+             font-weight: 500;
+         }
+     }
+ }
+
 .options {
 	background: #FFFFFF;
 	border: solid 1px #E7EAF1;
@@ -9,12 +63,16 @@
 	font-size: 1em;
 
 	&--name {
-		color: #616161;
-		font-weight: bold;
+		color: #747474;
+		font-weight: 500;
 		height: 60px;
 		line-height: 60px;
 		padding-left: 6%;
 		text-align: left;
+
+        &:before  {
+            color: #bec5d0;
+        }
 
 		// &:after {
 		// 	content: '';
@@ -27,6 +85,8 @@
 	&--list {
 		box-sizing: border-box;
 		padding: 20px 10% 20px 7%;
+        padding-top: 0px;
+        padding-bottom: 0px;
 		border-top: solid 1px #E7EAF1;
 
 		li {
@@ -39,8 +99,9 @@
 				font-size: 0.875em;
 				padding-left: 22px;
 				text-decoration: none;
+                cursor: pointer;
 			}
-			
+
 			&:before {
 				content: "";
 				height: 50%;
@@ -58,11 +119,25 @@
 				}
 			}
 
+            &.cian.active {
+                a {
+                    color: #00FFF5;
+                    font-weight: 500;
+                }
+            }
+
 			&.green {
 				&:before {
 					background: #19D600;
 				}
 			}
+
+            &.green.active {
+                a {
+                    color: #19D600;
+                    font-weight: 500;
+                }
+            }
 
 			&.red {
 				&:before {
@@ -70,17 +145,38 @@
 				}
 			}
 
+            &.red.active {
+                a {
+                    color: #FF003B;
+                    font-weight: 500;
+                }
+            }
+
 			&.yellow {
 				&:before {
 					background: #F9E333;
 				}
 			}
 
+            &.yellow.active {
+                a {
+                    color: #F9E333;
+                    font-weight: 500;
+                }
+            }
+
 			&.gray {
 				&:before {
 					background: #D9D9D9;
 				}
 			}
+
+            &.gray.active {
+                a {
+                    color: #D9D9D9;
+                    font-weight: 500;
+                }
+            }
 
 			.cnt {
 				background: #F5F7FB;
@@ -92,14 +188,14 @@
 				line-height: 28px;
 				margin: auto 0;
 				position: absolute;
-				right: 0;
+				right: 0px;
 				text-align: center;
 				top: 0;
 				width: 35px;
 			}
 
 
-		}	
+		}
 	}
 
 }
