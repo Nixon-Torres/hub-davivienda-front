@@ -37,7 +37,7 @@ export class RightContentComponent implements OnInit {
 
 	private loadReports(): void {
 		this.http.get({
-			'path': 'reports?filter[include][0][relation]=folder&filter[include][1][relation]=user&filter[include][2][relation]=state&filter[include][3][relation]=section'
+			'path': 'reports?filter[include][0][relation]=folder&filter[include][1][relation]=state&filter[include][2][relation]=section&filter[include][3][relation]=user'
 		}).subscribe((response) => {
 			this.list.reports = response.body;
 		});
@@ -48,7 +48,13 @@ export class RightContentComponent implements OnInit {
 			'path': 'reports',
 			'data': clone
 		}).subscribe((response) => {
-			console.log(response);
+		});
+	}
+
+	private deleteReport(id): void {
+		this.http.delete({
+			'path': 'reports/'+id
+		}).subscribe((response) => {
 		});
 	}
 
@@ -57,28 +63,34 @@ export class RightContentComponent implements OnInit {
 	}
 
 	public onCloneReport(event: Event, pos: number) {
-
+		
 		let clone = Object.assign({} , this.list.reports[pos]);
 		clone.name = clone.name + ' Copia';
 		clone.slug = clone.slug +'-copia';
-		clone.id = this.getId();
 		this.list.reports.splice(pos+1,0,clone);
 
-		//this.saveReport(clone);
+		let newReport: any = {
+			name : clone.name,
+			slug : clone.slug,
+			trash: clone.trash,
+			content: clone.content,
+			sectionTypeKey: clone.sectionTypeKey,
+			templateId: clone.templateId,
+			userId: clone.userId,
+			stateId: clone.stateId,
+			sectionId: clone.sectionId,
+			folderId: clone.folderId 
+		};
+
+		this.saveReport(newReport);
 	}
 
 	public onDeleteReport(event: Event, pos: number) {
-		this.list.reports.splice(pos,1);
-	}
 
-	public getId () {
-		var str = '';
-		var ref = 'abcdefghijklmnopqrstuvwxyz0123456789';
-		for (var i=0; i<24; i++)
-			{
-				str += ref.charAt(Math.floor(Math.random()*ref.length));
-			}
-		return str;	
+		let reportId = this.list.reports[pos].id;
+		this.list.reports.splice(pos,1);
+
+		this.deleteReport(reportId);
 	}
 
 }
