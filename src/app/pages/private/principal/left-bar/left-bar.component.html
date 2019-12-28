@@ -14,8 +14,8 @@
             <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}">
                 <a (click)="setCurrentFolder(folder.id)">{{folder.name}}</a>
                 <span class="cnt">0</span></li>
-            <li>
-                <button class="icon icon-cog" mat-raised-button (click)="openDialog()">Editar y crear Carpetas</button>
+            <li class="edit-btn-item">
+                <button class="icon icon-cog" mat-raised-button (click)="openDialog()">Editar y crear carpetas</button>
             </li>
         </ul>
     </div>
