@@ -1,6 +1,6 @@
 <section class="content-wrap report">
 	<div class="top-bar"></div>
-	<app-left-bar (valueChange)="setCurrentState($event)"></app-left-bar>
+	<app-left-bar (valueChange)="setCurrentState($event)" [currentObj]="cleanObj"></app-left-bar>
 	<app-right-content [currentObj]="currentObj"
                        (valueChange)="setCurrentState($event)"></app-right-content>
 </section>

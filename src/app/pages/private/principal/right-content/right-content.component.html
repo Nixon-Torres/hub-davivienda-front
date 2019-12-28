@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="content--top">
-		<span class="message">Por revisar (3)</span>
+        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}} ({{list.reports ? list.reports.length : 0}})</span>
 		<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe</button>
 	</div>
 

@@ -1,7 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpService} from '../../../../services/http.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {DialogBoxComponent} from '../dialog-box/dialog-box.component';
+import * as qs from 'qs';
+import {loopback} from '../../../../models/common/loopback.model'
 
 @Component({
     selector: 'app-left-bar',
@@ -14,13 +16,23 @@ export class LeftBarComponent implements OnInit {
     @Output() folderChange = new EventEmitter();
     @Output() deleteChange = new EventEmitter();
 
-    private currentState: string;
-    private currentFolder: string;
+    private currentState: any;
+    private currentFolder: any;
     private deletedStateEnabled = false;
 
     public list: any = {
         folders: [],
         states: []
+    }
+
+    @Input()
+    set currentObj(value: any) {
+        if (value) {
+            return;
+        }
+        this.currentState = null;
+        this.currentFolder = null;
+        this.deletedStateEnabled = false;
     }
 
     constructor(
@@ -48,16 +60,24 @@ export class LeftBarComponent implements OnInit {
     }
 
     private loadFolders() {
+        var query = new loopback();
+        query.filter.include.push({ relation : "reports"});
+        console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
+
         this.http.get({
-            path: 'folders'
+            path: 'folders?'+qs.stringify(query,{skipNulls: true })
         }).subscribe((response) => {
             this.list.folders = response.body;
         });
     }
 
     private loadStates() {
+        var query = new loopback();
+        query.filter.include.push({ relation : "reports"})
+        console.log('query states',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
+
         this.http.get({
-            path: 'states'
+            path: 'states?'+qs.stringify(query,{skipNulls: true })
         }).subscribe((response) => {
             this.list.states = response.body;
         });
@@ -66,27 +86,27 @@ export class LeftBarComponent implements OnInit {
     setDeletedState() {
         this.deletedStateEnabled = true;
         this.currentState = null;
-        this.valueChange.emit({state: null, deleted: true, folder: null});
+        this.valueChange.emit({state: null, deleted: true, folder: null, stateName: 'Eliminados'});
     }
 
-    setCurrentState(state: string) {
+    setCurrentState(state: any) {
         this.deletedStateEnabled = false;
         this.currentState = state;
-        this.valueChange.emit({state, deleted: false, folder: this.currentFolder});
+        this.valueChange.emit({state: state.id, deleted: false, folder: this.currentFolder ? this.currentFolder.id : null, stateName: state.name});
     }
 
-    setCurrentFolder(folder: string) {
+    setCurrentFolder(folder: any) {
         this.deletedStateEnabled = false;
         this.currentFolder = folder;
-        this.valueChange.emit({state: this.currentState, deleted: false, folder});
+        this.valueChange.emit({state: this.currentState ? this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name});
     }
 
     isItemActive(state: string) {
-        return this.currentState === state;
+        return this.currentState && this.currentState.id === state;
     }
 
     isFolderActive(folder: string) {
-        return this.currentFolder === folder;
+        return this.currentFolder && this.currentFolder.id === folder;
     }
 
     isDeleteActive(folder: string) {
