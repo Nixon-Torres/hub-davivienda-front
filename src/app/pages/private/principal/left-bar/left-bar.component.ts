@@ -109,7 +109,7 @@ export class LeftBarComponent implements OnInit {
         return this.currentFolder && this.currentFolder.id === folder;
     }
 
-    isDeleteActive(folder: string) {
+    isDeleteActive() {
         return this.deletedStateEnabled;
     }
 
