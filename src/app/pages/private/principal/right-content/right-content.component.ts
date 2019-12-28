@@ -57,13 +57,6 @@ export class RightContentComponent implements OnInit {
 		this.loadReports();
 	}
 
-	private loadReports(): void {
-		this.http.get({
-			'path': 'reports?filter[include][0][relation]=folder&filter[include][1][relation]=state&filter[include][2][relation]=section&filter[include][3][relation]=user'
-		}).subscribe((response) => {
-			this.list.reports = response.body;
-		});
-	}
 
 	private saveReport(clone): void {
 		this.http.post({
@@ -120,6 +113,7 @@ export class RightContentComponent implements OnInit {
 	}
 
 	public onCloneReport(event: Event, pos: number) {
+		event.preventDefault();
 		
 		let clone = Object.assign({} , this.list.reports[pos]);
 		clone.name = clone.name + ' Copia';
