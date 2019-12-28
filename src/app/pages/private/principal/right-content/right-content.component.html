@@ -25,7 +25,8 @@
 									<span class="report--span">{{report.state?.name}}</span>
 									<input type="checkbox" id="report" value="1">
 									<h2 class="report--title">{{report.name}}</h2>
-									<span class="report--span">28 Dic 2019</span>
+									<span class="report--span" *ngIf="report.createdAt">{{report.createdAt}}</span>
+									<span class="report--span" *ngIf="report.createdAt">{{report.updatedAt}}</span>
 									<span class="report--span">{{report.user?.name}}</span>
 									<div class="group-menu">
 										<button class="report--menu icon icon-ellipsis-h"></button>
