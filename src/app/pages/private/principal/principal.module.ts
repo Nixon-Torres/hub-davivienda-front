@@ -10,6 +10,7 @@ import { RightContentComponent } from './right-content/right-content.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 // Form Controls
+import { MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -40,6 +41,7 @@ const materialModules: any[] = [
 	MatAutocompleteModule,
 	MatCheckboxModule,
 	MatDatepickerModule,
+	MatNativeDateModule,
 	MatFormFieldModule,
 	MatInputModule,
 	MatRadioModule,

@@ -11,11 +11,16 @@
 		<div class="search-container">
 			<input type="text" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas...">
 		</div>
+		<div class="date-container">
+			<input [matDatepicker]="dateFilter" (dateChange)="filterDateReports($event)">
+			<mat-datepicker-toggle [for]="dateFilter"></mat-datepicker-toggle>
+			<mat-datepicker #dateFilter></mat-datepicker>
+		</div>
 	</div>
 
 	<div class="block-wrapper">
 		<section class="tabs">
-			<mat-tab-group>
+			<mat-tab-group (selectedTabChange)="tabClick($event)">
 				<mat-tab label="Mis Informes">
 					<!-- <h1>Mis informes</h1> -->
 					<div >
@@ -41,40 +46,25 @@
 						</ul>
 					</div>
 				</mat-tab>
+
 				<mat-tab label="Por revisar">
 					<!-- <h1>Por revisar</h1> -->
 					<div >
 						<ul class="report-list">
-							<li>
-								<div class="row cian">
-									<span class="report--span">Aprobado sin publicar</span>
+							<li *ngFor="let report of list.reports; let indice=index">
+								<div class="row" [ngClass]="report.state?.color">
+									<span class="report--span">{{report.state?.name}}</span>
 									<input type="checkbox" id="report" value="1">
-									<h2 class="report--title">Informe Contenido muy largo</h2>
-									<span class="report--span">21 Ago 2018</span>
-									<span class="report--span">Andres Villanueva</span>
+									<h2 class="report--title">{{report.name}}</h2>
+									<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
+									<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
+									<span class="report--span">{{report.user?.name}}</span>
 									<div class="group-menu">
 										<button class="report--menu icon icon-ellipsis-h"></button>
 										<ul class="report--menu-list">
-											<li><button class="icon icon-edit">Editar</button></li>
-											<li><button class="icon icon-copy">Duplicar</button></li>
-											<li><button class="icon icon-trash-alt">Eliminar</button></li>
-										</ul>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="row gray">
-									<span class="report--span">Aprobado sin publicar</span>
-									<input type="checkbox" id="report" value="1">
-									<h2 class="report--title">Informe Contenido muy largo</h2>
-									<span class="report--span">21 Ago 2018</span>
-									<span class="report--span">Andres Villanueva</span>
-									<div class="group-menu">
-										<button class="report--menu icon icon-ellipsis-h"></button>
-										<ul class="report--menu-list">
-											<li><button class="icon icon-edit">Editar</button></li>
-											<li><button class="icon icon-copy">Duplicar</button></li>
-											<li><button class="icon icon-trash-alt">Eliminar</button></li>
+											<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
+											<li><button class="icon icon-copy" (click)="onCloneReport($event,indice)">Duplicar</button></li>
+											<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,indice)">Eliminar</button></li>
 										</ul>
 									</div>
 								</div>
