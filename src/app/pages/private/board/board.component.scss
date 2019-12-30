@@ -1,8 +1,13 @@
 @import "../../../../assets/sass/_mixins";
 $builder-bg: #f5f7fb;
+$default-font: "Helvetica Neue", Medium;
 
 .grapes-container {
+
     #toolbar {
+        font-size: 12px !important;
+        font-weight: normal !important;
+
         .mat-toolbar-row {
             padding: 0;
             border-bottom: solid 1px #EDEDED;
@@ -32,16 +37,25 @@ $builder-bg: #f5f7fb;
                 font-weight: normal;
                 font-style: italic;
             }
-            
+
             button {
+                height: 35px;
                 float: right;
-                padding-top: 2px;
+                font-size: 12px;
                 margin-left: 10px;
                 font-weight: normal;
 
                 span.icon {
-                    margin: 0 -5px;
                     vertical-align: text-bottom;
+                }
+
+                .icon::before {
+                    font-size: 15px;
+                    margin-right: 10px;
+                }
+
+                span {
+                    vertical-align: text-bottom !important;
                 }
             }
         }
@@ -56,7 +70,7 @@ $builder-bg: #f5f7fb;
 
                 label {
                     color: #A5ABB1;
-                    font-size: 0.9rem;
+                    font-size: 14px;
                     margin-right: 15px;
                     display: inline-block;
                 }
@@ -66,17 +80,17 @@ $builder-bg: #f5f7fb;
                     display: inline-block;
 
                     input {
+                        width: 100%;
+                        color: #616161;
+                        padding: 0 5px;
+                        font-size: 12px;
+                        margin-bottom: 0;
                         height: 2rem !important;
                         border: 1px solid #C2CBD1;
-                        margin-bottom: 0;
-                        padding: 0 5px;
-                        font-size: 14px;
-                        color: #616161;
-                        width: 100%;
 
                         &:focus {
-                            border-color: #0080FF;
                             box-shadow: none;
+                            border-color: #0080FF;
                         }
                     }
                 }
@@ -87,15 +101,20 @@ $builder-bg: #f5f7fb;
             }
 
             button {
-                margin-left: 10px;
-                display: inline-block;
-                font-weight: normal;
                 padding: 0 10px;
+                margin-left: 10px;
+                font-weight: normal;
+                display: inline-block;
+                font-size: 12px;
 
                 span.icon {
                     color: #bec5d0;
                     margin: 0 -5px;
                     vertical-align: sub;
+                }
+
+                .icon::before {
+                    font-size: 16px;
                 }
             }
 
@@ -105,11 +124,6 @@ $builder-bg: #f5f7fb;
                 display: inline-block;
                 vertical-align: middle;
                 border-left: solid 1px #d7dbe2;
-            }
-
-            span {
-                font-size: 14px;
-                font-weight: normal;
             }
         }
     }
@@ -124,6 +138,10 @@ $builder-bg: #f5f7fb;
             height: 100%;
             background-color: $builder-bg;
             padding: 0 !important;
+
+            iframe {
+                color: red;
+            }
         }
 
         .builder-tabs {

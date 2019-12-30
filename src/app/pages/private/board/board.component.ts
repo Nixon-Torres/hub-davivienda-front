@@ -56,15 +56,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
         if (!this.report.id) {
             this.initGrapes();
         }
+
+        // Load Materialize tabs function after the grapes library has loaded
+        M.Tabs.init(document.querySelectorAll('.tabs'));
     }
 
     private initGrapes(): void {
-        M.Tabs.init(document.querySelectorAll('.tabs'));
-        M.Collapsible.init(document.querySelectorAll('.collapsible'));
-
         this.grapes.activeBlocks([
             'Description', 'Image', 'Title'
         ]);
+
         this.grapes.activeSectors([
             'Dimensions'
             //, 'Extras'
