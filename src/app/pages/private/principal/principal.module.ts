@@ -26,6 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { FormsModule } from '@angular/forms';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
+import { NgSelect2Module } from 'ng-select2';
 
 const routes: Routes = [
 	{
@@ -55,7 +56,8 @@ const materialModules: any[] = [
 		CommonModule,
 		materialModules,
 		FormsModule,
-		RouterModule.forChild(routes)
+		RouterModule.forChild(routes),
+		NgSelect2Module
 	],
 	exports: [
 		materialModules

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 	styleUrls: ['./create-report-dialog.component.scss']
 })
 export class CreateReportDialogComponent implements OnInit {
+	public exampleData = [];
 
 	constructor(
 		public dialogRef: MatDialogRef<CreateReportDialogComponent>,
@@ -37,6 +38,27 @@ export class CreateReportDialogComponent implements OnInit {
 		this.loadSections();
 		this.loadUsers();
 		this.loadTemplates();
+
+		this.exampleData = [
+			{
+			  id: 'basic1',
+			  text: 'Basic 1'
+			},
+			{
+			  id: 'basic2',
+			  text: 'Basic 2'
+			},
+			{
+			  id: 'basic3',
+			  text: 'Basic 3'
+			},
+			{
+			  id: 'basic4',
+			  text: 'Basic 4'
+			}
+		  ];
+
+
 	}
 
 	onNoClick(): void {
