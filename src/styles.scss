@@ -98,6 +98,7 @@ body {
 		
 }
 
+
 //TABS General
 .tabs {
 	.mat-tab-group {
@@ -178,4 +179,20 @@ $builder-bg: #f5f7fb;
 	.gjs-sm-sector {
 		border: none !important;
 	}
+}
+
+.mat-tab-label-container{
+	background: #f5f7fb !important;
+}
+
+.search-container input::placeholder{
+	color: #BEC5D0 !important;
+}
+
+.search-container input:-ms-input-placeholder{
+	color: #BEC5D0 !important;
+}
+
+.search-container input::-ms-input-placeholder{
+	color: #BEC5D0 !important;
 }

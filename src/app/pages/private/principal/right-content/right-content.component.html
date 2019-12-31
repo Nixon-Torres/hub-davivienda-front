@@ -19,16 +19,25 @@
 				<mat-tab label="Mis Informes">
 					<!-- <h1>Mis informes</h1> -->
 					<div >
+							
 						<ul class="report-list">
 							<li *ngFor="let report of list.reports; let indice=index">
 								<div class="row" [ngClass]="report.state?.color">
-									<span class="report--span">{{report.state?.name}}</span>
-									<input type="checkbox" id="report" value="1">
-									<h2 class="report--title">{{report.name}}</h2>
-									<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
-									<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
-									<span class="report--span">{{report.user?.name}}</span>
-									<div class="group-menu">
+									<div class="state-name" ><span class="report--span">{{report.state?.name}}</span></div>
+									<div class="input-check" >
+										<!-- <input type="checkbox" id="report" value="1"> -->
+										<label class="custom-checkbox-container">
+											<input type="checkbox" >
+											<span class="checkmark"></span>
+										</label>
+									</div>
+									<div class="report-main-title" ><h2 class="report--title">{{report.name}}</h2></div>
+									<div class="report-span-date" >
+										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
+										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
+									</div>
+									<div class="report-user-name" ><span class="report--span">{{report.user?.name}}</span></div>
+									<div class="group-menu" >
 										<button class="report--menu icon icon-ellipsis-h"></button>
 										<ul class="report--menu-list">
 											<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
@@ -40,18 +49,36 @@
 							</li>
 						</ul>
 					</div>
+					
+					
 				</mat-tab>
+				
 				<mat-tab label="Por revisar">
 					<!-- <h1>Por revisar</h1> -->
 					<div >
 						<ul class="report-list">
 							<li>
 								<div class="row cian">
-									<span class="report--span">Aprobado sin publicar</span>
-									<input type="checkbox" id="report" value="1">
-									<h2 class="report--title">Informe Contenido muy largo</h2>
-									<span class="report--span">21 Ago 2018</span>
-									<span class="report--span">Andres Villanueva</span>
+									<div class="state-name" >
+										<span class="report--span">Aprobado sin publicar</span>
+									</div>
+									<!-- <input type="checkbox" id="report" value="1"> -->
+									<div class="input-check" >
+										<!-- <input type="checkbox" id="report" value="1"> -->
+										<label class="custom-checkbox-container">
+											<input type="checkbox" >
+											<span class="checkmark"></span>
+										</label>
+									</div>
+									<div class="report-main-title" >
+										<h2 class="report--title">Informe Contenido muy largo</h2>
+									</div>
+									<div class="report-span-date" >
+										<span class="report--span">21 Ago 2018</span>
+									</div>
+									<div class="report-user-name" >
+										<span class="report--span">Andres Villanueva</span>
+									</div>
 									<div class="group-menu">
 										<button class="report--menu icon icon-ellipsis-h"></button>
 										<ul class="report--menu-list">
@@ -64,11 +91,26 @@
 							</li>
 							<li>
 								<div class="row gray">
-									<span class="report--span">Aprobado sin publicar</span>
-									<input type="checkbox" id="report" value="1">
-									<h2 class="report--title">Informe Contenido muy largo</h2>
-									<span class="report--span">21 Ago 2018</span>
-									<span class="report--span">Andres Villanueva</span>
+									<div class="state-name" >
+										<span class="report--span">Aprobado sin publicar</span>
+									</div>
+									<!-- <input type="checkbox" id="report" value="1"> -->
+									<div class="input-check" >
+										<!-- <input type="checkbox" id="report" value="1"> -->
+										<label class="custom-checkbox-container">
+											<input type="checkbox" >
+											<span class="checkmark"></span>
+										</label>
+									</div>
+									<div class="report-main-title" >
+										<h2 class="report--title">Informe Contenido muy largo</h2>
+									</div>
+									<div class="report-span-date" >
+										<span class="report--span">21 Ago 2018</span>
+									</div>
+									<div class="report-user-name" >
+										<span class="report--span">Andres Villanueva</span>
+									</div>
 									<div class="group-menu">
 										<button class="report--menu icon icon-ellipsis-h"></button>
 										<ul class="report--menu-list">
@@ -83,7 +125,19 @@
 					</div>
 				</mat-tab>
 			</mat-tab-group>
+			
 		</section>
+		<div class="paginations">
+				<a href="#">&#x3c;</a>
+				<a class="label">Página</a>
+				<a href="#">1</a>
+				<a class="active" href="#">2</a>
+				<!-- <a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+				<a href="#">6</a> -->
+				<a href="#">&#x3e;</a>
+		</div>
 	</div>
 
 </div>
