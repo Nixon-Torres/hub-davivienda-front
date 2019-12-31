@@ -6,6 +6,7 @@ import { CreateReportDialogComponent } from '../create-report-dialog/create-repo
 import { Router } from '@angular/router';
 import { loopback } from '../../../../models/common/loopback.model';
 import * as qs from 'qs';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-right-content',
@@ -25,6 +26,7 @@ export class RightContentComponent implements OnInit {
 
 	ifilter: string;
 	ifilterdate: any;
+	ifilterreviewed: boolean = true;
 
 	public list: any = {
 		reports: []
@@ -80,21 +82,23 @@ export class RightContentComponent implements OnInit {
 	}
 
 	public tabClick(event: any) {
-		this.loadReports(this.ifilter, (event.index === 0 ? true : false) );
+		this.ifilterreviewed = (event.index === 0 ? true : false);
+		this.loadReports(this.ifilter);
 	}
 
-	private loadReports(filter? : string | null, reviewed? : boolean | null): void {
+	private loadReports(filter? : string | null): void {
 		this.ifilter = filter;
-		let iReviewed = (reviewed) ? true : ((reviewed === false) ? false : true);
 		var query = new loopback();
 		query.filter.include.push({ relation : "folder"},{ relation : "user"}, { relation : "state"} , { relation : "section"} )
 		query.filter.where['folderId'] =  this.icurrentObj.currentFolder; //"5e024997b8287319151c688c";
 		query.filter.where['stateId'] =  this.icurrentObj.currentState; //"5e024bcab8287319151c6897"
 		query.filter.where['trash'] = this.icurrentObj.deletedFg;
-		query.filter.where['reviewed'] = iReviewed;
+		query.filter.where['reviewed'] = this.ifilterreviewed;
 		this.ifilter ? query.filter.where['name'] = {like:this.ifilter} : null;
 		if(this.ifilterdate) {
-			console.log('between date',this.ifilterdate.start,'-',this.ifilterdate.start);
+			let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
+			let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
+			query.filter.where['updatedAt'] = { between: [ start, end ] };
 		}
 		this.http.get({
 			path: 'reports?' + qs.stringify(query, {skipNulls: true})
