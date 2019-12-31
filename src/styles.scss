@@ -147,7 +147,7 @@ $builder-bg: #f5f7fb;
 
 	& > figure {
 		background-color: $builder-bg;
-		padding-right: 5vw;
+		padding-right: 70px;
 	}
 }
 
@@ -162,22 +162,34 @@ $builder-bg: #f5f7fb;
 				will-change: left, right;
 			}
 		}
-	}
-}
-.blocks-container {
-	.gjs-block {
-		background-color: #e5e5e5  !important;
-		color: #616161;
-		border: none;
-		font-size: 35px;
-	}
-}
-.styles-container {
 
-	.gjs-sm-title,
-	.gjs-sm-field,
-	.gjs-sm-sector {
-		border: none !important;
+		.blocks-container {
+			.gjs-block {
+				background-color: #e5e5e5  !important;
+				color: #616161;
+				border: none;
+				font-size: 35px;
+			}
+		}
+
+		.styles-container {
+			.gjs-sm-title,
+			.gjs-sm-field,
+			.gjs-sm-sector {
+				border: none !important;
+			}
+		}
+
+		.config-container {
+			.mat-expansion-indicator {
+			    padding-bottom: 2px !important;
+			}
+
+			// Accordion panel content
+			.mat-expansion-panel-body {
+				font-size: 12px;
+			}
+		}
 	}
 }
 
