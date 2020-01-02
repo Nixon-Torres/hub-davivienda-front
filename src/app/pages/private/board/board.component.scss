@@ -99,6 +99,7 @@ $default-font: "Helvetica Neue", Medium;
                 .input-field {
                     width: 24vw;
                     display: inline-block;
+                    max-width: 311px;                 
 
                     input {
                         width: 100%;
