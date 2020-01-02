@@ -22,7 +22,8 @@ $default-font: "Helvetica Neue", Medium;
         }
 
         #export {
-            background-color: $builder-bg;
+            // background-color: $builder-bg;
+            background-color: #FAFCFE;
 
             h6 {
                 color: #616161;
@@ -54,12 +55,28 @@ $default-font: "Helvetica Neue", Medium;
 
                 .icon::before {
                     font-size: 15px;
-                    margin-right: 10px;
+                    margin-right: 5px;
                 }
 
                 span {
                     vertical-align: text-bottom !important;
                 }
+                &.guardar-cta{
+                    width: 103px;
+                    .icon::before {
+                        margin-right: 7px;
+                    }
+                }
+                &.revision-cta{
+                    padding: 0 13px;
+                }
+                &.previa-cta{
+                    padding: 0 9.5px;
+                }
+                &.descartar-cta{
+                    padding: 0 15.5px;
+                }
+               
             }
         }
 
@@ -80,7 +97,7 @@ $default-font: "Helvetica Neue", Medium;
                 }
 
                 .input-field {
-                    width: 20vw;
+                    width: 24vw;
                     display: inline-block;
 
                     input {
@@ -110,6 +127,7 @@ $default-font: "Helvetica Neue", Medium;
                 font-weight: normal;
                 display: inline-block;
                 font-size: 12px;
+                font-weight: 500;
 
                 span.icon {
                     color: #bec5d0;
@@ -123,11 +141,18 @@ $default-font: "Helvetica Neue", Medium;
             }
 
             .divider {
-                height: 40px;
-                margin: 0 26px 0 15px;
+                height: 33px;
+                margin: 0 20px 0 14px;
                 display: inline-block;
                 vertical-align: middle;
-                border-left: solid 1px #d7dbe2;
+                border-left: solid 2px #BEC5D0;
+            }
+            .person-name{
+                i{
+                    margin-left: 10px;
+                    color: #0080FF;
+                    cursor: pointer;
+                }
             }
         }
     }
