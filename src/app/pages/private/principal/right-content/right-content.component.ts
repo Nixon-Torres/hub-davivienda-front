@@ -1,10 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {HttpService} from '../../../../services/http.service';
-import {CreateReportDialogComponent} from '../create-report-dialog/create-report-dialog.component';
-import {Router} from '@angular/router';
-import {loopback} from '../../../../models/common/loopback.model';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { HttpService } from '../../../../services/http.service';
+import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
+import { Router } from '@angular/router';
+import { loopback } from '../../../../models/common/loopback.model';
 import * as qs from 'qs';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-right-content',
@@ -23,6 +25,8 @@ export class RightContentComponent implements OnInit {
 	};
 
 	ifilter: string;
+	ifilterdate: any;
+	ifilterreviewed: boolean = true;
 
 	public list: any = {
 		reports: []
@@ -77,6 +81,11 @@ export class RightContentComponent implements OnInit {
 		this.router.navigate(['app/board', input]);
 	}
 
+	public tabClick(event: any) {
+		this.ifilterreviewed = (event.index === 0 ? true : false);
+		this.loadReports(this.ifilter);
+	}
+
 	private loadReports(filter? : string | null): void {
 		this.ifilter = filter;
 		var query = new loopback();
@@ -84,7 +93,13 @@ export class RightContentComponent implements OnInit {
 		query.filter.where['folderId'] =  this.icurrentObj.currentFolder; //"5e024997b8287319151c688c";
 		query.filter.where['stateId'] =  this.icurrentObj.currentState; //"5e024bcab8287319151c6897"
 		query.filter.where['trash'] = this.icurrentObj.deletedFg;
-		this.ifilter ? query.filter.where['name'] = {like:this.ifilter} : null ;
+		query.filter.where['reviewed'] = this.ifilterreviewed;
+		this.ifilter ? query.filter.where['name'] = {like:this.ifilter} : null;
+		if(this.ifilterdate) {
+			let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
+			let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
+			query.filter.where['updatedAt'] = { between: [ start, end ] };
+		}
 		this.http.get({
 			path: 'reports?' + qs.stringify(query, {skipNulls: true})
 		}).subscribe((response) => {
@@ -94,6 +109,14 @@ export class RightContentComponent implements OnInit {
 
 	public filterReports(text: string) {
 		this.loadReports(text);
+	}
+
+	public filterDateReports(event: MatDatepickerInputEvent<Date>) {
+		this.ifilterdate = {
+			start: event.value.toString(),
+			end: event.value.toString().replace('00:00:00', '23:59:59')
+		};
+		this.loadReports(this.ifilter);
 	}
 
 	isFiltering() {
@@ -114,7 +137,7 @@ export class RightContentComponent implements OnInit {
 
 	public onCloneReport(event: Event, pos: number) {
 		event.preventDefault();
-		
+
 		let clone = Object.assign({} , this.list.reports[pos]);
 		clone.name = clone.name + ' Copia';
 		clone.slug = clone.slug +'-copia';
@@ -130,7 +153,7 @@ export class RightContentComponent implements OnInit {
 			userId: clone.userId,
 			stateId: clone.stateId,
 			sectionId: clone.sectionId,
-			folderId: clone.folderId 
+			folderId: clone.folderId
 		};
 
 		this.saveReport(newReport);

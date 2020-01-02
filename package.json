@@ -27,6 +27,7 @@
     "jquery": "^3.4.1",
     "materialize-css": "^1.0.0",
     "ng-select2": "^1.2.2",
+    "moment": "^2.24.0",
     "qs": "^6.9.1",
     "reset-css": "^5.0.1",
     "rxjs": "~6.4.0",
