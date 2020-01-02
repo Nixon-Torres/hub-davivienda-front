@@ -1,4 +1,5 @@
 @import "../../../../assets/sass/_mixins";
+@import '../../../../assets/fonts/fonts';
 $builder-bg: #f5f7fb;
 $default-font: "Helvetica Neue", Medium;
 
@@ -10,9 +11,11 @@ $default-font: "Helvetica Neue", Medium;
 
         .mat-toolbar-row {
             padding: 0;
+            height: 60px;
             border-bottom: solid 1px #EDEDED;
 
             section {
+                padding-top: 2px !important;
                 margin: auto;
                 width: 88% !important;
             }
@@ -25,17 +28,17 @@ $default-font: "Helvetica Neue", Medium;
                 color: #616161;
                 display: inline;
                 vertical-align: sub;
-                font-size: 1.1rem;
+                font-size: 16px;
             }
 
             small {
                 float: right;
-                color: #acb1b7;
+                color: #A5ABB1;
                 margin-top: 4px;
                 margin-right: 10px;
-                font-size: 0.7rem;
-                font-weight: normal;
+                font-size: 10px;
                 font-style: italic;
+                font-weight: normal;
             }
 
             button {
@@ -65,8 +68,9 @@ $default-font: "Helvetica Neue", Medium;
             background-color: white;
 
             .form-name {
-                display: inline-block;
+                padding-top: 2px;
                 margin-right: 20px;
+                display: inline-block;
 
                 label {
                     color: #A5ABB1;
@@ -154,6 +158,8 @@ $default-font: "Helvetica Neue", Medium;
                 width: 100%;
                 height: 100%;
                 background-color: white;
+                border-right: solid 1px #F0EFEF;
+                border-left: solid 1px #EAEAEA;
 
                 .s12 {
                     padding: 0;
@@ -161,25 +167,37 @@ $default-font: "Helvetica Neue", Medium;
 
                 h6 {
                     margin: 0;
+                    height: 52px;
+                    padding: 18px;
                     color: #0080ff;
-                    padding: 1rem;
-                    background-color: #e3f1ff;
-                    text-align: left;
                     font-size: 14px;
                     font-weight: 500;
+                    text-align: left;
+                    background-color: #e3f1ff;
                 }
 
                 .tabs {
-                    & > li > a:focus {
-                        background-color: transparent;
-                    }
+                    height: 52px;
 
-                    & > li > a {
-                        color: #0080ff;
+                    & > li {
+                        height: 100%;
 
-                        i,
-                        span {
-                            line-height: inherit;
+                        a:focus {
+                            background-color: transparent;
+                        }
+
+                        a {
+                            color: #0080ff;
+
+                            i {
+                                font-size: 22px;
+                                vertical-align: middle;
+                            }
+
+                            span::before {
+                                font-size: 20px;
+                                vertical-align: middle;
+                            }
                         }
                     }
 
@@ -202,17 +220,30 @@ $default-font: "Helvetica Neue", Medium;
                         border-radius: unset;
 
                         & > .mat-expansion-panel-header {
-                            height: 54px !important;
-
-                            span {
-                                opacity: 0.7;
-                            }
+                            height: 50  px !important;
+                            padding: 0px 18px;
 
                             .mat-expansion-panel-header-title {
+
+                                span:nth-child(1)::before {
+                                    font-size: 14px;
+                                    margin-right: 10px;
+                                    color: #616161;
+                                }
+
                                 span:nth-child(2) {
                                     margin-top: 3px;
+                                    font-size: 12px;
+                                    font-weight: bold;
+                                    font-family: "Helvetica";
+                                    color: #616161;
                                 }
                             }
+
+                            .mat-expansion-indicator {
+                                padding-bottom: 2px !important;
+                            }
+
                         }
                     }
 

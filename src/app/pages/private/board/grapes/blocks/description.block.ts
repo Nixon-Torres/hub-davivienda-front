@@ -15,10 +15,16 @@ export class Description {
 
     private buildContent(): string {
         return `
-            <section>
-                <h1>This is a simple title</h1>
-                <div>This is just a Lorem text: Lorem ipsum dolor sit amet</div>
-            </section>
+        <style type="text/css">
+            section {
+                margin: 10px 40px;
+                font-family: Helvetica;
+            }
+        </style>
+        <section>
+            <h1>Header</h1>
+            <div>Lorem ipsum dolor sit amet</div>
+        </section>
         `;
     }
 

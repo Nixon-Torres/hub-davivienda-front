@@ -15,7 +15,15 @@ export class Title {
 
     private buildContent(): string {
         return `
-            <div data-gjs-type="text">Insert your texst here</div>
+        <style type="text/css">
+            .box {
+                color: white;
+                padding: 20px 40px;
+                font-family: Helvetica;
+                background-color: black;
+            }
+        </style>
+        <div class="box">Dark block title</div>
         `;
     }
 

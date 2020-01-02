@@ -67,8 +67,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ]);
 
         this.grapes.activeSectors([
-            'Dimensions'
-            //, 'Extras'
+            'Dimensions',
+            'Extras'
         ]);
 
         this.editor = grapesjs.init(this.grapes.get('config'));
