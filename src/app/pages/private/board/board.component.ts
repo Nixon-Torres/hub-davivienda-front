@@ -1,6 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
 import { Grapes } from "./grapes/grape.config";
+
 import { HttpService } from '../../../services/http.service';
 
 import * as M from "materialize-css/dist/js/materialize";
@@ -22,6 +26,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         "name": "",
         "slug": "",
         "trash": false,
+        "styles": "",
         "content": "",
         "sectionTypeKey": "informe-nuevo",
         "templateId": "0",
@@ -32,6 +37,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     };
 
     constructor(
+        public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private http: HttpService
@@ -61,6 +67,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
         M.Tabs.init(document.querySelectorAll('.tabs'));
     }
 
+    openPreviewDialog(): void {
+        const dialogRef = this.dialog.open(PreviewDialogComponent, {
+            width: '1500px'
+        });
+
+        dialogRef.afterClosed().subscribe((result: any) => {
+            console.log('The dialog was closed', result);
+        });
+    }
+
+
     private initGrapes(): void {
         this.grapes.activeBlocks([
             'Description', 'Image', 'Title'
@@ -72,16 +89,33 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ]);
 
         this.editor = grapesjs.init(this.grapes.get('config'));
+        this.editor.getWrapper().append(`<style type="text/css">` + this.report.styles +`</style>`);
     }
 
     public loadReport(idReport: string): void {
         this.http.get({
             'path': 'reports/' + idReport
         }).subscribe((response: any) => {
+
+            response.body.styles = `
+                section {
+                    margin: 10px 40px;
+                    font-family: Helvetica;
+                }
+
+                .box {
+                    color: white;
+                    padding: 20px 40px;
+                    font-family: Helvetica;
+                    background-color: black;
+                }
+            `;
+
             this.report.id = response.body.id;
             this.report.name = response.body.name;
             this.report.slug = response.body.slug;
             this.report.trash = response.body.trash;
+            this.report.styles = response.body.styles;
             this.report.content = response.body.content;
             this.report.sectionTypeKey = response.body.sectionTypeKey;
             this.report.templateId = response.body.templateId;
@@ -98,6 +132,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public onSave(): void {
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
+        this.report.styles = this.editor.getCss();
         this.report.content = this.editor.getHtml();
 
         if (this.report.id) {
