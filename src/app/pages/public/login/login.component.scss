@@ -1,0 +1,80 @@
+.p-login{
+    background : url(/assets/images/login-bg.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    max-height: 766px;
+    .login-section{
+        max-width: 494px;
+        background-color: #FFF;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 60px;
+        box-sizing: border-box;
+        .logo{
+            margin-bottom: 28px;
+            img{
+                max-width: 207px;
+            }
+        }
+        .logo-subtxt{
+            margin-bottom: 60px;
+            p{
+                color: #616161;
+                display: inline;
+                vertical-align: sub;
+                font-size: 18px;
+            }
+        }
+
+        .log-form{
+            input {
+                display: block;
+                margin: auto auto;
+                width: 100%;
+                margin-bottom: 2em;
+                padding: .5em 0;
+                border: none;
+                border-bottom: 1px solid #eaeaea;
+                padding-bottom: 1.25em;
+                color: #757575;
+                &:focus {
+                    outline: none;
+                }
+                &[type=checkbox]{
+                    width: auto;
+                    display: initial;
+                }
+            }
+            .btn{
+                &.login{
+                    background: #FF003B;
+                    box-shadow: none;
+                    color: #FFFFFF;
+                    box-sizing: border-box;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    cursor: pointer;
+                    outline: 0;
+                    border: none;
+                    line-height: 36px;
+                    border-radius: 4px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    
+}
+
+
+
+
+
