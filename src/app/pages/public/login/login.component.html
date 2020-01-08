@@ -8,17 +8,15 @@
         </div>
 
         <div class="log-form">
-            <form>
-                <input type="text" title="username" placeholder="Correo electrónico " />
-                <input type="password" title="username" placeholder="Contraseña" />
+            <form [formGroup]="loginForm" (submit)="login()">
+                <input type="text" formControlName="email" title="username" placeholder="Correo electrónico" email>
+                <input type="password" formControlName="password" title="username" placeholder="Contraseña" password>
                 <div>
-                        <input type="checkbox" id="css">
-                        <label for="css">Mantenr mi cuenta abierta</label>
+                    <input type="checkbox" id="css">
+                    <label for="css">Mantenr mi cuenta abierta</label>
                 </div>
-                <button type="submit" class="btn login">Iniciar sesión ></button>
+                <button type="submit" class="btn login" [disabled]="!loginForm.valid">Iniciar sesión > </button>
             </form>
         </div>
     </div>
 </div>
-
-
