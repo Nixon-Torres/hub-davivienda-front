@@ -21,24 +21,28 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        if (this.auth.get('CurrentUser', true)) {
-            return true;
-        }
-        this.router.navigate(['/login']);
-        return false;
+        return this.isActive();
     }
 
     canActivateChild(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return (this.auth.get('CurrentUser', true)) ? true : false;
+        return this.isActive();
     }
 
     canLoad(
         route: Route,
         segments: UrlSegment[]
     ): Observable<boolean> | Promise<boolean> | boolean {
-        return (this.auth.get('CurrentUser', true)) ? true : false;
+        return this.isActive();
+    }
+
+    private isActive(): boolean {
+        let isLoggedin = this.auth.isLoggedin();
+        if (!isLoggedin) {
+            this.router.navigate(['/login']);
+        }
+        return isLoggedin;
     }
 }

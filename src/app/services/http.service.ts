@@ -5,18 +5,17 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Request, Response } from './http.service.model';
-import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HttpService {
+    public authorization: string = null;
     private _URL_API: string = environment.URL_API;
 
     constructor(
-        private http: HttpClient,
-        private auth: AuthService
+        private http: HttpClient
     ) {
     }
 
@@ -66,9 +65,8 @@ export class HttpService {
 
     public headers() {
         let headers: any = {};
-        let authorization: any = this.auth.get('Authorization');
-        if(authorization) {
-            headers.Authorization = authorization;
+        if(this.authorization) {
+            headers.Authorization = this.authorization;
         }
         return headers;
     }

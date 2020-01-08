@@ -1,28 +1,129 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-declare var localStorage: any;
+import { LoginContext, AccessTokenInterface, UserInterface } from './auth.service.model';
+import { HttpService } from './http.service';
+import { CookieStorage } from './storage/cookie.storage';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    public currentUser: any;
+    private tokenName = '94a08da1fecbb6e8b46990538c7b50b2-*';
 
-    constructor() {
-        this.currentUser = this.get('CurrentUser');
+    constructor(
+        private cookie: CookieStorage,
+        private http: HttpService
+    ) {
+        this.setAuthorization();
     }
 
-    public set(name: string, val: string): void {
-        localStorage.setItem(name, val);
+    public isLoggedin(): any {
+        let token = this.get();
+        return token ? true : false;
     }
 
-    public unset(name: string): void {
-        localStorage.removeItem(name);
+    public getUserData(): any {
+        let token = this.get();
+        return token ? token.user : {};
     }
 
-    public get(name: string, json?: boolean): any {
-        let val: any = localStorage.getItem(name);
-        return json ? ((val) ? JSON.parse(val) : null) : val;
+    public login(context: LoginContext): Observable<any> {
+        return new Observable((observer) => {
+            this.getToken(context, (error: any, token: AccessTokenInterface) => {
+                if (error) {
+                    observer.error(error);
+                    observer.complete();
+                    return;
+                }
+                this.set(token);
+                this.getCurrentUser(token.userId, (err: any, user: UserInterface) => {
+                    if (err) {
+                        observer.error(err);
+                        observer.complete();
+                        return;
+                    }
+                    token.user = user;
+                    this.set(token);
+                    observer.next(true);
+                    observer.complete();
+                });
+            });
+        });
     }
 
+    public logout(): Observable<any> {
+        return new Observable((observer) => {
+            this.removeToken((error: any) => {
+                if (error) {
+                    observer.error(error);
+                    observer.complete();
+                    return;
+                }
+                this.clear();
+                observer.next(true);
+                observer.complete();
+            });
+        });
+    }
+
+    private getToken(input: any, fn: any) {
+        this.http.post({ 'path': 'Users/login', 'data': input }).subscribe(
+            (response: any) => {
+                fn(null, response.body);
+            },
+            (error) => {
+                fn(error, null);
+            }
+        );
+    }
+
+    private removeToken(fn: any) {
+        this.http.post({
+            'path': 'Users/logout', 'data': {
+                'access_token': this.http.authorization
+            }
+        }).subscribe(
+            (response: any) => {
+                fn(null, response.body);
+            },
+            (error) => {
+                fn(error, null);
+            }
+        );
+    }
+
+    private getCurrentUser(userId?: string, fn?: any) {
+        userId = userId ? userId : null;
+        this.http.get({ 'path': `Users/${userId}`, 'data': {} }).subscribe(
+            (response: any) => {
+                fn(null, response.body);
+            },
+            (error) => {
+                fn(error, null);
+            }
+        );
+    }
+
+    private setAuthorization(): void {
+        let token = this.get();
+        if (token) {
+            this.http.authorization = token.id;
+        }
+    }
+
+    private get(): any {
+        let token = this.cookie.get(this.tokenName);
+        return (typeof (token) == 'string') ? JSON.parse(token) : token;
+    }
+
+    private set(token: any): void {
+        this.cookie.set(this.tokenName, JSON.stringify(token));
+        this.setAuthorization();
+    }
+
+    private clear(): void {
+        this.cookie.remove(this.tokenName);
+        this.setAuthorization();
+    }
 }
