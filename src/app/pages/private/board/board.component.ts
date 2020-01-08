@@ -20,6 +20,9 @@ declare var grapesjs: any;
 })
 
 export class BoardComponent implements OnInit, AfterViewInit {
+    private timer: any = {
+        change: null
+    };
     public editor: any = null;
     public grapes: any = null;
     public report: any = {
@@ -67,17 +70,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
         M.Tabs.init(document.querySelectorAll('.tabs'));
     }
 
-    openPreviewDialog(): void {
-        const dialogRef = this.dialog.open(PreviewDialogComponent, {
-            width: '1500px'
-        });
-
-        dialogRef.afterClosed().subscribe((result: any) => {
-            console.log('The dialog was closed', result);
-        });
-    }
-
-
     private initGrapes(): void {
         this.grapes.activeBlocks([
             'Description', 'Image', 'Title'
@@ -90,9 +82,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         this.editor = grapesjs.init(this.grapes.get('config'));
         this.editor.getWrapper().append(`<style type="text/css">` + this.report.styles +`</style>`);
+        this.editor.on('loaded', () => {
+            this.editor.on('change:changesCount', () => { // change:changesCount || update
+                if(this.timer.change) {
+                    clearTimeout(this.timer.change);
+                }
+                this.timer.change = setTimeout(() => {
+                    // this.onSave(true);
+                }, 2000);
+            });
+        });
+
+        console.log("grapes: ", this.editor);
     }
 
-    public loadReport(idReport: string): void {
+    private loadReport(idReport: string): void {
         this.http.get({
             'path': 'reports/' + idReport
         }).subscribe((response: any) => {
@@ -130,29 +134,56 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public onSave(): void {
+    private gotoPage() {
+        this.router.navigate(['app/principal']);
+    }
+
+    public onSave(autoSave = false): void {
+
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
         this.report.styles = this.editor.getCss();
         this.report.content = this.editor.getHtml();
 
         if (this.report.id) {
+
             this.http.put({
-                'path': 'reports/'+this.report.id,
+                'path': 'reports/' + this.report.id,
                 'data': this.report
             }).subscribe((response) => {
-                this.gotoPage();
+                if (autoSave) {
+                    console.log("loading", response);
+                    this.initGrapes();
+                } else {
+                    this.gotoPage();
+                }
             });
+
         } else {
+
             this.http.post({
                 'path': 'reports',
                 'data': this.report
             }).subscribe((response) => {
-                this.gotoPage();
+                if (autoSave) {
+                    console.log("autoguardo");
+                } else {
+                    this.gotoPage();
+                }
             });
         }
     }
 
-    private gotoPage() {
-        this.router.navigate(['app/principal']);
+    public openPreviewDialog(): void {
+
+        const dialogRef = this.dialog.open(PreviewDialogComponent, {
+            width: '1500px',
+            data: {
+                'reportId': this.report.id
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: any) => {
+            console.log('The dialog was closed', result);
+        });
     }
 }

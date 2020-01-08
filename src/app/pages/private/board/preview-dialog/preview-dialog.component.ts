@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
+
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-preview-dialog',
@@ -12,51 +12,37 @@ import { HttpService } from '../../../../services/http.service';
 export class PreviewDialogComponent implements OnInit {
 
 	public report: any = {
+		"id": null,
         "styles": "",
         "content": ""
     };
 
   	constructor(
   		public dialogRef: MatDialogRef<PreviewDialogComponent>,
-        private activatedRoute: ActivatedRoute,
-  		private http: HttpService
-  	) { }
-
-  	ngOnInit() {
-
+  		private http: HttpService,
+  		@Inject(MAT_DIALOG_DATA) public data: any
+  	) {
+  		this.report.id = this.data.reportId;
   	}
 
-	ngAfterViewInit() {
-		console.log("1");
-		this.activatedRoute.paramMap.subscribe((params: any) => {
-		console.log("2", params.get("id"));
-            if (params.get("id")) {
-                this.report.id = params.get("id");
-                this.loadReport(this.report.id);
-            }
+  	ngOnInit() {
+  		this.http.get({
+            'path': 'reports/' + this.report.id
+        }).subscribe((response: any) => {
+            this.report.styles = response.body.styles;
+            this.report.content = response.body.content;
+            this.loadReport();
         });
+  	}
 
-		console.log("this: ", this.report);
-
-		let tplStyles = `
-		h1, p {
-            margin: 10px 40px;
-            font-family: Helvetica;
-        }
-        h1 { color: red; }
-		`;
-
-		let tplContent = `
-		<h1>Titulo de prueba</h1>
-		<p>Esta es una descripcion</p>
-		`;
+  	public loadReport(): void {
 
 		let reportTpl = `
 		<html>
 			<head>
-				<style type="text/css">` + tplStyles + `</style>
+				<style type="text/css">` + this.report.styles + `</style>
 			</head>
-			<body>` + tplContent + `</body>
+			<body>` + this.report.content + `</body>
 		</html>
 		`;
 
@@ -65,36 +51,6 @@ export class PreviewDialogComponent implements OnInit {
 		doc.open();
 		doc.write(reportTpl);
 		doc.close();
-    }
-
-  	public loadReport(idReport: string): void {
-
-  		console.log("idReport: ", idReport);
-
-        this.http.get({
-            'path': 'reports/' + idReport
-        }).subscribe((response: any) => {
-
-        	console.log("response: ", response);
-
-            response.body.styles = `
-                section {
-                    margin: 10px 40px;
-                    font-family: Helvetica;
-                }
-
-                .box {
-                    color: white;
-                    padding: 20px 40px;
-                    font-family: Helvetica;
-                    background-color: black;
-                }
-            `;
-
-            this.report.id = response.body.id;
-            this.report.styles = response.body.styles;
-            this.report.content = response.body.content;
-        });
     }
 
     closeDialog(): void {
