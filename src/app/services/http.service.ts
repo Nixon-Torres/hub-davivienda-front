@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
-import {URLSearchParams} from '@angular/http';
-import {HttpClient, HttpResponse, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
+import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-import {Request, Response} from './http.service.model';
-import {environment} from '../../environments/environment';
+import { Request, Response } from './http.service.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HttpService {
+    public authorization: string = null;
     private _URL_API: string = environment.URL_API;
 
     constructor(
@@ -25,20 +26,26 @@ export class HttpService {
                 params.set(key, input.data[key]);
             }
         }
+        let headers = this.headers();
         return this.http.get<Response>(this._URL_API + input.path, {
-            observe: 'response'
+            observe: 'response',
+            headers: headers
         }).pipe(catchError(this.handleError));
     }
 
     public post(input: Request): Observable<HttpResponse<Response>> {
+        let headers = this.headers();
         return this.http.post<Response>(this._URL_API + input.path, input.data, {
-            observe: 'response'
+            observe: 'response',
+            headers: headers
         }).pipe(catchError(this.handleError));
     }
 
     public put(input: Request): Observable<HttpResponse<Response>> {
+        let headers = this.headers();
         return this.http.put<Response>(this._URL_API + input.path, input.data, {
-            observe: 'response'
+            observe: 'response',
+            headers: headers
         }).pipe(catchError(this.handleError));
     }
 
@@ -49,9 +56,19 @@ export class HttpService {
                 params.set(key, input.data[key]);
             }
         }
+        let headers = this.headers();
         return this.http.delete<Response>(this._URL_API + input.path, {
-            observe: 'response'
+            observe: 'response',
+            headers: headers
         }).pipe(catchError(this.handleError));
+    }
+
+    public headers() {
+        let headers: any = {};
+        if(this.authorization) {
+            headers.Authorization = this.authorization;
+        }
+        return headers;
     }
 
     public preload(flag: boolean) {
