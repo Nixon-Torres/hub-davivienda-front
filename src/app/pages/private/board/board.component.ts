@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
-import { Grapes } from "./grapes/grape.config";
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { Report } from './board.model';
 import { HttpService } from '../../../services/http.service';
+import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
+
+import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 
@@ -23,20 +23,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private timer: any = {
         change: null
     };
-    public editor: any = null;
-    public grapes: any = null;
-    public report: any = {
-        "name": "",
-        "slug": "",
-        "trash": false,
-        "styles": "",
-        "content": "",
-        "sectionTypeKey": "informe-nuevo",
-        "templateId": "0",
-        "userId": "5e024912b8287319151c688a",
-        "stateId": "5e024bcab8287319151c6897",
-        "sectionId": "5e024cc7b8287319151c6898",
-        "folderId": "5e024997b8287319151c688c"
+    public editor: any;
+    public grapes: any;
+    public report: Report = {
+        name: null,
+        slug: null,
+        trash: false,
+        styles: null,
+        content: null,
+        sectionTypeKey: null,
+        userId: null,
+        stateId: null,
+        sectionId: null
     };
 
     constructor(
@@ -45,11 +43,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
         private router: Router,
         private http: HttpService
     ) {
-        this.grapes = new Grapes({
-            selectorManager: '.styles-container',
-            blockManager: '.blocks-container',
-            styleManager: '.styles-container'
-        });
     }
 
     ngOnInit() {
@@ -57,6 +50,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
             if (params.get("id")) {
                 this.report.id = params.get("id");
                 this.loadReport(this.report.id);
+            } else if (params.get("stateId")) {
+                let folderId = params.get('folderId');
+                let templateId = params.get('templateId');
+                this.report.stateId = params.get('stateId');
+                this.report.sectionId = params.get('sectionId');
+                this.report.sectionTypeKey = params.get('sectionTypeKey');
+                this.report.folderId = folderId ? folderId : null;
+                this.report.templateId = templateId ? templateId : null;
             }
         });
     }
@@ -71,29 +72,56 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private initGrapes(): void {
+        this.grapes = new Grapes({
+            selectorManager: '.styles-container',
+            blockManager: '.blocks-container',
+            styleManager: '.styles-container'
+        });
+
+        this.activeBlocks();
+        this.activeSectors();
+        this.loadEditor();
+        this.addStyles(this.report.styles);
+        // this.();
+    }
+
+    // private eventsEditor(): void {
+    //     // this.editor.on('loaded', () => {
+    //     //     this.editor.on('change:changesCount', () => { // change:changesCount || update
+    //     //         if (this.timer.change) {
+    //     //             clearTimeout(this.timer.change);
+    //     //         }
+    //     //         this.timer.change = setTimeout(() => {
+    //     //             // this.onSave(true);
+    //     //         }, 2000);
+    //     //     });
+    //     // });
+    // }
+
+    private loadEditor(): void {
+        this.editor = grapesjs.init(
+            this.grapes.get('config')
+        );
+    }
+
+    private activeBlocks(): void {
         this.grapes.activeBlocks([
             'Description', 'Image', 'Title'
         ]);
+    }
 
+    private activeSectors(): void {
         this.grapes.activeSectors([
             'Dimensions',
             'Extras'
         ]);
 
-        this.editor = grapesjs.init(this.grapes.get('config'));
-        this.editor.getWrapper().append(`<style type="text/css">` + this.report.styles +`</style>`);
-        this.editor.on('loaded', () => {
-            this.editor.on('change:changesCount', () => { // change:changesCount || update
-                if(this.timer.change) {
-                    clearTimeout(this.timer.change);
-                }
-                this.timer.change = setTimeout(() => {
-                    // this.onSave(true);
-                }, 2000);
-            });
-        });
+    }
 
-        console.log("grapes: ", this.editor);
+    private addStyles(styles: string): void {
+        this.editor.getWrapper().append(
+            `<style type="text/css">${styles}</style>`
+        );
     }
 
     private loadReport(idReport: string): void {
@@ -163,7 +191,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.http.post({
                 'path': 'reports',
                 'data': this.report
-            }).subscribe((response) => {
+            }).subscribe((response: any) => {
                 if (autoSave) {
                     console.log("autoguardo");
                 } else {

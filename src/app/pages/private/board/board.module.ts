@@ -20,6 +20,10 @@ const routes: Routes = [
     {
         path: ':id',
         component: BoardComponent
+    },
+    {
+        path: ':stateId/:sectionId/:sectionTypeKey/:folderId?/:templateId?',
+        component: BoardComponent
     }
 ];
 const materialModules: any[] = [
