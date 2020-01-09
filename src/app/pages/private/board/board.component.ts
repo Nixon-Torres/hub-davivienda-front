@@ -66,9 +66,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         if (!this.report.id) {
             this.initGrapes();
         }
-
-        // Load Materialize tabs function after the grapes library has loaded
-        M.Tabs.init(document.querySelectorAll('.tabs'));
+        M.Tabs.init(document.querySelectorAll('.grapes-container .tabs')[0]);
     }
 
     private initGrapes(): void {
@@ -81,27 +79,25 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.activeBlocks();
         this.activeSectors();
         this.loadEditor();
-        this.addStyles(this.report.styles);
-        // this.();
+        this.addStyles(this.report.content, this.report.styles);
     }
 
-    // private eventsEditor(): void {
-    //     // this.editor.on('loaded', () => {
-    //     //     this.editor.on('change:changesCount', () => { // change:changesCount || update
-    //     //         if (this.timer.change) {
-    //     //             clearTimeout(this.timer.change);
-    //     //         }
-    //     //         this.timer.change = setTimeout(() => {
-    //     //             // this.onSave(true);
-    //     //         }, 2000);
-    //     //     });
-    //     // });
-    // }
+    private listenEventsEditor(): void {
+        this.editor.on('change:changesCount', () => {
+            if (this.timer.change) {
+                clearTimeout(this.timer.change);
+            }
+            this.timer.change = setTimeout(() => {
+                this.onSave(true);
+            }, 5000);
+        });
+    }
 
     private loadEditor(): void {
         this.editor = grapesjs.init(
             this.grapes.get('config')
         );
+        this.listenEventsEditor();
     }
 
     private activeBlocks(): void {
@@ -118,9 +114,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     }
 
-    private addStyles(styles: string): void {
+    private addStyles(content: string, styles: string): void {
         this.editor.getWrapper().append(
-            `<style type="text/css">${styles}</style>`
+            `<style type="text/css">${styles}</style>${content}`
         );
     }
 
@@ -128,33 +124,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.http.get({
             'path': 'reports/' + idReport
         }).subscribe((response: any) => {
-
-            response.body.styles = `
-                section {
-                    margin: 10px 40px;
-                    font-family: Helvetica;
-                }
-
-                .box {
-                    color: white;
-                    padding: 20px 40px;
-                    font-family: Helvetica;
-                    background-color: black;
-                }
-            `;
-
-            this.report.id = response.body.id;
-            this.report.name = response.body.name;
-            this.report.slug = response.body.slug;
-            this.report.trash = response.body.trash;
-            this.report.styles = response.body.styles;
-            this.report.content = response.body.content;
-            this.report.sectionTypeKey = response.body.sectionTypeKey;
-            this.report.templateId = response.body.templateId;
-            this.report.userId = response.body.userId;
-            this.report.stateId = response.body.stateId;
-            this.report.sectionId = response.body.sectionId;
-            this.report.folderId = response.body.folderId;
+            response.body.folderId = response.body.folderId ? response.body.folderId : null;
+            response.body.templateId = response.body.templateId ? response.body.templateId : null;
+            this.report = response.body;
 
             setTimeout(() => {
                 this.initGrapes();
@@ -162,56 +134,51 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    private gotoPage() {
-        this.router.navigate(['app/principal']);
-    }
-
-    public onSave(autoSave = false): void {
-
+    private setPropertiesReport(): void {
+        this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
         this.report.styles = this.editor.getCss();
         this.report.content = this.editor.getHtml();
+    }
 
-        if (this.report.id) {
+    public onSave(autoSave?: boolean): void {
+        let isUpdate: boolean = this.report.id ? true : false;
+        let method: string = isUpdate ? 'put' : 'post';
+        let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
 
-            this.http.put({
-                'path': 'reports/' + this.report.id,
-                'data': this.report
-            }).subscribe((response) => {
-                if (autoSave) {
-                    console.log("loading", response);
-                    this.initGrapes();
-                } else {
-                    this.gotoPage();
-                }
-            });
-
-        } else {
-
-            this.http.post({
-                'path': 'reports',
-                'data': this.report
-            }).subscribe((response: any) => {
-                if (autoSave) {
-                    console.log("autoguardo");
-                } else {
-                    this.gotoPage();
-                }
-            });
+        if (this.timer.change) {
+            clearTimeout(this.timer.change);
         }
+
+        this.setPropertiesReport();
+        this.http[method]({
+            'path': path,
+            'data': this.report
+        }).subscribe(
+            (response: any) => {
+                response.body.folderId = response.body.folderId ? response.body.folderId : null;
+                response.body.templateId = response.body.templateId ? response.body.templateId : null;
+                this.report = response.body;
+                if (!autoSave) {
+                    this.goToPrincipalPage();
+                }
+            },
+            () => {
+                alert('¡Oops! \n Tus datos no se almacenaron');
+            }
+        );
     }
 
     public openPreviewDialog(): void {
-
-        const dialogRef = this.dialog.open(PreviewDialogComponent, {
+        this.dialog.open(PreviewDialogComponent, {
             width: '1500px',
             data: {
                 'reportId': this.report.id
             }
         });
+    }
 
-        dialogRef.afterClosed().subscribe((result: any) => {
-            console.log('The dialog was closed', result);
-        });
+    private goToPrincipalPage(): void {
+        this.router.navigate(['app/principal']);
     }
 }

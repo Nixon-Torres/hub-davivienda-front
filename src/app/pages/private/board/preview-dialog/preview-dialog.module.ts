@@ -4,14 +4,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PreviewDialogComponent } from './preview-dialog.component';
 
 @NgModule({
-	declarations: [PreviewDialogComponent],
-	imports: [
-		CommonModule,
-		MatDialogModule
-	],
-	entryComponents: [
-		PreviewDialogComponent
-	]
+    declarations: [PreviewDialogComponent],
+    imports: [
+        CommonModule,
+        MatDialogModule
+    ],
+    entryComponents: [
+        PreviewDialogComponent
+    ]
 })
 
 export class PreviewDialogModule { }

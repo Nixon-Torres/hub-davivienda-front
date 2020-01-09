@@ -48,16 +48,12 @@ export class RightContentComponent implements OnInit {
     }
 
     openDialog(): void {
-        const dialogRef = this.dialog.open(CreateReportDialogComponent, {
+        this.dialog.open(CreateReportDialogComponent, {
             width: '1500px',
             data: {
                 'folderId': (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder: false),
                 'stateId': '5e068d1cb81d1c5f29b62977'
             }
-        });
-
-        dialogRef.afterClosed().subscribe((result: any) => {
-            console.log('The dialog was closed', result);
         });
     }
 
