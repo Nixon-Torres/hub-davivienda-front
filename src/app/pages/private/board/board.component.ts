@@ -26,11 +26,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor: any;
     public grapes: any;
     public report: Report = {
-        name: null,
+        name: '',
         slug: null,
         trash: false,
-        styles: null,
-        content: null,
+        styles: '',
+        content: '',
         sectionTypeKey: null,
         userId: null,
         stateId: null,
@@ -142,10 +142,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public onSave(autoSave?: boolean): void {
+        if (autoSave && !this.report.content) return;
         let isUpdate: boolean = this.report.id ? true : false;
         let method: string = isUpdate ? 'put' : 'post';
         let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
-
         if (this.timer.change) {
             clearTimeout(this.timer.change);
         }
