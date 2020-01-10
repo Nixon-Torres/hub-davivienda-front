@@ -64,7 +64,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         if (!this.report.id) {
-            this.initGrapes();
+            this.loadTemplate(this.report.templateId);
         }
         M.Tabs.init(document.querySelectorAll('.grapes-container .tabs')[0]);
     }
@@ -122,11 +122,29 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private loadReport(idReport: string): void {
         this.http.get({
-            'path': 'reports/' + idReport
+            'path': `reports/${idReport}`
         }).subscribe((response: any) => {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
+
+            setTimeout(() => {
+                this.initGrapes();
+            }, 0);
+        });
+    }
+
+    private loadTemplate(templateId: string): void {
+        if (!templateId) {
+            this.initGrapes();
+            return;
+        }
+
+        this.http.get({
+            'path': `templates/${templateId}`
+        }).subscribe((response: any) => {
+            this.report.content = response.body.content ? response.body.content : '';
+            this.report.styles = response.body.styles ? response.body.styles : '';
 
             setTimeout(() => {
                 this.initGrapes();
