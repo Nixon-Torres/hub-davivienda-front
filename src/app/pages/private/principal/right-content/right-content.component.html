@@ -6,7 +6,7 @@
 
 	<div class="top-section-list">
 		<div class="back-btn" *ngIf="isFiltering()">
-			<a (click)="cleanFilters()">< Volver </a>
+			<a (click)="cleanFilters()">&#60; Volver </a>
 		</div>
 		<div class="search-container">
 			<input type="text" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas...">
@@ -23,7 +23,7 @@
 			<mat-tab-group (selectedTabChange)="tabClick($event)">
 				<mat-tab label="Mis Informes">
 					<!-- <h1>Mis informes</h1> -->
-					<div >
+					<div>
 						<ul class="report-list">
 							<li *ngFor="let report of list.reports; let indice=index">
 								<div class="row" [ngClass]="report.state?.color">
@@ -49,7 +49,7 @@
 
 				<mat-tab label="Por revisar">
 					<!-- <h1>Por revisar</h1> -->
-					<div >
+					<div>
 						<ul class="report-list">
 							<li *ngFor="let report of list.reports; let indice=index">
 								<div class="row" [ngClass]="report.state?.color">
@@ -74,17 +74,12 @@
 				</mat-tab>
 			</mat-tab-group>
 		</section>
-		<div class="paginations">
-				<a href="#">&#x3c;</a>
-				<a class="label">Página</a>
-				<a href="#">1</a>
-				<a class="active" href="#">2</a>
-				<!-- <a href="#">3</a>
-				<a href="#">4</a>
-				<a href="#">5</a>
-				<a href="#">6</a> -->
-				<a href="#">&#x3e;</a>
-		</div>		
+		<div class="paginations" *ngIf="pager.pages.length">
+			<a *ngIf="pager.selected > 1" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])">&#x3c;</a>
+			<a class="label">Página</a>
+			<a *ngFor="let item of pager.pages" [ngClass]="{'active': (pager.selected == item.index)}" (click)="loadReports(ifilter, item)">{{item.index}}</a>
+			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])">&#x3e;</a>
+		</div>
 	</div>
 
 </div>

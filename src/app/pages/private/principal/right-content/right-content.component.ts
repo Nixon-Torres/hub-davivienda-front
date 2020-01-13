@@ -31,6 +31,13 @@ export class RightContentComponent implements OnInit {
     public list: any = {
         reports: []
     }
+    public pager: any = {
+        limit: 3,
+        selected: 1,
+        totalItems: 0,
+        totalPages: 0,
+        pages: []
+    }
 
     @Input()
     set currentObj(value: any) {
@@ -51,7 +58,7 @@ export class RightContentComponent implements OnInit {
         this.dialog.open(CreateReportDialogComponent, {
             width: '1500px',
             data: {
-                'folderId': (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder: false),
+                'folderId': (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
                 'stateId': '5e068d1cb81d1c5f29b62977'
             }
         });
@@ -86,10 +93,27 @@ export class RightContentComponent implements OnInit {
         this.loadReports(this.ifilter);
     }
 
-    private loadReports(filter?: string | null): void {
+    private loadPager(where: any): void {
+        this.http.get({
+            path: `reports/count?${qs.stringify({ 'where': where }, { skipNulls: true })}`
+        }).subscribe((response: any) => {
+            this.pager.totalItems = response.body.count;
+            this.pager.totalPages = Math.ceil(this.pager.totalItems / this.pager.limit);
+            this.pager.selected = 1;
+            this.pager.pages = [];
+            for (let i = 1; i <= this.pager.totalPages; i++) {
+                this.pager.pages.push({
+                    'skip': (i - 1) * this.pager.limit,
+                    'index': i
+                });
+            }
+        });
+    }
+
+    private loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         var query = new loopback();
-        query.filter.include.push({ relation: "folder" }, { relation: "user" }, { relation: "state" }, { relation: "section" })
+        query.filter.include.push({ relation: "folder" }, { relation: "user" }, { relation: "state" }, { relation: "section" });
         query.filter.where['folderId'] = this.icurrentObj.currentFolder;
         query.filter.where['stateId'] = this.icurrentObj.currentState;
         query.filter.where['trash'] = this.icurrentObj.deletedFg;
@@ -100,8 +124,19 @@ export class RightContentComponent implements OnInit {
             let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
             query.filter.where['updatedAt'] = { between: [start, end] };
         }
+
+        if (pager) {
+            query.filter.limit = this.pager.limit;
+            query.filter.skip = pager.skip;
+            this.pager.selected = pager.index;
+        } else {
+            this.loadPager(query.filter.where);
+            query.filter.limit = this.pager.limit;
+            query.filter.skip = 0;
+        }
+
         this.http.get({
-            path: 'reports?' + qs.stringify(query, { skipNulls: true })
+            path: `reports?${qs.stringify(query, { skipNulls: true })}`
         }).subscribe((response) => {
             this.list.reports = response.body;
         });
