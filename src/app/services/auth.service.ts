@@ -109,6 +109,8 @@ export class AuthService {
         let token = this.get();
         if (token) {
             this.http.authorization = token.id;
+        } else {
+            this.http.authorization = null;
         }
     }
 
