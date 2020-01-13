@@ -26,6 +26,7 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     ngOnInit() {
+
         if (!this.report.id) {
             alert('¡Oops!\nNo encontramos el reporte');
             return;
