@@ -4,18 +4,18 @@
 			<section>
 				<h6>Informe de negocio</h6>
 
-		        <button mat-stroked-button class="btn-white descartar-cta">
-		        	<span class="icon icon-trash-alt"></span>Descartar
-		        </button>
-		        <button mat-stroked-button class="btn-white previa-cta">
-		        	<span class="icon icon-search-plus"></span>Vista Previa
-		        </button>
-		        <button mat-stroked-button class="btn-white revision-cta">
-		        	<span class="icon icon-clipboard-check"></span>Enviar a revisión
-		        </button>
-		        <button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">
-		        	<span class="icon icon-save"></span>Guardar
-		        </button>
+				<button mat-stroked-button class="btn-white descartar-cta">
+					<span class="icon icon-trash-alt"></span>Descartar
+				</button>
+				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()">
+					<span class="icon icon-search-plus"></span>Vista Previa
+				</button>
+				<button mat-stroked-button class="btn-white revision-cta">
+					<span class="icon icon-clipboard-check"></span>Enviar a revisión
+				</button>
+				<button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">
+					<span class="icon icon-save"></span>Guardar
+				</button>
 
 				<small>Autoguardado hace 10 min</small>
 			</section>
@@ -23,12 +23,11 @@
 
 		<mat-toolbar-row id="actions">
 			<section>
-				<!-- <span class="input-label">Nombre informe:</span> -->
-	          	<div class="form-name">
-				    <label for="reportName">Nombre informe:</label>
-	          		<div class="input-field">
-		          		<input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name">
-	          		</div>
+				<div class="form-name">
+					<label for="reportName">Nombre informe:</label>
+					<div class="input-field">
+						<input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name">
+					</div>
 				</div>
 				<button mat-button>
 					<span class="icon icon-edit"></span>Editar nombre
@@ -45,51 +44,49 @@
 	<mat-grid-list cols="4" id="grapesBox">
 
 		<mat-grid-tile [colspan]="3" [rowspan]="1" class="builder">
-			<div id="gjs" [innerHtml]="report.content"></div>
+			<div id="gjs"></div>
 		</mat-grid-tile>
 
 		<mat-grid-tile [colspan]="1" [rowspan]="1" class="builder-tabs">
 
 			<div class="row">
-			    <div class="col s12">
-			      	<ul class="tabs">
-				        <li class="tab col s4">
-				        	<a href="#blocks-tab" class="active" matRipple>
-				        		<i class="material-icons">extension</i>
-				        	</a>
-				        </li>
-				        <li class="tab col s4">
-				        	<a href="#styles-tab" matRipple>
-				        		<!-- <span class="icon icon-paint-brush"></span> -->
-				        		<i class="material-icons">color_lens</i>
-				        	</a>
-				        </li>
-				        <li class="tab col s4">
-				        	<a href="#config-tab" matRipple>
-				        		<span class="icon icon-cog"></span>
-				        		<!-- <i class="material-icons">build</i> -->
-				        	</a>
-				        </li>
-			      	</ul>
-			    </div>
+				<div class="col s12">
+					<ul class="tabs">
+						<li class="tab col s4">
+							<a href="#blocks-tab" class="active" matRipple>
+								<i class="material-icons">extension</i>
+							</a>
+						</li>
+						<li class="tab col s4">
+							<a href="#styles-tab" matRipple>
+								<i class="material-icons">color_lens</i>
+							</a>
+						</li>
+						<li class="tab col s4">
+							<a href="#config-tab" matRipple>
+								<span class="icon icon-cog"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
 
-			    <div id="blocks-tab" class="col s12">
-			    	<h6>Elementos</h6>
-			    	<div class="blocks-container"></div>
-			    </div>
-			    <div id="styles-tab" class="col s12">
-			    	<h6>Estilos</h6>
-			    	<div class="styles-container"></div>
-			    </div>
-			    <div id="config-tab" class="col s12">
-			    	<h6>Configuración informe</h6>
-			    	<mat-accordion class="config-container">
-				    	<mat-expansion-panel>
+				<div id="blocks-tab" class="col s12">
+					<h6>Elementos</h6>
+					<div class="blocks-container"></div>
+				</div>
+				<div id="styles-tab" class="col s12">
+					<h6>Estilos</h6>
+					<div class="styles-container"></div>
+				</div>
+				<div id="config-tab" class="col s12">
+					<h6>Configuración informe</h6>
+					<mat-accordion class="config-container">
+						<mat-expansion-panel>
 							<mat-expansion-panel-header>
-							    <mat-panel-title>
+								<mat-panel-title>
 									<span class="icon icon-tags"></span>
-							      	<span>Tags Categorías</span>
-							    </mat-panel-title>
+									<span>Tags Categorías</span>
+								</mat-panel-title>
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>
@@ -98,10 +95,10 @@
 
 						<mat-expansion-panel>
 							<mat-expansion-panel-header>
-							    <mat-panel-title>
+								<mat-panel-title>
 									<span class="icon icon-chart-pie"></span>
-							      	<span>Seo</span>
-							    </mat-panel-title>
+									<span>Seo</span>
+								</mat-panel-title>
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>
@@ -110,10 +107,10 @@
 
 						<mat-expansion-panel>
 							<mat-expansion-panel-header>
-							    <mat-panel-title>
+								<mat-panel-title>
 									<span class="icon icon-copy"></span>
-							      	<span>Informes relacionados</span>
-							    </mat-panel-title>
+									<span>Informes relacionados</span>
+								</mat-panel-title>
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>
@@ -122,17 +119,17 @@
 
 						<mat-expansion-panel>
 							<mat-expansion-panel-header>
-							    <mat-panel-title>
+								<mat-panel-title>
 									<span class="icon icon-book-open"></span>
-							      	<span>Glosario</span>
-							    </mat-panel-title>
+									<span>Glosario</span>
+								</mat-panel-title>
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>
 
 						</mat-expansion-panel>
 					</mat-accordion>
-			    </div>
+				</div>
 			</div>
 
 		</mat-grid-tile>

@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutModule } from '@angular/cdk/layout';
-import { PrincipalComponent } from './principal.component';
-
 import { Routes, RouterModule } from '@angular/router';
-import { LeftBarComponent } from './left-bar/left-bar.component';
-import { RightContentComponent } from './right-content/right-content.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelect2Module } from 'ng-select2';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -23,11 +20,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // Buttons & Indicators
 import { MatButtonModule } from '@angular/material/button';
 
-
+import { PrincipalComponent } from './principal.component';
+import { LeftBarComponent } from './left-bar/left-bar.component';
+import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
-import { FormsModule } from '@angular/forms';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
-import { NgSelect2Module } from 'ng-select2';
 
 const routes: Routes = [
 	{
@@ -58,6 +55,7 @@ const materialModules: any[] = [
 		CommonModule,
 		materialModules,
 		FormsModule,
+		ReactiveFormsModule,
 		RouterModule.forChild(routes),
 		NgSelect2Module
 	],

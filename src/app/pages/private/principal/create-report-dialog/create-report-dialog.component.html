@@ -1,28 +1,25 @@
-
-<form class="modal-form">
+<form class="modal-form" [formGroup]="createReportForm" (submit)="goToBoard()">
+	<div class="hidden">
+		<input type="hidden" formControlName="folderId">
+		<input type="hidden" formControlName="stateId">
+	</div>
 	<div class="two-columns">
 		<h3 class="title icon icon-list-alt">Sección</h3>
 		<p class="intro">Seleccione la sección para la cual desea hacer su informe</p>
 		<div class="group-radio">
 			<div class="group-radio--option" *ngFor="let section of list.sections; let indice=index">
-				<input type="radio" name="seccion" id="{{section.name}}" (change)="onUpdateTypes($event, indice)">
-				<label for="{{section.name}}">{{section.name}}</label>
-			</div>			
+				<input type="radio" formControlName="sectionId" [value]="section.id" [id]="section.id" (change)="onUpdateTypes($event, indice)">
+				<label for="{{section.id}}">{{section.name}}</label>
+			</div>
 		</div>
 
-		<!-- <div>
-			<ng-select2 [data]="exampleData"
-			[width]="150">
-			</ng-select2>
-		</div> -->
-
-		
 		<mat-form-field class="simple" floatLabel="never">
 			<mat-label>Seleccione el tipo de Informe</mat-label>
-			<mat-select>
+			<mat-select formControlName="sectionTypeKey">
 				<mat-option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</mat-option>
-			</mat-select>  
+			</mat-select>
 		</mat-form-field>
+
 		<h3 class="title icon icon-user-alt">Autor(es)</h3>
 		<p class="intro">Agregue / edite el autor o colaborador que participará en el informe</p>
 		<div class="authors-box">
@@ -36,15 +33,15 @@
 				<li>
 					<button class="add icon icon-plus" (click)=onAddAuthor()></button>
 					<p>Agregar<span>Autor / Colaborador</span></p>
-				</li>	
+				</li>
 			</ul>
 
 			<mat-form-field class="simple" floatLabel="never">
 				<mat-label>Seleccione el author o colaborador</mat-label>
 				<mat-select shouldLabelFloat="false" (selectionChange)="onOptionsSelected($event)" [(value)]="selectedAuthor">
 					<mat-option *ngFor="let user of list.users; index as i" value="{{i}}">{{user.name}}</mat-option>
-				</mat-select>  
-			</mat-form-field>	
+				</mat-select>
+			</mat-form-field>
 		</div>
 	</div>
 	<div class="two-columns diff-color">
@@ -53,33 +50,21 @@
 		<p class="intro">Seleccione la plantilla que mejor se acomode a su informe</p>
 		<div class="tabs">
 			<mat-tab-group>
-			  <mat-tab label="Nuevas Plantillas">
-				<div class="group-radio-two">
-					<div class="group-radio-two--option">
-						<input type="radio" name="template" id="uno">
-						<label class="" for="uno">HTML</label>
+				<mat-tab label="Nuevas Plantillas">
+					<div class="group-radio-two">
+						<div class="group-radio-two--option" *ngFor="let template of list.templates">
+							<input type="radio" formControlName="templateId" [value]="template.id" [id]="template.id">
+							<label class="" [for]="template.id">{{template.name}}</label>
+						</div>
 					</div>
-					<div class="group-radio-two--option">
-						<input type="radio" name="template" id="dos">
-						<label class="" for="dos">HTML / 2 Columnas</label>
-					</div>
-					<div class="group-radio-two--option">
-						<input type="radio" name="template" id="tres">
-						<label class="" for="tres">HTML + PDF	</label>
-					</div>
-					<div class="group-radio-two--option">
-						<input type="radio" name="template" id="cuatro">
-						<label class="" for="cuatro">HTML + presentación</label>
-					</div>
-				</div>
-			  </mat-tab>
-			  <mat-tab label="Mis Plantillas">
-			  </mat-tab>
+				</mat-tab>
+				<mat-tab label="Mis Plantillas">
+				</mat-tab>
 			</mat-tab-group>
 		</div>
 		<div mat-dialog-actions>
 			<button mat-button (click)="onNoClick()">Cancelar</button>
-			<button class="highligh" mat-button [mat-dialog-close]="" (click)="gotoPage()">Empezar Informe</button>
+			<button type="submit" class="highligh" [disabled]="!createReportForm.valid" mat-button mat-dialog-close>Empezar Informe</button>
 		</div>
 	</div>
 </form>

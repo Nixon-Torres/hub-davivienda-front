@@ -2,20 +2,21 @@
 
 .modal-form {
 	@include display-flex;
-
 	justify-content: flex-start;
 	width: 100%;
- 
+
 	.two-columns {
 		padding: 24px;
 		position: relative;
 		width: 50%;
 		text-align: center;
+
 		&.diff-color {
 			background: #F5F7FB;
 			position: relative;
 		}
-		.modal-close-cta{
+
+		.modal-close-cta {
 			position: absolute;
 			right: 0;
 			top: 0;
@@ -25,7 +26,8 @@
 			display: flex;
 			align-items: center;
 			cursor: pointer;
-			span{
+
+			span {
 				font-size: 20px;
 				font-style: normal;
 				font-weight: bold;
@@ -36,7 +38,6 @@
 
 	h3 {
 		@include display-flex;
-
 		align-items: center;
 		color: #616161;
 		font-style: 1em;
@@ -52,18 +53,16 @@
 		color: #616161;
 		font-size: 0.750em;
 		font-style: italic;
-		margin: 5px 0 20px 0;
+		margin: 5px 0 20px;
 		text-align: left;
 	}
 
 	.group-radio {
 		@include display-flex;
-
 		justify-content: center;
 
-		&--option{
+		&--option {
 			@include display-flex;
-
 			flex-direction: column-reverse;
 			margin-right: 6%;
 			width: 27%;
@@ -75,6 +74,7 @@
 
 				&:checked + label {
 					color: #0080FF;
+
 					&:after {
 						border: 1px solid #0080FF;
 					}
@@ -83,7 +83,6 @@
 
 			label {
 				@include display-flex;
-
 				color: #A5ABB1;
 				font-size: 0.625em;
 				flex-direction: column;
@@ -100,7 +99,6 @@
 					padding: 20px 0;
 					margin: 10px 0;
 					color: #e0e4e8;
-					
 				}
 			}
 		}
@@ -108,13 +106,11 @@
 
 	.group-radio-two {
 		@include display-flex;
-
 		flex-wrap: wrap;
 		justify-content: left;
 
-		&--option{
+		&--option {
 			@include display-flex;
-
 			flex-direction: column-reverse;
 			margin-right: 6%;
 			width: 27%;
@@ -127,6 +123,7 @@
 
 				&:checked + label {
 					color: #0080FF;
+
 					&:before {
 						border: 1px solid #0080FF;
 					}
@@ -135,7 +132,6 @@
 
 			label {
 				@include display-flex;
-
 				color: #616161;
 				font-size: 0.625em;
 				flex-direction: column;
@@ -153,7 +149,6 @@
 					// padding: 20px 0 0 0;
 					// margin: 10px 0;
 					// color: #ffffff;
-
 					border-radius: 5px;
 					border: 1px solid #F0F5FD;
 					content: "\e912";
@@ -162,17 +157,14 @@
 					padding: 20px 0;
 					margin: 10px 0;
 					color: #e0e4e8;
-					
 				}
 			}
 		}
 	}
 
 	.authors-box {
-
 		ul {
 			@include display-flex;
-
 			flex-wrap: wrap;
 		}
 
@@ -194,12 +186,13 @@
 				right: -10px;
 				width: 16px;
 				background-color: #FFF;
+
 				&.icon {
 					&:before {
 						margin: 0;
 						font-size: smaller;
 					}
-				} 		
+				}
 			}
 
 			.add {
@@ -234,47 +227,52 @@
 					}
 				}
 			}
-
-
 		}
+
 		.name {
 			font-weight: bolder;
 		}
 
-		.name,
-		.cargue {
+		.cargue,
+		.name {
 			color: #616161;
 			font-style: italic;
 			font-size: 0.625em;
 			padding: 1px 0;
 		}
 	}
-
 }
-
 
 input[type='radio']:after {
 	width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    position: relative;
-    background-color: #fff;
-    content: "";
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid #d1d3d1;
+	height: 15px;
+	border-radius: 15px;
+	position: relative;
+	background-color: #fff;
+	content: "";
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid #d1d3d1;
 }
 
 input[type='radio']:checked:after {
 	width: 13px;
-    height: 13px;
-    top: 1px;
-    left: 1px;
-    border-radius: 15px;
-    position: relative;
-    background-color: #0080FF;
-    content: "";
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
+	height: 13px;
+	top: 1px;
+	left: 1px;
+	border-radius: 15px;
+	position: relative;
+	background-color: #0080FF;
+	content: "";
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid white;
+}
+
+button {
+	&.mat-button {
+		&:disabled {
+			background-color: #f5f7fb;
+		}
+	}
 }

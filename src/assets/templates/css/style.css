@@ -1,0 +1,418 @@
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+ol, ul {list-style: none;}
+
+blockquote, q {quotes: none;}
+a:active, a:hover {outline: 0;}
+body{-webkit-font-smoothing: antialiased;}
+
+html{
+    font-family: 'Helvetica-Neue';
+}
+
+h2{
+    font-size: 42px;
+    line-height: 44px;
+    color: #363636;
+    font-family: 'Helvetica-Neue';
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.box-title{
+    color: #EC2023;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Helvetica-Neue';
+}
+
+@font-face {
+    font-family: 'Helvetica-Neue';
+    src: url('../fonts/HelveticaNeue/HelveticaNeue.eot');
+    src: url('../fonts/HelveticaNeue/HelveticaNeue.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/HelveticaNeue/HelveticaNeue.woff2') format('woff2'),
+        url('../fonts/HelveticaNeue/HelveticaNeue.woff') format('woff'),
+        url('../fonts/HelveticaNeue/HelveticaNeue.ttf') format('truetype'),
+        url('../fonts/HelveticaNeue/HelveticaNeue.svg#HelveticaNeue') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+.da-lead-section{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 71px;
+    border-bottom: 1px solid #E3E3E3;
+}
+.da-lead-section .title{
+    font-size: 17px;
+}
+.da-lead-section p{
+    font-size: 12px;
+    color: #5F5F5F;
+    
+}
+.da-lead-section .dl-icon a{
+    color: #363636;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.da-ponderar{
+    max-width: 855px;
+    margin: 57px auto;
+}
+.da-ponderar .box-title{
+    margin-bottom: 31px;
+}
+
+.da-ponderar .ponderar-block p{
+    font-size: 15px;
+    color: #363636;
+    margin-bottom: 23px;
+    font-family: 'Helvetica-Neue';
+}
+.da-ponderar .ponderar-block a {
+    text-decoration: none;
+    color: #363636;
+}
+
+.brief-section{
+    background-color: #F7F7F7;
+    margin-top: 72px;
+    margin-bottom: 46px;
+}
+
+.brief-section.white{
+    background-color: #FFFFFF !important;
+}
+
+.podcast-video{
+    max-width: 210px;
+    margin-right: 45px;
+    background-color: #FFFFFF;
+    width: 100%;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 5px;
+}
+
+.podcast-video .video-button{
+    margin: 8px 6px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.podcast-video .video-button a{
+    text-transform: uppercase;
+    color: #818181;
+    border: 1px solid #818181;
+    font-size: 9px;
+    font-family: 'Helvetica-Neue';
+    border-radius: 5px;
+    padding: 4px 11px;
+    text-decoration: none;
+}
+
+.podcast-video .video-section{
+    margin: 0 18px;
+}
+
+.podcast-video .video-section iframe{
+    border-radius: 7px;
+}
+
+.podcast-video .video-desc{
+    margin: 0 18px;
+}
+
+.podcast-video .video-desc p{
+    font-size: 13px;  
+    color: #505050;
+    font-family: 'Helvetica-Neue';
+}
+
+.podcast-video .video-desc .title{
+    color: #E8162E;
+    font-size: 15px;
+    margin-bottom: 7px;
+}
+
+.brief-content{
+    max-width: 580px;
+    width: 100%;
+}
+.brief-content .brief-head .box-title{
+    font-weight: bold;
+}
+
+.brief-desc p{
+    color: #333333;
+    font-size: 17px;
+    line-height: 30px;
+    font-family: 'PT Serif', serif;
+}
+
+.initial-letter::first-letter{
+    font-size: 70px;
+    float: left;
+    line-height: .2;
+    margin: 17px 10px 0 0;
+    font-weight: 600;
+}
+
+.information-action .brief-head{
+    border-bottom: 1px solid #E3E3E3;
+}
+
+.information-action .ia-data .block{
+    margin-right: 59px;
+}
+
+.information-action .ia-data .block p{
+    font-size: 15px;
+    color: #363636;
+    margin-bottom: 23px;
+    font-family: 'Helvetica-Neue';
+}
+
+.information-download {
+    border-bottom: 1px solid #E3E3E3;
+    border-top: 1px solid #E3E3E3;
+    padding: 50px 0;
+}
+
+.information-download a{
+    background-color: #EF161A;
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 15px 30px;
+    text-transform: uppercase;
+    font-family: 'Helvetica-Neue';
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+}
+.information-download i{
+    margin-right: 12px;
+}
+
+.tag-section{
+
+}
+
+.tag-section .tag-quote p{
+    color: #5C5C5C;
+    font-size: 11px;
+    line-height: 16px;
+    font-style: italic;
+    font-family: 'Helvetica-Neue';
+    color: #5C5C5C;
+}
+
+.tag-section .tag-cta-list li{
+    margin-right: 15px;
+}
+
+.tag-section .tag-cta-list li a{
+    color: #8D9EAA;
+    border: 1px solid #B1C5D3;
+    font-size: 13px;
+    font-family: 'Helvetica-Neue';
+    border-radius: 5px;
+    padding: 4px 21px;
+    text-decoration: none;
+    display: block;
+}
+
+.person-portfolio .img-block img{
+    border-radius: 50%;
+}
+.person-portfolio .pf-descrition{
+    margin-left: 22px;
+}
+
+.person-portfolio .pf-descrition p{
+    margin-bottom: 5px;
+}
+
+.person-portfolio .pf-descrition .name p{
+    color: #363636;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 600;
+    text-decoration: underline;
+    font-family: 'Helvetica-Neue';
+
+}
+
+.person-portfolio .pf-descrition .designation p{
+    font-size: 12px;
+    color: #5F5F5F;
+    font-style: italic;
+    line-height: 14px;
+    font-family: 'Helvetica-Neue';
+
+}
+
+.person-portfolio .pf-descrition .quote p{
+    color: #5F5F5F;
+    font-size: 12px;
+    line-height: 16px;
+    font-family: 'Helvetica-Neue';
+
+}
+
+.person-portfolio .pf-descrition .email a{
+    color: #009EE2;
+    font-size: 11px;
+    line-height: 13px;
+    text-decoration: underline;
+}
+
+.person-portfolio .pf-descrition .email i{
+    margin-right: 10px;
+    color:#BEC5D0;
+}
+
+.company-legaltxt {
+    padding: 40px 0;
+    border-top: 1px solid #E3E3E3;
+    border-bottom: 1px solid #E3E3E3;
+    margin: 44px 44px;
+
+}
+
+.company-legaltxt p{
+    color: #90A1AC;
+    font-family: 'Helvetica-Neue';
+    font-style: italic;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.article-ralation{
+    margin: 44px 44px;
+    padding: 40px 0;
+    border-bottom: 1px solid #E3E3E3;
+}
+
+.article-ralation .title h2{
+    color: #363636;
+    font-size: 26px;
+    font-weight: 600;
+    font-family: 'Helvetica-Neue';
+}
+
+.article-ralation .article-block-section{
+
+}
+
+.article-ralation .article-block-section .block{
+    max-width: 300px;
+}
+
+.article-ralation .article-block-section .block-content{
+    padding: 10px;
+}
+
+.article-ralation .article-block-section .block-content .block-title p{
+    font-size: 18px;
+    color: #333333;
+    font-family: 'Helvetica-Neue';
+    font-weight: 600;
+}
+
+.article-ralation .article-block-section .block-content .block-title p.sub{
+    font-size: 12px;
+    font-family: 'PT Serif', serif;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.article-ralation .article-block-section .block-content .block-desc p{
+    font-family: 'PT Serif', serif;
+    font-size: 15px;
+    line-height: 25px;
+
+}
+
+.article-ralation .article-block-section .block-content .block-cta a{
+    color: #E8162E;
+    font-size: 13px;
+    font-family: 'Helvetica-Neue';
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+p.left-arrow-paragraph{
+    font-family: 'PT Serif', serif;
+    font-size: 17px;
+    line-height: 30px;
+    color: #333333;
+    margin-bottom: 2rem;
+}
+
+p.left-arrow-paragraph::before{
+    content: "";
+    width: 8px;
+    height: 14px;
+    background-image: url(../images/paragraph-arrow.png);
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.presentation .pr-full-bg{
+    background-color: #F5F5F5;
+}
+.presentation .da-lead-section{
+    border-bottom: 0;
+}
+
+.presentation .brief-section {
+    background-color: #F5F5F5;
+    padding-top: 72px;
+    padding-bottom: 46px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+@media (min-width: 1200px){
+    .container {
+        max-width: 1118px;
+    }
+}
+
+.carousel-indicators{
+    bottom: -50px;
+ 
+    position: initial;
+}
+
+.carousel-indicators li{
+    width: 107px;
+}
+
+.presentation-slider{
+    max-width: 630px;
+}
+
+.ts{
+    width: 100%;
+}
+
+.slick-slide img{
+    margin: 0 auto;
+}
+
+.ts img{
+    width: 100px;
+    margin: 0 auto;
+}

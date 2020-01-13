@@ -10,6 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 import { BoardComponent } from './board.component';
+import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
 
 const routes: Routes = [
     {
@@ -18,6 +19,10 @@ const routes: Routes = [
     },
     {
         path: ':id',
+        component: BoardComponent
+    },
+    {
+        path: ':stateId/:sectionId/:sectionTypeKey/:folderId/:templateId',
         component: BoardComponent
     }
 ];
@@ -35,6 +40,7 @@ const materialModules: any[] = [
         CommonModule,
         FormsModule,
 		materialModules,
+        PreviewDialogModule,
         RouterModule.forChild(routes)
     ],
   	exports: [

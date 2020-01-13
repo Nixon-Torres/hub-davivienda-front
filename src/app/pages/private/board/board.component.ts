@@ -1,7 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Grapes } from "./grapes/grape.config";
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { Report } from './board.model';
 import { HttpService } from '../../../services/http.service';
+import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
+
+import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 
@@ -16,31 +20,29 @@ declare var grapesjs: any;
 })
 
 export class BoardComponent implements OnInit, AfterViewInit {
-    public editor: any = null;
-    public grapes: any = null;
-    public report: any = {
-        "name": "",
-        "slug": "",
-        "trash": false,
-        "content": "",
-        "sectionTypeKey": "informe-nuevo",
-        "templateId": "0",
-        "userId": "5e024912b8287319151c688a",
-        "stateId": "5e024bcab8287319151c6897",
-        "sectionId": "5e024cc7b8287319151c6898",
-        "folderId": "5e024997b8287319151c688c"
+    private timer: any = {
+        change: null
+    };
+    public editor: any;
+    public grapes: any;
+    public report: Report = {
+        name: '',
+        slug: null,
+        trash: false,
+        styles: '',
+        content: '',
+        sectionTypeKey: null,
+        userId: null,
+        stateId: null,
+        sectionId: null
     };
 
     constructor(
+        public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private http: HttpService
     ) {
-        this.grapes = new Grapes({
-            selectorManager: '.styles-container',
-            blockManager: '.blocks-container',
-            styleManager: '.styles-container'
-        });
     }
 
     ngOnInit() {
@@ -48,47 +50,83 @@ export class BoardComponent implements OnInit, AfterViewInit {
             if (params.get("id")) {
                 this.report.id = params.get("id");
                 this.loadReport(this.report.id);
+            } else if (params.get("stateId")) {
+                let folderId = params.get('folderId');
+                let templateId = params.get('templateId');
+                this.report.stateId = params.get('stateId');
+                this.report.sectionId = params.get('sectionId');
+                this.report.sectionTypeKey = params.get('sectionTypeKey');
+                this.report.folderId = folderId ? folderId : null;
+                this.report.templateId = templateId ? templateId : null;
             }
         });
     }
 
     ngAfterViewInit() {
         if (!this.report.id) {
-            this.initGrapes();
+            this.loadTemplate(this.report.templateId);
         }
-
-        // Load Materialize tabs function after the grapes library has loaded
-        M.Tabs.init(document.querySelectorAll('.tabs'));
+        M.Tabs.init(document.querySelectorAll('.grapes-container .tabs')[0]);
     }
 
     private initGrapes(): void {
+        this.grapes = new Grapes({
+            selectorManager: '.styles-container',
+            blockManager: '.blocks-container',
+            styleManager: '.styles-container'
+        });
+
+        this.activeBlocks();
+        this.activeSectors();
+        this.loadEditor();
+        this.addStyles(this.report.content, this.report.styles);
+    }
+
+    private listenEventsEditor(): void {
+        this.editor.on('change:changesCount', () => {
+            if (this.timer.change) {
+                clearTimeout(this.timer.change);
+            }
+            this.timer.change = setTimeout(() => {
+                this.onSave(true);
+            }, 5000);
+        });
+    }
+
+    private loadEditor(): void {
+        this.editor = grapesjs.init(
+            this.grapes.get('config')
+        );
+        this.listenEventsEditor();
+    }
+
+    private activeBlocks(): void {
         this.grapes.activeBlocks([
             'Description', 'Image', 'Title'
         ]);
+    }
 
+    private activeSectors(): void {
         this.grapes.activeSectors([
             'Dimensions',
             'Extras'
         ]);
 
-        this.editor = grapesjs.init(this.grapes.get('config'));
     }
 
-    public loadReport(idReport: string): void {
+    private addStyles(content: string, styles: string): void {
+        this.editor.getWrapper().append(
+            `<style type="text/css">${styles}</style>${content}`
+        );
+    }
+
+    private loadReport(idReport: string): void {
         this.http.get({
-            'path': 'reports/' + idReport
+            'path': `reports/${idReport}`
         }).subscribe((response: any) => {
-            this.report.id = response.body.id;
-            this.report.name = response.body.name;
-            this.report.slug = response.body.slug;
-            this.report.trash = response.body.trash;
-            this.report.content = response.body.content;
-            this.report.sectionTypeKey = response.body.sectionTypeKey;
-            this.report.templateId = response.body.templateId;
-            this.report.userId = response.body.userId;
-            this.report.stateId = response.body.stateId;
-            this.report.sectionId = response.body.sectionId;
-            this.report.folderId = response.body.folderId;
+            response.body.folderId = response.body.folderId ? response.body.folderId : null;
+            response.body.templateId = response.body.templateId ? response.body.templateId : null;
+            this.report = response.body;
 
             setTimeout(() => {
                 this.initGrapes();
@@ -96,28 +134,69 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public onSave(): void {
-        this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
-        this.report.content = this.editor.getHtml();
-
-        if (this.report.id) {
-            this.http.put({
-                'path': 'reports/'+this.report.id,
-                'data': this.report
-            }).subscribe((response) => {
-                this.gotoPage();
-            });
-        } else {
-            this.http.post({
-                'path': 'reports',
-                'data': this.report
-            }).subscribe((response) => {
-                this.gotoPage();
-            });
+    private loadTemplate(templateId: string): void {
+        if (!templateId) {
+            this.initGrapes();
+            return;
         }
+
+        this.http.get({
+            'path': `templates/${templateId}`
+        }).subscribe((response: any) => {
+            this.report.content = response.body.content ? response.body.content : '';
+            this.report.styles = response.body.styles ? response.body.styles : '';
+
+            setTimeout(() => {
+                this.initGrapes();
+            }, 0);
+        });
     }
 
-    private gotoPage() {
+    private setPropertiesReport(): void {
+        this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
+        this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
+        this.report.styles = this.editor.getCss();
+        this.report.content = this.editor.getHtml();
+    }
+
+    public onSave(autoSave?: boolean): void {
+        if (autoSave && !this.report.content) return;
+        let isUpdate: boolean = this.report.id ? true : false;
+        let method: string = isUpdate ? 'put' : 'post';
+        let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
+        if (this.timer.change) {
+            clearTimeout(this.timer.change);
+        }
+
+        this.setPropertiesReport();
+        this.http[method]({
+            'path': path,
+            'data': this.report
+        }).subscribe(
+            (response: any) => {
+                response.body.folderId = response.body.folderId ? response.body.folderId : null;
+                response.body.templateId = response.body.templateId ? response.body.templateId : null;
+                this.report = response.body;
+                if (!autoSave) {
+                    this.goToPrincipalPage();
+                }
+            },
+            () => {
+                alert('¡Oops! \n Tus datos no se almacenaron');
+            }
+        );
+    }
+
+    public openPreviewDialog(): void {
+        this.dialog.open(PreviewDialogComponent, {
+            width: '1500px',
+            data: {
+                'reportId': this.report.id
+            }
+        });
+    }
+
+    private goToPrincipalPage(): void {
         this.router.navigate(['app/principal']);
     }
 }
