@@ -94,11 +94,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
    /** Set content dynamically for the report last update
     *
     * @param { lastupdate } Value for the last update from database
-    * @return { his.lastupdate } Time ago since last update
+    * @return { this.lastupdate } Time ago since last update
     */
     public setLastUpdate(lastupdate) {
+
         this.lastupdate = moment(lastupdate).fromNow();
-        setInterval(() => {
+
+        if (this.timer.lastupdate) clearInterval(this.timer.lastupdate);
+
+        this.timer.lastupdate = setInterval(() => {
             this.lastupdate = moment(lastupdate).fromNow();
         }, 30000);
     }
@@ -224,11 +228,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': this.report
         }).subscribe(
             (response: any) => {
-                response.body.folderId = response.body.folderId ? response.body.folderId : null;
-                response.body.templateId = response.body.templateId ? response.body.templateId : null;
-                this.report = response.body;
+
                 if (!autoSave) {
                     this.goToPrincipalPage();
+                } else {
+                    response.body.folderId = response.body.folderId ? response.body.folderId : null;
+                    response.body.templateId = response.body.templateId ? response.body.templateId : null;
+                    this.report = response.body;
+                    console.log(this.report);
+                    this.setLastUpdate(response.body.updatedAt);
                 }
             },
             () => {
