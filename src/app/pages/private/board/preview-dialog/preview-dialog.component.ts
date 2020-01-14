@@ -23,20 +23,28 @@ export class PreviewDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.report.id = this.data.reportId;
+        this.report.content = this.data.content;
+        this.report.styles = this.data.styles;
     }
 
     ngOnInit() {
+
         if (!this.report.id) {
             alert('¡Oops!\nNo encontramos el reporte');
             return;
         }
-        this.http.get({
-            'path': `reports/${this.report.id}`
-        }).subscribe((response: any) => {
-            this.report.styles = response.body.styles ? response.body.styles : '';
-            this.report.content = response.body.content ? response.body.content : '';
+
+        if (this.report.content && this.report.styles) {
             this.loadReport();
-        });
+        } else {
+            this.http.get({
+                'path': `reports/${this.report.id}`
+            }).subscribe((response: any) => {
+                this.report.styles = response.body.styles ? response.body.styles : '';
+                this.report.content = response.body.content ? response.body.content : '';
+                this.loadReport();
+            });
+        }
     }
 
     public loadReport(): void {
