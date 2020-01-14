@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { HttpService } from '../../../../services/http.service';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
 import { Router } from '@angular/router';
@@ -32,12 +33,13 @@ export class RightContentComponent implements OnInit {
         reports: []
     }
     public pager: any = {
-        limit: 3,
+        limit: 10,
         selected: 1,
         totalItems: 0,
         totalPages: 0,
         pages: []
     }
+    public listForm: FormGroup;
 
     @Input()
     set currentObj(value: any) {
@@ -135,12 +137,27 @@ export class RightContentComponent implements OnInit {
             query.filter.skip = 0;
         }
 
+        this.list.reports = [];
         this.http.get({
             path: `reports?${qs.stringify(query, { skipNulls: true })}`
-        }).subscribe((response) => {
-            this.list.reports = response.body;
+        }).subscribe((response: any) => {
+
+            // this.listForm = new FormGroup({
+            //     'selected': this.createReportsControl(response.body)
+            // });
+            // setTimeout(() => {
+            //     console.log('Huyyy Loco!!!', this.listForm);
+                this.list.reports = response.body;
+            // }, 3000);
         });
     }
+
+    // private createReportsControl(reportsInputs: Array<any>): FormArray {
+    //     const arr = reportsInputs.map((report: any) => {
+    //         return new FormControl(report.selected || false);
+    //     });
+    //     return new FormArray(arr);
+    // }
 
     public filterReports(text: string) {
         this.loadReports(text);
@@ -152,6 +169,17 @@ export class RightContentComponent implements OnInit {
             end: event.value.toString().replace('00:00:00', '23:59:59')
         };
         this.loadReports(this.ifilter);
+    }
+
+    public getSelectedReports() {
+        console.log(this.listForm.value);
+        // this.selectedHobbiesNames = _.map(
+        //     this.personForm.controls.hobbies["controls"],
+        //     (hobby, i) => {
+        //         return hobby.value && this.myhobbies[i].value;
+        //     }
+        // );
+        // this.getSelectedHobbiesName();
     }
 
     isFiltering() {

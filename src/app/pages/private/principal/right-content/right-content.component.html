@@ -50,26 +50,32 @@
 				<mat-tab label="Por revisar">
 					<!-- <h1>Por revisar</h1> -->
 					<div>
-						<ul class="report-list">
-							<li *ngFor="let report of list.reports; let indice=index">
-								<div class="row" [ngClass]="report.state?.color">
-									<span class="report--span">{{report.state?.name}}</span>
-									<input type="checkbox" id="report" value="1">
-									<h2 class="report--title">{{report.name}}</h2>
-									<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
-									<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
-									<span class="report--span">{{report.user?.name}}</span>
-									<div class="group-menu">
-										<button class="report--menu icon icon-ellipsis-h"></button>
-										<ul class="report--menu-list">
-											<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
-											<li><button class="icon icon-copy" (click)="onCloneReport($event,indice)">Duplicar</button></li>
-											<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,indice)">Eliminar</button></li>
-										</ul>
+						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
+							<ul class="report-list" formArrayName="selected">
+								<li *ngFor="let report of list.reports; let indice=index">
+									<div class="row" [ngClass]="report.state?.color">
+										<span class="report--span">{{report.state?.name}}</span>
+										<h2 class="report--title">{{report.name}}</h2>
+										<input type="checkbox">
+<!--
+										<mat-checkbox [formControlName]="i">
+											<h2 class="report--title">{{report.name}}</h2>
+										</mat-checkbox> -->
+										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
+										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
+										<span class="report--span">{{report.user?.name}}</span>
+										<div class="group-menu">
+											<button class="report--menu icon icon-ellipsis-h"></button>
+											<ul class="report--menu-list">
+												<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
+												<li><button class="icon icon-copy" (click)="onCloneReport($event,indice)">Duplicar</button></li>
+												<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,indice)">Eliminar</button></li>
+											</ul>
+										</div>
 									</div>
-								</div>
-							</li>
-						</ul>
+								</li>
+							</ul>
+						</form>
 					</div>
 				</mat-tab>
 			</mat-tab-group>
