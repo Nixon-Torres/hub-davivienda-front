@@ -54,6 +54,9 @@ export class RightContentComponent implements OnInit {
         private router: Router,
         private http: HttpService
     ) {
+        this.listForm = new FormGroup({
+            'reports': new FormArray([])
+        });
     }
 
     openDialog(): void {
@@ -71,18 +74,18 @@ export class RightContentComponent implements OnInit {
     }
 
 
-    private saveReport(clone): void {
+    private saveReport(clone: any): void {
         this.http.post({
             'path': 'reports',
             'data': clone
-        }).subscribe((response) => {
+        }).subscribe(() => {
         });
     }
 
     private deleteReport(id): void {
         this.http.delete({
             'path': 'reports/' + id
-        }).subscribe((response) => {
+        }).subscribe(() => {
         });
     }
 
@@ -141,23 +144,36 @@ export class RightContentComponent implements OnInit {
         this.http.get({
             path: `reports?${qs.stringify(query, { skipNulls: true })}`
         }).subscribe((response: any) => {
-
-            // this.listForm = new FormGroup({
-            //     'selected': this.createReportsControl(response.body)
-            // });
-            // setTimeout(() => {
-            //     console.log('Huyyy Loco!!!', this.listForm);
-                this.list.reports = response.body;
-            // }, 3000);
+            this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+            this.addCheckboxes(response.body);
+            this.list.reports = response.body;
         });
     }
 
-    // private createReportsControl(reportsInputs: Array<any>): FormArray {
-    //     const arr = reportsInputs.map((report: any) => {
-    //         return new FormControl(report.selected || false);
-    //     });
-    //     return new FormArray(arr);
-    // }
+    private addCheckboxes(reports: Array<any>): void {
+        for (let iReport in reports) {
+            if (reports.hasOwnProperty(iReport)) {
+                const control = new FormControl(false);
+                (this.listForm.controls.reports as FormArray).push(control);
+            }
+        }
+    }
+
+    private clearCheckboxes(formArray: FormArray): void {
+        while (formArray.length !== 0) {
+            formArray.removeAt(0);
+        }
+    }
+
+    private getCheckboxesSelected(): Array<any> {
+        return this.listForm.value.reports
+            .map((v: any, i: number) => v ? this.list.reports[i].id : null)
+            .filter((v: any) => v !== null);
+    }
+
+    boom() {
+        console.log('==> ', this.getCheckboxesSelected());
+    }
 
     public filterReports(text: string) {
         this.loadReports(text);
@@ -169,17 +185,6 @@ export class RightContentComponent implements OnInit {
             end: event.value.toString().replace('00:00:00', '23:59:59')
         };
         this.loadReports(this.ifilter);
-    }
-
-    public getSelectedReports() {
-        console.log(this.listForm.value);
-        // this.selectedHobbiesNames = _.map(
-        //     this.personForm.controls.hobbies["controls"],
-        //     (hobby, i) => {
-        //         return hobby.value && this.myhobbies[i].value;
-        //     }
-        // );
-        // this.getSelectedHobbiesName();
     }
 
     isFiltering() {
@@ -223,7 +228,6 @@ export class RightContentComponent implements OnInit {
     }
 
     public onDeleteReport(event: Event, pos: number) {
-
         let reportId = this.list.reports[pos].id;
         this.list.reports.splice(pos, 1);
 
