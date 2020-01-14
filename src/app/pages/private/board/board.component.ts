@@ -235,7 +235,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
                     this.report = response.body;
-                    console.log(this.report);
                     this.setLastUpdate(response.body.updatedAt);
                 }
             },
@@ -246,13 +245,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openPreviewDialog(): void {
-        this.dialog.open(PreviewDialogComponent, {
+
+        var paramsDialog = {
             width: '80vw',
             height: '80vh',
             data: {
-                'reportId': this.report.id
+                'reportId': this.report.id,
+                'styles': '',
+                'content':''
             }
-        });
+        };
+
+        // If the change timer is active
+        if (this.timer.change) {
+            clearTimeout(this.timer.change); // Stop the timer
+            this.onSave(true); // Save the report with autoload true
+        } else {
+            this.setPropertiesReport();
+            paramsDialog.data.styles = this.report.styles;
+            paramsDialog.data.content = this.report.content;
+        }
+
+        this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
     private goToPrincipalPage(): void {
