@@ -6,11 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
 import { Routes, RouterModule } from '@angular/router';
 
 
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
+import { CommentBoxComponent } from './comment-box/comment-box.component';
 
 const routes: Routes = [
     {
@@ -31,11 +33,12 @@ const materialModules: any[] = [
     MatButtonModule,
 	MatToolbarModule,
 	MatGridListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule
 ];
 
 @NgModule({
-    declarations: [BoardComponent],
+    declarations: [BoardComponent, CommentBoxComponent],
     imports: [
         CommonModule,
         FormsModule,

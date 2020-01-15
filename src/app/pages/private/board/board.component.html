@@ -41,13 +41,19 @@
 		</mat-toolbar-row>
 	</mat-toolbar>
 
-	<mat-grid-list cols="4" id="grapesBox">
+	<mat-grid-list cols="12" id="grapesBox">
 
-		<mat-grid-tile [colspan]="3" [rowspan]="1" class="builder">
+		<mat-grid-tile [colspan]="7" [rowspan]="1" class="builder">
 			<div id="gjs"></div>
 		</mat-grid-tile>
 
-		<mat-grid-tile [colspan]="1" [rowspan]="1" class="builder-tabs">
+		<mat-grid-tile [colspan]="2" [rowspan]="1">
+			<div class="row">
+				<app-comment-box [reportId]="report.id"></app-comment-box>
+			</div>
+		</mat-grid-tile>
+
+		<mat-grid-tile [colspan]="2" [rowspan]="1" class="builder-tabs">
 
 			<div class="row">
 				<div class="col s12">
