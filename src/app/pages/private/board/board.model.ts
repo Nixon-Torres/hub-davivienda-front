@@ -11,4 +11,5 @@ export interface Report {
     sectionId: string;
     folderId?: string;
     templateId?: string;
+    reviewed?: boolean;
 }

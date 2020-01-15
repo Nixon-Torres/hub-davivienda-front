@@ -12,9 +12,13 @@ import { Comment } from './comment-box.model';
     styleUrls: ['./comment-box.component.scss']
 })
 export class CommentBoxComponent implements OnInit {
-    @Input() reportId: string;
+    @Input('reportId') private reportId: string;
     public user: any = {};
-    public comment: Comment;
+    public comment: Comment = {
+        'id': null,
+        'reportId': null,
+        'text': ''
+    };
     public list: any = {
         comments: []
     };
@@ -23,20 +27,17 @@ export class CommentBoxComponent implements OnInit {
         private http: HttpService,
         private auth: AuthService
     ) {
-        this.comment = {
-            'id': null,
-            'reportId': this.reportId,
-            'text': ''
-        }
         this.user = this.auth.getUserData();
     }
 
     ngOnInit() {
+        this.comment.reportId = this.reportId;
+        this.loadComments();
     }
 
     loadComments() {
         this.http.get({
-            'path': 'comments/'
+            'path': 'comments?filter[include][][relation]=user'
         }).subscribe(
             (response) => {
                 this.list.comments = response.body;
@@ -50,7 +51,8 @@ export class CommentBoxComponent implements OnInit {
             'data': this.comment
         }).subscribe(
             () => {
-
+                this.comment.text = '';
+                this.loadComments();
             },
             () => {
                 alert('Oops!!! \nAlgo Salio Mal.');

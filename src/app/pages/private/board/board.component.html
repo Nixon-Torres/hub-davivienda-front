@@ -10,8 +10,11 @@
 				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
-				<button mat-stroked-button class="btn-white revision-cta">
+				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id == report.userId" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
+				</button>
+				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id != report.userId" [ngClass]="{'btn-primary': report.id}">
+					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
 				<button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">
 					<span class="icon icon-save"></span>Guardar
@@ -48,9 +51,7 @@
 		</mat-grid-tile>
 
 		<mat-grid-tile [colspan]="2" [rowspan]="1">
-			<div class="row">
-				<app-comment-box [reportId]="report.id"></app-comment-box>
-			</div>
+			<app-comment-box *ngIf="report.id" [reportId]="report.id"></app-comment-box>
 		</mat-grid-tile>
 
 		<mat-grid-tile [colspan]="2" [rowspan]="1" class="builder-tabs">

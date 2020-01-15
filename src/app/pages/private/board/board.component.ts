@@ -1,14 +1,16 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Report } from './board.model';
-import { HttpService } from '../../../services/http.service';
-import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
 
+import { HttpService } from '../../../services/http.service';
+import { AuthService } from '../../../services/auth.service';
+import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 import * as moment from 'moment';
+
+import { Report } from './board.model';
 
 declare var grapesjs: any;
 
@@ -21,11 +23,10 @@ declare var grapesjs: any;
 })
 
 export class BoardComponent implements OnInit, AfterViewInit {
-
     private timer: any = {
         change: null
     };
-
+    public user: any = {};
     public editor: any;
     public grapes: any;
     public lastupdate: string;
@@ -37,7 +38,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         content: '',
         sectionTypeKey: null,
         userId: null,
-        stateId: null,
+        stateId: '5e068d1cb81d1c5f29b62977',
+        folderId: '5e068fc5913f2a6087d4f562',
         sectionId: null
     };
 
@@ -45,8 +47,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private http: HttpService
-    ) {}
+        private http: HttpService,
+        private auth: AuthService
+    ) {
+        this.user = this.auth.getUserData();
+    }
 
     ngOnInit() {
 
@@ -57,6 +62,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get("id")) {
                 this.report.id = params.get("id");
+
+                console.log(this.report, this.user);
+
                 this.loadReport(this.report.id);
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -207,6 +215,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
         this.report.styles = this.editor.getCss();
         this.report.content = this.editor.getHtml();
+    }
+
+    public sendReview() {
+        this.report.reviewed = false;
+        this.report.stateId = '5e068d1cb81d1c5f29b62976';
+        this.onSave();
+    }
+
+    public approve() {
+        this.report.reviewed = true;
+        this.report.stateId = '5e068d1cb81d1c5f29b62974';
+        this.onSave();
     }
 
     /** Save the report on DB
