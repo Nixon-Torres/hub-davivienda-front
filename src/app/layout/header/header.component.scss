@@ -1,42 +1,43 @@
 @import '../../../assets/sass/_mixins';
 
 header {
-  height: 7.5vh;
-    
-  &.full-wrap {
+    height: 70px;
     border-bottom: solid 1px #EDEDED;
-  }
 
-  .logo {
-    height: auto;
-    width: 20%;
-  }
-
-  .session-status {
-    @include display-flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 60%;
-
-    img {
-      height: 6vh;
-      width: auto;
+    img.logo {
+        height: auto;
+        width: 20%;
     }
-    .name {
-      color: #616161;
-      font-size: 0.875em;
-      padding: 0 20px;
-      position: relative;
-      &:before {
-        @include arrow-down(5px, #BEC5D0);
-        content: '';
-        bottom: 0;
-        margin: auto;
-        top: 0;
-        position: absolute;
-        right: 0;
 
-      }     
+    .session-status {
+        @include display-flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 60%;
+
+        img.user {
+            height: 45px;
+            width: auto;
+        }
+
+        .username {
+            color: #616161;
+            font-size: 0.875em;
+            padding: 0 20px;
+            position: relative;
+
+            &:before {
+                @include arrow-down(5px, #BEC5D0);
+                content: '';
+                bottom: 0;
+                margin: auto;
+                top: 0;
+                position: absolute;
+                right: 0;
+            }
+
+        }
+
     }
-  }
+
 }
