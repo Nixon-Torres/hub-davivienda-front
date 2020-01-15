@@ -22,7 +22,6 @@
 		<section class="tabs">
 			<mat-tab-group (selectedTabChange)="tabClick($event)">
 				<mat-tab label="Mis Informes">
-					<!-- <h1>Mis informes</h1> -->
 					<div>
 						<ul class="report-list">
 							<li *ngFor="let report of list.reports; let indice=index">
@@ -49,7 +48,15 @@
 
 				<mat-tab label="Por revisar">
 					<div>
-						<!-- <button type="button" name="button" (click)="boom()">Boom!!!</button> -->
+						<div *ngIf="getCheckboxesSelected().length">
+							<mat-form-field class="simple" floatLabel="never">
+								<mat-label>Mover a:</mat-label>
+								<mat-select (selectionChange)="moveReports($event)">
+									<mat-option *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<button type="button" (click)="deleteReports()">Eliminar</button>
+						</div>
 						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
 							<ul class="report-list" formArrayName="reports">
 								<li *ngFor="let report of listForm.controls.reports.controls; let i = index">

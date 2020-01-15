@@ -6,7 +6,7 @@ export interface Report {
     styles: string;
     content: string;
     sectionTypeKey: string;
-    userId: string;
+    userId?: string;
     stateId: string;
     sectionId: string;
     folderId?: string;

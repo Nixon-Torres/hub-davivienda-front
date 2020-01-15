@@ -2,10 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } fro
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
-import { HttpService } from '../../../../services/http.service';
-import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
 import { Router } from '@angular/router';
+
+import { Report } from '../../board/board.model';
 import { loopback } from '../../../../models/common/loopback.model';
+import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
+import { HttpService } from '../../../../services/http.service';
+
 import * as qs from 'qs';
 import * as moment from 'moment';
 
@@ -30,7 +33,8 @@ export class RightContentComponent implements OnInit {
     ifilterreviewed: boolean = true;
 
     public list: any = {
-        reports: []
+        reports: [],
+        folders: []
     }
     public pager: any = {
         limit: 10,
@@ -71,6 +75,7 @@ export class RightContentComponent implements OnInit {
 
     ngOnInit() {
         this.loadReports();
+        this.getFolders();
     }
 
 
@@ -82,10 +87,18 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    private deleteReport(id): void {
+    private deleteReport(id: string): void {
         this.http.delete({
             'path': 'reports/' + id
         }).subscribe(() => {
+        });
+    }
+
+    private getFolders(): void {
+        this.http.get({
+            'path': 'folders/'
+        }).subscribe((response: any) => {
+            this.list.folders = response.body;
         });
     }
 
@@ -140,11 +153,11 @@ export class RightContentComponent implements OnInit {
             query.filter.skip = 0;
         }
 
+        this.clearCheckboxes(this.listForm.controls.reports as FormArray);
         this.list.reports = [];
         this.http.get({
             path: `reports?${qs.stringify(query, { skipNulls: true })}`
         }).subscribe((response: any) => {
-            this.clearCheckboxes(this.listForm.controls.reports as FormArray);
             this.addCheckboxes(response.body);
             this.list.reports = response.body;
         });
@@ -171,8 +184,67 @@ export class RightContentComponent implements OnInit {
             .filter((v: any) => v !== null);
     }
 
-    boom() {
-        console.log('==> ', this.getCheckboxesSelected());
+    public moveReports(event: any): void {
+        let selecteds: Array<string> = this.getCheckboxesSelected();
+        let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+            if (selecteds.indexOf(a.id) !== -1) {
+                a.folderId = event.value;
+                return true;
+            }
+            return false;
+        });
+
+        this.rcPutReport(toUpdate, 0, () => {
+            this.loadReports(this.ifilter);
+        });
+    }
+
+    public deleteReports(): void {
+        let selecteds: Array<string> = this.getCheckboxesSelected();
+        let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+            if (selecteds.indexOf(a.id) !== -1) {
+                a.trash = true;
+                return true;
+            }
+            return false;
+        });
+
+        this.rcPutReport(toUpdate, 0, () => {
+            this.loadReports(this.ifilter);
+        });
+    }
+
+    private rcPutReport(reports: Array<any>, index: number, fn: any): void {
+        if (index == reports.length) {
+            fn();
+            return;
+        }
+        let report: any = reports[index];
+        let data: Report = {
+            'id': report.id,
+            'name': report.name,
+            'slug': report.slug,
+            'trash': report.trash,
+            'content': report.content,
+            'styles': report.styles,
+            'sectionTypeKey': report.sectionTypeKey,
+            'templateId': report.templateId,
+            'stateId': report.stateId,
+            'sectionId': report.sectionId,
+            'folderId': report.folderId
+        };
+        this.http.put({
+            'path': `reports/${data.id}`,
+            'data': data
+        }).subscribe(
+            () => {
+                index++;
+                this.rcPutReport(reports, index, fn);
+            },
+            () => {
+                alert('Oops!!! \nNo actualizamos tus datos. Intenta más tarde');
+            }
+        );
     }
 
     public filterReports(text: string) {
