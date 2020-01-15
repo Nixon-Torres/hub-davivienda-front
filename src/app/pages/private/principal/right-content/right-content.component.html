@@ -12,9 +12,7 @@
 			<input type="text" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas...">
 		</div>
 		<div class="date-container">
-			<input [matDatepicker]="dateFilter" (dateChange)="filterDateReports($event)">
-			<mat-datepicker-toggle [for]="dateFilter"></mat-datepicker-toggle>
-			<mat-datepicker #dateFilter></mat-datepicker>
+			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
 		</div>
 	</div>
 
