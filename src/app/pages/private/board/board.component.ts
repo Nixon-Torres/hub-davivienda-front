@@ -26,6 +26,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private timer: any = {
         change: null
     };
+    public fromReportId: string = null;
     public user: any = {};
     public editor: any;
     public grapes: any;
@@ -43,7 +44,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         sectionId: null
     };
 
-    constructor (
+    constructor(
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -69,6 +70,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
                 let templateId = params.get('templateId');
+                this.fromReportId = params.get('reportId');
                 this.report.stateId = params.get('stateId');
                 this.report.sectionId = params.get('sectionId');
                 this.report.sectionTypeKey = params.get('sectionTypeKey');
@@ -99,11 +101,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-   /** Set content dynamically for the report last update
-    *
-    * @param { lastupdate } Value for the last update from database
-    * @return { this.lastupdate } Time ago since last update
-    */
+    /** Set content dynamically for the report last update
+     *
+     * @param { lastupdate } Value for the last update from database
+     * @return { this.lastupdate } Time ago since last update
+     */
     public setLastUpdate(lastupdate) {
 
         this.lastupdate = moment(lastupdate).fromNow();
@@ -193,13 +195,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @return { this.report } Set the HTML content and CSS for template
     */
     private loadTemplate(templateId: string): void {
-        if (!templateId) {
+        if (!templateId && !this.fromReportId) {
             this.initGrapes();
             return;
         }
 
+        let path = templateId ? `templates/${templateId}` : `reports/${this.fromReportId}`;
         this.http.get({
-            'path': `templates/${templateId}`
+            'path': path
         }).subscribe((response: any) => {
             this.report.content = response.body.content ? response.body.content : '';
             this.report.styles = response.body.styles ? response.body.styles : '';
@@ -272,7 +275,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             data: {
                 'reportId': this.report.id,
                 'styles': '',
-                'content':''
+                'content': ''
             }
         };
 

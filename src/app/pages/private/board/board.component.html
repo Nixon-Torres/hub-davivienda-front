@@ -13,7 +13,7 @@
 				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id == report.userId" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id != report.userId" [ngClass]="{'btn-primary': report.id}">
+				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id != report.userId" [ngClass]="{'btn-primary': report.id}" (click)="approve()">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
 				<button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">

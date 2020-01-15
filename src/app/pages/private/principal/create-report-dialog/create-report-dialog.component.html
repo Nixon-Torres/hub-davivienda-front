@@ -59,6 +59,12 @@
 					</div>
 				</mat-tab>
 				<mat-tab label="Mis Plantillas">
+					<div class="group-radio-two">
+						<div class="group-radio-two--option" *ngFor="let report of list.reports">
+							<input type="radio" formControlName="reportId" [value]="report.id" [id]="report.id">
+							<label class="" [for]="report.id">{{report.name}}</label>
+						</div>
+					</div>
 				</mat-tab>
 			</mat-tab-group>
 		</div>

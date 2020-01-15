@@ -3,7 +3,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import * as qs from 'qs';
+
 import { HttpService } from '../../../../services/http.service';
+import { AuthService } from '../../../../services/auth.service';
+import { loopback } from '../../../../models/common/loopback.model';
 
 @Component({
     selector: 'app-create-report-dialog',
@@ -16,6 +20,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     constructor(
         public dialogRef: MatDialogRef<CreateReportDialogComponent>,
         private http: HttpService,
+        private auth: AuthService,
         private router: Router,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) { }
@@ -28,7 +33,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         typeSections: [],
         authors: this.authors,
         templates: [],
-        users: []
+        users: [],
+        reports: []
     }
 
     ngOnInit() {
@@ -45,7 +51,24 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         this.createReportForm.patchValue({
             'folderId': this.data.folderId,
-            'stateId': this.data.stateId
+            'stateId': this.data.stateId,
+            'reportId': this.data.reportId
+        });
+        this.loadReports();
+    }
+
+    private loadReports(): void {
+        var query = new loopback();
+        console.log(this.auth.getUserData('id'));
+        query.filter.where['userId'] = this.auth.getUserData('id');
+        query.filter.where['trash'] = false;
+        query.filter.where['reviewed'] = true;
+        query.filter.limit = 6;
+        query.filter.order = 'id DESC';
+        this.http.get({
+            'path': `reports?${qs.stringify(query, { skipNulls: true })}`
+        }).subscribe((response: any) => {
+            this.list.reports = response.body;
         });
     }
 
@@ -110,6 +133,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         path += `/${this.createReportForm.value.sectionTypeKey}`;
         path += `/${(this.createReportForm.value.folderId)}`;
         path += `/${this.createReportForm.value.templateId}`;
+        path += `/${this.createReportForm.value.reportId}`;
         this.router.navigate([path]);
     }
 

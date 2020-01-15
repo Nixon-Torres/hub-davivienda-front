@@ -23,9 +23,9 @@ export class AuthService {
         return token ? true : false;
     }
 
-    public getUserData(): any {
+    public getUserData(attr?: string): any {
         let token = this.get();
-        return token ? token.user : {};
+        return (token ? (attr ? token.user[attr] : token.user) : {});
     }
 
     public login(context: LoginContext): Observable<any> {
