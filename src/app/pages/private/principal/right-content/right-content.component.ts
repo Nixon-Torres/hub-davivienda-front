@@ -158,7 +158,10 @@ export class RightContentComponent implements OnInit {
             path: `reports?${qs.stringify(query, { skipNulls: true })}`
         }).subscribe((response: any) => {
             this.addCheckboxes(response.body);
-            this.list.reports = response.body;
+            setTimeout(() => {
+                this.list.reports = response.body;
+            }, 100)
+
         });
     }
 
