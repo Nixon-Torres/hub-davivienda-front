@@ -1,20 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+/*!
+ * HUB Davivienda (https://example.com)
+ * Copyright 2020 Quadi
+
+ 	• General
+ 	• Header
+ 	• Principal component
+ 		- Dialog component
+ 			· Select 2
+ 	• Board componen
+ */
 
 @import '../node_modules/reset-css/reset.css';
 @import '~@angular/material/theming';
 @import 'assets/sass/_mixins';
 @import 'assets/fonts/fonts';
-html, body {
-	height: 100%;
-}
+
 body {
-	margin: 0;
-	font-family: Roboto, "Helvetica Neue", sans-serif;
+	// font-family: Roboto, "Helvetica Neue", sans-serif;
+	font-family: 'Helvetica Neue', sans-serif;
 }
-.full-wrap {
-	width: 100%;
-	background: #ffffff;
+
+.container {
+	width: 88%;
+	margin: auto;
 }
+
+
+/* ========================================================= *\
+							HEADER
+\* ========================================================= */
 
 .content-wrap {
 	@include display-flex;
@@ -26,6 +40,11 @@ body {
 	max-width: 1440px;
 	width: 88%; 
 }
+
+
+/* =========================================================== *\
+    						PRINCIPAL
+\* =========================================================== */
 
 //Overview Material
 .mat-dialog-container {
@@ -113,6 +132,11 @@ body {
 		color: #0080FF;
 	}   
 }
+
+
+/* ============================================================= *\
+    							BOARD
+\* ============================================================= */
 
 // GRAPES
 $builder-bg: #f5f7fb;
