@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -251,11 +250,12 @@ export class RightContentComponent implements OnInit {
         this.loadReports(text);
     }
 
-    public filterDateReports(event: MatDatepickerInputEvent<Date>) {
+    public filterDateReports(event: any) {
         this.ifilterdate = {
-            start: event.value.toString(),
-            end: event.value.toString().replace('00:00:00', '23:59:59')
+            start: event.startDate.toString(),
+            end: event.endDate.toString().replace('00:00:00', '23:59:59')
         };
+
         this.loadReports(this.ifilter);
     }
 

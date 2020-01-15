@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelect2Module } from 'ng-select2';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -27,44 +28,45 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 
 const routes: Routes = [
-	{
-		path: '',
-		component: PrincipalComponent
-	}
+    {
+        path: '',
+        component: PrincipalComponent
+    }
 ];
 
 const materialModules: any[] = [
-	MatTabsModule,
-	MatDialogModule,
-	MatAutocompleteModule,
-	MatCheckboxModule,
-	MatDatepickerModule,
-	MatNativeDateModule,
-	MatFormFieldModule,
-	MatInputModule,
-	MatRadioModule,
-	MatSliderModule,
-	MatSlideToggleModule,
-	MatButtonModule,
-	MatSelectModule
+    MatTabsModule,
+    MatDialogModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatSelectModule
 ];
 
 @NgModule({
-	declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent],
-	imports: [
-		CommonModule,
-		materialModules,
-		FormsModule,
-		ReactiveFormsModule,
-		RouterModule.forChild(routes),
-		NgSelect2Module
-	],
-	exports: [
-		materialModules
-	],
-	entryComponents: [
-		DialogBoxComponent,
-		CreateReportDialogComponent
-	]
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent],
+    imports: [
+        CommonModule,
+        materialModules,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(routes),
+        NgSelect2Module,
+        NgxDaterangepickerMd.forRoot()
+    ],
+    exports: [
+        materialModules
+    ],
+    entryComponents: [
+        DialogBoxComponent,
+        CreateReportDialogComponent
+    ]
 })
 export class PrincipalModule { }

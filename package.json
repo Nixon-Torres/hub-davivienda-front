@@ -29,6 +29,7 @@
     "materialize-css": "^1.0.0",
     "moment": "^2.24.0",
     "ng-select2": "^1.2.2",
+    "ngx-daterangepicker-material": "^2.1.11",
     "qs": "^6.9.1",
     "reset-css": "^5.0.1",
     "rxjs": "~6.4.0",
