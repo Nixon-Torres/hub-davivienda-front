@@ -8,6 +8,13 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 }
 
 .top-section-list {
+	position: relative;
+
+	.calender-container{
+		position: absolute;
+		right: 0;
+	}
+
     .back-btn {
         margin-top: 15px;
         font-size: 12px;
@@ -418,5 +425,25 @@ section {
 		a.active {
 			background-color: #007DFF;
 			color: white;
+		}
+	}
+
+
+	.calender-icon{
+		position: relative;
+		color: #A5ABB1;
+		font-size: 11px;
+		margin-right: 20px;
+		margin-left: 13px;
+		cursor: pointer;
+		&::after{
+			content: "";
+			background: url(/assets/images/calender-icon.png) no-repeat center center;
+			width: 18px;
+			height: 20px;
+			position: absolute;
+			right: -33px;
+			transform: translate(-50%, -50%);
+    		top: 50%;
 		}
 	}

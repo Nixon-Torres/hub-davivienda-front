@@ -9,9 +9,9 @@
 			<a (click)="cleanFilters()">&#60; Volver </a>
 		</div>
 		<div class="search-container">
-			<input type="text" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas...">
+			<input type="text" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="calender-icon" (click)="toggleCalendar()"> Por fecha: </i>
 		</div>
-		<div class="date-container">
+		<div class="date-container calender-container" *ngIf="calendarOpen">
 			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
 		</div>
 	</div>
@@ -45,8 +45,8 @@
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
 												<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
-												<li><button class="icon icon-copy" (click)="onCloneReport($event,indice)">Duplicar</button></li>
-												<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,indice)">Eliminar</button></li>
+												<li><button class="icon icon-copy" (click)="onCloneReport($event,i)">Duplicar</button></li>
+												<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,i)">Eliminar</button></li>
 											</ul>
 										</div>
 									</div>
@@ -82,8 +82,8 @@
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
 												<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
-												<li><button class="icon icon-copy" (click)="onCloneReport($event,indice)">Duplicar</button></li>
-												<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,indice)">Eliminar</button></li>
+												<li><button class="icon icon-copy" (click)="onCloneReport($event,i)">Duplicar</button></li>
+												<li><button class="icon icon-trash-alt" (click)="onDeleteReport($event,i)">Eliminar</button></li>
 											</ul>
 										</div>
 									</div>

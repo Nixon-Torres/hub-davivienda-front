@@ -20,6 +20,8 @@ export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
 
+    public calendarOpen : boolean = false;
+
     icurrentObj: {
         currentFolder: null,
         currentState: null,
@@ -60,6 +62,14 @@ export class RightContentComponent implements OnInit {
         this.listForm = new FormGroup({
             'reports': new FormArray([])
         });
+    }
+
+    toggleCalendar(){
+        if(!this.calendarOpen){
+            this.calendarOpen = true;
+        }else{
+            this.calendarOpen = false;
+        }
     }
 
     openDialog(): void {
@@ -127,7 +137,7 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    private loadReports(filter?: string | null, pager?: any): void {
+    public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         var query = new loopback();
         query.filter.include.push({ relation: "folder" }, { relation: "user" }, { relation: "state" }, { relation: "section" });
@@ -180,7 +190,7 @@ export class RightContentComponent implements OnInit {
         }
     }
 
-    private getCheckboxesSelected(): Array<any> {
+    public getCheckboxesSelected(): Array<any> {
         return this.listForm.value.reports
             .map((v: any, i: number) => v ? this.list.reports[i].id : null)
             .filter((v: any) => v !== null);
