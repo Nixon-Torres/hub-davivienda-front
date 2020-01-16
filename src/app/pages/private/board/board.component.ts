@@ -39,8 +39,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         content: '',
         sectionTypeKey: null,
         userId: null,
-        stateId: '5e068d1cb81d1c5f29b62977',
-        folderId: '5e068fc5913f2a6087d4f562',
+        stateId: null,
+        folderId: null,
         sectionId: null
     };
 
