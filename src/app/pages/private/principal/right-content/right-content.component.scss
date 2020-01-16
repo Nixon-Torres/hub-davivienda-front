@@ -8,6 +8,13 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 }
 
 .top-section-list {
+	position: relative;
+
+	.calender-container{
+		position: absolute;
+		right: 0;
+	}
+
     .back-btn {
         margin-top: 15px;
         font-size: 12px;
