@@ -46,14 +46,17 @@
 
 	<mat-grid-list cols="12" id="grapesBox">
 
+		<!-- EDITOR -->
 		<mat-grid-tile [colspan]="7" [rowspan]="1" class="builder">
 			<div id="gjs"></div>
 		</mat-grid-tile>
 
-		<mat-grid-tile [colspan]="2" [rowspan]="1">
+		<!-- COMMENTS -->
+		<mat-grid-tile [colspan]="2" [rowspan]="1" class="comments">
 			<app-comment-box *ngIf="report.id" [reportId]="report.id"></app-comment-box>
 		</mat-grid-tile>
 
+		<!-- PANEL -->
 		<mat-grid-tile [colspan]="2" [rowspan]="1" class="builder-tabs">
 
 			<div class="row">
