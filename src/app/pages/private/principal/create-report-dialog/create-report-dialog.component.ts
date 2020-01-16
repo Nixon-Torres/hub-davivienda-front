@@ -44,8 +44,9 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.initCreteReportForm();
     }
 
-    onNoClick(): void {
+    onNoClick(): boolean {
         this.dialogRef.close();
+        return false;
     }
 
     ngAfterViewInit() {
