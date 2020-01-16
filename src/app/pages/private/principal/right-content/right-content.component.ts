@@ -137,7 +137,7 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    private loadReports(filter?: string | null, pager?: any): void {
+    public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         var query = new loopback();
         query.filter.include.push({ relation: "folder" }, { relation: "user" }, { relation: "state" }, { relation: "section" });
@@ -190,7 +190,7 @@ export class RightContentComponent implements OnInit {
         }
     }
 
-    private getCheckboxesSelected(): Array<any> {
+    public getCheckboxesSelected(): Array<any> {
         return this.listForm.value.reports
             .map((v: any, i: number) => v ? this.list.reports[i].id : null)
             .filter((v: any) => v !== null);
