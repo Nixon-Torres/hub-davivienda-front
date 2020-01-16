@@ -195,7 +195,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @return { this.report } Set the HTML content and CSS for template
     */
     private loadTemplate(templateId: string): void {
-        if (!templateId && !this.fromReportId) {
+        if (templateId.toString() == 'false' && this.fromReportId.toString() == 'false') {
             this.initGrapes();
             return;
         }

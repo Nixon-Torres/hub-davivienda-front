@@ -51,15 +51,13 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         this.createReportForm.patchValue({
             'folderId': this.data.folderId,
-            'stateId': this.data.stateId,
-            'reportId': this.data.reportId
+            'stateId': this.data.stateId
         });
         this.loadReports();
     }
 
     private loadReports(): void {
         var query = new loopback();
-        console.log(this.auth.getUserData('id'));
         query.filter.where['userId'] = this.auth.getUserData('id');
         query.filter.where['trash'] = false;
         query.filter.where['reviewed'] = true;
@@ -78,7 +76,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             sectionTypeKey: new FormControl('', Validators.required),
             stateId: new FormControl(false),
             folderId: new FormControl(false),
-            templateId: new FormControl(false)
+            templateId: new FormControl(false),
+            reportId: new FormControl(false)
         });
     }
 
