@@ -20,6 +20,8 @@ export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
 
+    public calendarOpen : boolean = false;
+
     icurrentObj: {
         currentFolder: null,
         currentState: null,
@@ -60,6 +62,14 @@ export class RightContentComponent implements OnInit {
         this.listForm = new FormGroup({
             'reports': new FormArray([])
         });
+    }
+
+    toggleCalendar(){
+        if(!this.calendarOpen){
+            this.calendarOpen = true;
+        }else{
+            this.calendarOpen = false;
+        }
     }
 
     openDialog(): void {

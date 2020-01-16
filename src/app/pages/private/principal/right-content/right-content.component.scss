@@ -420,3 +420,23 @@ section {
 			color: white;
 		}
 	}
+
+
+	.calender-icon{
+		position: relative;
+		color: #A5ABB1;
+		font-size: 11px;
+		margin-right: 20px;
+		margin-left: 13px;
+		cursor: pointer;
+		&::after{
+			content: "";
+			background: url(/assets/images/calender-icon.png) no-repeat center center;
+			width: 18px;
+			height: 20px;
+			position: absolute;
+			right: -33px;
+			transform: translate(-50%, -50%);
+    		top: 50%;
+		}
+	}
