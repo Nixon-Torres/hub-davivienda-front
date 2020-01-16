@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 
+import { MatMenuModule } from '@angular/material/menu';
+import { MatRippleModule } from '@angular/material/core'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +21,9 @@ import { HeaderComponent } from './layout/header/header.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatMenuModule,
+    MatRippleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,43 +1,60 @@
 @import '../../../assets/sass/_mixins';
 
 header {
-    height: 70px;
+   height: 70px;
     border-bottom: solid 1px #EDEDED;
 
-    img.logo {
-        height: auto;
-        width: 20%;
-    }
+    & > .container {
+        height: 100%;
 
-    .session-status {
-        @include display-flex;
-        align-items: center;
-        justify-content: flex-end;
-        width: 60%;
-
-        img.user {
-            height: 45px;
-            width: auto;
+        img.logo {
+            width: 20%;
+            height: auto;
+            margin-top: 15px;
         }
 
-        .username {
-            color: #616161;
-            font-size: 0.875em;
-            padding: 0 20px;
-            position: relative;
+        .h-btn {
+            float: right;
+            border-left: solid 1px #EDEDED;
 
-            &:before {
-                @include arrow-down(5px, #BEC5D0);
-                content: '';
-                bottom: 0;
-                margin: auto;
-                top: 0;
-                position: absolute;
-                right: 0;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        & > button {
+            height: 100%;
+            border: none;
+            background: transparent;
+
+            i {
+                margin: auto 5px;
+            }
+        }
+
+        .user-menu {
+
+            img {
+                height: 45px;
+                margin: 12.5px 15px;
+                border-radius: 22.5px;
             }
 
+            span {
+                bottom: 27px;
+                position: relative;
+                margin-right: 15px; 
+
+                &:after {
+                    top: 12px;
+                    left: 15px;
+                    content: '';
+                    position: relative;
+                    @include arrow-down(5px, #BEC5D0);
+                }
+            }
         }
 
+        
     }
-
 }
