@@ -6,7 +6,8 @@
 	width: 100%;
 
 	.two-columns {
-		padding: 24px;
+		// padding: 24px;
+		padding: 0 24px 0 24px;
 		position: relative;
 		width: 50%;
 		text-align: center;
@@ -14,12 +15,14 @@
 		&.diff-color {
 			background: #F5F7FB;
 			position: relative;
+			margin: -24px -24px -24px 0;
+			padding: 24px 48px 48px 48px;
 		}
 
 		.modal-close-cta {
 			position: absolute;
-			right: 0;
-			top: 0;
+			right: 24px;
+			top: 24px;
 			color: #616161;
 			font-style: italic;
 			font-size: 12px;
@@ -276,3 +279,25 @@ button {
 		}
 	}
 }
+
+
+.modal-form .mat-dialog-actions{
+	margin-bottom: 0;
+	width: calc(100% - 84px);
+}
+
+.divider-line{
+	position: relative;
+    margin-left: -48px !important;
+    margin-top: 25px;
+    padding-bottom: 40px;
+    margin-right: -24px !important;
+}
+
+.divider-line span{
+	position: absolute;
+    width: 100%;
+    right: 0;
+    border-top: 1px solid #E7EAF1;
+}
+
