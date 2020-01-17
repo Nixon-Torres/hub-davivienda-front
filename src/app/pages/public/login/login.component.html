@@ -13,12 +13,12 @@
                 <input type="password" formControlName="password" title="username" placeholder="Contraseña" password>
                 <div>
                     <input type="checkbox" formControlName="remember" id="css">
-                    <label for="css">Mantenr mi cuenta abierta</label>
+                    <label class="small-label" for="css">Mantener mi cuenta abierta</label>
                 </div>
                 <div>
                     <p *ngIf="showErrorMsg">Usuario o contraseña invalido, intente mas tarde</p>
                 </div>
-                <button type="submit" class="btn login" [disabled]="!loginForm.valid">Iniciar sesión > </button>
+                <button type="submit" class="btn login margin" [disabled]="!loginForm.valid">Iniciar sesión > </button>
             </form>
         </div>
     </div>
