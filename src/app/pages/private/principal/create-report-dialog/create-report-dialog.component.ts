@@ -92,7 +92,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private loadUsers() {
         this.http.get({
-            'path': 'users'
+            'path': 'users/list'
         }).subscribe((response) => {
             this.list.users = response.body;
         });
