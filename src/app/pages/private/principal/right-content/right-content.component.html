@@ -40,7 +40,7 @@
 										</mat-checkbox>
 										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
 										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
-										<span class="report--span">{{report.user?.name}}</span>
+										<span class="report--span">{{report.user?.username}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
@@ -77,7 +77,7 @@
 										</mat-checkbox>
 										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
 										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
-										<span class="report--span">{{report.user?.name}}</span>
+										<span class="report--span">{{report.user?.username}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
