@@ -25,7 +25,25 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
     .search-container  {
         text-align: right;
 		margin: 20px 0px;
-		
+
+		.icon-calendar{
+			padding-right: 30px;
+			position: relative;
+			font-size: 0.688em;
+			color: #A5ABB1;
+			padding-left: 15px;
+			line-height: 1.25em;
+
+			&:before {
+				position: absolute;
+				right: 7px;
+				margin: 0;
+				font-size: 1.7em;
+				top: 0;
+				bottom: 0;
+				margin: auto;			}	
+		}
+
         input {
             width: 300px;
             line-height: 11px;
@@ -35,7 +53,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
             font-size: 14px;
 			font-weight: 200;
 			border: 1px solid #BEC5D0;
-			background: #FFFFFF 0% 0% no-repeat padding-box;
+			/* background: #FFFFFF 0% 0% no-repeat padding-box; */
             ::placeholder {
 				color: #BEC5D0 !important;
 				opacity: 0.5;
@@ -310,7 +328,7 @@ section {
 	.report-main-title{
 		width: 40%;
 		h2{
-			margin-right: 10px;
+			margin-right: 2vw;
 			text-transform: capitalize;
 		}
 	}
@@ -325,7 +343,58 @@ section {
 	}
 }
 
+.folder_container{
+	padding-bottom: 3%;
 
+	.operation-cta{
+		display: inline-block;
+		width: 50%;
+		position: relative;
+		margin-left: 35px;
+		ul{
+			display: flex;
+			align-items: flex-end;
+			justify-content: flex-end;
+			li{
+				margin-right: 40px;
+				a{
+					color: #616161;
+					font-size: 12px;
+					font-family: "Helvetica Neue", sans-serif;
+					font-weight: bold;
+					text-decoration: underline;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					&.active{
+						color: #A5ABB1;
+					}
+				}
+				&:last-child{
+					margin-right: 0;
+				}
+	
+			}
+		}
+		&::before{
+			content: '';
+			border-left: 1px solid silver;
+			width: 1px;
+			height: 50px;
+			position: absolute;
+			left: 50px;
+			top: -16px;
+		}
+	}
+}
+
+
+
+// .fa-redo-alt{
+// 	background: url("/assets/images/redo-alt-solid.svg") no-repeat center center;
+// 	width: 16px;
+// 	height: 16px;
+// }
 
   
   

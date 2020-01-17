@@ -13,12 +13,17 @@
 			</div>
 		</div>
 
-		<mat-form-field class="simple" floatLabel="never">
+<!-- 		<mat-form-field class="simple" floatLabel="never">
 			<mat-label>Seleccione el tipo de Informe</mat-label>
 			<mat-select formControlName="sectionTypeKey">
 				<mat-option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</mat-option>
 			</mat-select>
-		</mat-form-field>
+		</mat-form-field> -->
+		<ng-select2 formControlName="sectionTypeKey" placeholder="Seleccione el tipo de Informe">
+			<option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</option>
+		</ng-select2>
+
+		<span class="divider"></span>
 
 		<h3 class="title icon icon-user-alt">Autor(es)</h3>
 		<p class="intro">Agregue / edite el autor o colaborador que participará en el informe</p>
@@ -36,16 +41,21 @@
 				</li>
 			</ul>
 
-			<mat-form-field class="simple" floatLabel="never">
+<!-- 			<mat-form-field class="simple" floatLabel="never">
 				<mat-label>Seleccione el author o colaborador</mat-label>
-				<mat-select shouldLabelFloat="false" (selectionChange)="onOptionsSelected($event)" [(value)]="selectedAuthor">
-					<mat-option *ngFor="let user of list.users; index as i" value="{{i}}">{{user.name}}</mat-option>
+				<mat-select shouldLabelFloat="false" (selectionChange)="onOptionsSelected()" [(value)]="selectedAuthor">
+					<mat-option *ngFor="let user of list.users; index as i" value="{{user.id}}">{{user.name}}</mat-option>
 				</mat-select>
-			</mat-form-field>
+			</mat-form-field> -->
+
+			<ng-select2 formControlName="sectionTypeKey" placeholder="Seleccione el tipo de Informe"  (selectionChange)="onOptionsSelected()" [(value)]="selectedAuthor">
+				<option *ngFor="let user of list.users; index as i" value="{{i}}">{{user.name}}</option>
+			</ng-select2>
+
 		</div>
 	</div>
 	<div class="two-columns diff-color">
-		<a (click)="onNoClick()" class="modal-close-cta">Cerrar <span>X</span> </a>
+		<a (click)="onNoClick()" class="modal-close-cta">Cerrar <span class="icon icon-times"></span> </a>
 		<h3 class="title icon icon-user-alt">Plantillas</h3>
 		<p class="intro">Seleccione la plantilla que mejor se acomode a su informe</p>
 		<div class="tabs">
