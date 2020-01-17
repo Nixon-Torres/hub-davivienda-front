@@ -5,12 +5,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 import * as moment from 'moment';
 
 import { Report } from './board.model';
+import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 
 declare var grapesjs: any;
 
@@ -230,32 +232,64 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public sendBacktoReview() {
         this.report.reviewed = false;
         this.report.stateId = '5e068d1cb81d1c5f29b62975';
-        this.onSave();
+        this.onSave(false, () =>  {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '500px',
+                data: {
+                    title: 'Tu informe ha sido enviado a revisión con ajustes:',
+                    subtitle: this.report.name
+                }
+            });
+        });
     }
 
     public sendReview() {
         this.report.reviewed = false;
         this.report.stateId = '5e068d1cb81d1c5f29b62976';
-        this.onSave();
+        this.onSave(false, () =>  {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '500px',
+                data: {
+                    title: 'Tu informe ha sido enviado a revisión:',
+                    subtitle: this.report.name
+                }
+            });
+        });
     }
 
     public approve() {
         this.report.reviewed = true;
         this.report.stateId = '5e068d1cb81d1c5f29b62974';
-        this.onSave();
+        this.onSave(false, () =>  {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '500px',
+                data: {
+                    title: 'Tu informe ha sido aprobado:',
+                    subtitle: this.report.name
+                }
+            });
+        });
     }
 
     public publish() {
         this.report.reviewed = true;
         this.report.stateId = '5e068c81d811c55eb40d14d0';
-        this.onSave();
+        this.onSave(false, () =>  {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '500px',
+                data: {
+                    title: 'Tu informe ha sido publicado:',
+                    subtitle: this.report.name
+                }
+            });
+        });
     }
 
     /** Save the report on DB
     *
     * @param { autoSave } Flag for autosave
     */
-    public onSave(autoSave?: boolean): void {
+    public onSave(autoSave?: boolean, cb?: any): void {
         let isUpdate: boolean = this.report.id ? true : false;
         let method: string = isUpdate ? 'put' : 'post';
         let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
@@ -274,10 +308,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe(
             (response: any) => {
                 if (!autoSave) {
-                    let confirmStay: boolean = confirm('¿Desea continuar editando?');
-                    if (!confirmStay) {
-                        this.goToPrincipalPage();
-                    }
+                    if (cb) return cb();
+                    this.dialog.open(ConfirmationDialogComponent, {
+                        width: '500px',
+                        data: {
+                            title: 'Tu informe ha sido guardado:',
+                            subtitle: this.report.name
+                        }
+                    });
                 } else {
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
@@ -319,25 +357,33 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.router.navigate(['app/principal']);
     }
 
-    canPublish(): void {
+    canPublish(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
     }
 
-    canApprove(): void {
+    canApprove(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
             this.report.state.name !== 'Publicados';
     }
 
-    canSendToRevision(): void {
+    canSendToRevision(): boolean {
         var role = this.user.roles.find(e => (e === 'analyst'));
         return role && role.length && this.report && this.report.state && this.report.state.name === 'Borradores';
     }
 
-    canSendBackToRevision(): void {
+    canSendBackToRevision(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
             this.report.state.name === 'En revisión');
+    }
+
+    onSendToRevisionAction(): void {
+        this.dialog.open(PreviewDialogComponent, {
+            width: '500px',
+            data: {
+            }
+        });
     }
 }

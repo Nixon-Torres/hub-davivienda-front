@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, OnInit, Inject, Input, AfterViewInit} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { HttpService } from '../../../../services/http.service';
@@ -6,10 +6,12 @@ import {PreviewDialogComponent} from '../preview-dialog/preview-dialog.component
 
 @Component({
   selector: 'app-revision-modal',
-  templateUrl: './revision-modal.component.html',
-  styleUrls: ['./revision-modal.component.scss']
+  templateUrl: './confirmation-dialog.component.html',
+  styleUrls: ['./confirmation-dialog.component.scss']
 })
-export class RevisionModalComponent implements OnInit {
+export class ConfirmationDialogComponent implements OnInit, AfterViewInit {
+    title: string;
+    subtitle: string;
 
     constructor(
         public dialogRef: MatDialogRef<PreviewDialogComponent>,
@@ -20,6 +22,11 @@ export class RevisionModalComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+
+    ngAfterViewInit() {
+        this.title = this.data.title;
+        this.subtitle = this.data.subtitle;
     }
 
     closeDialog(): void {

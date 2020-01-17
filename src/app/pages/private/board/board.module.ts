@@ -14,6 +14,7 @@ import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 const routes: Routes = [
     {
@@ -39,7 +40,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent],
+    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent, ConfirmationDialogComponent],
     imports: [
         CommonModule,
         FormsModule,
