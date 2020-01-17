@@ -2,8 +2,8 @@
     <div class="options">
         <p class="options--name icon icon-copy">Mis informes</p>
         <ul class="options--list">
-            <li *ngFor="let state of list.states" [className]="state.color" [ngClass]="{active: isItemActive(state.id)}">
-                <a (click)="setCurrentState(state)">{{state.name}}</a>
+            <li *ngFor="let state of list.states" [className]="state.color" [ngClass]="{active: isItemActive(state.id)}" (click)="setCurrentState(state)">
+                <a >{{state.name}}</a>
                 <span class="cnt">{{state.reports ? state.reports.length : 0}}</span>
             </li>
         </ul>
