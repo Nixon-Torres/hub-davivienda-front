@@ -60,10 +60,10 @@
 		<mat-grid-tile [colspan]="2" [rowspan]="1" class="builder-tabs">
 
 			<div class="row">
-				<div class="col s12">
+				<div class="col s12" style="display: none">
 					<ul class="tabs">
 						<li class="tab col s4">
-							<a href="#blocks-tab" class="active" matRipple>
+							<a href="#blocks-tab" matRipple>
 								<i class="material-icons">extension</i>
 							</a>
 						</li>
@@ -73,7 +73,7 @@
 							</a>
 						</li>
 						<li class="tab col s4">
-							<a href="#config-tab" matRipple>
+							<a href="#config-tab" class="active" matRipple>
 								<span class="icon icon-cog"></span>
 							</a>
 						</li>
@@ -88,7 +88,7 @@
 					<h6>Estilos</h6>
 					<div class="styles-container"></div>
 				</div>
-				<div id="config-tab" class="col s12">
+				<div id="config-tab" class="col s12 active">
 					<h6>Configuración informe</h6>
 					<mat-accordion class="config-container">
 						<mat-expansion-panel>
