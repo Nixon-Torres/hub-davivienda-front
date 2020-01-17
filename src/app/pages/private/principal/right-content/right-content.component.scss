@@ -25,7 +25,25 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
     .search-container  {
         text-align: right;
 		margin: 20px 0px;
-		
+
+		.icon-calendar{
+			padding-right: 30px;
+			position: relative;
+			font-size: 0.688em;
+			color: #A5ABB1;
+			padding-left: 15px;
+			line-height: 1.25em;
+
+			&:before {
+				position: absolute;
+				right: 7px;
+				margin: 0;
+				font-size: 1.7em;
+				top: 0;
+				bottom: 0;
+				margin: auto;			}	
+		}
+
         input {
             width: 300px;
             line-height: 11px;

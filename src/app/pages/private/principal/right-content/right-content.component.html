@@ -9,7 +9,7 @@
 			<a (click)="cleanFilters()">&#60; Volver </a>
 		</div>
 		<div class="search-container">
-			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="calender-icon" (click)="toggleCalendar()"> Por fecha: </i>
+			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar" (click)="toggleCalendar()"> Por fecha: </i>
 		</div>
 		<div class="date-container calender-container" *ngIf="calendarOpen">
 			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
