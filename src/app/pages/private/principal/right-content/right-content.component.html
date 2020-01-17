@@ -2,7 +2,7 @@
 	<div class="content--top">
 		<span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}} ({{list.reports ? list.reports.length : 0}})</span>
 		<div class="insert_btn">
-			<button mat-raised-button>Insertar ▼</button>
+			<button mat-raised-button>Insertar <span class="insert_icon">▼</span></button>
 		</div>
 		<div>
 			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe ></button>
