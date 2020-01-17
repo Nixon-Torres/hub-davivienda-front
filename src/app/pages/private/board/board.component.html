@@ -15,7 +15,7 @@
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
                 <button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendBackToRevision()"
-                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
+                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendBacktoReview()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
 				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canApprove()"

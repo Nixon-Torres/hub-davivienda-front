@@ -37,8 +37,12 @@ export class CommentBoxComponent implements OnInit {
     }
 
     loadComments() {
+        var filter = {
+            include: ['user'],
+            where: {reportId: this.reportId}
+        };
         this.http.get({
-            'path': 'comments?filter[include][][relation]=user'
+            path: `comments?filter=${JSON.stringify(filter)}`
         }).subscribe(
             (response) => {
                 this.list.comments = response.body;

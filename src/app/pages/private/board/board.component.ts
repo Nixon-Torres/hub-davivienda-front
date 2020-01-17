@@ -227,6 +227,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
+    public sendBacktoReview() {
+        this.report.reviewed = false;
+        this.report.stateId = '5e068d1cb81d1c5f29b62975';
+        this.onSave();
+    }
+
     public sendReview() {
         this.report.reviewed = false;
         this.report.stateId = '5e068d1cb81d1c5f29b62976';
