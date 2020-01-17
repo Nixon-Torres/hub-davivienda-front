@@ -281,3 +281,65 @@ $builder-bg: #f5f7fb;
 .select2-container--default .select2-selection--single .select2-selection__rendered {
 	line-height: 34px;
 }
+
+.ng-star-inserted{
+	.md-drppicker {
+		td{
+			border: 0;
+		}
+		td.in-range, td.available:hover{
+			background-color: #BFDFFF;
+		}
+		.start-date, td.active, td.active:hover, td.end-date{
+			border-radius: 50%;
+			background-color: #0080FF;
+			span{
+				position: relative;
+				top: 7px;
+			}
+		}
+		span{
+			font-size: 12px;
+		}
+		th.month{
+			color: #0080FF;
+		}
+		td.start-date.end-date{
+			border-radius: 50%;
+		}
+	}
+}
+
+.info_content{
+	mat-checkbox{
+		width: 40%;
+		/* margin: 0 auto; */
+
+		&::before{
+			content: "";
+			border: solid 1px #c0c0c01f;
+			position: absolute;
+			left: 14%;
+			top: 17%;
+			height: 50px;
+		}
+		&::after{
+			content: "";
+			border: solid 1px #c0c0c01f;
+			position: absolute;
+			left: 20%;
+			top: 17%;
+			height: 50px;
+		}
+	}
+	.report_name{
+		width: 14%;
+	}
+	.report_content{
+		margin: 0 auto;
+		max-width: 80px;
+	}
+	.report--title{
+		margin-left: 20px;
+	}
+}

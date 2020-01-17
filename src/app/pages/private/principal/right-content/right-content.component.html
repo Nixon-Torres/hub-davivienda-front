@@ -31,16 +31,16 @@
 							<button type="button" (click)="deleteReports()">Eliminar</button>
 						</div>
 						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
-							<ul class="report-list" formArrayName="reports">
+							<ul class="report-list info_content" formArrayName="reports">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
-										<span class="report--span">{{report.state.name}}</span>
+										<span class="report--span report_name">{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
-										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
-										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
-										<span class="report--span">{{report.user?.name}}</span>
+										<span class="report--span report_content" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
+										<span class="report--span report_content" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
+										<span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
