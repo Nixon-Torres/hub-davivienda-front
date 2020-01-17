@@ -31,16 +31,31 @@ section {
 		margin-bottom: 12px;
 		box-shadow: none;
 		border: solid 1px #E2EAF1;
-		background-color: #F8F8F8;
+
+		&.comment-form {
+			background-color: #F8F8F8;
+
+			.mat-card-header {
+				border-bottom: solid 1px #E2EAF1;
+			}
+		}
 
 		.mat-card-header {
-			width: 100%;
 			height: 38px;
 			padding: 0px 12px;
-			border-bottom: solid 1px #E2EAF1;
+			display: block ruby;
 
 			.mat-card-avatar {
 				width: auto;
+				display: inline;
+
+				div.avatar {
+					width: 24px;
+					height: 24px;
+					margin-top: 8px;
+					border-radius: 12px;
+					background-color: #FF7600;
+				}
 
 				img {
 					width: auto;
@@ -57,6 +72,21 @@ section {
 
 			.mat-card-subtitle {
 				font-size: 0.65rem;
+			}
+
+			.comment-close {
+				float: right;
+				padding: 0px;
+				border: none;
+				cursor: pointer;
+				margin-top: 12px;
+				background: transparent;
+
+				span::before {
+					margin: 0px;
+					font-size: 14px;
+					color: #A5ABB1;
+				}
 			}
 		}
 
@@ -100,6 +130,25 @@ section {
 					}
 				}
 			}
+
+			p {
+				color: #616161;
+				margin-left: 40px;
+				font-size: 0.75rem;
+			}
+
+			.actions {
+				height: 20px;
+
+				.btn-resolve {
+					float: right;
+					color: #A5ABB1;
+					padding: 0px 8px;
+					font-size: 0.7rem;
+					line-height: 20px;
+				}
+			}
+
 		}
 	}
 }
