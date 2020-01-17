@@ -1,7 +1,12 @@
 <div class="content">
 	<div class="content--top">
 		<span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}} ({{list.reports ? list.reports.length : 0}})</span>
-		<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe</button>
+		<div class="insert_btn">
+			<button mat-raised-button>Insertar ▼</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe ></button>
+		</div>
 	</div>
 
 	<div class="top-section-list">
@@ -21,16 +26,21 @@
 			<mat-tab-group (selectedTabChange)="tabClick($event)">
 				<mat-tab label="Mis Informes">
 					<div>
-						<div *ngIf="getCheckboxesSelected().length">
+						<div class="folder_container" *ngIf="getCheckboxesSelected().length">
+							<p class="info_move-text">Mover a:</p>
 							<mat-form-field class="simple" floatLabel="never">
-								<mat-label>Mover a:</mat-label>
+								<mat-label class="folder_label">Escoger</mat-label>
 								<mat-select (selectionChange)="moveReports($event)">
 									<mat-option *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option><p class="eliminar_field" (click)="deleteReports()">Eliminar</p></mat-option>
 								</mat-select>
 							</mat-form-field>
-							<button type="button" (click)="deleteReports()">Eliminar</button>
+							<div class="info_border">&nbsp;</div>
 						</div>
-						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
+						<div class="trash_info">
+							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
+						</div>
+						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
 							<ul class="report-list info_content" formArrayName="reports">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
