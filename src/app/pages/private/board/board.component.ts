@@ -254,6 +254,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': this.report
         }).subscribe(
             (response: any) => {
+              this.report.id = response.body.id;
                 if (!autoSave) {
                     let confirmStay: boolean = confirm('¿Desea continuar editando?');
                     if (!confirmStay) {
