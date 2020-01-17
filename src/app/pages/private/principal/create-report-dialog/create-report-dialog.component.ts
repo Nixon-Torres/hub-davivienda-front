@@ -122,7 +122,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     }
 
-    public onOptionsSelected($event) {
+    public onOptionsSelected() {
         this.selectedAuthor;
     }
 

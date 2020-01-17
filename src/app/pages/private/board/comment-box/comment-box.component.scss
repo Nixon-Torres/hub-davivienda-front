@@ -1,5 +1,105 @@
-#comment-box {
-    // padding-top: 70px;
-    // height: 100%;
-    // min-height: calc(100vh - 300px);
+header {
+	height: 52px;
+	padding: 0px 12px;
+	font-weight: bold;
+	border-bottom: solid 1px #EAEAEA;
+
+	h1 {
+		font-size: 14px;
+		padding-top: 19px;
+	}
+
+	.close-btn {
+		float: right;
+		border: none;
+		cursor: pointer;
+		padding: 18px 0px 0px;
+		background: transparent;
+
+		i {
+			font-size: 16px;
+		}
+	}
+}
+
+section {
+	height: 100%;
+	padding: 12px;
+
+	.mat-card {
+		padding: 0px;
+		margin-bottom: 12px;
+		box-shadow: none;
+		border: solid 1px #E2EAF1;
+		background-color: #F8F8F8;
+
+		.mat-card-header {
+			width: 100%;
+			height: 38px;
+			padding: 0px 12px;
+			border-bottom: solid 1px #E2EAF1;
+
+			.mat-card-avatar {
+				width: auto;
+
+				img {
+					width: auto;
+					height: 24px;
+					margin-top: 8px;
+					border-radius: 50%;
+				}
+			}
+
+			.mat-card-title {
+				font-size: 0.75rem;
+				margin-bottom: 10px;
+			}
+
+			.mat-card-subtitle {
+				font-size: 0.65rem;
+			}
+		}
+
+		.mat-card-content {
+			padding: 12px 8px;
+
+			&.form {
+				padding: 12px 14px 12px 8px;
+
+				textarea {
+					width: 96%;
+					height: 17px;
+					padding: 6px;
+					resize: none;
+					border-radius: 5px;
+					border: solid 1px #E2EAF1;
+					font-size: 14px;
+					font-family: 'Helvetica Neue', sans-serif;
+					overflow:auto;
+
+					&:focus {
+						min-height: 51px;
+						padding-bottom: 17px;
+					}
+				}
+
+				button {
+					border: none;
+					padding: 0px;
+					cursor: pointer;
+					background: transparent;
+					float: right;
+					position: relative;
+					bottom: 25px;
+					right: 15px;
+
+					i {
+						color: #0080ff;
+						font-size: 18px;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
 }

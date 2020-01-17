@@ -6,7 +6,7 @@
 	width: 100%;
 
 	.two-columns {
-		padding: 24px;
+		padding: 36px 24px 24px 24px;
 		position: relative;
 		width: 50%;
 		text-align: center;
@@ -18,8 +18,8 @@
 
 		.modal-close-cta {
 			position: absolute;
-			right: 0;
-			top: 0;
+			right: 10px;
+			top: 26px;
 			color: #616161;
 			font-style: italic;
 			font-size: 12px;
@@ -28,7 +28,7 @@
 			cursor: pointer;
 
 			span {
-				font-size: 20px;
+				font-size: 16px;
 				font-style: normal;
 				font-weight: bold;
 				padding-left: 10px;
@@ -60,6 +60,7 @@
 	.group-radio {
 		@include display-flex;
 		justify-content: center;
+		margin-bottom: 38px;
 
 		&--option {
 			@include display-flex;
@@ -166,6 +167,7 @@
 		ul {
 			@include display-flex;
 			flex-wrap: wrap;
+			margin-bottom: 38px;
 		}
 
 		li {
@@ -240,6 +242,14 @@
 			font-size: 0.625em;
 			padding: 1px 0;
 		}
+	}
+
+	.divider {
+		background: #E7EAF1;
+		display: block;
+		height: 1px;
+		margin: 40px 0 40px -5%;	
+		width: 120%;
 	}
 }
 

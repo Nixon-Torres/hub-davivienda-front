@@ -76,7 +76,7 @@ $default-font: "Helvetica Neue", Medium;
                 &.descartar-cta{
                     padding: 0 15.5px;
                 }
-               
+
             }
         }
 
@@ -99,7 +99,7 @@ $default-font: "Helvetica Neue", Medium;
                 .input-field {
                     width: 24vw;
                     display: inline-block;
-                    max-width: 311px;                    
+                    max-width: 311px;
 
                     input {
                         width: 100%;
@@ -161,7 +161,7 @@ $default-font: "Helvetica Neue", Medium;
     #grapesBox {
         @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
 
-        min-height: calc(100vh - (128px + 9vh));
+        min-height: calc(100vh - (128px + 70px));
         padding: 0 !important;
 
         .builder {
@@ -171,6 +171,19 @@ $default-font: "Helvetica Neue", Medium;
 
             iframe {
                 color: red;
+            }
+        }
+
+        .comments {
+            height: 100%;
+            padding: 0 !important;
+            background-color: white;
+
+            app-comment-box {
+                height: 100%;
+                width: 100%;
+                border-left: solid 1px #EAEAEA;
+                border-right: solid 1px #EAEAEA;
             }
         }
 

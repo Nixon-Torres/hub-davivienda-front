@@ -7,7 +7,7 @@
 				<button mat-stroked-button class="btn-white descartar-cta">
 					<span class="icon icon-trash-alt"></span>Descartar
 				</button>
-				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()">
+				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
 				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendToRevision()"
@@ -41,7 +41,7 @@
 				<button mat-button>
 					<span class="icon icon-edit"></span>Editar nombre
 				</button>
-				<button mat-button>
+				<button mat-button [ngClass]="{'btn-primary': report.name}" (click)="onSave(true)" [disabled]="!report.name">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 				<div class="divider"></div>
@@ -52,14 +52,17 @@
 
 	<mat-grid-list cols="12" id="grapesBox">
 
+		<!-- EDITOR -->
 		<mat-grid-tile [colspan]="7" [rowspan]="1" class="builder">
 			<div id="gjs"></div>
 		</mat-grid-tile>
 
-		<mat-grid-tile [colspan]="2" [rowspan]="1">
+		<!-- COMMENTS -->
+		<mat-grid-tile [colspan]="2" [rowspan]="1" class="comments">
 			<app-comment-box *ngIf="report.id" [reportId]="report.id"></app-comment-box>
 		</mat-grid-tile>
 
+		<!-- PANEL -->
 		<mat-grid-tile [colspan]="2" [rowspan]="1" class="builder-tabs">
 
 			<div class="row">

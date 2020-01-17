@@ -35,6 +35,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         name: '',
         slug: null,
         trash: false,
+        reviewed: true,
         styles: '',
         content: '',
         sectionTypeKey: null,
@@ -164,14 +165,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     // Editor events listener
     private listenEventsEditor(): void {
-        this.editor.on('loaded', () => {
+        this.editor.on('load', () => {
             this.editor.on('change:changesCount', () => {
                 if (this.timer.change) {
                     clearTimeout(this.timer.change);
                 }
                 this.timer.change = setTimeout(() => {
                     this.onSave(true);
-                }, 5000);
+                }, 3000);
             });
         });
     }
@@ -221,6 +222,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
         this.report.styles = this.editor.getCss();
         this.report.content = this.editor.getHtml();
+        this.report.content = this.report.content ? this.report.content : ' ';
+        this.report.folderId = this.report.folderId === 'false' ? null : this.report.folderId;
+        this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
     public sendReview() {
@@ -246,7 +250,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @param { autoSave } Flag for autosave
     */
     public onSave(autoSave?: boolean): void {
-        if (autoSave && !this.report.content) return;
         let isUpdate: boolean = this.report.id ? true : false;
         let method: string = isUpdate ? 'put' : 'post';
         let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
@@ -264,9 +267,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': data
         }).subscribe(
             (response: any) => {
-
                 if (!autoSave) {
-                    this.goToPrincipalPage();
+                    let confirmStay: boolean = confirm('¿Desea continuar editando?');
+                    if (!confirmStay) {
+                        this.goToPrincipalPage();
+                    }
                 } else {
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
