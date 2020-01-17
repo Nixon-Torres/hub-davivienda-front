@@ -17,6 +17,7 @@
 			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar" (click)="toggleCalendar()"> Por fecha: </i>
 		</div>
 		<div class="date-container calender-container" *ngIf="calendarOpen">
+			<input type="text">
 			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
 		</div>
 	</div>
@@ -35,7 +36,14 @@
 									<mat-option><p class="eliminar_field" (click)="deleteReports()">Eliminar</p></mat-option>
 								</mat-select>
 							</mat-form-field>
-							<div class="info_border">&nbsp;</div>
+							<!-- <div class="info_border">&nbsp;</div> -->
+							<div class="operation-cta">
+								<ul class="">
+									<li><a class="" >Recuperar</a></li>
+									<li><a class="icon icon-trash-alt" >Eliminar</a></li>
+									<li><a class="icon icon-trash-alt active" >Eliminar todo</a></li>
+								</ul>
+							</div>
 						</div>
 						<div class="trash_info">
 							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
