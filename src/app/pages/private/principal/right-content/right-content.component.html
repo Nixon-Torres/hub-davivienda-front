@@ -36,7 +36,7 @@
 								</mat-select>
 							</mat-form-field>
 							<!-- <div class="info_border">&nbsp;</div> -->
-							<div class="operation-cta">
+							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
 								<ul class="">
 									<li><a class="" >Recuperar</a></li>
 									<li><a class="icon icon-trash-alt" >Eliminar</a></li>
@@ -48,7 +48,7 @@
 							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
 						</div>
 						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
-							<ul class="report-list info_content" formArrayName="reports">
+							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span report_name">{{report.state.name}}</span>
@@ -56,7 +56,7 @@
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.user?.name}}</span>
+										<span class="report--span report_content">{{report.owner?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
@@ -74,6 +74,9 @@
 
 				<mat-tab label="Por revisar">
 					<div>
+                        <div class="trash_info" *ngIf="icurrentObj.deletedFg">
+                            <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
+                        </div>
 						<div *ngIf="getCheckboxesSelected().length">
 							<mat-form-field class="simple" floatLabel="never">
 								<mat-label>Mover a:</mat-label>
@@ -84,7 +87,7 @@
 							<button type="button" (click)="deleteReports()">Eliminar</button>
 						</div>
 						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
-							<ul class="report-list" formArrayName="reports">
+							<ul class="report-list" formArrayName="reports" style="margin-bottom: 100px">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span">{{report.state.name}}</span>
@@ -92,7 +95,7 @@
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span">{{report.user?.name}}</span>
+										<span class="report--span">{{report.owner?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">

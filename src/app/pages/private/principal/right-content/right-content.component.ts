@@ -97,8 +97,11 @@ export class RightContentComponent implements OnInit {
     }
 
     private deleteReport(id: string): void {
-        this.http.delete({
-            'path': 'reports/' + id
+        this.http.patch({
+            path: 'reports/' + id,
+            data: {
+                trash: true
+            }
         }).subscribe(() => {
         });
     }
@@ -140,7 +143,7 @@ export class RightContentComponent implements OnInit {
     public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         var query = new loopback();
-        query.filter.include.push({ relation: "folder" }, { relation: "user" }, { relation: "state" }, { relation: "section" });
+        query.filter.include.push({ relation: "folder" }, { relation: "owner" }, { relation: "state" }, { relation: "section" });
         query.filter.where['folderId'] = this.icurrentObj.currentFolder;
         query.filter.where['stateId'] = this.icurrentObj.currentState;
         query.filter.where['trash'] = this.icurrentObj.deletedFg;

@@ -173,7 +173,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     clearTimeout(this.timer.change);
                 }
                 this.timer.change = setTimeout(() => {
-                    this.onSave(true);
+                    // this.onSave(true);
                 }, 3000);
             });
         });
@@ -343,7 +343,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         // If the change timer is active
         if (this.timer.change) {
             clearTimeout(this.timer.change); // Stop the timer
-            this.onSave(true); // Save the report with autoload true
+            // this.onSave(true); // Save the report with autoload true
         } else {
             this.setPropertiesReport();
             paramsDialog.data.styles = this.report.styles;
