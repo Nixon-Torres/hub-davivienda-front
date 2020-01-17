@@ -401,17 +401,17 @@ padding-bottom: 2%;
 }
 .content--top{
 	.insert_btn{
-		width: 5%;
+		width: 10%;
 		position: relative;
-		left: 18%;
+		left: 17%;
 		@media screen and (max-width: 1510px){
-			width: 16%;
+			width: 25%;
 		}
 		@media screen and (max-width: 1322px){
-			width: 30%;
+			width: 35%;
 		}
 		@media screen and (max-width: 1130px){
-			width: 40%;
+			width: 50%;
 		}
 		button{
 		background: transparent;

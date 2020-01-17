@@ -1,11 +1,18 @@
 @import '../../../assets/sass/_mixins';
+/* .header_content{
 
+} */
 header {
    height: 70px;
     border-bottom: solid 1px #EDEDED;
+    width: 87%;
+    max-width: 1440px;
+    display: flex;
+    margin: auto;
 
     & > .container {
         height: 100%;
+        width: 100%;
 
         img.logo {
             width: 20%;
