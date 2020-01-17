@@ -311,6 +311,10 @@ $builder-bg: #f5f7fb;
 	}
 }
 
+.md-drppicker .calendar td, .md-drppicker .calendar th{
+	min-width: 0 !important;
+}
+
 .info_content{
 	mat-checkbox{
 		width: 40%;
@@ -385,6 +389,7 @@ $builder-bg: #f5f7fb;
 .folder_container{
 border-bottom: solid 1px silver;
 padding-bottom: 2%;
+margin-top: 2%;
 }
 .info_border{
 	border-right: silver 1px solid;
@@ -398,6 +403,7 @@ padding-bottom: 2%;
 }
 .reports_form{
 	margin-top: 4%;
+	max-height: 55vh;
 }
 .content--top{
 	.insert_btn{
