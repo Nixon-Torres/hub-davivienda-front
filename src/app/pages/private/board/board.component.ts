@@ -307,6 +307,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': data
         }).subscribe(
             (response: any) => {
+              this.report.id = response.body.id;
                 if (!autoSave) {
                     if (cb) return cb();
                     this.dialog.open(ConfirmationDialogComponent, {
