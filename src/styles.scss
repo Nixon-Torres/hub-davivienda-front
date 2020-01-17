@@ -348,3 +348,82 @@ $builder-bg: #f5f7fb;
 	background-repeat: no-repeat;
     background-position: 97% 50%;
 }
+
+.info_move-text{
+	display: inline-block;
+	padding: 0 1.5% 0 10%;
+	font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+
+.mat-form-field-wrapper{
+	background-color: #ffffff;
+	padding-bottom: 0 !important;
+	margin-top: 15%;
+		.mat-form-field-flex{
+		.mat-form-field-infix{
+			border-top: none;
+		}
+	}
+	.mat-form-field-underline{
+		bottom: 0;
+	}
+}
+.folder_label{
+	padding-left: 10px;
+}
+
+.eliminar_field{
+	padding-left: 17%;
+	background-image: url("../src/assets/images/trash.png");
+	background-repeat: no-repeat;
+    background-position: 2% 50%;
+}
+
+.folder_container{
+border-bottom: solid 1px silver;
+padding-bottom: 2%;
+}
+.info_border{
+	border-right: silver 1px solid;
+    width: 40%;
+    margin-top: -5%;
+	height: 60px;
+	@media screen and (max-width: 1460px){
+		width: 49%;
+		height: 50px;
+	}
+}
+.reports_form{
+	margin-top: 4%;
+}
+.content--top{
+	.insert_btn{
+		width: 5%;
+		position: relative;
+		left: 18%;
+		@media screen and (max-width: 1510px){
+			width: 16%;
+		}
+		@media screen and (max-width: 1322px){
+			width: 30%;
+		}
+		@media screen and (max-width: 1130px){
+			width: 40%;
+		}
+		button{
+		background: transparent;
+		color: red;
+		border: solid 2px red;
+		}
+	}
+}
+
+.trash_info{
+	padding: 20px 15%;
+	background-color: #F5F7FB;
+	color: rgb(104, 104, 104);
+	b{
+		font-weight: bold;
+	}
+}
