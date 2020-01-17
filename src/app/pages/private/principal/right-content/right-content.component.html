@@ -17,7 +17,6 @@
 			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar" (click)="toggleCalendar()"> Por fecha: </i>
 		</div>
 		<div class="date-container calender-container" *ngIf="calendarOpen">
-			<input type="text">
 			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
 		</div>
 	</div>
