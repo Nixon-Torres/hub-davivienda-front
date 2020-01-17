@@ -88,7 +88,7 @@
 						</div>
 						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
 
-							<ul class="report-list info_content" formArrayName="reports">
+							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span report_name">{{report.state.name}}</span>

@@ -146,7 +146,7 @@ export class RightContentComponent implements OnInit {
         query.filter.include.push({ relation: "folder" }, { relation: "owner" }, { relation: "state" }, { relation: "section" });
         query.filter.where['folderId'] = this.icurrentObj.currentFolder;
         query.filter.where['stateId'] = this.icurrentObj.currentState;
-        query.filter.where['trash'] = this.icurrentObj.deletedFg;
+        query.filter.where['trash'] = typeof this.icurrentObj.deletedFg === 'undefined' ? false : this.icurrentObj.deletedFg;
         query.filter.where['reviewed'] = this.ifilterreviewed;
         this.ifilter ? query.filter.where['name'] = { like: this.ifilter } : null;
         if (this.ifilterdate) {
