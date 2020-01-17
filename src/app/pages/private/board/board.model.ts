@@ -12,4 +12,5 @@ export interface Report {
     folderId?: string;
     templateId?: string;
     reviewed?: boolean;
+    state?: any;
 }

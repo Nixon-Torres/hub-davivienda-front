@@ -275,7 +275,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 } else {
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
-                    this.report = response.body;
+                    // this.report = response.body;
                     this.setLastUpdate(response.body.updatedAt);
                 }
             },
@@ -286,7 +286,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openPreviewDialog(): void {
-
         var paramsDialog = {
             width: '80vw',
             height: '80vh',
@@ -328,5 +327,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     canSendToRevision(): void {
         var role = this.user.roles.find(e => (e === 'analyst'));
         return role && role.length && this.report && this.report.state && this.report.state.name === 'Borradores';
+    }
+
+    canSendBackToRevision(): void {
+        var role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
+            this.report.state.name === 'En revisión');
     }
 }

@@ -11,8 +11,8 @@
             <div mat-card-avatar>
                 <img src="../../../../../assets/images/user/images.png">
             </div>
-            <mat-card-title>{{ user.name }}</mat-card-title>
-            <mat-card-subtitle>{{ user.charge }}</mat-card-subtitle>
+            <mat-card-title>{{ user?.name }}</mat-card-title>
+            <mat-card-subtitle>{{ user?.charge }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="form">
             <textarea placeholder="Escriba aquí su comentario" [(ngModel)]="comment.text"></textarea>
@@ -28,8 +28,8 @@
             <div mat-card-avatar>
                 <img src="../../../../../assets/images/user/images.png">
             </div>
-            <mat-card-title>{{ comment.user.name }}</mat-card-title>
-            <mat-card-subtitle>{{ comment.user.charge }}</mat-card-subtitle>
+            <mat-card-title>{{ comment.user?.name }}</mat-card-title>
+            <mat-card-subtitle>{{ comment.user?.charge }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <p>{{ comment.text }}</p>

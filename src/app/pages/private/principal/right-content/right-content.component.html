@@ -37,7 +37,7 @@
 							</mat-form-field>
 							<div class="info_border">&nbsp;</div>
 						</div>
-						<div class="trash_info">
+						<div class="trash_info" *ngIf="icurrentObj.deletedFg">
 							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
 						</div>
 						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
@@ -49,7 +49,7 @@
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.user?.username}}</span>
+										<span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
@@ -85,7 +85,7 @@
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span">{{report.user?.username}}</span>
+										<span class="report--span">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">

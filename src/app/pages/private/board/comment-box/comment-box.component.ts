@@ -28,6 +28,7 @@ export class CommentBoxComponent implements OnInit {
         private auth: AuthService
     ) {
         this.user = this.auth.getUserData();
+        console.log(this.user);
     }
 
     ngOnInit() {
