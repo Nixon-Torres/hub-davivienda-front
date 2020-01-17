@@ -13,6 +13,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
+import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 
 const routes: Routes = [
     {
@@ -38,7 +39,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [BoardComponent, CommentBoxComponent],
+    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent],
     imports: [
         CommonModule,
         FormsModule,
