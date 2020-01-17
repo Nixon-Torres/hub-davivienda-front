@@ -7,7 +7,7 @@
 				<button mat-stroked-button class="btn-white descartar-cta">
 					<span class="icon icon-trash-alt"></span>Descartar
 				</button>
-				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()">
+				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
 				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id == report.userId" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
@@ -35,7 +35,7 @@
 				<button mat-button>
 					<span class="icon icon-edit"></span>Editar nombre
 				</button>
-				<button mat-button>
+				<button mat-button [ngClass]="{'btn-primary': report.name}" (click)="onSave(true)" [disabled]="!report.name">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 				<div class="divider"></div>

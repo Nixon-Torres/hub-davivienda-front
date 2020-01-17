@@ -38,8 +38,7 @@
 										<mat-checkbox [formControlName]="i">
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
-										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
-										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
+										<span class="report--span">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
 										<span class="report--span">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
@@ -75,8 +74,7 @@
 										<mat-checkbox [formControlName]="i">
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
-										<span class="report--span" *ngIf="report.createdAt">{{report.createdAt | date: 'shortDate'}}</span>
-										<span class="report--span" *ngIf="report.updatedAt">{{report.updatedAt | date: 'shortDate'}}</span>
+										<span class="report--span">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
 										<span class="report--span">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
