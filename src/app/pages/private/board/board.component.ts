@@ -86,8 +86,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @return { this.report } Obj with the report data
     */
     private loadReport(idReport: string): void {
+        let filter = {
+          include: ['state']
+        };
         this.http.get({
-            'path': `reports/${idReport}`
+            'path': `reports/${idReport}?filter=${JSON.stringify(filter)}`
         }).subscribe((response: any) => {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
@@ -232,6 +235,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.onSave();
     }
 
+    public publish() {
+        this.report.reviewed = true;
+        this.report.stateId = '5e068c81d811c55eb40d14d0';
+        this.onSave();
+    }
+
     /** Save the report on DB
     *
     * @param { autoSave } Flag for autosave
@@ -246,9 +255,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
 
         this.setPropertiesReport();
+
+        let data = Object.assign({}, this.report);
+        delete data.state;
+
         this.http[method]({
             'path': path,
-            'data': this.report
+            'data': data
         }).subscribe(
             (response: any) => {
 
@@ -294,5 +307,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private goToPrincipalPage(): void {
         this.router.navigate(['app/principal']);
+    }
+
+    canPublish(): void {
+        var role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
+    }
+
+    canApprove(): void {
+        var role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
+            this.report.state.name !== 'Publicados';
+    }
+
+    canSendToRevision(): void {
+        var role = this.user.roles.find(e => (e === 'analyst'));
+        return role && role.length && this.report && this.report.state && this.report.state.name === 'Borradores';
     }
 }

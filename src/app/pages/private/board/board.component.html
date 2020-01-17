@@ -10,12 +10,18 @@
 				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
-				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id == report.userId" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
+				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendToRevision()"
+                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-				<button mat-stroked-button class="btn-white revision-cta" *ngIf="user.id != report.userId" [ngClass]="{'btn-primary': report.id}" (click)="approve()">
+				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canApprove()"
+                        [ngClass]="{'btn-primary': report.id}" (click)="approve()">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
+                <button mat-stroked-button class="btn-white revision-cta" *ngIf="canPublish()"
+                        [ngClass]="{'btn-primary': report.id}" (click)="publish()">
+                    <span class="icon icon-check"></span>Publicar
+                </button>
 				<button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">
 					<span class="icon icon-save"></span>Guardar
 				</button>
