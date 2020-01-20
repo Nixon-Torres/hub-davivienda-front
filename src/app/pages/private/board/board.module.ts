@@ -8,6 +8,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { Routes, RouterModule } from '@angular/router';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 import { BoardComponent } from './board.component';
@@ -46,6 +47,7 @@ const materialModules: any[] = [
         FormsModule,
 		materialModules,
         PreviewDialogModule,
+        NgSelectModule,
         RouterModule.forChild(routes)
     ],
   	exports: [

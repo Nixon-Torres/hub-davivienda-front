@@ -29,6 +29,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private timer: any = {
         change: null
     };
+    public users:any = [];
     public fromReportId: string = null;
     public user: any = {};
     public editor: any;
@@ -382,11 +383,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     onSendToRevisionAction(): void {
-        this.dialog.open(RevisionModalComponent, {
-            width: '410px',
-            data: {
-                title: '¿Quien quiere que revise su informe?'
-            }
+        this.http.get({
+            'path': 'users/list'
+        }).subscribe( (resp) => {
+            this.users = resp.body;
+            let dialogRef = this.dialog.open(RevisionModalComponent, {
+                width: '410px',
+                data: {
+                    title: '¿Quien quiere que revise su informe?',
+                    users: this.users
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if(result) {
+                    this.sendReview();
+                }
+            });
         });
     }
 }
