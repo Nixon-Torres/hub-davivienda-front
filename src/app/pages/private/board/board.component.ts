@@ -234,7 +234,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068d1cb81d1c5f29b62975';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido enviado a revisión con ajustes:',
                     subtitle: this.report.name
@@ -248,7 +248,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068d1cb81d1c5f29b62976';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido enviado a revisión:',
                     subtitle: this.report.name
@@ -262,7 +262,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068d1cb81d1c5f29b62974';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido aprobado:',
                     subtitle: this.report.name
@@ -276,7 +276,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068c81d811c55eb40d14d0';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido publicado:',
                     subtitle: this.report.name
@@ -311,7 +311,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 if (!autoSave) {
                     if (cb) return cb();
                     this.dialog.open(ConfirmationDialogComponent, {
-                        width: '500px',
+                        width: '410px',
                         data: {
                             title: 'Tu informe ha sido guardado:',
                             subtitle: this.report.name
@@ -382,7 +382,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     onSendToRevisionAction(): void {
         this.dialog.open(PreviewDialogComponent, {
-            width: '500px',
+            width: '410px',
             data: {
             }
         });
