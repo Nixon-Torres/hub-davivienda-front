@@ -1,8 +1,10 @@
 <div class="modal-form">
+
+    {{ data.title }}
     <div class="two-columns">
         <div mat-dialog-actions>
             <button mat-button (click)="closeDialog()">Cancelar</button>
-            <button type="submit" class="highligh" mat-button mat-dialog-close>Empezar Informe</button>
+            <button type="submit" class="highligh" mat-button mat-dialog-close (click)="sendReview()">Enviar</button>
         </div>
     </div>
 </div>

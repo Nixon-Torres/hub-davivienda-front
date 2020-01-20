@@ -13,6 +13,7 @@ import * as moment from 'moment';
 
 import { Report } from './board.model';
 import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
+import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 
 declare var grapesjs: any;
 
@@ -381,9 +382,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     onSendToRevisionAction(): void {
-        this.dialog.open(PreviewDialogComponent, {
+        this.dialog.open(RevisionModalComponent, {
             width: '410px',
             data: {
+                title: '¿Quien quiere que revise su informe?'
             }
         });
     }
