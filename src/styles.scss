@@ -273,6 +273,7 @@ $builder-bg: #f5f7fb;
 
 .mat-dialog-container {
 	padding: 0 !important;
+	overflow-y: hidden !important;
 }
 
 .select2-container .select2-selection--single{

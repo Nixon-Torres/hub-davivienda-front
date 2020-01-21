@@ -1,17 +1,33 @@
 @import '../../../../../assets/sass/_mixins';
 
 .dialog-box {
-	padding: 25px;
+	padding: 15px 25px 25px 25px;
 	.mat-dialog-container {
 		padding: 20px;	
 	}
 
-	.mat-dialog-title {
+	.dialog_header{
+		display: inline-flex;
+		width: 100%;
 		border-bottom: 1px solid #EDEDED;
+		p{
+		font: 500 12px/15px Roboto,"Helvetica Neue",sans-serif;
+		color: #A5ABB1;
+		cursor: pointer;
+		img{
+			top: 5px;
+			left: 5px;
+			position: relative;
+			}
+		}
+	}
+
+	.mat-dialog-title {
 		color: #A5ABB1;
 		font-size: 1.125em;
 		display: block;
-		margin: 10px;
+		margin: 0 10px 10px 0px;
+		width: 87%;
 	}
 
 	.mat-input-element {
@@ -39,7 +55,7 @@
 	}
 
 	.form-box {
-		padding: 20px 0;
+		padding: 20px;
 		@include display-flex;
 
 		justify-content: center;
@@ -72,7 +88,7 @@
 
 	.list {
 		border: 1px solid #E7EAF1;
-		height: 210px;
+		height: 255px;
 		background: #F5F7FB;
 		overflow: scroll;
 		padding: 10px 10px 20px 10px;
@@ -88,6 +104,13 @@
 			display: inline-block;
 			width: 30%;
 			text-align: right; 
+			.pages_right{
+				position: relative;
+				right: 20px;
+			}
+			.icon{
+				font-size: 12px;
+			}
 		}
 
 		li {
@@ -123,7 +146,11 @@
 		&--divider {
 			color: #BEC5D0;
 			font-size: 1.125em;
+			padding: 0 6px;
 		}
+	}
+	.dialog_cancel{
+		color: #A5ABB1;
 	}
 }
 
@@ -137,3 +164,4 @@
 		outline: none;
 	}
 }
+
