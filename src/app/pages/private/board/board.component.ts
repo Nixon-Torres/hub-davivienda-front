@@ -245,18 +245,33 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public sendReview() {
-        this.report.reviewed = false;
-        this.report.stateId = '5e068d1cb81d1c5f29b62976';
-        this.onSave(false, () =>  {
-            this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
-                data: {
-                    title: 'Tu informe ha sido enviado a revisión:',
-                    subtitle: this.report.name
-                }
-            });
+    public getReviewers(reviewers: Array<object>) {
+        return reviewers.map((reviewer) => {
+            return {reportId: this.report.id, reviewerId: reviewer['id']};
         });
+    }
+
+    public sendReview(reviewers: Array<object>) {
+        
+        console.log(this.getReviewers(reviewers));
+
+        this.http.post({
+            'path': 'reports/reviewers',
+            'data': {
+                reportId: this.report.id,
+                reviewers: this.getReviewers(reviewers)
+            } 
+        }).subscribe( (resp) => {
+            if(resp) {
+                this.dialog.open(ConfirmationDialogComponent, {
+                    width: '410px',
+                    data: {
+                        title: 'Tu informe ha sido enviado a revisión:',
+                        subtitle: this.report.name
+                    }
+                });
+            }
+        })
     }
 
     public approve() {
@@ -397,7 +412,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             dialogRef.afterClosed().subscribe(result => {
                 if(result) {
-                    this.sendReview();
+                    this.sendReview(result);
                 }
             });
         });

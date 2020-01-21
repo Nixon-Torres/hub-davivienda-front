@@ -32,7 +32,7 @@ export class RevisionModalComponent implements OnInit {
     }
 
     openModalSendReview() {
-        this.dialogRef.close(true);
+        this.dialogRef.close(this.reviewers);
     }
 
     onSelectUser(user): void {
