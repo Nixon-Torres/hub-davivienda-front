@@ -1,4 +1,4 @@
-image: qdata/qciagent:master-php7
+image: qdata/qciagent:Master-Ubuntu18
 
 pipelines:
   branches:
