@@ -186,6 +186,7 @@ export class RightContentComponent implements OnInit {
             query.filter.limit = this.pager.limit;
             query.filter.skip = 0;
         }
+        query.filter.order = "id DESC";
 
         this.getIFilterIds('users', 'userId', (users: Array<any>) => {
             this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
