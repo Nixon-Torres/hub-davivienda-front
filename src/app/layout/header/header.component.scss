@@ -17,7 +17,6 @@ header {
         img.logo {
             width: 20%;
             height: auto;
-            margin-top: 15px;
         }
 
         .h-btn {
@@ -51,17 +50,25 @@ header {
                 bottom: 27px;
                 position: relative;
                 margin-right: 15px; 
+                color: #616161;
+                font-size: 13px;
+                font-weight: bold;
 
                 &:after {
                     top: 12px;
                     left: 15px;
                     content: '';
                     position: relative;
-                    @include arrow-down(5px, #BEC5D0);
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid #BEC5D0;
                 }
             }
         }
-
-        
+        button{
+            .notifications_icon{
+                color: silver;
+            }
+        }
     }
 }

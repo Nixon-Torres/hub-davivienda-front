@@ -2,10 +2,10 @@
 	<div class="content--top">
 		<span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}} ({{list.reports ? list.reports.length : 0}})</span>
 		<div class="insert_btn">
-			<button mat-raised-button>Insertar <span class="insert_icon">▼</span></button>
+			<button mat-raised-button class="insert_icon">Insertar <span>&nbsp;</span></button>
 		</div>
-		<div>
-			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe ></button>
+		<div class="info_btn">
+			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
 		</div>
 	</div>
 
@@ -31,8 +31,8 @@
 							<mat-form-field class="simple" floatLabel="never">
 								<mat-label class="folder_label">Escoger</mat-label>
 								<mat-select (selectionChange)="moveReports($event)">
-									<mat-option *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
-									<mat-option><p class="eliminar_field" (click)="deleteReports()">Eliminar</p></mat-option>
+									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>
 							</mat-form-field>
 							<!-- <div class="info_border">&nbsp;</div> -->
@@ -77,16 +77,17 @@
                         <div class="trash_info" *ngIf="icurrentObj.deletedFg">
                             <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
                         </div>
-						<div *ngIf="getCheckboxesSelected().length">
+						<div class="folder_container" *ngIf="getCheckboxesSelected().length">
+							<p class="info_move-text">Mover a:</p>
 							<mat-form-field class="simple" floatLabel="never">
-								<mat-label>Mover a:</mat-label>
+								<mat-label class="folder_label">Escoger</mat-label>
 								<mat-select (selectionChange)="moveReports($event)">
-									<mat-option *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>
 							</mat-form-field>
-							<button type="button" (click)="deleteReports()">Eliminar</button>
 						</div>
-						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
+						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
 
 							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px">
 								<li *ngFor="let report of list.reports; let i = index">
@@ -114,10 +115,10 @@
 			</mat-tab-group>
 		</section>
 		<div class="paginations" *ngIf="pager.pages.length">
-			<a *ngIf="pager.selected > 1" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])">&#x3c;</a>
-			<a class="label">Página</a>
+			<a *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])" class="arrow_left">&#x3c;</a>
+			<a class="label paginator_label">Página</a>
 			<a *ngFor="let item of pager.pages" [ngClass]="{'active': (pager.selected == item.index)}" (click)="loadReports(ifilter, item)">{{item.index}}</a>
-			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])">&#x3e;</a>
+			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])" class="arrow_right">&#x3e;</a>
 		</div>
 	</div>
 
