@@ -2,12 +2,12 @@
  * HUB Davivienda (https://example.com)
  * Copyright 2020 Quadi
 
- 	• General
- 	• Header
- 	• Principal component
- 		- Dialog component
- 			· Select 2
- 	• Board componen
+	• General
+	• Header
+	• Principal component
+		- Dialog component
+			· Select 2
+	• Board componen
  */
 
 @import '../node_modules/reset-css/reset.css';
@@ -45,12 +45,12 @@ body {
 \* ========================================================= */
 
 .menu-icons {
-    vertical-align: middle;
-    margin-right: 7px;
+	vertical-align: middle;
+	margin-right: 7px;
 }
 
 /* =========================================================== *\
-    						PRINCIPAL
+							PRINCIPAL
 \* =========================================================== */
 
 //Overview Material
@@ -142,7 +142,7 @@ body {
 
 
 /* ============================================================= *\
-    							BOARD
+								BOARD
 \* ============================================================= */
 
 // GRAPES
@@ -176,7 +176,7 @@ $builder-bg: #f5f7fb;
 .comments {
 	section {
 		.mat-card-header-text {
-		    margin: 8px 12px 0px;
+			margin: 8px 12px 0px;
 		}
 	}
 }
@@ -212,7 +212,7 @@ $builder-bg: #f5f7fb;
 
 		.config-container {
 			.mat-expansion-indicator {
-			    padding-bottom: 2px !important;
+				padding-bottom: 2px !important;
 			}
 
 			// Accordion panel content
@@ -255,20 +255,20 @@ $builder-bg: #f5f7fb;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered{
 	color: #A5ABB1;
-    font-family: HelveticaNeue, sans-serif;
-    font-size: 0.75em;
+	font-family: HelveticaNeue, sans-serif;
+	font-size: 0.75em;
 }
 .select2-container .select2-selection--single .select2-selection__rendered{
 	padding-left: 20px;
-    padding-right: 30px;
+	padding-right: 30px;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow{
 	right: 7px;
 }
 .select2-results__option{
 	color: #A5ABB1;
-    font-family: HelveticaNeue, sans-serif;
-    font-size: 0.75em;
+	font-family: HelveticaNeue, sans-serif;
+	font-size: 0.75em;
 }
 
 .mat-dialog-container {
@@ -289,18 +289,48 @@ $builder-bg: #f5f7fb;
 			border: 0;
 		}
 		td.in-range, td.available:hover{
-			background-color: #BFDFFF;
+			background-color: transparent;
+
+			span {
+				&:before {
+					content: '';
+					width: 25px;
+					height: 25px;
+					background: #bfdfff;
+					position: absolute;
+					top: 50%;
+					border-radius: 50%;
+					z-index: -1;
+					transform: translate(-50%, -50%);
+					left: 50%;
+				}
+			}
+
 		}
-		.start-date, td.active, td.active:hover, td.end-date{
+		td.active.start-date, td.active, td.active:hover, td.end-date{
 			border-radius: 50%;
-			background-color: #0080FF;
-			span{
-				position: relative;
-				top: 7px;
+			background-color: transparent;
+			span {
+
+				&:before {
+					content: '';
+					width: 25px;
+					height: 25px;
+					background: #0080FF;
+					position: absolute;
+					top: 50%;
+					border-radius: 50%;
+					z-index: -1;
+					transform: translate(-50%, -50%);
+					left: 50%;
+
+				}
+
 			}
 		}
 		span{
 			font-size: 12px;
+			position: relative;
 		}
 		th.month{
 			color: #0080FF;
@@ -352,7 +382,7 @@ $builder-bg: #f5f7fb;
 .search_input{
 	background-image: url("../src/assets/images/search.png");
 	background-repeat: no-repeat;
-    background-position: 97% 50%;
+	background-position: 97% 50%;
 }
 
 .info_move-text{
@@ -383,7 +413,7 @@ $builder-bg: #f5f7fb;
 	padding-left: 17%;
 	background-image: url("../src/assets/images/trash.png");
 	background-repeat: no-repeat;
-    background-position: 2% 50%;
+	background-position: 2% 50%;
 }
 
 .folder_container{
@@ -393,8 +423,8 @@ margin-top: 2%;
 }
 .info_border{
 	border-right: silver 1px solid;
-    width: 40%;
-    margin-top: -5%;
+	width: 40%;
+	margin-top: -5%;
 	height: 60px;
 	@media screen and (max-width: 1460px){
 		width: 49%;
@@ -435,3 +465,72 @@ margin-top: 2%;
 		font-weight: bold;
 	}
 }
+
+/* Calendar */
+
+.calendar-container {
+	.md-drppicker.ltr {
+		box-shadow: none;
+		margin-bottom: 36px;
+		width: 100%;
+		// background: red;
+	}
+
+	.md-drppicker.ltr .calendar {
+		border: 1px solid #E7EAF1;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+		max-width: 280px;
+		width: 280px;
+		margin: 4px;
+		position: relative;
+
+	}
+
+
+	.md-drppicker.ltr .calendar.right.ng-star-inserted::before,
+	.md-drppicker.ltr .calendar.left.ng-star-inserted::before{
+		border-right: 1px solid #E7EAF1;
+		border-top: 1px solid #E7EAF1;
+		color: transparent;
+		cursor: pointer;
+		display: inline-block;
+		height: 12px;
+		position: absolute;
+		right: 30px;
+		top: 0;
+		width: 12px;
+		-ms-: rotate(315deg);
+		-webkit-transform: rotate(315deg);
+		transform: rotate(315deg);
+		position: absolute;
+		top: -7px;
+		content: "";
+		background: #FFFFFF;
+		right: 0;
+		left: 0;
+		margin: auto;
+	}
+
+	.md-drppicker.ltr .calendar.left {
+		margin-right: 22px;
+	}
+
+
+	.mat-form-field-infix {
+		color: #A5ABB1;
+		max-width: 280px;
+		width: 280px;
+		font-weight: 100;
+		font-style: italic;
+		font-size: 0.875em;
+	}
+
+	.mat-form-field-appearance-legacy .mat-form-field-underline {
+		background-color: #E7EAF1;
+	}
+
+}
+

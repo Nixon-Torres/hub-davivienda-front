@@ -16,8 +16,24 @@
 		<div class="search-container">
 			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar" (click)="toggleCalendar()"> Por fecha: </i>
 		</div>
-		<div class="date-container calender-container" *ngIf="calendarOpen">
-			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
+		<div class="overlay" *ngIf="calendarOpen">
+		</div>
+		<div class="date-container calendar-container" *ngIf="calendarOpen">
+			<a _ngcontent-xoo-c17="" class="modal-close-cta" (click)="toggleCalendar()">Cerrar <span _ngcontent-xoo-c17="" class="icon icon-times"></span></a>
+			<h3 class="calendar-container--title">Búsqueda por fecha</h3>
+			<div class="calendar-container--form">
+				<mat-form-field class="input-left">
+				  <input matInput placeholder="Fecha de" [(ngModel)]="startDate" [disabled]='disabled'>
+				</mat-form-field>
+				<mat-form-field class="">
+				  <input matInput placeholder="Fecha a" [(ngModel)]="endDate" [disabled]='disabled'>
+				</mat-form-field>
+<!-- 				<input class="calendar-container--input" type="text" placeholder="Fecha de" [(ngModel)]="startDate" >
+				<input class="calendar-container--input" type="text" placeholder="Fecha a" [(ngModel)]="endDate">
+ -->			</div>	
+			<ngx-daterangepicker-material class="box-content" autoApply=true (datesUpdated)="onDateUpdate($event)"></ngx-daterangepicker-material>
+			<button class="mat-button mat-button-base" (click)="toggleCalendar()">Cancelar</button>
+			<button type="button" (click)="filterDateReports()" mat-raised-button>Filtrar Ahora</button>
 		</div>
 	</div>
 
