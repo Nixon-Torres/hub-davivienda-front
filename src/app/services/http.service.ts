@@ -26,8 +26,9 @@ export class HttpService {
                 params.set(key, input.data[key]);
             }
         }
+        let encodeData = input.data ? encodeURI(JSON.stringify(input.data)) : '';
         let headers = this.headers();
-        return this.http.get<Response>(this._URL_API + input.path, {
+        return this.http.get<Response>(`${this._URL_API}${input.path}${(input.encode ? `?filter=${encodeData}` : '')}`, {
             observe: 'response',
             headers: headers
         }).pipe(catchError(this.handleError));

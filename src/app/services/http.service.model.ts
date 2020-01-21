@@ -2,6 +2,7 @@ export class Request {
     path: string;
     data?: any;
     headers?: Array<any> = [];
+    encode?: boolean = false;
 }
 
 export interface Response {
