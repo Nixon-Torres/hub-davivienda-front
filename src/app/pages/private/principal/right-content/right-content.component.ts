@@ -211,6 +211,14 @@ export class RightContentComponent implements OnInit {
 
         this.rcPutReport(toUpdate, 0, () => {
             this.loadReports(this.ifilter);
+            let folder = this.list.folders.filter((a: any) => a.id == event.value )[0];
+            if(!folder) return;
+            this.valueChange.emit({
+                state: this.icurrentObj.currentState,
+                deleted: this.icurrentObj.deletedFg,
+                folder: folder.id,
+                stateName: folder.name
+            });
         });
     }
 
