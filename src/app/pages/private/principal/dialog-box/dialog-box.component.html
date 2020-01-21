@@ -5,8 +5,8 @@
 	</div>
 	<div mat-dialog-content>
 		<form class="form-box">
-			<button *ngIf="editNew" class="icon_edit material-icons" (click)="onSaveFolder($event)">done</button>
-			<button class="icon icon-plus-circle" *ngIf="!editNew" (click)="onSaveFolder($event)">editar</button>
+			<button *ngIf="editNew" class="icon_edit material-icons">done</button>
+			<button class="icon icon-plus-circle" *ngIf="!editNew">editar</button>
 			<mat-form-field *ngIf="!editNew">
 				<input  matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Crear carpeta nueva">
 			</mat-form-field>
@@ -28,7 +28,7 @@
 	</div>
 	<div mat-dialog-actions>
 		<button class="dialog_cancel" mat-button (click)="onNoClick()">Cancelar</button>
-		<button class="highligh" mat-button [mat-dialog-close]="" cdkFocusInitial>Agregar</button>
+		<button class="highligh" mat-button [mat-dialog-close]="" cdkFocusInitial (click)="onSaveFolder($event)">Agregar</button>
 	</div>
 </div>	
 

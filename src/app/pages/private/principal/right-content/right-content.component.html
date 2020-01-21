@@ -30,7 +30,7 @@
 							<p class="info_move-text">Mover a:</p>
 							<mat-form-field class="simple" floatLabel="never">
 								<mat-label class="folder_label">Escoger</mat-label>
-								<mat-select (selectionChange)="moveReports($event)">
+								<mat-select (selectionChange)="moveReports($event)" class="info_select">
 									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
 									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>
@@ -81,7 +81,7 @@
 							<p class="info_move-text">Mover a:</p>
 							<mat-form-field class="simple" floatLabel="never">
 								<mat-label class="folder_label">Escoger</mat-label>
-								<mat-select (selectionChange)="moveReports($event)">
+								<mat-select (selectionChange)="moveReports($event)" class="info_select">
 									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
 									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>

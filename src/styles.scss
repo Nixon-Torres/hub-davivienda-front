@@ -136,7 +136,17 @@ body {
 	}
 
 	.mat-tab-label-active {
-		color: #0080FF;
+		color: #0080FF !important;
+		font-weight: bold;
+	}
+}
+
+.mat-tab-labels{
+	.mat-tab-label{
+		font-size: 1.15em;
+		opacity: 1;
+		color: #616161;
+		font-family: HelveticaNeue, sans-serif;
 	}
 }
 
@@ -359,7 +369,10 @@ $builder-bg: #f5f7fb;
 .info_move-text{
 	display: inline-block;
 	padding: 0 1.5% 0 10%;
-	font-family: Roboto,"Helvetica Neue",sans-serif;
+	font-family: "Helvetica Neue",sans-serif;
+	color: #616161;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 
@@ -374,11 +387,12 @@ $builder-bg: #f5f7fb;
 	}
 	.mat-form-field-underline{
 		bottom: 0;
+		height: 0px !important;
 	}
 }
 .folder_label{
 	padding-left: 10px;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .delete_field{
@@ -446,6 +460,7 @@ margin-top: 2%;
 	background: #C2CBD1;
 	cursor: pointer;
 }
+
 .paginator_numbers{
 	cursor: pointer;
 }
@@ -488,3 +503,18 @@ margin-top: 2%;
 		background: #555; 
 	}
   }
+
+.mat-select-trigger{
+	.mat-select-arrow-wrapper{
+		.mat-select-arrow{
+			display: none;
+		}
+	}
+}
+
+.info_select{
+	background-image: url('../src/assets/images/arrow-down.png');
+	background-repeat: no-repeat;
+	background-position: 93%;
+    background-size: 10px;
+}
