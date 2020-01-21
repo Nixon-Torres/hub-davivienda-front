@@ -94,6 +94,7 @@
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span report_name">{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
+											<span class="checkt"></span>
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
