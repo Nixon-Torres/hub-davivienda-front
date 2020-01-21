@@ -65,12 +65,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get("id")) {
+
                 this.report.id = params.get("id");
-
-                console.log(this.report, this.user);
-
                 this.loadReport(this.report.id);
+
             } else if (params.get("stateId")) {
+
                 let folderId = params.get('folderId');
                 let templateId = params.get('templateId');
                 this.fromReportId = params.get('reportId');
