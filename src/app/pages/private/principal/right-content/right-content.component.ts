@@ -10,6 +10,7 @@ import { HttpService } from '../../../../services/http.service';
 
 import * as qs from 'qs';
 import * as moment from 'moment';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-right-content',
@@ -219,6 +220,13 @@ export class RightContentComponent implements OnInit {
                 folder: folder.id,
                 stateName: folder.name
             });
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: 'Su informe ha sido agregado exitosamente a:',
+                    subtitle: folder.name
+                }
+            }); 
         });
     }
 
