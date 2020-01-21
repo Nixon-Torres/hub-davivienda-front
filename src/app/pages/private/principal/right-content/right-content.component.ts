@@ -20,7 +20,7 @@ export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
 
-    public calendarOpen : boolean = false;
+    public calendarOpen: boolean = false;
 
     icurrentObj: {
         currentFolder: null,
@@ -64,10 +64,10 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    toggleCalendar(){
-        if(!this.calendarOpen){
+    toggleCalendar() {
+        if (!this.calendarOpen) {
             this.calendarOpen = true;
-        }else{
+        } else {
             this.calendarOpen = false;
         }
     }
@@ -137,19 +137,44 @@ export class RightContentComponent implements OnInit {
         });
     }
 
+    public getIFilterIds(endpoint: string, property: string, fn: any): void {
+        let result: Array<string> = [];
+        if (!this.ifilter) return fn(result);
+        var query = new loopback();
+        query.filter.where['name'] = { like: this.ifilter, options: "i" };
+        query.filter.fields = { id: true };
+        this.http.get({
+            path: endpoint,
+            data: query.filter,
+            encode: true
+        }).subscribe((response: any) => {
+            result = response.body.map((a: any) => {
+                let item: any = {};
+                item[property] = a.id;
+                return item;
+            });
+            fn(result);
+        });
+    }
+
     public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         var query = new loopback();
-        query.filter.include.push({ relation: "folder" }, { relation: "user" }, { relation: "state" }, { relation: "section" });
-        query.filter.where['folderId'] = this.icurrentObj.currentFolder;
-        query.filter.where['stateId'] = this.icurrentObj.currentState;
-        query.filter.where['trash'] = this.icurrentObj.deletedFg;
-        query.filter.where['reviewed'] = this.ifilterreviewed;
-        this.ifilter ? query.filter.where['name'] = { like: this.ifilter } : null;
+        query.filter.where = { and: [] };
+        this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }): null;
+        this.icurrentObj.deletedFg ? query.filter.where['and'].push({ trash: this.icurrentObj.deletedFg }): null;
+        query.filter.where['and'].push({ reviewed: this.ifilterreviewed });
+        query.filter.include.push(
+            { relation: "folder" },
+            { relation: "user" },
+            { relation: "state" },
+            { relation: "section" }
+        );
+
         if (this.ifilterdate) {
             let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
             let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
-            query.filter.where['updatedAt'] = { between: [start, end] };
+            query.filter.where['and'].push({ updatedAt: { between: [start, end] } });
         }
 
         if (pager) {
@@ -162,16 +187,31 @@ export class RightContentComponent implements OnInit {
             query.filter.skip = 0;
         }
 
-        this.clearCheckboxes(this.listForm.controls.reports as FormArray);
-        this.list.reports = [];
-        this.http.get({
-            path: `reports?${qs.stringify(query, { skipNulls: true })}`
-        }).subscribe((response: any) => {
-            this.addCheckboxes(response.body);
-            setTimeout(() => {
-                this.list.reports = response.body;
-            }, 100)
-
+        this.getIFilterIds('users', 'userId', (users: Array<any>) => {
+            this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
+                this.getIFilterIds('sections', 'sectionId', (sections: Array<any>) => {
+                    if (this.ifilter) {
+                        let orWhere: Array<any> = [
+                            { name: { like: this.ifilter, options: "i" } }
+                        ].concat(users, states, sections);
+                        query.filter.where['and'].push({ or: orWhere });
+                    }else {
+                        query.filter.where['and'].push({ stateId: this.icurrentObj.currentState });
+                    }
+                    this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+                    this.list.reports = [];
+                    this.http.get({
+                        path: `reports`,
+                        data: query.filter,
+                        encode: true
+                    }).subscribe((response: any) => {
+                        this.addCheckboxes(response.body);
+                        setTimeout(() => {
+                            this.list.reports = response.body;
+                        }, 100);
+                    });
+                });
+            });
         });
     }
 
