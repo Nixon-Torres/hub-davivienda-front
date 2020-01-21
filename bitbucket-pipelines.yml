@@ -2,7 +2,7 @@ image: qdata/qciagent:master-php7
 
 pipelines:
   branches:
-    development:
+    stage:
       - step:
           script:
             - apt-get update # required to install zip
