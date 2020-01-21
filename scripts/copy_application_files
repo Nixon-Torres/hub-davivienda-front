@@ -1,0 +1,2 @@
+#!/bin/bash
+cp -R /tmp/hub-contenidos-front/dist/hub-contenidos-front/* /home/ubuntu/hub-contenidos-api/client/dist/
