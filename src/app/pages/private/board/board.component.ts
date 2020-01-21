@@ -33,7 +33,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor: any;
     public grapes: any;
     public lastupdate: string;
+    public grid: any = {
+        col: {
+            builder: 9,
+            comments: 0,
+            panel: 2
+        },
+        row: {
+            builder: 1,
+            comments: 1,
+            panel: 1
+        }
+    }
     public report: Report = {
+        id: null,
         name: '',
         slug: null,
         trash: false,
@@ -386,5 +399,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
             data: {
             }
         });
+    }
+
+    showComments() {
+        this.grid.col.builder = 7;
+        this.grid.col.comments = 2;
+        this.grid.col.panel = 2;
+        document.querySelector('mat-grid-tile.comments').classList.add('show');
+    }
+
+    hideComments() {
+        document.querySelector('mat-grid-tile.comments').classList.remove('show');
+
+        setTimeout(() => {
+            this.grid.col.builder = 9;
+            this.grid.col.comments = 0;
+            this.grid.col.panel = 2;
+        }, 100);
     }
 }

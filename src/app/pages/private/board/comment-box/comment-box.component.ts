@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
 
 import { AuthService } from '../../../../services/auth.service';
 import { HttpService } from '../../../../services/http.service';
@@ -14,6 +14,7 @@ import * as $ from "jquery/dist/jquery";
 export class CommentBoxComponent implements OnInit {
 
     @Input('reportId') private reportId: string;
+    @Output() propagate = new EventEmitter<string>();
 
     public user: any = {};
     public comment: Comment = {
@@ -106,5 +107,9 @@ export class CommentBoxComponent implements OnInit {
         document.querySelector('.comment-form').classList.add('hide');
         document.querySelector('.add-action').classList.remove('hide');
         document.querySelector('textarea').classList.remove('expand');
+    }
+
+    hideComments() {
+        this.propagate.emit();
     }
 }

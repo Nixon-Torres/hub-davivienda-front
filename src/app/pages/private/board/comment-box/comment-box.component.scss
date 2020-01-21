@@ -44,8 +44,21 @@ header {
 }
 
 section {
-	height: 100%;
+	height: calc(100% - (53px + 24px));
 	padding: 12px;
+	overflow: auto;
+	transition: overflow .5s;
+
+	&::-webkit-scrollbar {
+	   	width: 6px;
+	   	background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+	    background: #CCC;
+	    // background: #0080FF;
+	    border-radius: 4px;
+	}
 
 	.mat-card {
 		padding: 0px;
@@ -60,6 +73,7 @@ section {
 
 		&.comment-form {
 			background-color: #F8F8F8;
+			margin-bottom: 100%;
 
 			.mat-card-header {
 				border-bottom: solid 1px #E2EAF1;
@@ -181,6 +195,7 @@ section {
 
 	.add-action {
 		margin-top: 20px;
+		margin-bottom: 100%;
 
 		p {
 			text-align: center;
@@ -206,6 +221,14 @@ section {
 	}
 }
 
+footer {
+	height: 100px;
+    text-align: center;
+
+	button {
+		margin-top: 20px;
+	}
+}
 
 /* ========================================================= *\
 						  ANIMATIONS
