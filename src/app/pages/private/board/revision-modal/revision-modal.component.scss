@@ -1,0 +1,107 @@
+
+.modal {
+    &--review {
+        height: auto;
+        min-height: 17.67vw;
+        position: relative;
+        .modal {
+            &__wrapper {
+                padding: 10.6% 5.55% 7.55%;
+            }
+            &__content {
+                display: flex;
+                flex-direction: column;
+            }
+            &__title {
+                color: #A5ABB1;
+                font-size: 1.125em;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 5.2vh;
+            }
+        }
+        .modal-close-cta {
+            position: absolute;
+            right: 15px;
+            top: 14px;
+            color: #616161;
+            font-style: italic;
+            font-size: 0.750em;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            .icon {
+                font-size: 1.667em;
+                font-style: normal;
+                font-weight: bold;
+                padding-left: 10px;
+                &:before {
+                    margin-right: 0;
+                    font-size: 1em;
+                }
+            }
+        }
+        .reviewers {
+            margin-bottom: 1.3vh;
+        }
+        .reviewer {
+            background-color: #F5F7FB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5.2vh;
+            padding: 0 3.75% 0 7.5%;
+            margin-bottom: .65vh;
+            &__text {
+                color: #616161;
+                font-style: italic;
+                font-size: 1em;
+            }
+            .icon {
+                color: #FF133B;
+                &:before  {
+                    font-size: 1em;
+                    margin-right: 0;
+                }
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        .button--add {
+            color: #A5ABB1;
+            border: 0;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+            align-self: center;
+            margin-top: 3.9vh;
+            outline: none;
+            .icon {
+                color: #A5ABB1;
+                &:before {
+                    
+                }
+            }
+        }
+        .footer {
+            margin-top: 3.9vh;
+            display: flex;
+            justify-content: center;
+            .btn {
+                box-shadow: none;
+                width: 140px;
+                border-radius: 5px;
+                outline: 0;
+                color: #A5ABB1;
+                margin-right: 4px;
+                &-primary {
+                    color: white;
+                    background-color: #0080ff;
+                    margin: 0 0 0 4px;
+                }
+            }
+        }
+    }
+}

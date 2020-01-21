@@ -388,7 +388,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe( (resp) => {
             this.users = resp.body;
             let dialogRef = this.dialog.open(RevisionModalComponent, {
-                width: '410px',
+                width: '450px',
                 data: {
                     title: '¿Quien quiere que revise su informe?',
                     users: this.users
