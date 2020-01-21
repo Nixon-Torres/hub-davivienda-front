@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
+import { loopback } from '../../../models/common/loopback.model';
 import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
@@ -9,6 +10,7 @@ import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 import * as moment from 'moment';
+import * as qs from 'qs';
 
 import { Report } from './board.model';
 
@@ -87,8 +89,25 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @return { this.report } Obj with the report data
     */
     private loadReport(idReport: string): void {
+        var query = new loopback();
+        query.filter.include.push({
+            relation: "events",
+            scope: {
+                include: {
+                    relation: 'owner',
+                    scope: {
+                        fields: ['name']
+                    }
+                },
+                limit: 1,
+                order: "id DESC"
+            }
+        });
+
         this.http.get({
-            'path': `reports/${idReport}`
+            'path': `reports/${idReport}`,
+            'data': query.filter,
+            'encode': true
         }).subscribe((response: any) => {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
