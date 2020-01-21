@@ -1,0 +1,17 @@
+image: qdata/qciagent:Master-Ubuntu18
+
+pipelines:
+  branches:
+    stage:
+      - step:
+          script:
+            - apt-get update # required to install zip
+            - apt-get install -y zip # required for packaging up the application
+            - pip install boto3 # required for codedeploy_deploy.py
+            - npm install
+            #- bower install --allow-root
+            - npm run build --prod
+            - chmod +x scripts/*
+            - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME
+            - zip -r /tmp/artifact.zip * # package up the application for deployment
+            - python codedeploy_deploy.py # run the deployment script
