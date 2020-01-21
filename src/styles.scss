@@ -438,10 +438,15 @@ margin-top: 2%;
 .arrow_left{
 	clip-path: polygon(41% 25%, 15% 50%, 42% 69%, 36% 77%, 0% 50%, 39% 16%);
 	background: #C2CBD1;
+	cursor: pointer;
 }
 .arrow_right{
 	clip-path: polygon(61% 20%, 100% 50%, 58% 77%, 56% 68%, 83% 49%, 57% 29%);
 	background: #C2CBD1;
+	cursor: pointer;
+}
+.paginator_numbers{
+	cursor: pointer;
 }
 .paginator_label{
 	font-size: 13px;

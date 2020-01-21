@@ -117,7 +117,7 @@
 		<div class="paginations" *ngIf="pager.pages.length">
 			<a *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])" class="arrow_left">&#x3c;</a>
 			<a class="label paginator_label">Página</a>
-			<a *ngFor="let item of pager.pages" [ngClass]="{'active': (pager.selected == item.index)}" (click)="loadReports(ifilter, item)">{{item.index}}</a>
+			<a class="paginator_numbers" *ngFor="let item of pager.pages" [ngClass]="{'active': (pager.selected == item.index)}" (click)="loadReports(ifilter, item)">{{item.index}}</a>
 			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])" class="arrow_right">&#x3e;</a>
 		</div>
 	</div>
