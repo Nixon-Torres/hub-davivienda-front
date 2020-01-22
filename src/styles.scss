@@ -463,6 +463,7 @@ margin-top: 2%;
 
 .paginator_numbers{
 	cursor: pointer;
+	font-size: 12px;
 }
 .paginator_label{
 	font-size: 13px;
@@ -554,10 +555,10 @@ margin-top: 2%;
 .header_setting{
 	button{
 		border-bottom: solid 1px rgba(217, 219, 221, 0.637);
-		padding-top: 5px;
 		height: 30px;
 		padding-bottom: 40px;
 		padding-top: 0;
+		margin-top: -6px;
 		&:hover{
 			background: #F5F7FB !important;
 		}
