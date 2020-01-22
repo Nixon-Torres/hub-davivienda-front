@@ -1,62 +1,83 @@
-import { Component, OnInit, Inject} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { HttpService } from '../../../../services/http.service';
 
 export class Folder {
-	id: string;
-	name: string;
-	icon: string;
-	author: number;
+    id: string;
+    name: string;
+    icon: string;
+    author: number;
 }
 
 @Component({
-	selector: 'app-dialog-box',
-	templateUrl: './dialog-box.component.html',
-	styleUrls: ['./dialog-box.component.scss']
+    selector: 'app-dialog-box',
+    templateUrl: './dialog-box.component.html',
+    styleUrls: ['./dialog-box.component.scss']
 })
-export class DialogBoxComponent implements OnInit {
+export class DialogBoxComponent {
+    public folders: any[] = [];
+    public folder: any;
 
-	public folders:any[] = [];
-	public editNew: boolean = false;
-	public name:string = '';
-	public edit:boolean = false;
-	public currentPosition:number = 0;
-	constructor(
-		public dialogRef: MatDialogRef<DialogBoxComponent>,
-		@Inject(MAT_DIALOG_DATA) data) {
-		this.folders = data
-	}
+    constructor(
+        public dialogRef: MatDialogRef<DialogBoxComponent>,
+        public http: HttpService,
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+        this.folders = this.data;
+        this.cleanFolder();
+    }
 
-	onNoClick(): void {
-		this.dialogRef.close();
-	}
+    onNoClick(input: boolean): void {
+        this.dialogRef.close(input);
+    }
 
-	onSaveFolder(event: Event): void {
-		event.preventDefault();
-		if (this.name != '') {
-			if (!this.edit)
-				this.folders.unshift({"id":"","name":this.name,"icon":"2","author":1});	
-			else {
-				this.folders[this.currentPosition].name = this.name;
-				this.edit = false;
-				this.currentPosition = 0;
-			} 
-			this.name = '';
-		} 
-	}
-	
-	onDeleteFolder(event: Event, pos: number): void {
-		this.folders.splice(pos,1);	
-	}
+    onSaveFolder(): void {
+        if (!this.folder.name.replace(/(\s)/g, '')) return;
+        let path: string = this.folder.id ? `folders/${this.folder.id}` : 'folders';
+        let method: string = this.folder.id ? 'patch' : 'post';
+        this.http[method]({
+            path: path,
+            data: this.folder
+        }).subscribe((response: any) => {
+            if (this.folder.id) {
+                for (let keyFolder in this.folders) {
+                    if (this.folders[keyFolder].id == this.folder.id) {
+                        this.folders[keyFolder] = response.body;
+                        break;
+                    }
+                }
+            } else {
+                this.folders.push(response.body);
+            }
 
-	onEditFolder(event: Event, pos:number): void {
-		this.editNew = true;
-		this.currentPosition = pos;
-		this.edit = true;
-		this.name = this.folders[pos].name;
-	}
+            this.cleanFolder();
+        });
+    }
 
-	ngOnInit() {
-		console.log(this.dialogRef);
-	}
+    onDeleteFolder(folder: any): void {
+        let confirmDialog = confirm('Esta seguro que desea eliminar la carpeta');
+        if (!confirmDialog) return;
+        this.http.delete({
+            path: `folders/${folder.id}`
+        }).subscribe(() => {
+            this.folders = this.folders.filter((a) => a.id !== folder.id);
+        });
+    }
+
+    onEditFolder(folder: any): void {
+        this.folder = {
+            id: folder.id,
+            name: folder.name,
+            icon: folder.icon
+        }
+    }
+
+    cleanFolder() {
+        this.folder = {
+            id: null,
+            name: '',
+            icon: ' '
+        }
+    }
 }
