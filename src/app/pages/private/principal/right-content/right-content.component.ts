@@ -11,6 +11,7 @@ import { HttpService } from '../../../../services/http.service';
 import * as qs from 'qs';
 import * as moment from 'moment';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
     selector: 'app-right-content',
@@ -58,7 +59,8 @@ export class RightContentComponent implements OnInit {
     constructor(
         public dialog: MatDialog,
         private router: Router,
-        private http: HttpService
+        private http: HttpService,
+        private folderService: AsideFoldersService
     ) {
         this.listForm = new FormGroup({
             'reports': new FormArray([])
@@ -108,11 +110,9 @@ export class RightContentComponent implements OnInit {
     }
 
     private getFolders(): void {
-        this.http.get({
-            'path': 'folders/'
-        }).subscribe((response: any) => {
-            this.list.folders = response.body;
-        });
+        this.folderService.$listenFolders.subscribe( data => {
+            this.list.folders = data;
+        })
     }
 
     public gotoPage(input: string) {
@@ -220,13 +220,16 @@ export class RightContentComponent implements OnInit {
                 folder: folder.id,
                 stateName: folder.name
             });
-            this.dialog.open(ConfirmationDialogComponent, {
+            let modalRef = this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
                     title: 'Su informe ha sido agregado exitosamente a:',
                     subtitle: folder.name
                 }
-            }); 
+            });
+            this.folderService.loadFolders();
+            this.folderService.loadStates();
+            this.folderService.newActive = folder;
         });
     }
 

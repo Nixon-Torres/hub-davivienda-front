@@ -22,19 +22,24 @@ export class AsideFoldersService {
   public listenStates;
   public $listenStates;
   public statesSubs;
+  public newActiveFolder;
+  public $listenActiveFolder;
   
   constructor(private http: HttpService) { 
     console.log('aside-service');
     this.listenFolders = new Subject();
     this.listenStates = new Subject();
+    this.newActiveFolder = new Subject();
+    
     this.$listenFolders = this.listenFolders.asObservable();
     this.$listenStates = this.listenStates.asObservable();
+    this.$listenActiveFolder = this.newActiveFolder.asObservable();
     this.loadStates();
     this.loadFolders();
     
   }
   
-  private loadFolders() {
+  public loadFolders() {
     var query = new loopback();
     query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
     console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
@@ -45,7 +50,7 @@ export class AsideFoldersService {
       this.list.folders = this.updateFolders(response.body);
     });
   }
-  private loadStates() {
+  public loadStates() {
     var query = new loopback();
     query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
     console.log('query states', JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
@@ -82,6 +87,10 @@ export class AsideFoldersService {
 
   set stateList (value: Array<any>) {
     this.list.states = value;
+  }
+
+  set newActive (id: string) {
+    this.newActiveFolder.next(id);
   }
 
 }
