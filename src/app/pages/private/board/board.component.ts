@@ -106,7 +106,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @return { this.report } Obj with the report data
     */
     private loadReport(idReport: string): void {
+
         var query = new loopback();
+
+        query.filter.include.push({
+            relation: "state",
+            scope: {
+                fields: ['name']
+            }
+        });
+
         query.filter.include.push({
             relation: "events",
             scope: {
@@ -126,10 +135,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': query.filter,
             'encode': true
         }).subscribe((response: any) => {
+
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
-
             this.setLastUpdate(response.body.updatedAt);
 
             setTimeout(() => {
@@ -286,7 +295,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': {
                 reportId: this.report.id,
                 reviewers: this.getReviewers(reviewers)
-            } 
+            }
         }).subscribe( (resp) => {
             if(resp) {
                 this.dialog.open(ConfirmationDialogComponent, {
@@ -351,6 +360,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe(
             (response: any) => {
                 if (!autoSave) {
+
                     if (cb) return cb();
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
@@ -366,11 +376,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
                         }
                     });
                 } else {
-                    this.report.id = response.body.id;
-                    response.body.folderId = response.body.folderId ? response.body.folderId : null;
-                    response.body.templateId = response.body.templateId ? response.body.templateId : null;
-                    // this.report = response.body;
-                    this.setLastUpdate(response.body.updatedAt);
+                    if (!this.report.id) {
+                        this.router.navigate(['app/board', response.body.id]);
+                    } else {
+                        this.report.id = response.body.id;
+                        response.body.folderId = response.body.folderId ? response.body.folderId : null;
+                        response.body.templateId = response.body.templateId ? response.body.templateId : null;
+                        // this.report = response.body;
+                        this.setLastUpdate(response.body.updatedAt);
+                    }
                 }
             },
             () => {
