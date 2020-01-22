@@ -1,9 +1,31 @@
-<div class="modal-form">
-    <div class="two-columns">
-        <div mat-dialog-actions>
-            <button mat-button (click)="closeDialog()">Cancelar</button>
-            <button type="submit" class="highligh" mat-button mat-dialog-close>Empezar Informe</button>
+<div class="modal--review">
+    <div class="modal__wrapper">
+        <a (click)="closeDialog()" _ngcontent-xaa-c25="" class="modal-close-cta">Cerrar <span _ngcontent-xaa-c25=""
+                class="icon icon-times"></span></a>
+        <div class="modal__content" mat-dialog-content>
+            <p class="modal__title">{{ data.title }}</p>
+            <ul *ngIf="reviewers.length > 0" class="reviewers">
+                <li *ngFor="let reviewer of reviewers" class="reviewer">
+                    <span class="reviewer__text">{{ reviewer.name }}</span>
+                    <span class="icon icon-times" (click)="removeUser(reviewer.id, reviewers)"></span>
+                </li>
+            </ul>
+
+            <ng-select *ngIf="selectIsVisible" [items]="users" bindValue="name" bindLabel="name"
+                placeholder="Escriba o seleccione la persona" (change)="onSelectUser($event)" [virtualScroll]="true"
+                [clearable]="false" class="custom-select">
+            </ng-select>
+
+            <button (click)="selectIsVisible=!selectIsVisible" class="button--add" *ngIf="reviewers.length > 0">
+                <span class="icon icon-plus-circle"></span>
+                <span>Agregar otra persona</span>
+            </button>
+        </div>
+
+        <div mat-dialog-actions class="footer">
+            <button mat-button (click)="closeDialog()" class="btn">Cancelar</button>
+            <button type="submit" class="highligh" mat-button mat-dialog-close (click)="openModalSendReview()"
+                class="btn btn-primary">Enviar</button>
         </div>
     </div>
 </div>
-

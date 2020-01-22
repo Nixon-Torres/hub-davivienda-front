@@ -2,10 +2,10 @@
 	<div class="content--top">
 		<span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}</span>
 		<div class="insert_btn">
-			<button mat-raised-button>Insertar <span class="insert_icon">▼</span></button>
+			<button mat-raised-button class="insert_icon">Insertar <span>&nbsp;</span></button>
 		</div>
-		<div>
-			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe ></button>
+		<div class="info_btn">
+			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
 		</div>
 	</div>
 
@@ -16,8 +16,22 @@
 		<div class="search-container">
 			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)" placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar" (click)="toggleCalendar()"> Por fecha: </i>
 		</div>
-		<div class="date-container calender-container" *ngIf="calendarOpen">
-			<ngx-daterangepicker-material (choosedDate)="filterDateReports($event)"></ngx-daterangepicker-material>
+		<div class="overlay" *ngIf="calendarOpen">
+		</div>
+		<div class="date-container calendar-container" *ngIf="calendarOpen">
+			<a _ngcontent-xoo-c17="" class="modal-close-cta" (click)="toggleCalendar()">Cerrar <span _ngcontent-xoo-c17="" class="icon icon-times"></span></a>
+			<h3 class="calendar-container--title">Búsqueda por fecha</h3>
+			<div class="calendar-container--form">
+				<mat-form-field class="input-left">
+				  <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
+				</mat-form-field>
+				<mat-form-field class="">
+				  <input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
+				</mat-form-field>
+			</div>	
+			<ngx-daterangepicker-material class="box-content" autoApply=true (datesUpdated)="onDateUpdate($event)"></ngx-daterangepicker-material>
+			<button class="mat-button mat-button-base" (click)="toggleCalendar()">Cancelar</button>
+			<button type="button" (click)="filterDateReports()" mat-raised-button>Filtrar Ahora</button>
 		</div>
 	</div>
 
@@ -31,11 +45,10 @@
 							<mat-form-field class="simple" floatLabel="never">
 								<mat-label class="folder_label">Escoger</mat-label>
 								<mat-select (selectionChange)="moveReports($event)">
-									<mat-option *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
-									<mat-option><p class="eliminar_field" (click)="deleteReports()">Eliminar</p></mat-option>
+									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>
 							</mat-form-field>
-							<!-- <div class="info_border">&nbsp;</div> -->
 							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
 								<ul class="">
 									<li><a class="" >Recuperar</a></li>
@@ -77,16 +90,17 @@
                         <div class="trash_info" *ngIf="icurrentObj.deletedFg">
                             <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
                         </div>
-						<div *ngIf="getCheckboxesSelected().length">
+						<div class="folder_container" *ngIf="getCheckboxesSelected().length">
+							<p class="info_move-text">Mover a:</p>
 							<mat-form-field class="simple" floatLabel="never">
-								<mat-label>Mover a:</mat-label>
+								<mat-label class="folder_label">Escoger</mat-label>
 								<mat-select (selectionChange)="moveReports($event)">
-									<mat-option *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
+									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>
 							</mat-form-field>
-							<button type="button" (click)="deleteReports()">Eliminar</button>
 						</div>
-						<form class="" [formGroup]="listForm" *ngIf="list.reports.length">
+						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
 
 							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px">
 								<li *ngFor="let report of list.reports; let i = index">
@@ -114,10 +128,10 @@
 			</mat-tab-group>
 		</section>
 		<div class="paginations" *ngIf="pager.pages.length">
-			<a *ngIf="pager.selected > 1" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])">&#x3c;</a>
-			<a class="label">Página</a>
-			<a *ngFor="let item of pager.pages" [ngClass]="{'active': (pager.selected == item.index)}" (click)="loadReports(ifilter, item)">{{item.index}}</a>
-			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])">&#x3e;</a>
+			<a *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])" class="arrow_left">&#x3c;</a>
+			<a class="label paginator_label">Página</a>
+			<a class="paginator_numbers" *ngFor="let item of pager.pages" [ngClass]="{'active': (pager.selected == item.index)}" (click)="loadReports(ifilter, item)">{{item.index}}</a>
+			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])" class="arrow_right">&#x3e;</a>
 		</div>
 	</div>
 

@@ -1,0 +1,57 @@
+.ng-select.custom-select {
+    .ng-select-container {
+        .ng-value-container {
+            padding-left: 30px;
+            .ng-placeholder {
+                color: #A5ABB1;
+                font-size: 0.875em;
+                font-style: italic;
+            }
+            .ng-input {
+                padding-left: 30px;
+                > input {
+                    color: #A5ABB1;
+                    font-size: 0.875em;
+                    font-style: italic;
+                }
+            }
+        }
+    } 
+    .ng-arrow-wrapper {
+        position: relative;
+        .ng-arrow {
+            position: absolute;
+            top: 50%;
+            border-color: #1783FB;
+            border-width: 0 2px 2px 0;
+            display: block;
+            width: 8px;
+            height: 8px;
+            transform-origin: 75% center;
+            transform: translateY(-50%) rotate(45deg);
+            transition: transform .2s ease-out;
+            
+        }
+    }
+    &.ng-select-opened {
+        .ng-arrow-wrapper {
+            .ng-arrow { 
+                transform-origin: center center;
+                transform: translateY(-15%) rotate(-135deg);
+            }
+        }
+        .ng-dropdown-panel {
+            .ng-dropdown-panel-items {
+                max-height: 70px;
+                .ng-option {
+                    padding-left: 30px;
+                    .ng-option-label {
+                        color: #A5ABB1;
+                        font-size: 0.875em;
+                        font-style: italic;
+                    }
+                }
+            }
+        }
+    }
+}

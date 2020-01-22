@@ -8,7 +8,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { Routes, RouterModule } from '@angular/router';
-
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
@@ -33,24 +34,26 @@ const routes: Routes = [
 const materialModules: any[] = [
     MatRippleModule,
     MatButtonModule,
-	MatToolbarModule,
-	MatGridListModule,
+    MatToolbarModule,
+    MatGridListModule,
     MatExpansionModule,
     MatCardModule
 ];
 
 @NgModule({
-    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent ],
+    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent],
     imports: [
         CommonModule,
         FormsModule,
-		materialModules,
+        materialModules,
         PreviewDialogModule,
         ConfirmationDialogModule,
+        NgSelectModule,
+        NgOptionHighlightModule,
         RouterModule.forChild(routes)
     ],
-  	exports: [
-		materialModules
-  	]
+    exports: [
+        materialModules
+    ]
 })
 export class BoardModule { }
