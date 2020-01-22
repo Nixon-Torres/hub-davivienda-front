@@ -5,18 +5,17 @@
 	</div>
 	<div mat-dialog-content>
 		<form class="form-box">
-<<<<<<< HEAD
 			<button class="icon_edit material-icons" *ngIf="folder.id" (click)="onSaveFolder()">done</button>
 			<button class="icon icon-plus-circle" *ngIf="!folder.id" (click)="onSaveFolder()">editar</button>
 			<mat-form-field>
-				<input matInput [(ngModel)]="folder.name" [ngModelOptions]="{standalone: true}" [placeholder]="folder.id ? 'Editar carpeta' : 'Crear carpeta nueva'">
+				<input matInput [(ngModel)]="folder.name" [ngModelOptions]="{standalone: true}" [placeholder]="(folder.id ? 'Editar carpeta' : 'Crear carpeta nueva')">
 			</mat-form-field>
 		</form>
 		<ul class="list">
 			<li *ngFor="let folder of folders">
 				<p class="list--left">{{folder.name}}</p>
 				<div class="list--right">
-					<span>0 pages</span>
+					<span class="pages_right">0 pages</span>
 					<button class="icon icon-edit" (click)="onEditFolder(folder)">editar</button>
 					<span class="list--divider">|</span>
 					<button class="icon icon-trash-alt" (click)="onDeleteFolder(folder)">eliminar</button>
@@ -25,33 +24,7 @@
 		</ul>
 	</div>
 	<div mat-dialog-actions>
-		<button mat-button (click)="onNoClick(false)">Cancelar</button>
-		<button mat-button class="highligh" (click)="onNoClick(true)" cdkFocusInitial>Aceptar</button>
-=======
-			<button *ngIf="editNew" class="icon_edit material-icons">done</button>
-			<button class="icon icon-plus-circle" *ngIf="!editNew">editar</button>
-			<mat-form-field *ngIf="!editNew">
-				<input  matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Crear carpeta nueva">
-			</mat-form-field>
-			<mat-form-field *ngIf="editNew">
-				<input matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Editar carpeta">
-			</mat-form-field>
-		</form>
-			<ul class="list">
-				<li *ngFor="let folder of folders;let indice=index ">
-					<p class="list--left">{{folder.name}}</p>
-					<div class="list--right">
-						<span class="pages_right">0 pages</span>
-						<button class="icon icon-edit" (click)="onEditFolder($event,indice)">editar</button>
-						<span class="list--divider"></span>
-						<button class="icon icon-trash-alt" (click)="onDeleteFolder($event,indice)">eliminar</button>
-					</div>
-				</li>
-			</ul>
-	</div>
-	<div mat-dialog-actions>
-		<button class="dialog_cancel" mat-button (click)="onNoClick()">Cancelar</button>
-		<button class="highligh" mat-button [mat-dialog-close]="" cdkFocusInitial (click)="onSaveFolder($event)">Agregar</button>
->>>>>>> 7e14161fad6a9a5d9309867bfdaad0d5c9ff2f26
+		<button mat-button class="dialog_cancel" (click)="onNoClick(false)">Cancelar</button>
+		<button mat-button cclass="highligh" (click)="onNoClick(true)" cdkFocusInitial>Aceptar</button>
 	</div>
 </div>

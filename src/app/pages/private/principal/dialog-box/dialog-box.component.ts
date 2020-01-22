@@ -40,14 +40,14 @@ export class DialogBoxComponent {
             path: path,
             data: this.folder
         }).subscribe((response: any) => {
-            if(this.folder.id) {
+            if (this.folder.id) {
                 for (let keyFolder in this.folders) {
-                    if(this.folders[keyFolder].id == this.folder.id) {
+                    if (this.folders[keyFolder].id == this.folder.id) {
                         this.folders[keyFolder] = response.body;
                         break;
                     }
                 }
-            }else {
+            } else {
                 this.folders.push(response.body);
             }
 
@@ -56,6 +56,8 @@ export class DialogBoxComponent {
     }
 
     onDeleteFolder(folder: any): void {
+        let confirmDialog = confirm('Esta seguro que desea eliminar la carpeta');
+        if (!confirmDialog) return;
         this.http.delete({
             path: `folders/${folder.id}`
         }).subscribe(() => {
