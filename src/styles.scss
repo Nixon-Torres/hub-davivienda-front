@@ -295,8 +295,8 @@ $builder-bg: #f5f7fb;
 			border-radius: 50%;
 			background-color: #0080FF;
 			span{
-				position: relative;
-				top: 7px;
+				// position: relative;
+				// top: 7px;
 			}
 		}
 		span{
@@ -557,3 +557,62 @@ margin-top: 2%;
   	}
 
   }
+
+
+  .ng-star-inserted {
+	.md-drppicker {
+		td{
+			border: 0;
+		}
+		td.in-range, td.available:hover{
+			background-color: transparent;
+
+			span {
+				&:before {
+					content: '';
+					width: 25px;
+					height: 25px;
+					background: #bfdfff;
+					position: absolute;
+					top: 50%;
+					border-radius: 50%;
+					z-index: -1;
+					transform: translate(-50%, -50%);
+					left: 50%;
+				}
+			}
+
+		}
+		td.active.start-date, td.active, td.active:hover, td.end-date{
+			border-radius: 50%;
+			background-color: transparent;
+			span {
+
+				&:before {
+					content: '';
+					width: 25px;
+					height: 25px;
+					background: #0080FF;
+					position: absolute;
+					top: 50%;
+					border-radius: 50%;
+					z-index: -1;
+					transform: translate(-50%, -50%);
+					left: 50%;
+
+				}
+
+			}
+		}
+		span{
+			font-size: 12px;
+			position: relative;
+		}
+		th.month{
+			color: #0080FF;
+		}
+		td.start-date.end-date{
+			border-radius: 50%;
+		}
+	}
+}
