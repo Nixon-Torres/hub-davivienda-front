@@ -7,25 +7,25 @@ import { Report } from '../../board/board.model';
 import { loopback } from '../../../../models/common/loopback.model';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
 import { HttpService } from '../../../../services/http.service';
+import { AuthService } from '../../../../services/auth.service';
 
 import * as qs from 'qs';
 import * as moment from 'moment';
-import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
-import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
-	selector: 'app-right-content',
-	templateUrl: './right-content.component.html',
-	styleUrls: ['./right-content.component.scss']
+    selector: 'app-right-content',
+    templateUrl: './right-content.component.html',
+    styleUrls: ['./right-content.component.scss']
 })
 export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
 
     public calendarOpen: boolean = false;
-	public startDate: any;
-	public endDate: any;
+    public startDate: any;
+    public endDate: any;
 
+    user: any = {};
     icurrentObj: {
         currentFolder: null,
         currentState: null,
@@ -62,17 +62,18 @@ export class RightContentComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private http: HttpService,
-        private folderService: AsideFoldersService
+        private auth: AuthService
     ) {
         this.listForm = new FormGroup({
             'reports': new FormArray([])
         });
+        this.user = this.auth.getUserData();
     }
 
-    toggleCalendar(){
-        if(!this.calendarOpen){
+    toggleCalendar() {
+        if (!this.calendarOpen) {
             this.calendarOpen = true;
-        }else{
+        } else {
             this.calendarOpen = false;
         }
     }
@@ -112,9 +113,11 @@ export class RightContentComponent implements OnInit {
     }
 
     private getFolders(): void {
-        this.folderService.$listenFolders.subscribe( data => {
-            this.list.folders = data;
-        })
+        this.http.get({
+            'path': 'folders/'
+        }).subscribe((response: any) => {
+            this.list.folders = response.body;
+        });
     }
 
     public gotoPage(input: string) {
@@ -143,19 +146,43 @@ export class RightContentComponent implements OnInit {
         });
     }
 
+    public getIFilterIds(endpoint: string, property: string, fn: any): void {
+        let result: Array<string> = [];
+        if (!this.ifilter) return fn(result);
+        var query = new loopback();
+        query.filter.where['name'] = { like: this.ifilter, options: "i" };
+        query.filter.fields = { id: true };
+        this.http.get({
+            path: endpoint,
+            data: query.filter,
+            encode: true
+        }).subscribe((response: any) => {
+            result = response.body.map((a: any) => {
+                let item: any = {};
+                item[property] = a.id;
+                return item;
+            });
+            fn(result);
+        });
+    }
+
     public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         var query = new loopback();
-        query.filter.include.push({ relation: "folder" }, { relation: "owner" }, { relation: "state" }, { relation: "section" });
-        query.filter.where['folderId'] = this.icurrentObj.currentFolder;
-        query.filter.where['stateId'] = this.icurrentObj.currentState;
-        query.filter.where['trash'] = typeof this.icurrentObj.deletedFg === 'undefined' ? false : this.icurrentObj.deletedFg;
-        query.filter.where['reviewed'] = this.ifilterreviewed;
-        this.ifilter ? query.filter.where['name'] = { like: this.ifilter } : null;
+        query.filter.where = { and: [] };
+        this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }) : null;
+        this.icurrentObj.deletedFg ? query.filter.where['and'].push({ trash: this.icurrentObj.deletedFg }) : null;
+        query.filter.include.push(
+            { relation: "folder" },
+            { relation: "user" },
+            { relation: "state" },
+            { relation: "section" }
+        );
+
         if (this.ifilterdate) {
             let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
             let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
-            query.filter.where['updatedAt'] = { between: [start, end] };
+            query.filter.where['and'].push({ updatedAt: { between: [start, end] } });
         }
 
         if (pager) {
@@ -167,17 +194,42 @@ export class RightContentComponent implements OnInit {
             query.filter.limit = this.pager.limit;
             query.filter.skip = 0;
         }
+        query.filter.order = "id DESC";
 
-        this.clearCheckboxes(this.listForm.controls.reports as FormArray);
-        this.list.reports = [];
-        this.http.get({
-            path: `reports?${qs.stringify(query, { skipNulls: true })}`
-        }).subscribe((response: any) => {
-            this.addCheckboxes(response.body);
-            setTimeout(() => {
-                this.list.reports = response.body;
-            }, 100)
+        this.getIFilterIds('users', 'userId', (users: Array<any>) => {
+            this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
+                this.getIFilterIds('sections', 'sectionId', (sections: Array<any>) => {
+                    if (this.ifilter) {
+                        let orWhere: Array<any> = [
+                            { name: { like: this.ifilter, options: "i" } }
+                        ].concat(users, states, sections);
+                        query.filter.where['and'].push({ or: orWhere });
+                    } else {
+                        query.filter.where['and'].push({ stateId: this.icurrentObj.currentState });
+                        if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
+                            query.filter.where['and'].push({ ownerId: this.user.id });
+                        }
+                    }
 
+					console.log('-> ', this.icurrentObj.currentState, this.ifilterreviewed);
+
+                    let iFilterReviewed = (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) ? false : this.ifilterreviewed;
+                    query.filter.where['and'].push({ reviewed: iFilterReviewed });
+
+                    this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+                    this.list.reports = [];
+                    this.http.get({
+                        path: `reports`,
+                        data: query.filter,
+                        encode: true
+                    }).subscribe((response: any) => {
+                        this.addCheckboxes(response.body);
+                        setTimeout(() => {
+                            this.list.reports = response.body;
+                        }, 100);
+                    });
+                });
+            });
         });
     }
 
@@ -214,24 +266,6 @@ export class RightContentComponent implements OnInit {
 
         this.rcPutReport(toUpdate, 0, () => {
             this.loadReports(this.ifilter);
-            let folder = this.list.folders.filter((a: any) => a.id == event.value )[0];
-            if(!folder) return;
-            this.valueChange.emit({
-                state: this.icurrentObj.currentState,
-                deleted: this.icurrentObj.deletedFg,
-                folder: folder.id,
-                stateName: folder.name
-            });
-            let modalRef = this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
-                data: {
-                    title: 'Su informe ha sido agregado exitosamente a:',
-                    subtitle: folder.name
-                }
-            });
-            this.folderService.loadFolders();
-            this.folderService.loadStates();
-            this.folderService.newActive = folder;
         });
     }
 
@@ -288,13 +322,18 @@ export class RightContentComponent implements OnInit {
     }
 
     public filterDateReports() {
-		this.ifilterdate = {
-		    start: this.startDate,
-		    end: this.endDate
-		};
+        this.ifilterdate = {
+            start: this.startDate,
+            end: this.endDate
+        };
 
-		this.calendarOpen = false;
-		this.loadReports(this.ifilter);
+        this.calendarOpen = false;
+        this.loadReports(this.ifilter);
+    }
+
+    public onDateUpdate(event: any) {
+        this.startDate = event.startDate.toString();
+        this.endDate = event.endDate.toString().replace('00:00:00', '23:59:59');
     }
 
     isFiltering() {
@@ -336,11 +375,6 @@ export class RightContentComponent implements OnInit {
 
         this.saveReport(newReport);
     }
-
-    public onDateUpdate (event: any) {
-		this.startDate = event.startDate.toString();
-		this.endDate = event.endDate.toString().replace('00:00:00', '23:59:59');
-	}
 
     public onDeleteReport(event: Event, pos: number) {
         let reportId = this.list.reports[pos].id;
