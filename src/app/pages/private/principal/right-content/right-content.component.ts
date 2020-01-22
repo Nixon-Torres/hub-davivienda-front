@@ -22,7 +22,9 @@ export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
 
-    public calendarOpen : boolean = false;
+    public calendarOpen: boolean = false;
+	public startDate: any;
+	public endDate: any;	
 
     icurrentObj: {
         currentFolder: null,
@@ -333,6 +335,11 @@ export class RightContentComponent implements OnInit {
 
         this.saveReport(newReport);
     }
+
+    public onDateUpdate (event: any) {
+		this.startDate = event.startDate.toString();
+		this.endDate = event.endDate.toString().replace('00:00:00', '23:59:59');
+	}	
 
     public onDeleteReport(event: Event, pos: number) {
         let reportId = this.list.reports[pos].id;
