@@ -1,3 +1,8 @@
+
+/* ========================================================= *\
+                            CONTENT
+\* ========================================================= */
+
 @import "../../../../assets/sass/_mixins";
 @import '../../../../assets/fonts/fonts';
 $builder-bg: #f5f7fb;
@@ -77,6 +82,13 @@ $default-font: "Helvetica Neue", Medium;
                     padding: 0 15.5px;
                 }
 
+                &.add-comment {
+
+                    img {
+                        margin-right: 5px;
+                    }
+                }
+
             }
         }
 
@@ -116,10 +128,6 @@ $default-font: "Helvetica Neue", Medium;
                         }
                     }
                 }
-            }
-
-            button:focus {
-                background-color: transparent;
             }
 
             button {
@@ -168,16 +176,21 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
             background-color: $builder-bg;
             padding: 0 !important;
-
-            iframe {
-                color: red;
-            }
+            transition: width 0.5s;
         }
 
         .comments {
             height: 100%;
             padding: 0 !important;
             background-color: white;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity .5s, transform .5s;
+
+            &.show {
+                opacity: 1;
+                transform: scale(1);
+            }
 
             app-comment-box {
                 height: 100%;

@@ -1,3 +1,22 @@
+/* ========================================================= *\
+						  ANIMATIONS
+\* ========================================================= */
+
+@keyframes fade-in {
+    from {
+        opacity: 1;
+        transform: scale(1);
+	} to {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+
+/* ========================================================= *\
+						    CONTENT
+\* ========================================================= */
+
 header {
 	height: 52px;
 	padding: 0px 12px;
@@ -7,6 +26,7 @@ header {
 	h1 {
 		font-size: 14px;
 		padding-top: 19px;
+		color: #0080FF;
 	}
 
 	.close-btn {
@@ -18,22 +38,42 @@ header {
 
 		i {
 			font-size: 16px;
+			color: #A5ABB1;
 		}
 	}
 }
 
 section {
-	height: 100%;
+	height: calc(100% - (53px + 24px));
 	padding: 12px;
+	overflow: auto;
+	transition: overflow .5s;
+
+	&::-webkit-scrollbar {
+	   	width: 6px;
+	   	background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+	    background: #CCC;
+	    // background: #0080FF;
+	    border-radius: 4px;
+	}
 
 	.mat-card {
 		padding: 0px;
 		margin-bottom: 12px;
 		box-shadow: none;
 		border: solid 1px #E2EAF1;
+		transform: position 1s;
+
+		&.comment.deleted {
+		    animation: fade-in 0.5s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+		}
 
 		&.comment-form {
 			background-color: #F8F8F8;
+			margin-bottom: 100%;
 
 			.mat-card-header {
 				border-bottom: solid 1px #E2EAF1;
@@ -43,11 +83,11 @@ section {
 		.mat-card-header {
 			height: 38px;
 			padding: 0px 12px;
-			display: block ruby;
+			display: block;
 
 			.mat-card-avatar {
 				width: auto;
-				display: inline;
+				float: left;
 
 				div.avatar {
 					width: 24px;
@@ -73,6 +113,7 @@ section {
 			.mat-card-subtitle {
 				font-size: 0.65rem;
 			}
+
 
 			.comment-close {
 				float: right;
@@ -107,7 +148,7 @@ section {
 					font-family: 'Helvetica Neue', sans-serif;
 					overflow:auto;
 
-					&:focus {
+					&.expand {
 						min-height: 51px;
 						padding-bottom: 17px;
 					}
@@ -151,4 +192,47 @@ section {
 
 		}
 	}
+
+	.add-action {
+		margin-top: 20px;
+		margin-bottom: 100%;
+
+		p {
+			text-align: center;
+
+			button {
+				width: 26px;
+				height: 26px;
+				color: white;
+				border: none;
+				cursor: pointer;
+				border-radius: 50%;
+			    padding: 1px 1px 0px 0px;
+				background-color: #0080FF;
+			}
+
+			span {
+				color: #A5ABB1;
+				display: block;
+				margin-top: 8px;
+				font-size: 0.7rem;
+			}
+		}
+	}
+}
+
+footer {
+	height: 100px;
+    text-align: center;
+
+	button {
+		margin-top: 20px;
+	}
+}
+
+/* ========================================================= *\
+						  ANIMATIONS
+\* ========================================================= */
+.hide {
+	display: none;
 }

@@ -434,6 +434,9 @@ margin-top: 2%;
 		font-weight: bold;
 	}
 }
+.mat-card-header-text {
+	float: left;
+}
 
 .arrow_left{
 	clip-path: polygon(41% 25%, 15% 50%, 42% 69%, 36% 77%, 0% 50%, 39% 16%);
@@ -458,9 +461,9 @@ margin-top: 2%;
 		font-size: 14px !important;
 		margin-top: 20%;
 		margin-left: 8%;
-	}	
+	}
 }
-	.info_options{	
+	.info_options{
 		span{
 			border-bottom: solid 2px #e2e2e2;
 			padding: 0 10px;
@@ -476,14 +479,14 @@ margin-top: 2%;
   .mat-tab-body-content, .list{
 	&::-webkit-scrollbar{
 		width: 7px;
-	}	
+	}
 	&::-webkit-scrollbar-track{
-		background: #ffffff; 
+		background: #ffffff;
 	}
 	&::-webkit-scrollbar-thumb{
-		background: #BEC5D0; 
+		background: #BEC5D0;
 	}
 	&::-webkit-scrollbar-thumb:hover{
-		background: #555; 
+		background: #555;
 	}
   }

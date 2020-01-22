@@ -35,7 +35,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor: any;
     public grapes: any;
     public lastupdate: string;
+    public grid: any = {
+        col: {
+            builder: 9,
+            comments: 0,
+            panel: 2
+        },
+        row: {
+            builder: 1,
+            comments: 1,
+            panel: 1
+        }
+    }
     public report: Report = {
+        id: null,
         name: '',
         slug: null,
         trash: false,
@@ -67,12 +80,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get("id")) {
+
                 this.report.id = params.get("id");
-
-                console.log(this.report, this.user);
-
                 this.loadReport(this.report.id);
+
             } else if (params.get("stateId")) {
+
                 let folderId = params.get('folderId');
                 let templateId = params.get('templateId');
                 this.fromReportId = params.get('reportId');
@@ -323,17 +336,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': data
         }).subscribe(
             (response: any) => {
-              this.report.id = response.body.id;
                 if (!autoSave) {
                     if (cb) return cb();
-                    this.dialog.open(ConfirmationDialogComponent, {
+                    let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '500px',
                         data: {
                             title: 'Tu informe ha sido guardado:',
                             subtitle: this.report.name
                         }
                     });
+
+                    dgRef.afterClosed().subscribe(() => {
+                        if (!this.report.id) {
+                            this.router.navigate(['app/board', response.body.id]);
+                        }
+                    });
                 } else {
+                    this.report.id = response.body.id;
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
                     // this.report = response.body;
@@ -402,5 +421,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
             data: {
             }
         });
+    }
+
+    showComments() {
+        this.grid.col.builder = 7;
+        this.grid.col.comments = 2;
+        this.grid.col.panel = 2;
+        document.querySelector('mat-grid-tile.comments').classList.add('show');
+    }
+
+    hideComments() {
+        document.querySelector('mat-grid-tile.comments').classList.remove('show');
+
+        setTimeout(() => {
+            this.grid.col.builder = 9;
+            this.grid.col.comments = 0;
+            this.grid.col.panel = 2;
+        }, 100);
     }
 }
