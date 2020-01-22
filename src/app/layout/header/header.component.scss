@@ -1,16 +1,22 @@
 @import '../../../assets/sass/_mixins';
+/* .header_content{
 
+} */
 header {
    height: 70px;
     border-bottom: solid 1px #EDEDED;
+    width: 87%;
+    max-width: 1440px;
+    display: flex;
+    margin: auto;
 
     & > .container {
         height: 100%;
+        width: 100%;
 
         img.logo {
             width: 20%;
             height: auto;
-            margin-top: 15px;
         }
 
         .h-btn {
@@ -44,17 +50,25 @@ header {
                 bottom: 27px;
                 position: relative;
                 margin-right: 15px; 
+                color: #616161;
+                font-size: 13px;
+                font-weight: bold;
 
                 &:after {
                     top: 12px;
                     left: 15px;
                     content: '';
                     position: relative;
-                    @include arrow-down(5px, #BEC5D0);
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid #BEC5D0;
                 }
             }
         }
-
-        
+        button{
+            .notifications_icon{
+                color: silver;
+            }
+        }
     }
 }

@@ -1,0 +1,25 @@
+<div class="modal-form">
+
+    <div class="two-columns">
+        <a (click)="closeDialog()" _ngcontent-xaa-c25="" class="modal-close-cta">Cerrar <span _ngcontent-xaa-c25="" class="icon icon-times"></span></a>
+
+        <div class="confirmation-img">
+            <img src="assets/images/check.png" style="width: 95px"/>
+        </div>
+
+        <div class="message-section">
+            {{title}}
+            <div class="message-subtitle">
+                {{subtitle}}
+            </div>
+        </div>
+
+        <div class="footer">
+            <button mat-stroked-button class="btn btn-primary" (click)="closeDialog()">
+                Continuar
+            </button>
+        </div>
+
+    </div>
+</div>
+

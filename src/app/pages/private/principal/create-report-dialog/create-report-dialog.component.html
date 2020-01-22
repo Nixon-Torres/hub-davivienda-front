@@ -9,7 +9,9 @@
 		<div class="group-radio">
 			<div class="group-radio--option" *ngFor="let section of list.sections; let indice=index">
 				<input type="radio" formControlName="sectionId" [value]="section.id" [id]="section.id" (change)="onUpdateTypes($event, indice)">
-				<label for="{{section.id}}">{{section.name}}</label>
+				<label for="{{section.id}}">{{section.name}}
+				<img src="/assets/images/secciones/{{section.thumbnail}}" alt="">
+				</label>
 			</div>
 		</div>
 
@@ -80,7 +82,7 @@
 		</div>
 		<div mat-dialog-actions>
 			<button mat-button (click)="onNoClick()">Cancelar</button>
-			<button type="submit" class="highligh" [disabled]="!createReportForm.valid" mat-button mat-dialog-close>Empezar Informe</button>
+			<button type="submit" class="highligh" mat-button mat-dialog-close>Empezar Informe</button>
 		</div>
 	</div>
 </form>

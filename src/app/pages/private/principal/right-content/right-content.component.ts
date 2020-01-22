@@ -97,8 +97,11 @@ export class RightContentComponent implements OnInit {
     }
 
     private deleteReport(id: string): void {
-        this.http.delete({
-            'path': 'reports/' + id
+        this.http.patch({
+            path: 'reports/' + id,
+            data: {
+                trash: true
+            }
         }).subscribe(() => {
         });
     }

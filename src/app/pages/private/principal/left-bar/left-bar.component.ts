@@ -61,7 +61,7 @@ export class LeftBarComponent implements OnInit {
 
     private loadFolders() {
         var query = new loopback();
-        query.filter.include.push({ relation : "reports"});
+        query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
         console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
 
         this.http.get({
@@ -73,8 +73,8 @@ export class LeftBarComponent implements OnInit {
 
     private loadStates() {
         var query = new loopback();
-        query.filter.include.push({ relation : "reports"})
-        console.log('query states',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
+        query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
+        console.log('query states', JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
 
         this.http.get({
             path: 'states?'+qs.stringify(query,{skipNulls: true })

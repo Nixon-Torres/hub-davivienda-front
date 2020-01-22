@@ -1,0 +1,63 @@
+@import '../../../../../assets/sass/_mixins';
+
+.modal-form {
+    @include display-flex;
+    justify-content: flex-start;
+    height: 350px;
+
+    .two-columns {
+        padding: 36px 24px 24px 24px;
+        position: relative;
+        width: 100%;
+        text-align: center;
+
+        &.diff-color {
+            background: #F5F7FB;
+            position: relative;
+        }
+
+        .modal-close-cta {
+            position: absolute;
+            right: 10px;
+            top: 26px;
+            color: #616161;
+            font-style: italic;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            span {
+                font-size: 16px;
+                font-style: normal;
+                font-weight: bold;
+                padding-left: 10px;
+            }
+        }
+
+        .message-section {
+            height: 100px;
+            font-size: 19px;
+            color: #777;
+
+            .message-subtitle {
+                margin-top: 15px;
+                font-size: 23px;
+                color: #444;
+            }
+        }
+
+        .confirmation-img {
+            height: 110px;
+        }
+
+    }
+}
+
+.btn-primary {
+    color: white;
+    box-shadow: none;
+    background-color: #0080ff;
+    width: 140px;
+}
+

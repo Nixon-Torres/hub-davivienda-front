@@ -97,7 +97,15 @@ export class AuthService {
         userId = userId ? userId : null;
         this.http.get({ 'path': `Users/${userId}`, 'data': {} }).subscribe(
             (response: any) => {
-                fn(null, response.body);
+                var body = response.body;
+                this.http.get({ 'path': `me`, 'data': {} }).subscribe(
+                    (response: any) => {
+                        body.roles = response.body.roles;
+                        fn(null, body);
+                    },(error) => {
+                        fn(error, null);
+                    }
+                );
             },
             (error) => {
                 fn(error, null);

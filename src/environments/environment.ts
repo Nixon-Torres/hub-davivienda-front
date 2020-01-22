@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  //RL_API:  'http://localhost:3000/api/',
-  URL_API:  'http://3.91.179.96:3000/api/',
-  // URL_API:  'http://192.168.1.116:3000/api/',
+  /* URL_API:  'http://localhost:3000/api/', */
+   URL_API:  'http://3.91.179.96:3000/api/',
+  // URL_API:  'http://192.168.19.11:3000/api/',
 };
 
 /*

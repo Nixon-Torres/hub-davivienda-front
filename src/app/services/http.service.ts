@@ -50,6 +50,14 @@ export class HttpService {
         }).pipe(catchError(this.handleError));
     }
 
+    public patch(input: Request): Observable<HttpResponse<Response>> {
+        let headers = this.headers();
+        return this.http.patch<Response>(this._URL_API + input.path, input.data, {
+            observe: 'response',
+            headers: headers
+        }).pipe(catchError(this.handleError));
+    }
+
     public delete(input: Request): Observable<HttpResponse<Response>> {
         let params = new URLSearchParams();
         for (let key in input.data) {
