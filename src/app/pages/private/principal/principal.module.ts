@@ -26,6 +26,7 @@ import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
+import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
 
 const routes: Routes = [
     {
@@ -59,6 +60,7 @@ const materialModules: any[] = [
         ReactiveFormsModule,
         RouterModule.forChild(routes),
         NgSelect2Module,
+        ConfirmationDialogModule,
         NgxDaterangepickerMd.forRoot()
     ],
     exports: [
