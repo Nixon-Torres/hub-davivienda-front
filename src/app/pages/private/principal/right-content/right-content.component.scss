@@ -24,7 +24,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 
     .search-container  {
         text-align: right;
-		margin: 20px 0px;
+		margin-top: 20px;
 
 		.icon-calendar{
 			padding-right: 30px;
@@ -529,14 +529,18 @@ section {
 		border-right: 6px solid transparent;
 		border-top: 6px solid #FF003B;
 	} */
-	span{
+	.icon_insert{
 		clip-path: polygon(73% 41%, 51% 64%, 29% 41%, 39% 38%, 51% 54%, 66% 36%);
 		background-color: red;
 		width: 16%;
 		height: 25px;
 		top: 13%;
-		right: 13%;
+		right: 19%;
 		position: absolute;
+	}
+	.insert_text{
+		position: relative;
+   	 	right: 7px;
 	}
 }
 .info_btn{

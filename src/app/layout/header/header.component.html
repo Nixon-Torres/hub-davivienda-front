@@ -11,14 +11,14 @@
 			<img src="../assets/images/user/user.png" alt="Usuario">
 			<span>{{ user.name }}</span>
 		</div>
-		<mat-menu #userMenu="matMenu" xPosition="before">
+		<mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">
 		  	<button mat-menu-item>
-		  		<i class="material-icons menu-icons">person</i>
-		  		<span>Mi perfil</span>
+		  		<!-- <i class="material-icons menu-icons">person</i> -->
+		  		<span>Editar perfiles</span>
 		  	</button>
 		  	<button mat-menu-item (click)="logout()">
-			  	<i class="material-icons menu-icons">exit_to_app</i>
-			  	<span>Salir</span>
+			  	<!-- <i class="material-icons menu-icons">exit_to_app</i> -->
+			  	<span>Cerrar sesión</span>
 		  	</button>
 		</mat-menu>
 
