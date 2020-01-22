@@ -11,7 +11,7 @@
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
 				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendToRevision()"
-                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
+                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
                 <button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendBackToRevision()"

@@ -4,15 +4,16 @@
         <a (click)="closeDialog()" _ngcontent-xaa-c25="" class="modal-close-cta">Cerrar <span _ngcontent-xaa-c25="" class="icon icon-times"></span></a>
 
         <div class="confirmation-img">
-            <img src="assets/images/check.png" style="width: 95px"/>
+            <span class="icon icon-check"></span>
         </div>
+        <hr class="modal-form__separator">
 
-        <div class="message-section">
+        <p class="message-section">
             {{title}}
-            <div class="message-subtitle">
+            <span class="message-subtitle">
                 {{subtitle}}
-            </div>
-        </div>
+            </span>
+        </p>
 
         <div class="footer">
             <button mat-stroked-button class="btn btn-primary" (click)="closeDialog()">

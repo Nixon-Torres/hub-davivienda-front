@@ -15,6 +15,7 @@ import * as qs from 'qs';
 
 import { Report } from './board.model';
 import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
+import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 
 declare var grapesjs: any;
 
@@ -30,6 +31,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private timer: any = {
         change: null
     };
+    public users:any = [];
     public fromReportId: string = null;
     public user: any = {};
     public editor: any;
@@ -263,7 +265,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068d1cb81d1c5f29b62975';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido enviado a revisión con ajustes:',
                     subtitle: this.report.name
@@ -272,18 +274,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public sendReview() {
-        this.report.reviewed = false;
-        this.report.stateId = '5e068d1cb81d1c5f29b62976';
-        this.onSave(false, () =>  {
-            this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
-                data: {
-                    title: 'Tu informe ha sido enviado a revisión:',
-                    subtitle: this.report.name
-                }
-            });
+    public getReviewers(reviewers: Array<object>) {
+        return reviewers.map((reviewer) => {
+            return {reportId: this.report.id, reviewerId: reviewer['id']};
         });
+    }
+
+    public sendReview(reviewers: Array<object>) {
+        this.http.post({
+            'path': 'reports/reviewers',
+            'data': {
+                reportId: this.report.id,
+                reviewers: this.getReviewers(reviewers)
+            } 
+        }).subscribe( (resp) => {
+            if(resp) {
+                this.dialog.open(ConfirmationDialogComponent, {
+                    width: '410px',
+                    data: {
+                        title: 'Tu informe ha sido enviado a revisión:',
+                        subtitle: this.report.name
+                    }
+                });
+            }
+        })
     }
 
     public approve() {
@@ -291,7 +305,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068d1cb81d1c5f29b62974';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido aprobado:',
                     subtitle: this.report.name
@@ -305,7 +319,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.stateId = '5e068c81d811c55eb40d14d0';
         this.onSave(false, () =>  {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '500px',
+                width: '410px',
                 data: {
                     title: 'Tu informe ha sido publicado:',
                     subtitle: this.report.name
@@ -339,7 +353,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 if (!autoSave) {
                     if (cb) return cb();
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
-                        width: '500px',
+                        width: '410px',
                         data: {
                             title: 'Tu informe ha sido guardado:',
                             subtitle: this.report.name
@@ -416,10 +430,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     onSendToRevisionAction(): void {
-        this.dialog.open(PreviewDialogComponent, {
-            width: '500px',
-            data: {
-            }
+        this.http.get({
+            'path': 'users/list'
+        }).subscribe( (resp) => {
+            this.users = resp.body;
+            let dialogRef = this.dialog.open(RevisionModalComponent, {
+                width: '450px',
+                data: {
+                    title: '¿Quien quiere que revise su informe?',
+                    users: this.users
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if(result) {
+                    this.sendReview(result);
+                }
+            });
         });
     }
 

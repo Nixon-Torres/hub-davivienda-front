@@ -11,19 +11,50 @@ import {PreviewDialogComponent} from '../preview-dialog/preview-dialog.component
 })
 export class RevisionModalComponent implements OnInit {
 
+    public users: Array<object>;
+    public reviewers: Array<object> = [];
+    public selectIsVisible: boolean;
+
     constructor(
         public dialogRef: MatDialogRef<PreviewDialogComponent>,
-        private http: HttpService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         // this.report.id = this.data.reportId;
     }
 
     ngOnInit() {
+        this.users = this.data.users;
+        this.selectIsVisible = true;
     }
-
+    
     closeDialog(): void {
         this.dialogRef.close();
     }
 
+    openModalSendReview() {
+        this.dialogRef.close(this.reviewers);
+    }
+
+    onSelectUser(user): void {
+        this.removeUser(user.id, this.users, 'user');
+        this.selectIsVisible = false;
+    }
+
+    removeUser(id: string, list:Array<object>, state?: string) {
+        let found;
+        for (const key in list) {
+            if (list.hasOwnProperty(key)) {
+                const element = list[key];
+                if(element['id'] === id) {
+                    found = key;
+                }
+            }
+        }
+        const removed = list.splice(found, 1)[0];
+        if(state) {
+            this.reviewers.push(removed);
+        } else {
+            this.users = [...this.users, removed];
+        }
+    }
 }
