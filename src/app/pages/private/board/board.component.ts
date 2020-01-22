@@ -320,17 +320,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': data
         }).subscribe(
             (response: any) => {
-              this.report.id = response.body.id;
                 if (!autoSave) {
                     if (cb) return cb();
-                    this.dialog.open(ConfirmationDialogComponent, {
+                    let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '500px',
                         data: {
                             title: 'Tu informe ha sido guardado:',
                             subtitle: this.report.name
                         }
                     });
+
+                    dgRef.afterClosed().subscribe(() => {
+                        if (!this.report.id) {
+                            this.router.navigate(['app/board', response.body.id]);
+                        }
+                    });
                 } else {
+                    this.report.id = response.body.id;
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
                     // this.report = response.body;

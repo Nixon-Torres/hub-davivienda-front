@@ -322,7 +322,7 @@ $builder-bg: #f5f7fb;
 
 		&::before{
 			content: "";
-			border: solid 1px #c0c0c01f;
+			border: solid 1px #f3f3f373;
 			position: absolute;
 			left: 14%;
 			top: 17%;
@@ -330,7 +330,7 @@ $builder-bg: #f5f7fb;
 		}
 		&::after{
 			content: "";
-			border: solid 1px #c0c0c01f;
+			border: solid 1px #f3f3f373;
 			position: absolute;
 			left: 20%;
 			top: 17%;
@@ -345,7 +345,7 @@ $builder-bg: #f5f7fb;
 		max-width: 80px;
 	}
 	.report--title{
-		margin-left: 20px;
+		margin-left: 2.5em;
 	}
 }
 
@@ -377,13 +377,14 @@ $builder-bg: #f5f7fb;
 }
 .folder_label{
 	padding-left: 10px;
+	font-size: 14px;
 }
 
-.eliminar_field{
-	padding-left: 17%;
+.delete_field{
+	padding-left: 9%;
 	background-image: url("../src/assets/images/trash.png");
 	background-repeat: no-repeat;
-    background-position: 2% 50%;
+    background-position: 0% 50%;
 }
 
 .folder_container{
@@ -407,10 +408,8 @@ margin-top: 2%;
 }
 .content--top{
 	.insert_btn{
-		width: 10%;
-		position: relative;
-		left: 17%;
-		@media screen and (max-width: 1510px){
+		padding-right: 15px;
+	/* 	@media screen and (max-width: 1510px){
 			width: 25%;
 		}
 		@media screen and (max-width: 1322px){
@@ -418,11 +417,11 @@ margin-top: 2%;
 		}
 		@media screen and (max-width: 1130px){
 			width: 50%;
-		}
+		} */
 		button{
 		background: transparent;
-		color: red;
-		border: solid 2px red;
+		color: #ff003b;
+		border: solid 2px #ff003b;
 		}
 	}
 }
@@ -435,7 +434,59 @@ margin-top: 2%;
 		font-weight: bold;
 	}
 }
-
 .mat-card-header-text {
 	float: left;
 }
+
+.arrow_left{
+	clip-path: polygon(41% 25%, 15% 50%, 42% 69%, 36% 77%, 0% 50%, 39% 16%);
+	background: #C2CBD1;
+	cursor: pointer;
+}
+.arrow_right{
+	clip-path: polygon(61% 20%, 100% 50%, 58% 77%, 56% 68%, 83% 49%, 57% 29%);
+	background: #C2CBD1;
+	cursor: pointer;
+}
+.paginator_numbers{
+	cursor: pointer;
+}
+.paginator_label{
+	font-size: 13px;
+	padding-right: 10px;
+}
+.cdk-overlay-container{
+	.mat-select-panel{
+		min-width: calc(150% + 32px) !important;
+		font-size: 14px !important;
+		margin-top: 20%;
+		margin-left: 8%;
+	}
+}
+	.info_options{
+		span{
+			border-bottom: solid 2px #e2e2e2;
+			padding: 0 10px;
+			font-size: 12px;
+	}
+}
+
+.mat-form-field.mat-focused .mat-form-field-label{
+	color: silver;
+	font-size: 14px;
+}
+
+  .mat-tab-body-content, .list{
+	&::-webkit-scrollbar{
+		width: 7px;
+	}
+	&::-webkit-scrollbar-track{
+		background: #ffffff;
+	}
+	&::-webkit-scrollbar-thumb{
+		background: #BEC5D0;
+	}
+	&::-webkit-scrollbar-thumb:hover{
+		background: #555;
+	}
+  }

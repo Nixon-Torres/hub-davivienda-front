@@ -9,7 +9,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 
 .top-section-list {
 	position: relative;
-
+	cursor: pointer;
 	.calender-container{
 		position: absolute;
 		right: 0;
@@ -30,9 +30,9 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 			padding-right: 30px;
 			position: relative;
 			font-size: 0.688em;
-			color: #A5ABB1;
 			padding-left: 15px;
 			line-height: 1.25em;
+			color: #A5ABB1;
 
 			&:before {
 				position: absolute;
@@ -49,10 +49,11 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
             line-height: 11px;
             padding: 5px 5px;
             font-style: italic;
-            color: #ced3dc;
+            color: #757575;
             font-size: 14px;
 			font-weight: 200;
 			border: 1px solid #BEC5D0;
+			font-family: "Helvetica Neue", sans-serif;
 			/* background: #FFFFFF 0% 0% no-repeat padding-box; */
             ::placeholder {
 				color: #BEC5D0 !important;
@@ -85,6 +86,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		color: #616161;
 		font-size: 1.125em;
 		font-weight: 600;
+		width: 100%;
 	}
 }
 
@@ -376,19 +378,19 @@ section {
 	
 			}
 		}
+	}
+	mat-form-field{
 		&::before{
 			content: '';
 			border-left: 1px solid silver;
 			width: 1px;
 			height: 50px;
 			position: absolute;
-			left: 50px;
-			top: -16px;
+			left: 150%;
+			top: -8px;
 		}
 	}
 }
-
-
 
 // .fa-redo-alt{
 // 	background: url("/assets/images/redo-alt-solid.svg") no-repeat center center;
@@ -518,5 +520,36 @@ section {
 	}
 
 .insert_icon{
-	font-size: 9.5px;
+	/* &:after {
+		top: 12px;
+		left: 15px;
+		content: '';
+		position: relative;
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-top: 6px solid #FF003B;
+	} */
+	span{
+		clip-path: polygon(73% 41%, 51% 64%, 29% 41%, 39% 38%, 51% 54%, 66% 36%);
+		background-color: red;
+		width: 16%;
+		height: 25px;
+		top: 13%;
+		right: 13%;
+		position: absolute;
+	}
+}
+.info_btn{
+	button{
+		span{
+			clip-path: polygon(44% 28%, 90% 46%, 45% 66%, 45% 58%, 81% 46%, 44% 35%);
+			background-color: #FFF7F9;
+			width: 7%;
+			height: 25px;
+			top: 17%;
+			right: 10%;
+			position: absolute;
+		}
+
+	}
 }
