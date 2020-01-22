@@ -13,329 +13,363 @@ import * as moment from 'moment';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-    selector: 'app-right-content',
-    templateUrl: './right-content.component.html',
-    styleUrls: ['./right-content.component.scss']
+	selector: 'app-right-content',
+	templateUrl: './right-content.component.html',
+	styleUrls: ['./right-content.component.scss']
 })
 export class RightContentComponent implements OnInit {
 
-    @Output() valueChange = new EventEmitter();
+	@Output() valueChange = new EventEmitter();
 
-    public calendarOpen : boolean = false;
+	public calendarOpen: boolean = false;
+	public startDate: any;
+	public endDate: any;
 
-    icurrentObj: {
-        currentFolder: null,
-        currentState: null,
-        deletedFg: false,
-        currentStateName: 'Todos Informes'
-    };
+	icurrentObj: {
+		currentFolder: null,
+		currentState: null,
+		deletedFg: false,
+		currentStateName: 'Todos Informes'
+	};
 
-    ifilter: string;
-    ifilterdate: any;
-    ifilterreviewed: boolean = true;
+	ifilter: string;
+	ifilterdate: any;
+	ifilterreviewed: boolean = true;
 
-    public list: any = {
-        reports: [],
-        folders: []
-    }
-    public pager: any = {
-        limit: 10,
-        selected: 1,
-        totalItems: 0,
-        totalPages: 0,
-        pages: []
-    }
-    public listForm: FormGroup;
+	public list: any = {
+		reports: [],
+		folders: []
+	}
+	public pager: any = {
+		limit: 10,
+		selected: 1,
+		totalItems: 0,
+		totalPages: 0,
+		pages: []
+	}
+	public listForm: FormGroup;
 
-    @Input()
-    set currentObj(value: any) {
-        this.icurrentObj = value;
-        if (this.icurrentObj) {
-            this.loadReports(this.ifilter);
-        }
-    }
+	@Input()
+	set currentObj(value: any) {
+		this.icurrentObj = value;
+		if (this.icurrentObj) {
+			this.loadReports(this.ifilter);
+		}
+	}
 
-    constructor(
-        public dialog: MatDialog,
-        private router: Router,
-        private http: HttpService
-    ) {
-        this.listForm = new FormGroup({
-            'reports': new FormArray([])
-        });
-    }
+	constructor(
+		public dialog: MatDialog,
+		private router: Router,
+		private http: HttpService
+	) {
+		this.listForm = new FormGroup({
+			'reports': new FormArray([])
+		});
+	}
 
-    toggleCalendar(){
-        if(!this.calendarOpen){
-            this.calendarOpen = true;
-        }else{
-            this.calendarOpen = false;
-        }
-    }
+	toggleCalendar() {
+		if (!this.calendarOpen) {
+			this.calendarOpen = true;
+		} else {
+			this.calendarOpen = false;
+		}
+	}
 
-    openDialog(): void {
-        this.dialog.open(CreateReportDialogComponent, {
-            width: '1500px',
-            data: {
-                'folderId': (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
-                'stateId': '5e068d1cb81d1c5f29b62977'
-            }
-        });
-    }
+	openDialog(): void {
+		this.dialog.open(CreateReportDialogComponent, {
+			width: '1500px',
+			data: {
+				'folderId': (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
+				'stateId': '5e068d1cb81d1c5f29b62977'
+			}
+		});
+	}
 
-    ngOnInit() {
-        this.loadReports();
-        this.getFolders();
-    }
+	ngOnInit() {
+		this.loadReports();
+		this.getFolders();
+	}
 
 
-    private saveReport(clone: any): void {
-        this.http.post({
-            'path': 'reports',
-            'data': clone
-        }).subscribe(() => {
-        });
-    }
+	private saveReport(clone: any): void {
+		this.http.post({
+			'path': 'reports',
+			'data': clone
+		}).subscribe(() => {
+		});
+	}
 
-    private deleteReport(id: string): void {
-        this.http.patch({
-            path: 'reports/' + id,
-            data: {
-                trash: true
-            }
-        }).subscribe(() => {
-        });
-    }
+	private deleteReport(id: string): void {
+		this.http.patch({
+			path: 'reports/' + id,
+			data: {
+				trash: true
+			}
+		}).subscribe(() => {
+		});
+	}
 
-    private getFolders(): void {
-        this.http.get({
-            'path': 'folders/'
-        }).subscribe((response: any) => {
-            this.list.folders = response.body;
-        });
-    }
+	private getFolders(): void {
+		this.http.get({
+			'path': 'folders/'
+		}).subscribe((response: any) => {
+			this.list.folders = response.body;
+		});
+	}
 
-    public gotoPage(input: string) {
-        this.router.navigate(['app/board', input]);
-    }
+	public gotoPage(input: string) {
+		this.router.navigate(['app/board', input]);
+	}
 
-    public tabClick(event: any) {
-        this.ifilterreviewed = (event.index === 0 ? true : false);
-        this.loadReports(this.ifilter);
-    }
+	public tabClick(event: any) {
+		this.ifilterreviewed = (event.index === 0 ? true : false);
+		this.loadReports(this.ifilter);
+	}
 
-    private loadPager(where: any): void {
-        this.http.get({
-            path: `reports/count?${qs.stringify({ 'where': where }, { skipNulls: true })}`
-        }).subscribe((response: any) => {
-            this.pager.totalItems = response.body.count;
-            this.pager.totalPages = Math.ceil(this.pager.totalItems / this.pager.limit);
-            this.pager.selected = 1;
-            this.pager.pages = [];
-            for (let i = 1; i <= this.pager.totalPages; i++) {
-                this.pager.pages.push({
-                    'skip': (i - 1) * this.pager.limit,
-                    'index': i
-                });
-            }
-        });
-    }
+	private loadPager(where: any): void {
+		this.http.get({
+			path: `reports/count?${qs.stringify({ 'where': where }, { skipNulls: true })}`
+		}).subscribe((response: any) => {
+			this.pager.totalItems = response.body.count;
+			this.pager.totalPages = Math.ceil(this.pager.totalItems / this.pager.limit);
+			this.pager.selected = 1;
+			this.pager.pages = [];
+			for (let i = 1; i <= this.pager.totalPages; i++) {
+				this.pager.pages.push({
+					'skip': (i - 1) * this.pager.limit,
+					'index': i
+				});
+			}
+		});
+	}
 
-    public loadReports(filter?: string | null, pager?: any): void {
-        this.ifilter = filter;
-        var query = new loopback();
-        query.filter.include.push({ relation: "folder" }, { relation: "owner" }, { relation: "state" }, { relation: "section" });
-        query.filter.where['folderId'] = this.icurrentObj.currentFolder;
-        query.filter.where['stateId'] = this.icurrentObj.currentState;
-        query.filter.where['trash'] = typeof this.icurrentObj.deletedFg === 'undefined' ? false : this.icurrentObj.deletedFg;
-        query.filter.where['reviewed'] = this.ifilterreviewed;
-        this.ifilter ? query.filter.where['name'] = { like: this.ifilter } : null;
-        if (this.ifilterdate) {
-            let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
-            let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
-            query.filter.where['updatedAt'] = { between: [start, end] };
-        }
+	public getIFilterIds(endpoint: string, property: string, fn: any): void {
+		let result: Array<string> = [];
+		if (!this.ifilter) return fn(result);
+		var query = new loopback();
+		query.filter.where['name'] = { like: this.ifilter, options: "i" };
+		query.filter.fields = { id: true };
+		this.http.get({
+			path: endpoint,
+			data: query.filter,
+			encode: true
+		}).subscribe((response: any) => {
+			result = response.body.map((a: any) => {
+				let item: any = {};
+				item[property] = a.id;
+				return item;
+			});
+			fn(result);
+		});
+	}
 
-        if (pager) {
-            query.filter.limit = this.pager.limit;
-            query.filter.skip = pager.skip;
-            this.pager.selected = pager.index;
-        } else {
-            this.loadPager(query.filter.where);
-            query.filter.limit = this.pager.limit;
-            query.filter.skip = 0;
-        }
+	public loadReports(filter?: string | null, pager?: any): void {
+		this.ifilter = filter;
+		var query = new loopback();
+		query.filter.where = { and: [] };
+		this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }): null;
+		this.icurrentObj.deletedFg ? query.filter.where['and'].push({ trash: this.icurrentObj.deletedFg }): null;
+		query.filter.where['and'].push({ reviewed: this.ifilterreviewed });
+		query.filter.include.push(
+			{ relation: "folder" },
+			{ relation: "user" },
+			{ relation: "state" },
+			{ relation: "section" }
+		);
 
-        this.clearCheckboxes(this.listForm.controls.reports as FormArray);
-        this.list.reports = [];
-        this.http.get({
-            path: `reports?${qs.stringify(query, { skipNulls: true })}`
-        }).subscribe((response: any) => {
-            this.addCheckboxes(response.body);
-            setTimeout(() => {
-                this.list.reports = response.body;
-            }, 100)
+		if (this.ifilterdate) {
+			let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
+			let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
+			query.filter.where['and'].push({ updatedAt: { between: [start, end] } });
+		}
 
-        });
-    }
+		if (pager) {
+			query.filter.limit = this.pager.limit;
+			query.filter.skip = pager.skip;
+			this.pager.selected = pager.index;
+		} else {
+			this.loadPager(query.filter.where);
+			query.filter.limit = this.pager.limit;
+			query.filter.skip = 0;
+		}
+		query.filter.order = "id DESC";
 
-    private addCheckboxes(reports: Array<any>): void {
-        for (let iReport in reports) {
-            if (reports.hasOwnProperty(iReport)) {
-                const control = new FormControl(false);
-                (this.listForm.controls.reports as FormArray).push(control);
-            }
-        }
-    }
+		this.getIFilterIds('users', 'userId', (users: Array<any>) => {
+			this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
+				this.getIFilterIds('sections', 'sectionId', (sections: Array<any>) => {
+					if (this.ifilter) {
+						let orWhere: Array<any> = [
+							{ name: { like: this.ifilter, options: "i" } }
+						].concat(users, states, sections);
+						query.filter.where['and'].push({ or: orWhere });
+					}else {
+						query.filter.where['and'].push({ stateId: this.icurrentObj.currentState });
+					}
+					this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+					this.list.reports = [];
+					this.http.get({
+						path: `reports`,
+						data: query.filter,
+						encode: true
+					}).subscribe((response: any) => {
+						this.addCheckboxes(response.body);
+						setTimeout(() => {
+							this.list.reports = response.body;
+						}, 100);
+					});
+				});
+			});
+		});
+	}
 
-    private clearCheckboxes(formArray: FormArray): void {
-        while (formArray.length !== 0) {
-            formArray.removeAt(0);
-        }
-    }
+	private addCheckboxes(reports: Array<any>): void {
+		for (let iReport in reports) {
+			if (reports.hasOwnProperty(iReport)) {
+				const control = new FormControl(false);
+				(this.listForm.controls.reports as FormArray).push(control);
+			}
+		}
+	}
 
-    public getCheckboxesSelected(): Array<any> {
-        return this.listForm.value.reports
-            .map((v: any, i: number) => v ? this.list.reports[i].id : null)
-            .filter((v: any) => v !== null);
-    }
+	private clearCheckboxes(formArray: FormArray): void {
+		while (formArray.length !== 0) {
+			formArray.removeAt(0);
+		}
+	}
 
-    public moveReports(event: any): void {
-        let selecteds: Array<string> = this.getCheckboxesSelected();
-        let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
-            if (selecteds.indexOf(a.id) !== -1) {
-                a.folderId = event.value;
-                return true;
-            }
-            return false;
-        });
+	public getCheckboxesSelected(): Array<any> {
+		return this.listForm.value.reports
+			.map((v: any, i: number) => v ? this.list.reports[i].id : null)
+			.filter((v: any) => v !== null);
+	}
 
-        this.rcPutReport(toUpdate, 0, () => {
-            this.loadReports(this.ifilter);
-            let folder = this.list.folders.filter((a: any) => a.id == event.value )[0];
-            if(!folder) return;
-            this.valueChange.emit({
-                state: this.icurrentObj.currentState,
-                deleted: this.icurrentObj.deletedFg,
-                folder: folder.id,
-                stateName: folder.name
-            });
-            this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
-                data: {
-                    title: 'Su informe ha sido agregado exitosamente a:',
-                    subtitle: folder.name
-                }
-            }); 
-        });
-    }
+	public moveReports(event: any): void {
+		let selecteds: Array<string> = this.getCheckboxesSelected();
+		let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+			if (selecteds.indexOf(a.id) !== -1) {
+				a.folderId = event.value;
+				return true;
+			}
+			return false;
+		});
 
-    public deleteReports(): void {
-        let selecteds: Array<string> = this.getCheckboxesSelected();
-        let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
-            if (selecteds.indexOf(a.id) !== -1) {
-                a.trash = true;
-                return true;
-            }
-            return false;
-        });
+		this.rcPutReport(toUpdate, 0, () => {
+			this.loadReports(this.ifilter);
+		});
+	}
 
-        this.rcPutReport(toUpdate, 0, () => {
-            this.loadReports(this.ifilter);
-        });
-    }
+	public deleteReports(): void {
+		let selecteds: Array<string> = this.getCheckboxesSelected();
+		let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+			if (selecteds.indexOf(a.id) !== -1) {
+				a.trash = true;
+				return true;
+			}
+			return false;
+		});
 
-    private rcPutReport(reports: Array<any>, index: number, fn: any): void {
-        if (index == reports.length) {
-            fn();
-            return;
-        }
-        let report: any = reports[index];
-        let data: Report = {
-            'id': report.id,
-            'name': report.name,
-            'slug': report.slug,
-            'trash': report.trash,
-            'content': report.content,
-            'styles': report.styles,
-            'sectionTypeKey': report.sectionTypeKey,
-            'templateId': report.templateId,
-            'stateId': report.stateId,
-            'sectionId': report.sectionId,
-            'folderId': report.folderId
-        };
-        this.http.put({
-            'path': `reports/${data.id}`,
-            'data': data
-        }).subscribe(
-            () => {
-                index++;
-                this.rcPutReport(reports, index, fn);
-            },
-            () => {
-                alert('Oops!!! \nNo actualizamos tus datos. Intenta más tarde');
-            }
-        );
-    }
+		this.rcPutReport(toUpdate, 0, () => {
+			this.loadReports(this.ifilter);
+		});
+	}
 
-    public filterReports(text: string) {
-        this.loadReports(text);
-    }
+	private rcPutReport(reports: Array<any>, index: number, fn: any): void {
+		if (index == reports.length) {
+			fn();
+			return;
+		}
+		let report: any = reports[index];
+		let data: Report = {
+			'id': report.id,
+			'name': report.name,
+			'slug': report.slug,
+			'trash': report.trash,
+			'content': report.content,
+			'styles': report.styles,
+			'sectionTypeKey': report.sectionTypeKey,
+			'templateId': report.templateId,
+			'stateId': report.stateId,
+			'sectionId': report.sectionId,
+			'folderId': report.folderId
+		};
+		this.http.put({
+			'path': `reports/${data.id}`,
+			'data': data
+		}).subscribe(
+			() => {
+				index++;
+				this.rcPutReport(reports, index, fn);
+			},
+			() => {
+				alert('Oops!!! \nNo actualizamos tus datos. Intenta más tarde');
+			}
+		);
+	}
 
-    public filterDateReports(event: any) {
-        this.ifilterdate = {
-            start: event.startDate.toString(),
-            end: event.endDate.toString().replace('00:00:00', '23:59:59')
-        };
+	public filterReports(text: string) {
+		this.loadReports(text);
+	}
 
-        this.loadReports(this.ifilter);
-    }
+	public filterDateReports() {
+		this.ifilterdate = {
+		    start: this.startDate,
+		    end: this.endDate
+		};
 
-    isFiltering() {
-        return this.icurrentObj.currentFolder || this.icurrentObj.currentState ||
-            this.icurrentObj.deletedFg;
-    }
+		this.calendarOpen = false;
+		this.loadReports(this.ifilter);
+	}
 
-    cleanFilters() {
-        this.icurrentObj = {
-            currentFolder: null,
-            currentState: null,
-            deletedFg: false,
-            currentStateName: 'Todos Informes'
-        };
-        this.loadReports();
-        this.valueChange.emit(null);
-    }
+	public onDateUpdate (event: any) {
+		this.startDate = event.startDate.toString();
+		this.endDate = event.endDate.toString().replace('00:00:00', '23:59:59');
+	}
 
-    public onCloneReport(event: Event, pos: number) {
-        event.preventDefault();
+	isFiltering() {
+		return this.icurrentObj.currentFolder || this.icurrentObj.currentState ||
+			this.icurrentObj.deletedFg;
+	}
 
-        let clone = Object.assign({}, this.list.reports[pos]);
-        clone.name = clone.name + ' Copia';
-        clone.slug = clone.slug + '-copia';
-        this.list.reports.splice(pos + 1, 0, clone);
+	cleanFilters() {
+		this.icurrentObj = {
+			currentFolder: null,
+			currentState: null,
+			deletedFg: false,
+			currentStateName: 'Todos Informes'
+		};
+		this.loadReports();
+		this.valueChange.emit(null);
+	}
 
-        let newReport: any = {
-            name: clone.name,
-            slug: clone.slug,
-            trash: clone.trash,
-            content: clone.content,
-            sectionTypeKey: clone.sectionTypeKey,
-            templateId: clone.templateId,
-            userId: clone.userId,
-            stateId: clone.stateId,
-            sectionId: clone.sectionId,
-            folderId: clone.folderId
-        };
+	public onCloneReport(event: Event, pos: number) {
+		event.preventDefault();
 
-        this.saveReport(newReport);
-    }
+		let clone = Object.assign({}, this.list.reports[pos]);
+		clone.name = clone.name + ' Copia';
+		clone.slug = clone.slug + '-copia';
+		this.list.reports.splice(pos + 1, 0, clone);
 
-    public onDeleteReport(event: Event, pos: number) {
-        let reportId = this.list.reports[pos].id;
-        this.list.reports.splice(pos, 1);
+		let newReport: any = {
+			name: clone.name,
+			slug: clone.slug,
+			trash: clone.trash,
+			content: clone.content,
+			sectionTypeKey: clone.sectionTypeKey,
+			templateId: clone.templateId,
+			userId: clone.userId,
+			stateId: clone.stateId,
+			sectionId: clone.sectionId,
+			folderId: clone.folderId
+		};
 
-        this.deleteReport(reportId);
-    }
+		this.saveReport(newReport);
+	}
+
+	public onDeleteReport(event: Event, pos: number) {
+		let reportId = this.list.reports[pos].id;
+		this.list.reports.splice(pos, 1);
+
+		this.deleteReport(reportId);
+	}
 
 }

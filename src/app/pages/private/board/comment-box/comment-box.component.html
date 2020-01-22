@@ -1,12 +1,33 @@
 <header>
-    <button class="close-btn">
+    <button class="close-btn" (click)="hideComments()">
         <i class="material-icons">close</i>
     </button>
     <h1>Comentarios</h1>
 </header>
 
 <section>
-    <mat-card class="comment-form">
+    <mat-card id="{{ comment.id }}" class="comment" *ngFor="let comment of list.comments">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <div class="avatar"></div>
+                <!-- <img src="../../../../../assets/images/user/images.png"> -->
+            </div>
+
+            <mat-card-title>{{ comment.user?.name }}</mat-card-title>
+            <mat-card-subtitle>{{ comment.user?.charge }}</mat-card-subtitle>
+            <button class="comment-close" (click)="deleteComment(comment.id)">
+                <span class="icon icon-trash-alt"></span>
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <p>{{ comment.text }}</p>
+            <div class="actions">
+                <button mat-stroked-button class="btn-resolve">Resolver</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="comment-form hide">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
@@ -14,7 +35,7 @@
             </div>
             <mat-card-title>{{ user?.name }}</mat-card-title>
             <mat-card-subtitle>{{ user?.charge }}</mat-card-subtitle>
-            <button class="comment-close">
+            <button class="comment-close" (click)="hideCommentForm()">
                 <span class="icon icon-times"></span>
             </button>
         </mat-card-header>
@@ -26,28 +47,17 @@
         </mat-card-content>
     </mat-card>
 
-    <mat-card class="comment" *ngFor="let comment of list.comments">
-        <mat-card-header>
-            <div mat-card-avatar>
-                <div class="avatar"></div>
-                <!-- <img src="../../../../../assets/images/user/images.png"> -->
-            </div>
-
-            <mat-card-title>{{ comment.user?.name }}</mat-card-title>
-            <mat-card-subtitle>{{ comment.user?.charge }}</mat-card-subtitle>
-            <button class="comment-close">
-                <span class="icon icon-trash-alt"></span>
+    <div class="add-action">
+        <p>
+            <button (click)="displayCommentForm()">
+                <i class="material-icons">add</i>
             </button>
-        </mat-card-header>
-        <mat-card-content>
-            <p>{{ comment.text }}</p>
-            <div class="actions">
-                <button mat-stroked-button class="btn-resolve">Resolver</button>
-            </div>
-        </mat-card-content>
-    </mat-card>
+            <span>Nuevo comentario</span>
+        </p>
+    </div>
 </section>
 
-<footer>
-    <button type="button" name="button">Enviar comentarios</button>
+<!-- <footer>
+    <button type="button" name="button" mat-stroked-button>Enviar comentarios</button>
 </footer>
+ -->

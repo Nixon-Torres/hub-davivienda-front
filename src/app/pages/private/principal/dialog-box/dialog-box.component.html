@@ -2,9 +2,13 @@
 	<h1 mat-dialog-title>Editar y crear carpeta</h1>
 	<div mat-dialog-content>
 		<form class="form-box">
-			<button class="icon icon-plus-circle" (click)="onSaveFolder($event)">editar</button>
-			<mat-form-field>
-				<input matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Crear carpeta nueva">
+			<button *ngIf="editNew" class="icon_edit material-icons" (click)="onSaveFolder($event)">done</button>
+			<button class="icon icon-plus-circle" *ngIf="!editNew" (click)="onSaveFolder($event)">editar</button>
+			<mat-form-field *ngIf="!editNew">
+				<input  matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Crear carpeta nueva">
+			</mat-form-field>
+			<mat-form-field *ngIf="editNew">
+				<input matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"placeholder="Editar carpeta">
 			</mat-form-field>
 		</form>
 			<ul class="list">
