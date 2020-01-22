@@ -7,7 +7,8 @@
      padding-top: 10px !important;
 
      button  {
-         border-radius: 0px;
+		 border-radius: 0px;
+		 padding: 3px;
      }
  }
 
@@ -210,4 +211,9 @@
 	.mat-button-wrapper {
 		font-size: 0.875em;
 	}
+}
+
+.cog_icon{
+	position: relative;
+	top: 3px;
 }
