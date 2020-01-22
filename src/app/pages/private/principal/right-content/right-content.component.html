@@ -23,10 +23,10 @@
 			<h3 class="calendar-container--title">Búsqueda por fecha</h3>
 			<div class="calendar-container--form">
 				<mat-form-field class="input-left">
-				  <input matInput placeholder="Fecha de" [(ngModel)]="startDate" [disabled]='disabled'>
+				  <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
 				</mat-form-field>
 				<mat-form-field class="">
-				  <input matInput placeholder="Fecha a" [(ngModel)]="endDate" [disabled]='disabled'>
+				  <input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
 				</mat-form-field>
 			</div>	
 			<ngx-daterangepicker-material class="box-content" autoApply=true (datesUpdated)="onDateUpdate($event)"></ngx-daterangepicker-material>
