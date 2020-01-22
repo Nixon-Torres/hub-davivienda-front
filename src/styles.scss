@@ -294,10 +294,6 @@ $builder-bg: #f5f7fb;
 		.start-date, td.active, td.active:hover, td.end-date{
 			border-radius: 50%;
 			background-color: #0080FF;
-			span{
-				// position: relative;
-				// top: 7px;
-			}
 		}
 		span{
 			font-size: 12px;
@@ -496,7 +492,6 @@ margin-top: 2%;
 		box-shadow: none;
 		margin-bottom: 36px;
 		width: 100%;
-		// background: red;
 	}
 
 	.md-drppicker.ltr .calendar {
