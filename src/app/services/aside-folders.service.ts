@@ -4,79 +4,88 @@ import { loopback } from '../models/common/loopback.model';
 import { Subject } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AsideFoldersService {
-    private list: any = {
-        folders: [],
-        states: []
-    }
+  private list: any = {
+    folders: [],
+    states: []
+  }
 
-    public listenFolders;
-    public $listenFolders;
-    public foldersSubs;
-    public listenStates;
-    public $listenStates;
-    public statesSubs;
+  public listenFolders;
+  public $listenFolders;
+  public foldersSubs;
+  public listenStates;
+  public $listenStates;
+  public statesSubs;
+  public newActiveFolder;
+  public $listenActiveFolder;
 
-    constructor(private http: HttpService) {
-        console.log('aside-service');
-        this.listenFolders = new Subject();
-        this.listenStates = new Subject();
-        this.$listenFolders = this.listenFolders.asObservable();
-        this.$listenStates = this.listenStates.asObservable();
-        this.loadStates();
-        this.loadFolders();
-    }
+  constructor(private http: HttpService) {
+    console.log('aside-service');
+    this.listenFolders = new Subject();
+    this.listenStates = new Subject();
+    this.newActiveFolder = new Subject();
 
-    private loadFolders() {
-        var query = new loopback();
-        query.filter.include.push({ relation: "reports", scope: { where: { trash: false }, type: "count" } });
-        this.http.get({
-            path: 'folders',
-            data: query.filter,
-            encode: true
-        }).subscribe((response) => {
-            this.list.folders = this.updateFolders(response.body);
-        });
-    }
-    private loadStates() {
-        var query = new loopback();
-        query.filter.include.push({ relation: "reports", scope: { where: { trash: false } } });
-        this.http.get({
-            path: 'states',
-            data: query.filter,
-            encode: true
-        }).subscribe((response) => {
-            this.list.states = this.updateStates(response.body);
-        });
-    }
+    this.$listenFolders = this.listenFolders.asObservable();
+    this.$listenStates = this.listenStates.asObservable();
+    this.$listenActiveFolder = this.newActiveFolder.asObservable();
+    this.loadStates();
+    this.loadFolders();
+  }
 
-    private updateFolders(folder: any) {
-        if (folder) {
-            this.listenFolders.next(folder);
-        }
-    }
-    private updateStates(states: any) {
-        if (states) {
-            this.listenStates.next(states);
-        }
-    }
+  public loadFolders() {
+    var query = new loopback();
+    query.filter.include.push({ relation: "reports", scope: { where: { trash: false }, type: "count" } });
+    this.http.get({
+      path: 'folders',
+      data: query.filter,
+      encode: true
+    }).subscribe((response) => {
+      this.list.folders = this.updateFolders(response.body);
+    });
+  }
+  public loadStates() {
+    var query = new loopback();
+    query.filter.include.push({ relation: "reports", scope: { where: { trash: false } } });
+    this.http.get({
+      path: 'states',
+      data: query.filter,
+      encode: true
+    }).subscribe((response) => {
+      this.list.states = this.updateStates(response.body);
+    });
+  }
 
-    get folderList() {
-        return this.list.folders;
+  private updateFolders(folder: any) {
+    if (folder) {
+      this.listenFolders.next(folder);
     }
+  }
+  private updateStates(states: any) {
+    if (states) {
+      this.listenStates.next(states);
+    }
+  }
 
-    set folderList(value: Array<any>) {
-        this.list.folder = value;
-    }
+  get folderList() {
+    return this.list.folders;
+  }
 
-    get stateList() {
-        return this.list.states;
-    }
+  set folderList(value: Array<any>) {
+    this.list.folder = value;
+  }
 
-    set stateList(value: Array<any>) {
-        this.list.states = value;
-    }
+  get stateList() {
+    return this.list.states;
+  }
+
+  set stateList(value: Array<any>) {
+    this.list.states = value;
+  }
+
+  set newActive(id: string) {
+    this.newActiveFolder.next(id);
+  }
 
 }

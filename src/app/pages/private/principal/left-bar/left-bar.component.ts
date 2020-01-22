@@ -27,7 +27,7 @@ export class LeftBarComponent implements OnInit {
         states: []
     }
     
-
+    @Input() activeFolder: string;
     @Input()
     set currentObj(value: any) {
         if (value) {
@@ -61,6 +61,9 @@ export class LeftBarComponent implements OnInit {
     ngOnInit() {
         this.loadFolders();
         this.loadStates();
+        this.foldersService.$listenActiveFolder.subscribe( (folder: string) => {
+            this.setCurrentFolder(folder);
+        })
     }
 
     private loadFolders() {
@@ -73,30 +76,7 @@ export class LeftBarComponent implements OnInit {
             this.list.states = data;
         });
     }
-    // private loadFolders() {
-    //     var query = new loopback();
-    //     query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
-    //     console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
-
-    //     this.http.get({
-    //         path: 'folders?'+qs.stringify(query,{skipNulls: true })
-    //     }).subscribe((response) => {
-    //         this.list.folders = response.body;
-    //     });
-    // }
-
-    // private loadStates() {
-    //     var query = new loopback();
-    //     query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
-    //     console.log('query states', JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
-
-    //     this.http.get({
-    //         path: 'states?'+qs.stringify(query,{skipNulls: true })
-    //     }).subscribe((response) => {
-    //         this.list.states = response.body;
-    //     });
-    // }
-
+    
     setDeletedState() {
         this.deletedStateEnabled = true;
         this.currentState = null;
