@@ -8,6 +8,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { Routes, RouterModule } from '@angular/router';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 
 import { BoardComponent } from './board.component';
@@ -46,6 +48,8 @@ const materialModules: any[] = [
         FormsModule,
 		materialModules,
         PreviewDialogModule,
+        NgSelectModule,
+        NgOptionHighlightModule,
         RouterModule.forChild(routes)
     ],
   	exports: [
