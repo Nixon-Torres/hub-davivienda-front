@@ -252,9 +252,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public sendReview(reviewers: Array<object>) {
-        
-        console.log(this.getReviewers(reviewers));
-
         this.http.post({
             'path': 'reports/reviewers',
             'data': {
