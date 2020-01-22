@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { loopback } from '../models/common/loopback.model';
 import * as qs from 'qs';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
@@ -14,21 +15,34 @@ export class AsideFoldersService {
     folders: [],
     states: []
   }
+
+  public listenFolders;
+  public $listenFolders;
+  public foldersSubs;
+  public listenStates;
+  public $listenStates;
+  public statesSubs;
   
   constructor(private http: HttpService) { 
+    console.log('aside-service');
+    this.listenFolders = new Subject();
+    this.listenStates = new Subject();
+    this.$listenFolders = this.listenFolders.asObservable();
+    this.$listenStates = this.listenStates.asObservable();
     this.loadStates();
     this.loadFolders();
+    
   }
-
+  
   private loadFolders() {
     var query = new loopback();
     query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
     console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
-
+    
     this.http.get({
-        path: 'folders?'+qs.stringify(query,{skipNulls: true })
+      path: 'folders?'+qs.stringify(query,{skipNulls: true })
     }).subscribe((response) => {
-        this.list.folders = response.body;
+      this.list.folders = this.updateFolders(response.body);
     });
   }
   private loadStates() {
@@ -39,11 +53,22 @@ export class AsideFoldersService {
     this.http.get({
         path: 'states?'+qs.stringify(query,{skipNulls: true })
     }).subscribe((response) => {
-        this.list.states = response.body;
+        this.list.states = this.updateStates(response.body);
     });
   }
 
-  get foldersList() {
+  private updateFolders(folder) {
+    if(folder) {
+        this.listenFolders.next(folder);
+    }
+  }
+  private updateStates(states) {
+    if(states) {
+        this.listenStates.next(states);
+    }
+  }
+
+  get folderList() {
     return this.list.folders;
   }
 
@@ -58,8 +83,5 @@ export class AsideFoldersService {
   set stateList (value: Array<any>) {
     this.list.states = value;
   }
-
-
-
 
 }
