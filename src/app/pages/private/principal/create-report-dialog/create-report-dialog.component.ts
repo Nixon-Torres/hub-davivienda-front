@@ -59,7 +59,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private loadReports(): void {
         var query = new loopback();
-        query.filter.where['userId'] = this.auth.getUserData('id');
+        query.filter.where['ownerId'] = this.auth.getUserData('id');
         query.filter.where['trash'] = false;
         query.filter.where['reviewed'] = true;
         query.filter.limit = 6;

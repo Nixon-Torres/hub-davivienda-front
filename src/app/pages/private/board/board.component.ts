@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
+import { loopback } from '../../../models/common/loopback.model';
 import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
@@ -10,6 +11,7 @@ import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 import * as moment from 'moment';
+import * as qs from 'qs';
 
 import { Report } from './board.model';
 import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
@@ -35,7 +37,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor: any;
     public grapes: any;
     public lastupdate: string;
+    public grid: any = {
+        col: {
+            builder: 9,
+            comments: 0,
+            panel: 2
+        },
+        row: {
+            builder: 1,
+            comments: 1,
+            panel: 1
+        }
+    }
     public report: Report = {
+        id: null,
         name: '',
         slug: null,
         trash: false,
@@ -67,12 +82,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get("id")) {
+
                 this.report.id = params.get("id");
-
-                console.log(this.report, this.user);
-
                 this.loadReport(this.report.id);
+
             } else if (params.get("stateId")) {
+
                 let folderId = params.get('folderId');
                 let templateId = params.get('templateId');
                 this.fromReportId = params.get('reportId');
@@ -91,11 +106,25 @@ export class BoardComponent implements OnInit, AfterViewInit {
     * @return { this.report } Obj with the report data
     */
     private loadReport(idReport: string): void {
-        let filter = {
-          include: ['state']
-        };
+        var query = new loopback();
+        query.filter.include.push({
+            relation: "events",
+            scope: {
+                include: {
+                    relation: 'owner',
+                    scope: {
+                        fields: ['name']
+                    }
+                },
+                limit: 1,
+                order: "id DESC"
+            }
+        });
+
         this.http.get({
-            'path': `reports/${idReport}?filter=${JSON.stringify(filter)}`
+            'path': `reports/${idReport}`,
+            'data': query.filter,
+            'encode': true
         }).subscribe((response: any) => {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
@@ -321,17 +350,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': data
         }).subscribe(
             (response: any) => {
-              this.report.id = response.body.id;
                 if (!autoSave) {
                     if (cb) return cb();
-                    this.dialog.open(ConfirmationDialogComponent, {
+                    let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
                             title: 'Tu informe ha sido guardado:',
                             subtitle: this.report.name
                         }
                     });
+
+                    dgRef.afterClosed().subscribe(() => {
+                        if (!this.report.id) {
+                            this.router.navigate(['app/board', response.body.id]);
+                        }
+                    });
                 } else {
+                    this.report.id = response.body.id;
                     response.body.folderId = response.body.folderId ? response.body.folderId : null;
                     response.body.templateId = response.body.templateId ? response.body.templateId : null;
                     // this.report = response.body;
@@ -413,5 +448,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
             });
         });
+    }
+
+    showComments() {
+        this.grid.col.builder = 7;
+        this.grid.col.comments = 2;
+        this.grid.col.panel = 2;
+        document.querySelector('mat-grid-tile.comments').classList.add('show');
+    }
+
+    hideComments() {
+        document.querySelector('mat-grid-tile.comments').classList.remove('show');
+
+        setTimeout(() => {
+            this.grid.col.builder = 9;
+            this.grid.col.comments = 0;
+            this.grid.col.panel = 2;
+        }, 100);
     }
 }

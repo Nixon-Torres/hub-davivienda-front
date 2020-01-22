@@ -125,6 +125,15 @@
 			font-size: 1.125em;
 		}
 	}
+}
 
-	
+.icon_edit{
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 30px;
+	color: rgba(0, 128, 255, 1);
+	&:focus{
+		outline: none;
+	}
 }

@@ -17,10 +17,10 @@ export class Folder {
 export class DialogBoxComponent implements OnInit {
 
 	public folders:any[] = [];
+	public editNew: boolean = false;
 	public name:string = '';
 	public edit:boolean = false;
 	public currentPosition:number = 0;
-
 	constructor(
 		public dialogRef: MatDialogRef<DialogBoxComponent>,
 		@Inject(MAT_DIALOG_DATA) data) {
@@ -44,12 +44,13 @@ export class DialogBoxComponent implements OnInit {
 			this.name = '';
 		} 
 	}
-
+	
 	onDeleteFolder(event: Event, pos: number): void {
 		this.folders.splice(pos,1);	
 	}
 
 	onEditFolder(event: Event, pos:number): void {
+		this.editNew = true;
 		this.currentPosition = pos;
 		this.edit = true;
 		this.name = this.folders[pos].name;
@@ -58,5 +59,4 @@ export class DialogBoxComponent implements OnInit {
 	ngOnInit() {
 		console.log(this.dialogRef);
 	}
-
 }
