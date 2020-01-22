@@ -39,6 +39,10 @@ body {
 	width: 88%;
 }
 
+// UTILS
+.not-scrollable {
+	overflow: hidden !important;
+}
 
 /* ========================================================= *\
 							HEADER
@@ -145,7 +149,7 @@ body {
     							BOARD
 \* ============================================================= */
 
-// GRAPES
+// --------------------------- GRAPES ---------------------------
 $builder-bg: #f5f7fb;
 .gjs-one-bg {
 	background-color: white !important;
@@ -173,6 +177,8 @@ $builder-bg: #f5f7fb;
 		}
 	}
 }
+
+// -------------------------- COMMENTS --------------------------
 .comments {
 	section {
 		.mat-card-header-text {
@@ -182,6 +188,7 @@ $builder-bg: #f5f7fb;
 	}
 }
 
+// --------------------------- PANEL ---------------------------
 .builder-tabs {
 	.row {
 		.tabs {
