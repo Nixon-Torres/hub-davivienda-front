@@ -176,6 +176,7 @@ $builder-bg: #f5f7fb;
 .comments {
 	section {
 		.mat-card-header-text {
+		    float: left;
 		    margin: 8px 12px 0px;
 		}
 	}
@@ -454,9 +455,9 @@ margin-top: 2%;
 		font-size: 14px !important;
 		margin-top: 20%;
 		margin-left: 8%;
-	}	
+	}
 }
-	.info_options{	
+	.info_options{
 		span{
 			border-bottom: solid 2px #e2e2e2;
 			padding: 0 10px;
@@ -472,22 +473,22 @@ margin-top: 2%;
   .mat-tab-body-content, .list{
 	&::-webkit-scrollbar{
 		width: 7px;
-	}	
+	}
 	&::-webkit-scrollbar-track{
-		background: #ffffff; 
+		background: #ffffff;
 	}
 	&::-webkit-scrollbar-thumb{
-		background: #BEC5D0; 
+		background: #BEC5D0;
 	}
 	&::-webkit-scrollbar-thumb:hover{
-		background: #555; 
+		background: #555;
 	}
   }
 
 /* Calendar */
 
 .calendar-container {
-	
+
 	.md-drppicker.ltr {
 		box-shadow: none;
 		margin-bottom: 36px;
