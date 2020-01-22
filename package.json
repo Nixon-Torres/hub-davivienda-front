@@ -22,6 +22,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@ng-select/ng-option-highlight": "0.0.4",
+    "@ng-select/ng-select": "^3.7.1",
     "@types/materialize-css": "^1.0.7",
     "grapesjs": "^0.15.10",
     "hammerjs": "^2.0.8",

@@ -11,7 +11,7 @@
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
 				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendToRevision()"
-                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendReview()">
+                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
                 <button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendBackToRevision()"
@@ -28,6 +28,9 @@
                 </button>
 				<button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">
 					<span class="icon icon-save"></span>Guardar
+				</button>
+				<button mat-stroked-button class="btn-primary add-comment" (click)="showComments()">
+					<img src="/assets/images/comment-plus.png">Añadir comentario
 				</button>
 
 				<small>Autoguardado {{lastupdate}}</small>
@@ -57,17 +60,17 @@
 	<mat-grid-list cols="12" id="grapesBox">
 
 		<!-- EDITOR -->
-		<mat-grid-tile [colspan]="7" [rowspan]="1" class="builder">
+		<mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
 			<div id="gjs"></div>
 		</mat-grid-tile>
 
 		<!-- COMMENTS -->
-		<mat-grid-tile [colspan]="2" [rowspan]="1" class="comments">
-			<app-comment-box *ngIf="report.id" [reportId]="report.id"></app-comment-box>
+		<mat-grid-tile [colspan]="grid.col.comments" [rowspan]="1" class="comments">
+			<app-comment-box (propagate)="hideComments()" *ngIf="report.id" [reportId]="report.id"></app-comment-box>
 		</mat-grid-tile>
 
 		<!-- PANEL -->
-		<mat-grid-tile [colspan]="2" [rowspan]="1" class="builder-tabs">
+		<mat-grid-tile [colspan]="grid.col.panel" [rowspan]="1" class="builder-tabs">
 
 			<div class="row">
 				<div class="col s12" style="display: none">
