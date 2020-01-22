@@ -11,12 +11,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
-
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
-import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
 
 const routes: Routes = [
     {
@@ -35,25 +34,26 @@ const routes: Routes = [
 const materialModules: any[] = [
     MatRippleModule,
     MatButtonModule,
-	MatToolbarModule,
-	MatGridListModule,
+    MatToolbarModule,
+    MatGridListModule,
     MatExpansionModule,
     MatCardModule
 ];
 
 @NgModule({
-    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent, ConfirmationDialogComponent],
+    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent],
     imports: [
         CommonModule,
         FormsModule,
-		materialModules,
+        materialModules,
         PreviewDialogModule,
+        ConfirmationDialogModule,
         NgSelectModule,
         NgOptionHighlightModule,
         RouterModule.forChild(routes)
     ],
-  	exports: [
-		materialModules
-  	]
+    exports: [
+        materialModules
+    ]
 })
 export class BoardModule { }

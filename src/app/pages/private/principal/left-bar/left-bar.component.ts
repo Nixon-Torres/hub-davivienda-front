@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {HttpService} from '../../../../services/http.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {DialogBoxComponent} from '../dialog-box/dialog-box.component';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef } from '@angular/core';
+import { HttpService } from '../../../../services/http.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import * as qs from 'qs';
-import {loopback} from '../../../../models/common/loopback.model'
+import { loopback } from '../../../../models/common/loopback.model'
+import { AsideFoldersService } from 'src/app/services/aside-folders.service';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-left-bar',
@@ -25,6 +27,7 @@ export class LeftBarComponent implements OnInit {
         states: []
     }
 
+    @Input() activeFolder: string;
     @Input()
     set currentObj(value: any) {
         if (value) {
@@ -37,7 +40,8 @@ export class LeftBarComponent implements OnInit {
 
     constructor(
         private http: HttpService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private foldersService: AsideFoldersService
     ) {
     }
 
@@ -49,56 +53,46 @@ export class LeftBarComponent implements OnInit {
             data: this.list.folders
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
+        dialogRef.afterClosed().subscribe((result : any) => {
+            result ? this.foldersService.loadFolders() : null;
         });
     }
 
     ngOnInit() {
         this.loadFolders();
         this.loadStates();
+        this.foldersService.$listenActiveFolder.subscribe((folder: string) => {
+            this.setCurrentFolder(folder);
+        })
     }
 
     private loadFolders() {
-        var query = new loopback();
-        query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
-        console.log('query folders',JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
-
-        this.http.get({
-            path: 'folders?'+qs.stringify(query,{skipNulls: true })
-        }).subscribe((response) => {
-            this.list.folders = response.body;
+        this.foldersService.$listenFolders.subscribe(data => {
+            this.list.folders = data;
         });
     }
-
     private loadStates() {
-        var query = new loopback();
-        query.filter.include.push({ relation: "reports", scope: {where: {trash: false }}});
-        console.log('query states', JSON.stringify(qs.parse(qs.stringify(query,{skipNulls: true }))));
-
-        this.http.get({
-            path: 'states?'+qs.stringify(query,{skipNulls: true })
-        }).subscribe((response) => {
-            this.list.states = response.body;
+        this.foldersService.$listenStates.subscribe(data => {
+            this.list.states = data;
         });
     }
 
     setDeletedState() {
         this.deletedStateEnabled = true;
         this.currentState = null;
-        this.valueChange.emit({state: null, deleted: true, folder: null, stateName: 'Eliminados'});
+        this.valueChange.emit({ state: null, deleted: true, folder: null, stateName: 'Eliminados' });
     }
 
     setCurrentState(state: any) {
         this.deletedStateEnabled = false;
         this.currentState = state;
-        this.valueChange.emit({state: state.id, deleted: false, folder: this.currentFolder ? this.currentFolder.id : null, stateName: state.name});
+        this.valueChange.emit({ state: state.id, deleted: false, folder: this.currentFolder ? this.currentFolder.id : null, stateName: state.name });
     }
 
     setCurrentFolder(folder: any) {
         this.deletedStateEnabled = false;
         this.currentFolder = folder;
-        this.valueChange.emit({state: this.currentState ? this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name});
+        this.valueChange.emit({ state: this.currentState ? this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name });
     }
 
     isItemActive(state: string) {
