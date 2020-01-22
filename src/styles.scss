@@ -14,7 +14,8 @@
 @import '~@angular/material/theming';
 @import 'assets/sass/_mixins';
 @import 'assets/fonts/fonts';
-
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import 'assets/sass/custom-select';
 body {
 	// font-family: Roboto, "Helvetica Neue", sans-serif;
 	font-family: 'Helvetica Neue', sans-serif;
@@ -114,7 +115,6 @@ body {
 
 	.mat-dialog-actions {
 		bottom: 24px;
-		position: absolute;
 		width: 92%;
 
 		.mat-button-base  {
@@ -472,6 +472,9 @@ margin-top: 2%;
 .paginator_label{
 	font-size: 13px;
 	padding-right: 10px;
+	&:hover{
+		background: none !important;
+	}
 }
 .cdk-overlay-container{
 	.mat-select-panel{
@@ -702,5 +705,4 @@ margin-top: 2%;
 		}
 	}
 }
-
 

@@ -10,7 +10,7 @@
 			<div class="group-radio--option" *ngFor="let section of list.sections; let indice=index">
 				<input type="radio" formControlName="sectionId" [value]="section.id" [id]="section.id" (change)="onUpdateTypes($event, indice)">
 				<label for="{{section.id}}">{{section.name}}
-				<img src="/assets/images/secciones/{{section.thumbnail}}" alt="">
+				<img src="/assets/images/section/{{section.thumbnail}}" alt="">
 				</label>
 			</div>
 		</div>
@@ -66,7 +66,10 @@
 					<div class="group-radio-two">
 						<div class="group-radio-two--option" *ngFor="let template of list.templates">
 							<input type="radio" formControlName="templateId" [value]="template.id" [id]="template.id">
-							<label class="" [for]="template.id">{{template.name}}</label>
+							<label class="" [for]="template.id">
+								<img class="template_img" src="/assets/images/section/{{template.thumbnail}}" alt="">		
+								{{template.name}}
+							</label>
 						</div>
 					</div>
 				</mat-tab>
@@ -74,15 +77,15 @@
 					<div class="group-radio-two">
 						<div class="group-radio-two--option" *ngFor="let report of list.reports">
 							<input type="radio" formControlName="reportId" [value]="report.id" [id]="report.id">
-							<label class="" [for]="report.id">{{report.name}}</label>
+							<label class="main_template" [for]="report.id">{{report.name}}</label>
 						</div>
 					</div>
 				</mat-tab>
 			</mat-tab-group>
 		</div>
-		<div mat-dialog-actions>
+		<div mat-dialog-actions class="template_btn">
 			<button mat-button (click)="onNoClick()">Cancelar</button>
-			<button type="submit" class="highligh" mat-button mat-dialog-close>Empezar Informe</button>
+			<button type="submit" class="highligh start_btn" mat-button mat-dialog-close>Empezar Informe <span>&nbsp;</span></button>
 		</div>
 	</div>
 </form>
