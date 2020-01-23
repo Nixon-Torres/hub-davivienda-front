@@ -34,7 +34,6 @@ export class PreviewDialogComponent implements OnInit {
             return;
         }
 
-        // document.querySelector('.comment-form').classList.add('hide');
         document.querySelector('.mat-dialog-container').classList.add('not-scrollable')
         console.log(document.querySelector('.mat-dialog-container'));
 
