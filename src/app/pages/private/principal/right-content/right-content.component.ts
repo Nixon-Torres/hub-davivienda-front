@@ -11,6 +11,8 @@ import { AuthService } from '../../../../services/auth.service';
 
 import * as qs from 'qs';
 import * as moment from 'moment';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
     selector: 'app-right-content',
@@ -62,7 +64,8 @@ export class RightContentComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private http: HttpService,
-        private auth: AuthService
+        private auth: AuthService,
+        private folderService: AsideFoldersService
     ) {
         this.listForm = new FormGroup({
             'reports': new FormArray([])
@@ -113,11 +116,9 @@ export class RightContentComponent implements OnInit {
     }
 
     private getFolders(): void {
-        this.http.get({
-            'path': 'folders/'
-        }).subscribe((response: any) => {
-            this.list.folders = response.body;
-        });
+        this.folderService.$listenFolders.subscribe( data => {
+            this.list.folders = data;
+        })
     }
 
     public gotoPage(input: string) {
@@ -266,6 +267,24 @@ export class RightContentComponent implements OnInit {
 
         this.rcPutReport(toUpdate, 0, () => {
             this.loadReports(this.ifilter);
+            let folder = this.list.folders.filter((a: any) => a.id == event.value )[0];
+            if(!folder) return;
+            this.valueChange.emit({
+                state: this.icurrentObj.currentState,
+                deleted: this.icurrentObj.deletedFg,
+                folder: folder.id,
+                stateName: folder.name
+            });
+            let modalRef = this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: 'Su informe ha sido agregado exitosamente a:',
+                    subtitle: folder.name
+                }
+            });
+            this.folderService.loadFolders();
+            this.folderService.loadStates();
+            this.folderService.newActive = folder;
         });
     }
 
