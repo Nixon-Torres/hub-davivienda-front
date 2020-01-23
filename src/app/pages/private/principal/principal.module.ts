@@ -27,6 +27,7 @@ import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
+import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
 
 const routes: Routes = [
     {
@@ -52,7 +53,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, PreviewDialogComponent],
     imports: [
         CommonModule,
         materialModules,
