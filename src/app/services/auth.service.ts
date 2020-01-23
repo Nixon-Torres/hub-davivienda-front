@@ -68,7 +68,7 @@ export class AuthService {
     }
 
     private getToken(input: any, fn: any) {
-        this.http.post({ 'path': 'Users/login', 'data': input }).subscribe(
+        this.http.post({ 'path': 'users/login', 'data': input }).subscribe(
             (response: any) => {
                 fn(null, response.body);
             },
@@ -80,7 +80,7 @@ export class AuthService {
 
     private removeToken(fn: any) {
         this.http.post({
-            'path': 'Users/logout', 'data': {
+            'path': 'users/logout', 'data': {
                 'access_token': this.http.authorization
             }
         }).subscribe(
@@ -95,10 +95,10 @@ export class AuthService {
 
     private getCurrentUser(userId?: string, fn?: any) {
         userId = userId ? userId : null;
-        this.http.get({ 'path': `Users/${userId}`, 'data': {} }).subscribe(
+        this.http.get({ 'path': `users/${userId}` }).subscribe(
             (response: any) => {
                 var body = response.body;
-                this.http.get({ 'path': `me`, 'data': {} }).subscribe(
+                this.http.get({ 'path': 'me' }).subscribe(
                     (response: any) => {
                         body.roles = response.body.roles;
                         fn(null, body);
