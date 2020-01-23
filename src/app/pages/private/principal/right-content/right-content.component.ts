@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,6 @@ import { CreateReportDialogComponent } from '../create-report-dialog/create-repo
 import { HttpService } from '../../../../services/http.service';
 import { AuthService } from '../../../../services/auth.service';
 
-import * as qs from 'qs';
 import * as moment from 'moment';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
@@ -116,7 +115,7 @@ export class RightContentComponent implements OnInit {
     }
 
     private getFolders(): void {
-        this.folderService.$listenFolders.subscribe( data => {
+        this.folderService.$listenFolders.subscribe((data: any) => {
             this.list.folders = data;
         })
     }
@@ -132,7 +131,8 @@ export class RightContentComponent implements OnInit {
 
     private loadPager(where: any): void {
         this.http.get({
-            path: `reports/count?${qs.stringify({ 'where': where }, { skipNulls: true })}`
+            path: 'reports/count?where=',
+            data: where
         }).subscribe((response: any) => {
             this.pager.totalItems = response.body.count;
             this.pager.totalPages = Math.ceil(this.pager.totalItems / this.pager.limit);
@@ -171,7 +171,6 @@ export class RightContentComponent implements OnInit {
         this.ifilter = filter;
         var query = new loopback();
         query.filter.where = { and: [] };
-        this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }) : null;
         this.icurrentObj.deletedFg ? query.filter.where['and'].push({ trash: this.icurrentObj.deletedFg }) : null;
         query.filter.include.push(
             { relation: "folder" },
@@ -186,17 +185,6 @@ export class RightContentComponent implements OnInit {
             query.filter.where['and'].push({ updatedAt: { between: [start, end] } });
         }
 
-        if (pager) {
-            query.filter.limit = this.pager.limit;
-            query.filter.skip = pager.skip;
-            this.pager.selected = pager.index;
-        } else {
-            this.loadPager(query.filter.where);
-            query.filter.limit = this.pager.limit;
-            query.filter.skip = 0;
-        }
-        query.filter.order = "id DESC";
-
         this.getIFilterIds('users', 'userId', (users: Array<any>) => {
             this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
                 this.getIFilterIds('sections', 'sectionId', (sections: Array<any>) => {
@@ -206,16 +194,26 @@ export class RightContentComponent implements OnInit {
                         ].concat(users, states, sections);
                         query.filter.where['and'].push({ or: orWhere });
                     } else {
-                        query.filter.where['and'].push({ stateId: this.icurrentObj.currentState });
+                        this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }) : null;
+                        this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
                         if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
                             query.filter.where['and'].push({ ownerId: this.user.id });
                         }
                     }
 
-					console.log('-> ', this.icurrentObj.currentState, this.ifilterreviewed);
-
                     let iFilterReviewed = (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) ? false : this.ifilterreviewed;
                     query.filter.where['and'].push({ reviewed: iFilterReviewed });
+
+                    if (pager) {
+                        query.filter.limit = this.pager.limit;
+                        query.filter.skip = pager.skip;
+                        this.pager.selected = pager.index;
+                    } else {
+                        this.loadPager(query.filter.where);
+                        query.filter.limit = this.pager.limit;
+                        query.filter.skip = 0;
+                    }
+                    query.filter.order = "id DESC";
 
                     this.clearCheckboxes(this.listForm.controls.reports as FormArray);
                     this.list.reports = [];
@@ -266,7 +264,6 @@ export class RightContentComponent implements OnInit {
         });
 
         this.rcPutReport(toUpdate, 0, () => {
-            this.loadReports(this.ifilter);
             let folder = this.list.folders.filter((a: any) => a.id == event.value )[0];
             if(!folder) return;
             this.valueChange.emit({
@@ -275,15 +272,17 @@ export class RightContentComponent implements OnInit {
                 folder: folder.id,
                 stateName: folder.name
             });
-            let modalRef = this.dialog.open(ConfirmationDialogComponent, {
+            this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
                     title: 'Su informe ha sido agregado exitosamente a:',
                     subtitle: folder.name
                 }
             });
+
             this.folderService.loadFolders();
             this.folderService.loadStates();
+            this.loadReports(this.ifilter);
             this.folderService.newActive = folder;
         });
     }
@@ -322,7 +321,7 @@ export class RightContentComponent implements OnInit {
             'sectionId': report.sectionId,
             'folderId': report.folderId
         };
-        this.http.put({
+        this.http.patch({
             'path': `reports/${data.id}`,
             'data': data
         }).subscribe(
@@ -371,9 +370,7 @@ export class RightContentComponent implements OnInit {
         this.valueChange.emit(null);
     }
 
-    public onCloneReport(event: Event, pos: number) {
-        event.preventDefault();
-
+    public onCloneReport(pos: number) {
         let clone = Object.assign({}, this.list.reports[pos]);
         clone.name = clone.name + ' Copia';
         clone.slug = clone.slug + '-copia';
@@ -395,7 +392,7 @@ export class RightContentComponent implements OnInit {
         this.saveReport(newReport);
     }
 
-    public onDeleteReport(event: Event, pos: number) {
+    public onDeleteReport(pos: number) {
         let reportId = this.list.reports[pos].id;
         this.list.reports.splice(pos, 1);
 

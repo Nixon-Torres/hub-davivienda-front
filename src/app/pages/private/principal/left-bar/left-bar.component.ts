@@ -1,11 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef } from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
-import * as qs from 'qs';
-import { loopback } from '../../../../models/common/loopback.model'
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
-import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-left-bar',
@@ -38,7 +34,6 @@ export class LeftBarComponent implements OnInit {
     }
 
     constructor(
-        private http: HttpService,
         public dialog: MatDialog,
         private foldersService: AsideFoldersService
     ) {
@@ -62,17 +57,17 @@ export class LeftBarComponent implements OnInit {
         this.loadStates();
         this.foldersService.$listenActiveFolder.subscribe((folder: string) => {
             this.setCurrentFolder(folder);
-        })
+        });
     }
 
     private loadFolders() {
-        this.foldersService.$listenFolders.subscribe(data => {
+        this.foldersService.$listenFolders.subscribe((data: any) => {
             this.list.folders = data;
         });
         this.foldersService.loadFolders();
     }
     private loadStates() {
-        this.foldersService.$listenStates.subscribe(data => {
+        this.foldersService.$listenStates.subscribe((data: any) => {
             this.list.states = data;
         });
         this.foldersService.loadStates();
