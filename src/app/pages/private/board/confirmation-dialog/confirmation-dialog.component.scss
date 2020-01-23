@@ -64,6 +64,12 @@
             justify-content: center;
             align-items: center;
             margin: 0 auto;
+            &.alert {
+                border: 1px solid #FF003B;
+                .icon {
+                    color: #FF003B;
+                }
+            }
             .icon {
                 color: #19D600;
                 &:before {
