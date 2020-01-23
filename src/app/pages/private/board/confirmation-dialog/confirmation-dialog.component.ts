@@ -20,8 +20,8 @@ export class ConfirmationDialogComponent {
         this.subtitle = this.data.subtitle;
     }
 
-    closeDialog(): void {
-        this.dialogRef.close();
+    closeDialog(alert?: boolean): void {
+        this.dialogRef.close(alert);
     }
 
 }
