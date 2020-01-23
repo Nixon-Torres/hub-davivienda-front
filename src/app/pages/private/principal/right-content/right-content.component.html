@@ -69,7 +69,7 @@
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.owner?.name}}</span>
+										<span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
@@ -111,7 +111,7 @@
 											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.owner?.name}}</span>
+										<span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
