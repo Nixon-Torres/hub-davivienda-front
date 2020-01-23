@@ -84,7 +84,7 @@ export class AsideFoldersService {
     this.list.states = value;
   }
 
-  set newActive(id: string) {
+  set newActive (id: string) {
     this.newActiveFolder.next(id);
   }
 

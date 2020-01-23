@@ -562,7 +562,7 @@ margin-top: 2%;
 			}
 		}
 	}
-} 
+}
 
 .header_setting{
 	button{
@@ -581,7 +581,7 @@ margin-top: 2%;
 		padding: 0 35px;
 		}
 	}
-	
+
 	.mat-menu-content{
 		padding: 0 !important;
 	}
@@ -711,3 +711,17 @@ margin-top: 2%;
 	}
 }
 
+
+/* Buttons */
+.btn-primary {
+    color: white;
+    box-shadow: none;
+    background-color: #0080ff;
+    width: 140px;
+    border-radius: 5px;
+
+	&[disabled] {
+		background: rgba(180,180,180);
+		color: rgba(40,40,40);
+	}
+}
