@@ -26,9 +26,9 @@ export class HttpService {
                 params.set(key, input.data[key]);
             }
         }
-        let encodeData = input.data ? encodeURI(JSON.stringify(input.data)) : '';
+        let encodeData = input.data ? this.encodeURIObj(input.data) : '';
         let headers = this.headers();
-        return this.http.get<Response>(`${this._URL_API}${input.path}${(input.encode ? `?filter=${encodeData}` : '')}`, {
+        return this.http.get<Response>(`${this._URL_API}${input.path}${(input.encode ? `?filter=${encodeData}` : encodeData)}`, {
             observe: 'response',
             headers: headers
         }).pipe(catchError(this.handleError));
@@ -82,6 +82,10 @@ export class HttpService {
 
     public preload(flag: boolean) {
         console.log('preload', flag);
+    }
+
+    public encodeURIObj(input: object): string {
+        return encodeURI(JSON.stringify(input));
     }
 
     private handleError(error: HttpErrorResponse) {
