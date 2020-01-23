@@ -11,6 +11,7 @@ import { AuthService } from '../../../../services/auth.service';
 
 import * as moment from 'moment';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { PreviewDialogComponent } from '../../board//preview-dialog/preview-dialog.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
@@ -397,6 +398,20 @@ export class RightContentComponent implements OnInit {
         this.list.reports.splice(pos, 1);
 
         this.deleteReport(reportId);
+    }
+
+     public openPreviewDialog(idReport): void {
+        var paramsDialog = {
+            width: '80vw',
+            height: '80vh',
+            data: {
+                'reportId': idReport,
+                'styles': '',
+                'content': ''
+            }
+        };
+
+        this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
 }
