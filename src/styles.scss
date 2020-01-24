@@ -422,8 +422,9 @@ margin-top: 2%;
 	}
 }
 .reports_form{
-	margin-top: 4%;
+	padding-top: 4%;
 	max-height: 55vh;
+	overflow-y: auto;
 }
 .content--top{
 	.insert_btn{
@@ -502,7 +503,7 @@ margin-top: 2%;
 	font-size: 14px;
 }
 
-  .mat-tab-body-content, .list{
+  .mat-tab-body-content, .reports_form, .list{
 	&::-webkit-scrollbar{
 		width: 7px;
 	}
