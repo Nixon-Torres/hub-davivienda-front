@@ -465,7 +465,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     onSendToRevisionAction(): void {
         this.http.get({
-            'path': 'users/list'
+            'path': 'users',
+            'data': {
+                'where': {
+                    'roles': 'Admin'
+                }
+            },
+            'encode': true
         }).subscribe( (resp) => {
             this.users = resp.body;
             let dialogRef = this.dialog.open(RevisionModalComponent, {
