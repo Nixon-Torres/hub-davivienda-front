@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelect2Module } from 'ng-select2';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { MatTabsModule } from '@angular/material/tabs';
@@ -23,11 +22,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PrincipalComponent } from './principal.component';
+import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
     {
@@ -63,6 +64,7 @@ const materialModules: any[] = [
         NgSelect2Module,
         ConfirmationDialogModule,
         NgxDaterangepickerMd.forRoot(),
+        PreviewDialogModule,
         NgSelectModule
     ],
     exports: [

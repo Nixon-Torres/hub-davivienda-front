@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { HttpService } from '../../../../services/http.service';
+import { HttpService } from '../../../services/http.service';
 
 
 @Component({
@@ -34,9 +34,7 @@ export class PreviewDialogComponent implements OnInit {
             return;
         }
 
-        // document.querySelector('.comment-form').classList.add('hide');
-        document.querySelector('.mat-dialog-container').classList.add('not-scrollable')
-        console.log(document.querySelector('.mat-dialog-container'));
+        document.querySelector('.mat-dialog-container').classList.add('not-scrollable');
 
         if (this.report.content && this.report.styles) {
             this.loadReport();

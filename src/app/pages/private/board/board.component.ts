@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { loopback } from '../../../models/common/loopback.model';
 import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
-import { PreviewDialogComponent } from './preview-dialog/preview-dialog.component';
+import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { Grapes } from "./grapes/grape.config";
 
@@ -322,6 +322,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     subtitle: this.report.name
                 }
             });
+            document.getElementById("gjs").innerHTML = '';
+            this.loadReport(this.report.id);
         });
     }
 

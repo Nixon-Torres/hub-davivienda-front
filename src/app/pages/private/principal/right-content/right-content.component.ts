@@ -11,6 +11,7 @@ import { AuthService } from '../../../../services/auth.service';
 
 import * as moment from 'moment';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
@@ -189,47 +190,56 @@ export class RightContentComponent implements OnInit {
         this.getIFilterIds('users', 'userId', (users: Array<any>) => {
             this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
                 this.getIFilterIds('sections', 'sectionId', (sections: Array<any>) => {
-                    if (this.ifilter) {
-                        let orWhere: Array<any> = [
-                            { name: { like: this.ifilter, options: "i" } }
-                        ].concat(users, states, sections);
-                        query.filter.where['and'].push({ or: orWhere });
-                    } else {
-                        this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }) : null;
-                        this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
-                        if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
-                            query.filter.where['and'].push({ ownerId: this.user.id });
+                    this.readReportsAsReviewer((reportsAsReviewer: Array<any>) => {
+                        if (this.ifilter) {
+                            let orWhere: Array<any> = [
+                                { name: { like: this.ifilter, options: "i" } }
+                            ].concat(users, states, sections);
+                            query.filter.where['and'].push({ or: orWhere });
+                        } else {
+                            this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }) : null;
+                            this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
                         }
-                    }
 
-                    let iFilterReviewed = (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) ? false : this.ifilterreviewed;
-                    query.filter.where['and'].push({ reviewed: iFilterReviewed });
+                        let iFilterReviewed = (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) ? false : this.ifilterreviewed;
+                        query.filter.where['and'].push({ reviewed: iFilterReviewed });
 
-                    if (pager) {
-                        query.filter.limit = this.pager.limit;
-                        query.filter.skip = pager.skip;
-                        this.pager.selected = pager.index;
-                    } else {
-                        this.loadPager(query.filter.where);
-                        query.filter.limit = this.pager.limit;
-                        query.filter.skip = 0;
-                    }
-                    query.filter.order = "id DESC";
+                        if (this.ifilterreviewed) {
+                            query.filter.where['and'].push({ ownerId: this.user.id });
+                        } else {
+                            query.filter.where['and'].push({ id: {inq: reportsAsReviewer} });
+                        }
 
-                    this.clearCheckboxes(this.listForm.controls.reports as FormArray);
-                    this.list.reports = [];
-                    this.http.get({
-                        path: `reports`,
-                        data: query.filter,
-                        encode: true
-                    }).subscribe((response: any) => {
-                        this.addCheckboxes(response.body);
-                        setTimeout(() => {
-                            this.list.reports = response.body;
-                        }, 100);
+                        if (pager) {
+                            query.filter.limit = this.pager.limit;
+                            query.filter.skip = pager.skip;
+                            this.pager.selected = pager.index;
+                        } else {
+                            this.loadPager(query.filter.where);
+                            query.filter.limit = this.pager.limit;
+                            query.filter.skip = 0;
+                        }
+                        query.filter.order = "id DESC";
+
+                        this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+                        this.getReports(query);
                     });
                 });
             });
+        });
+    }
+
+    private getReports(query: any) {
+        this.list.reports = [];
+        this.http.get({
+            path: `reports`,
+            data: query.filter,
+            encode: true
+        }).subscribe((response: any) => {
+            this.addCheckboxes(response.body);
+            setTimeout(() => {
+                this.list.reports = response.body;
+            }, 100);
         });
     }
 
@@ -265,8 +275,8 @@ export class RightContentComponent implements OnInit {
         });
 
         this.rcPutReport(toUpdate, 0, () => {
-            let folder = this.list.folders.filter((a: any) => a.id == event.value )[0];
-            if(!folder) return;
+            let folder = this.list.folders.filter((a: any) => a.id == event.value)[0];
+            if (!folder) return;
             this.valueChange.emit({
                 state: this.icurrentObj.currentState,
                 deleted: this.icurrentObj.deletedFg,
@@ -286,6 +296,27 @@ export class RightContentComponent implements OnInit {
             this.loadReports(this.ifilter);
             this.folderService.newActive = folder;
         });
+    }
+
+    public readReportsAsReviewer(fn: any): void {
+        let result = [];
+        if (this.ifilterreviewed) {
+            return fn([]);
+        }
+
+        this.http.get({
+            path: `users/${this.user.id}/reportsr`,
+            data: { "fields": "id" },
+            encode: true
+        }).subscribe(
+            (response: any) => {
+                result = response.body.map((a: any) => a.id);
+                fn(result);
+            },
+            () => {
+                alert('Oops!!! \nNo cargamos tus datos. Intenta más tarde');
+            }
+        );
     }
 
     public deleteReports(): void {
@@ -398,6 +429,20 @@ export class RightContentComponent implements OnInit {
         this.list.reports.splice(pos, 1);
 
         this.deleteReport(reportId);
+    }
+
+     public openPreviewDialog(idReport): void {
+        var paramsDialog = {
+            width: '80vw',
+            height: '80vh',
+            data: {
+                'reportId': idReport,
+                'styles': '',
+                'content': ''
+            }
+        };
+
+        this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
 }

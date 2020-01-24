@@ -1,9 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { HttpService } from '../../../../services/http.service';
-import {PreviewDialogComponent} from '../preview-dialog/preview-dialog.component';
-
 @Component({
   selector: 'app-revision-modal',
   templateUrl: './revision-modal.component.html',
@@ -16,17 +13,15 @@ export class RevisionModalComponent implements OnInit {
     public selectIsVisible: boolean;
 
     constructor(
-        public dialogRef: MatDialogRef<PreviewDialogComponent>,
+        public dialogRef: MatDialogRef<RevisionModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
-    ) {
-        // this.report.id = this.data.reportId;
-    }
+    ) { }
 
     ngOnInit() {
         this.users = this.data.users;
         this.selectIsVisible = true;
     }
-    
+
     closeDialog(): void {
         this.dialogRef.close();
     }

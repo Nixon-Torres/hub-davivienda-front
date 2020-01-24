@@ -13,9 +13,9 @@
                 flex-direction: column;
             }
             &__title {
+                font-family: 'Helvetica Neue', sans-serif;
                 color: #A5ABB1;
-                font-size: 1.125em;
-                font-weight: bold;
+                font-size: 1em;
                 text-align: center;
                 margin-bottom: 5.2vh;
             }
@@ -53,14 +53,23 @@
             padding: 0 3.75% 0 7.5%;
             margin-bottom: .65vh;
             &__text {
+                font-family: 'Helvetica Neue', sans-serif;
                 color: #616161;
                 font-style: italic;
-                font-size: 1em;
+                font-size: 0.875em;
             }
             .icon {
                 color: #FF133B;
+                width: 0.875em;
+                height: 0.875em;
+                border: 1px solid #FF133B;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 &:before  {
-                    font-size: 1em;
+                    font-size: 0.625em;
+                    line-height: 1;
                     margin-right: 0;
                 }
             }
@@ -70,13 +79,14 @@
         }
         .button--add {
             color: #A5ABB1;
+            font-family: 'Helvetica Neue', sans-serif;
             border: 0;
             background-color: transparent;
             display: flex;
             align-items: center;
             font-size: 1em;
             align-self: center;
-            margin-top: 3.9vh;
+            margin-top: 3vh;
             outline: none;
             .icon {
                 color: #A5ABB1;

@@ -12,10 +12,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 import { BoardComponent } from './board.component';
-import { PreviewDialogModule } from './preview-dialog/preview-dialog.module';
+import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
+
 
 const routes: Routes = [
     {
@@ -54,6 +55,9 @@ const materialModules: any[] = [
     ],
     exports: [
         materialModules
+    ],
+    entryComponents: [
+        RevisionModalComponent
     ]
 })
 export class BoardModule { }
