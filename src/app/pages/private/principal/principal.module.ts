@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelect2Module } from 'ng-select2';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { MatTabsModule } from '@angular/material/tabs';
@@ -61,7 +62,8 @@ const materialModules: any[] = [
         RouterModule.forChild(routes),
         NgSelect2Module,
         ConfirmationDialogModule,
-        NgxDaterangepickerMd.forRoot()
+        NgxDaterangepickerMd.forRoot(),
+        NgSelectModule
     ],
     exports: [
         materialModules
