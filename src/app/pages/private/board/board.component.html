@@ -4,7 +4,7 @@
 			<section>
 				<h6>Informe de negocio</h6>
 
-				<button mat-stroked-button class="btn-white descartar-cta">
+				<button mat-stroked-button class="btn-white descartar-cta" (click)="discard()">
 					<span class="icon icon-trash-alt"></span>Descartar
 				</button>
 				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id">
