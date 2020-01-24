@@ -21,9 +21,13 @@
 				<mat-option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</mat-option>
 			</mat-select>
 		</mat-form-field> -->
-		<ng-select2 formControlName="sectionTypeKey" placeholder="Seleccione el tipo de Informe">
-			<option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</option>
-		</ng-select2>
+
+		<div class="select-content--medium">
+			<ng-select [items]="list.typeSections" bindValue="value" bindLabel="value"
+				placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
+				[clearable]="false" class="custom-select ">
+			</ng-select>
+		</div>			
 
 		<span class="divider"></span>
 
@@ -38,21 +42,21 @@
 					<button class="del icon icon-times" (click)=onDeleteAuthor(indice)></button>
 				</li>
 				<li>
-					<button class="add icon icon-plus" (click)=onAddAuthor()></button>
+					<button type="button" class="add icon icon-plus" (click)=onAddAuthor()></button>
 					<p>Agregar<span>Autor / Colaborador</span></p>
 				</li>
 			</ul>
 
-<!-- 			<mat-form-field class="simple" floatLabel="never">
-				<mat-label>Seleccione el author o colaborador</mat-label>
-				<mat-select shouldLabelFloat="false" (selectionChange)="onOptionsSelected()" [(value)]="selectedAuthor">
-					<mat-option *ngFor="let user of list.users; index as i" value="{{user.id}}">{{user.name}}</mat-option>
-				</mat-select>
-			</mat-form-field> -->
-
-			<ng-select2 formControlName="sectionTypeKey" placeholder="Seleccione el tipo de Informe"  (selectionChange)="onOptionsSelected()" [(value)]="selectedAuthor">
+<!-- 			<ng-select2 formControlName="sectionTypeKey" placeholder="Seleccione el tipo de Informe"  (selectionChange)="onOptionsSelected()" [(value)]="selectedAuthor">
 				<option *ngFor="let user of list.users; index as i" value="{{i}}">{{user.name}}</option>
-			</ng-select2>
+			</ng-select2> -->
+
+			<div class="select-content--medium">
+				<ng-select [items]="list.users" bindValue="name" bindLabel="name"
+					placeholder="Escriba o seleccione el autor o colaborar" (change)="onOptionsSelected($event)" [virtualScroll]="true"
+					[clearable]="false" class="custom-select">
+				</ng-select>
+			</div>	
 
 		</div>
 	</div>
