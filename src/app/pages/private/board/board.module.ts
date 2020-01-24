@@ -17,6 +17,7 @@ import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
 
+
 const routes: Routes = [
     {
         path: '',
@@ -54,6 +55,9 @@ const materialModules: any[] = [
     ],
     exports: [
         materialModules
+    ],
+    entryComponents: [
+        RevisionModalComponent
     ]
 })
 export class BoardModule { }
