@@ -1,7 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 import { HttpService } from '../../../../services/http.service';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 export class Folder {
     id: string;
@@ -21,7 +23,9 @@ export class DialogBoxComponent {
 
     constructor(
         public dialogRef: MatDialogRef<DialogBoxComponent>,
+        public dialog: MatDialog,
         public http: HttpService,
+        private folderService: AsideFoldersService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.folders = this.data;
@@ -56,12 +60,23 @@ export class DialogBoxComponent {
     }
 
     onDeleteFolder(folder: any): void {
-        let confirmDialog = confirm('Esta seguro que desea eliminar la carpeta');
-        if (!confirmDialog) return;
-        this.http.delete({
-            path: `folders/${folder.id}`
-        }).subscribe(() => {
-            this.folders = this.folders.filter((a) => a.id !== folder.id);
+        let deleteDialog = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '¿Está seguro que desea Eliminar la carpeta?',
+                subtitle: folder.name,
+                alert: true
+            }
+        });
+        deleteDialog.afterClosed().subscribe( (data: any)  => {
+            if(data) {
+                this.http.delete({
+                    path: `folders/${folder.id}`
+                }).subscribe(() => {
+                    this.folders = this.folders.filter((a) => a.id !== folder.id);
+                    this.folderService.loadFolders();
+                });
+            }
         });
     }
 

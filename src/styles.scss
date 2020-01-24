@@ -449,6 +449,11 @@ margin-top: 2%;
 	padding: 20px 15%;
 	background-color: #F5F7FB;
 	color: rgb(104, 104, 104);
+	p{
+		font-size: 0.875em;
+		text-align: center;
+		line-height: 1.429em;
+	}
 	b{
 		font-weight: bold;
 	}
@@ -708,15 +713,22 @@ margin-top: 2%;
 
 
 /* Buttons */
-.btn-primary {
-    color: white;
-    box-shadow: none;
-    background-color: #0080ff;
-    width: 140px;
-    border-radius: 5px;
-
-	&[disabled] {
-		background: rgba(180,180,180);
-		color: rgba(40,40,40);
+.mat-button.btn {
+	width: 140px;
+	border-radius: 5px;
+	box-shadow: none;
+	margin: 0 8px;
+	&.btn-primary {
+		color: white;
+		background-color: #0080ff;
+	
+		&[disabled] {
+			background: rgba(180,180,180);
+			color: rgba(40,40,40);
+		}
+	}
+	&.btn-cancel {
+		background-color: transparent;
+		color: #A5ABB1;
 	}
 }

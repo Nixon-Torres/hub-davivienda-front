@@ -417,6 +417,24 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
+    public discard() {
+        let data: object = {
+            'trash': true
+        };
+
+        this.http.patch({
+            'path': `reports/${this.report.id}`,
+            'data': data
+        }).subscribe(
+            (response: any) => {
+                this.goToPrincipalPage();
+            },
+            () => {
+                alert('Oops!!! \nNo actualizamos tus datos. Intenta más tarde');
+            }
+        );
+    }
+
     private goToPrincipalPage(): void {
         this.router.navigate(['app/principal']);
     }
