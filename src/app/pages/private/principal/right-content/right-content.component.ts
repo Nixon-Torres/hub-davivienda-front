@@ -334,6 +334,26 @@ export class RightContentComponent implements OnInit {
         });
     }
 
+    private deeplyDeleteReports() {
+        let reports: Array<string> = this.getCheckboxesSelected();
+        this.rcDeeplyDeleteReport(reports, 0, () => {
+            this.loadReports(this.ifilter);
+        });
+    };
+
+    public rcDeeplyDeleteReport(reports: Array<any>, index: number, fn: any) {
+        if(index == reports.length) return fn();
+        let report = reports[index];
+        this.http.delete({
+            path: `reports/${report}`
+        }).subscribe(() => {
+            index++;
+            this.rcDeeplyDeleteReport(reports, index, fn);
+        }, (error: any) => {
+            console.error(error);
+        });
+    }
+
     private rcPutReport(reports: Array<any>, index: number, fn: any): void {
         if (index == reports.length) {
             fn();
