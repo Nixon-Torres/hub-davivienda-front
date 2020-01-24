@@ -61,7 +61,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         userId: null,
         stateId: null,
         folderId: null,
-        sectionId: null
+        sectionId: null,
+        users: [],
     };
 
     public editorInitiated = false;
@@ -98,6 +99,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.sectionTypeKey = params.get('sectionTypeKey');
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
+                let authorId = JSON.parse(decodeURI(params.get('usersId')));
             }
         });
     }

@@ -28,6 +28,7 @@ import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
     {
@@ -63,7 +64,8 @@ const materialModules: any[] = [
         NgSelect2Module,
         ConfirmationDialogModule,
         NgxDaterangepickerMd.forRoot(),
-        PreviewDialogModule
+        PreviewDialogModule,
+        NgSelectModule
     ],
     exports: [
         materialModules

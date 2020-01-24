@@ -9,7 +9,6 @@
 		padding: 36px 24px 24px 24px;
 		position: relative;
 		width: 50%;
-		text-align: center;
 
 		&.diff-color {
 			background: #F5F7FB;
@@ -260,6 +259,13 @@
 		margin: 40px 0 40px -5%;	
 		width: 120%;
 	}
+
+	.select-content {
+		&--medium {
+			margin: 0 auto;
+			width: 70%;
+		}
+	}
 }
 
 input[type='radio']:after {
@@ -297,7 +303,7 @@ button {
 }
 
 .template_img{
-	width: 11vw;
+	width: 10vw;
 	margin-bottom: 15px;
 }
 
