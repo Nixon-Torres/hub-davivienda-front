@@ -15,13 +15,6 @@
 			</div>
 		</div>
 
-<!-- 		<mat-form-field class="simple" floatLabel="never">
-			<mat-label>Seleccione el tipo de Informe</mat-label>
-			<mat-select formControlName="sectionTypeKey">
-				<mat-option value="{{type.key}}" *ngFor="let type of list.typeSections">{{type.value}}</mat-option>
-			</mat-select>
-		</mat-form-field> -->
-
 		<div class="select-content--medium">
 			<ng-select [items]="list.typeSections" bindValue="value" bindLabel="value"
 				placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
@@ -46,10 +39,6 @@
 					<p>Agregar<span>Autor / Colaborador</span></p>
 				</li>
 			</ul>
-
-<!-- 			<ng-select2 formControlName="sectionTypeKey" placeholder="Seleccione el tipo de Informe"  (selectionChange)="onOptionsSelected()" [(value)]="selectedAuthor">
-				<option *ngFor="let user of list.users; index as i" value="{{i}}">{{user.name}}</option>
-			</ng-select2> -->
 
 			<div class="select-content--medium">
 				<ng-select [items]="list.users" bindValue="name" bindLabel="name"
