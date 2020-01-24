@@ -26,7 +26,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     ) { }
 
     public authors = [];
-    public selectedAuthor: string = '';
+    public selectedAuthor: any = '';
 
     public list: any = {
         sections: [],
@@ -34,7 +34,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         authors: this.authors,
         templates: [],
         users: [],
-        reports: []
+        reports: [],
+        authorsId: []
     }
 
     ngOnInit() {
@@ -78,7 +79,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             stateId: new FormControl(false),
             folderId: new FormControl(false),
             templateId: new FormControl(false),
-            reportId: new FormControl(false)
+            reportId: new FormControl(false),
+            authorsId: new FormControl(false)
         });
     }
 
@@ -108,12 +110,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     public onUpdateTypes($event, index) {
         this.list.typeSections = this.list.sections[index].types;
-        this.createReportForm.patchValue({ 'sectionTypeKey': null });
+        this.createReportForm.patchValue({'sectionTypeKey': null });
     }
 
     public onAddAuthor() {
-        if (this.selectedAuthor)
-            this.list.authors.push(this.list.users[this.selectedAuthor]);
+        if (this.selectedAuthor) {
+            this.list.authors.push(this.selectedAuthor);
+            this.list.authorsId.push(this.selectedAuthor.id);
+            this.createReportForm.patchValue({'authorsId': this.list.authorsId});
+        }
     }
 
     public onDeleteAuthor(pos) {
@@ -122,11 +127,12 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     }
 
-    public onOptionsSelected() {
-        this.selectedAuthor;
+    public onOptionsSelected(event) {
+        this.selectedAuthor = event;
     }
 
     public goToBoard() {
+        let autorsId = JSON.stringify(encodeURI(this.createReportForm.value.authorsId));
         let path = 'app/board';
         path += `/${this.createReportForm.value.stateId}`;
         path += `/${this.createReportForm.value.sectionId}`;
@@ -134,6 +140,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         path += `/${(this.createReportForm.value.folderId)}`;
         path += `/${this.createReportForm.value.templateId}`;
         path += `/${this.createReportForm.value.reportId}`;
+        path += `/${autorsId}`;
         this.router.navigate([path]);
     }
 
