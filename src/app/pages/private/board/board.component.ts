@@ -461,7 +461,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     canSendToRevision(): boolean {
         var role = this.user.roles.find(e => (e === 'analyst'));
-        return role && role.length && this.report && this.report.state && this.report.state.name === 'Borradores';
+        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
+            this.report.state.name === 'Aprobados sin publicar');
     }
 
     canSendBackToRevision(): boolean {
