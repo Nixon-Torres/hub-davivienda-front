@@ -132,7 +132,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         path += `/${this.createReportForm.value.sectionId}`;
         path += `/${this.createReportForm.value.sectionTypeKey}`;
         path += `/${(this.createReportForm.value.folderId)}`;
-        path += `/${this.createReportForm.value.templateId}`;
+        path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
         path += `/${this.createReportForm.value.reportId}`;
         this.router.navigate([path]);
     }

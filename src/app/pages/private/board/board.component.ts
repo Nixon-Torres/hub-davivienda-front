@@ -251,7 +251,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        let path = templateId ? `templates/${templateId}` : `reports/${this.fromReportId}`;
+        let path = templateId && templateId !== 'null' ? `templates/${templateId}` : `reports/${this.fromReportId}`;
         this.http.get({
             'path': path
         }).subscribe((response: any) => {
@@ -261,7 +261,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
                 this.initGrapes();
             }, 0);
-        });
+        }, (err) => {
+            console.log(err);
+        })
     }
 
     private setPropertiesReport(): void {
