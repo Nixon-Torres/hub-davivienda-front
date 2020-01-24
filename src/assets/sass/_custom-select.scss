@@ -4,7 +4,7 @@
             padding-left: 30px;
             color:  #A5ABB1;
             font-size: 0.875em;
-            font-style: italic;            
+            font-style: italic;
             .ng-placeholder {
                 color: #A5ABB1;
                 font-size: 0.875em;
@@ -53,6 +53,15 @@
                         font-size: 0.875em;
                         font-style: italic;
                     }
+                }
+            }
+        }
+    }
+    &--no-height {
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                .ng-dropdown-panel-items {
+                    max-height: none;
                 }
             }
         }
