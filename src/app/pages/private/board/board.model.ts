@@ -13,4 +13,5 @@ export interface Report {
     templateId?: string;
     reviewed?: boolean;
     state?: any;
+    users?: any;
 }
