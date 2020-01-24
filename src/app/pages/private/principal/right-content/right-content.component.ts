@@ -123,8 +123,6 @@ export class RightContentComponent implements OnInit {
     }
 
     public gotoPage(input: string) {
-        console.log("input: ", input);
-        alert("click");
         this.router.navigate(['app/board', input]);
     }
 

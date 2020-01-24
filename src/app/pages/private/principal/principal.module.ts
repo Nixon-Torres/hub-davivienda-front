@@ -22,12 +22,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PrincipalComponent } from './principal.component';
+import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
-import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 
 const routes: Routes = [
     {
@@ -53,7 +53,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, PreviewDialogComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent],
     imports: [
         CommonModule,
         materialModules,
@@ -62,14 +62,14 @@ const materialModules: any[] = [
         RouterModule.forChild(routes),
         NgSelect2Module,
         ConfirmationDialogModule,
-        NgxDaterangepickerMd.forRoot()
+        NgxDaterangepickerMd.forRoot(),
+        PreviewDialogModule
     ],
     exports: [
         materialModules
     ],
     entryComponents: [
         DialogBoxComponent,
-        PreviewDialogComponent,
         CreateReportDialogComponent
     ]
 })
