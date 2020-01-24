@@ -201,8 +201,10 @@ export class RightContentComponent implements OnInit {
                             this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
                         }
 
-                        let iFilterReviewed = (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) ? false : this.ifilterreviewed;
-                        query.filter.where['and'].push({ reviewed: iFilterReviewed });
+                        if(this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
+                            let iFilterReviewed = false;
+                            query.filter.where['and'].push({ reviewed: iFilterReviewed });
+                        }
 
                         if (this.ifilterreviewed) {
                             query.filter.where['and'].push({ ownerId: this.user.id });
