@@ -306,6 +306,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
+
+            document.getElementById("gjs").innerHTML = '';
+            this.loadReport(this.report.id);
         })
     }
 
