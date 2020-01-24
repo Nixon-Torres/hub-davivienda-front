@@ -34,8 +34,7 @@ export class PreviewDialogComponent implements OnInit {
             return;
         }
 
-        document.querySelector('.mat-dialog-container').classList.add('not-scrollable')
-        console.log(document.querySelector('.mat-dialog-container'));
+        document.querySelector('.mat-dialog-container').classList.add('not-scrollable');
 
         if (this.report.content && this.report.styles) {
             this.loadReport();
