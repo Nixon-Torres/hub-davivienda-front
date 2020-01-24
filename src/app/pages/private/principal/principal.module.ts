@@ -22,6 +22,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PrincipalComponent } from './principal.component';
+import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
@@ -61,7 +62,8 @@ const materialModules: any[] = [
         RouterModule.forChild(routes),
         NgSelect2Module,
         ConfirmationDialogModule,
-        NgxDaterangepickerMd.forRoot()
+        NgxDaterangepickerMd.forRoot(),
+        PreviewDialogModule
     ],
     exports: [
         materialModules
