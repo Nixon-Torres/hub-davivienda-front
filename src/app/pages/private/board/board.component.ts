@@ -473,7 +473,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
             'encode': true
         }).subscribe( (resp) => {
-            console.log(resp);
             this.users = resp.body;
             let dialogRef = this.dialog.open(RevisionModalComponent, {
                 width: '450px',
