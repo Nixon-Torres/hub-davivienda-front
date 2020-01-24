@@ -54,6 +54,7 @@ export class RightContentComponent implements OnInit {
     @Input()
     set currentObj(value: any) {
         this.icurrentObj = value;
+
         if (this.icurrentObj) {
             this.loadReports(this.ifilter);
         }
@@ -171,7 +172,7 @@ export class RightContentComponent implements OnInit {
         this.ifilter = filter;
         var query = new loopback();
         query.filter.where = { and: [] };
-        this.icurrentObj.deletedFg ? query.filter.where['and'].push({ trash: this.icurrentObj.deletedFg }) : null;
+        query.filter.where['and'].push({ trash: typeof this.icurrentObj.deletedFg !== 'undefined' ? this.icurrentObj.deletedFg : false });
         query.filter.include.push(
             { relation: "folder" },
             { relation: "user" },
