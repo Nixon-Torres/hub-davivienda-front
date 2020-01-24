@@ -320,6 +320,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     subtitle: this.report.name
                 }
             });
+            document.getElementById("gjs").innerHTML = '';
+            this.loadReport(this.report.id);
         });
     }
 
