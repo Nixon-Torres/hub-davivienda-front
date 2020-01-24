@@ -52,7 +52,7 @@
 							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
 								<ul class="">
 									<li><a class="" >Recuperar</a></li>
-									<li><a class="icon icon-trash-alt" >Eliminar</a></li>
+									<li><a class="icon icon-trash-alt" (click)="deeplyDeleteReports()">Eliminar</a></li>
 									<li><a class="icon icon-trash-alt active" >Eliminar todo</a></li>
 								</ul>
 							</div>
