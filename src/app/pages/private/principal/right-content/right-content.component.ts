@@ -11,7 +11,7 @@ import { AuthService } from '../../../../services/auth.service';
 
 import * as moment from 'moment';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
-import { PreviewDialogComponent } from '../../board//preview-dialog/preview-dialog.component';
+import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
@@ -123,6 +123,8 @@ export class RightContentComponent implements OnInit {
     }
 
     public gotoPage(input: string) {
+        console.log("input: ", input);
+        alert("click");
         this.router.navigate(['app/board', input]);
     }
 

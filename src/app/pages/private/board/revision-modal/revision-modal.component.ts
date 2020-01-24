@@ -26,7 +26,7 @@ export class RevisionModalComponent implements OnInit {
         this.users = this.data.users;
         this.selectIsVisible = true;
     }
-    
+
     closeDialog(): void {
         this.dialogRef.close();
     }
