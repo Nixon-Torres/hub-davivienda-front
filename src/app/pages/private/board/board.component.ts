@@ -64,6 +64,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         sectionId: null
     };
 
+    public editorInitiated = false;
+
     constructor(
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
@@ -141,9 +143,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.report = response.body;
             this.setLastUpdate(response.body.updatedAt);
 
-            setTimeout(() => {
-                this.initGrapes();
-            }, 0);
+            if (!this.editorInitiated) {
+                setTimeout(() => {
+                    this.initGrapes();
+                    this.editorInitiated = true;
+                }, 0);
+            }
         });
     }
 
@@ -306,6 +311,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
+            this.loadReport(this.report.id);
         })
     }
 
@@ -320,7 +326,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     subtitle: this.report.name
                 }
             });
-            document.getElementById("gjs").innerHTML = '';
             this.loadReport(this.report.id);
         });
     }
