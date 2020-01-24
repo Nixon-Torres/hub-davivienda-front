@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
+
 import { HttpService } from './http.service';
+import { AuthService } from './auth.service';
 import { loopback } from '../models/common/loopback.model';
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +14,19 @@ export class AsideFoldersService {
     states: []
   }
 
-  public listenFolders;
-  public $listenFolders;
+  public listenFolders: Subject<any>;
+  public $listenFolders: Observable<any>;
   public foldersSubs;
-  public listenStates;
-  public $listenStates;
+  public listenStates: Subject<any>;
+  public $listenStates: Observable<any>;
   public statesSubs;
-  public newActiveFolder;
-  public $listenActiveFolder;
+  public newActiveFolder: Subject<any>;
+  public $listenActiveFolder: Observable<any>;
 
-  constructor(private http: HttpService) {
-    console.log('aside-service');
+  constructor(
+      private http: HttpService,
+      private auth: AuthService
+  ) {
     this.listenFolders = new Subject();
     this.listenStates = new Subject();
     this.newActiveFolder = new Subject();
@@ -36,7 +40,13 @@ export class AsideFoldersService {
 
   public loadFolders() {
     var query = new loopback();
-    query.filter.include.push({ relation: "reports", scope: { where: { trash: false }, type: "count" } });
+    query.filter.include.push({
+      relation: "reports",
+        scope: {
+          where: { trash: false, ownerId:  this.auth.getUserData('id') },
+          type: "count"
+        }
+    });
     this.http.get({
       path: 'folders',
       data: query.filter,
@@ -45,9 +55,16 @@ export class AsideFoldersService {
       this.list.folders = this.updateFolders(response.body);
     });
   }
+
   public loadStates() {
     var query = new loopback();
-    query.filter.include.push({ relation: "reports", scope: { where: { trash: false } } });
+    query.filter.include.push({
+      relation: "reports",
+        scope: {
+          where: { trash: false, ownerId:  this.auth.getUserData('id') },
+          type: "count"
+        }
+    });
     this.http.get({
       path: 'states',
       data: query.filter,
