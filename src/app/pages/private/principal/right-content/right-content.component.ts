@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { environment } from '../../../../../environments/environment';
 import { Report } from '../../board/board.model';
 import { loopback } from '../../../../models/common/loopback.model';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
@@ -23,12 +24,11 @@ export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
 
+    readonly DRAFT_KEY: string = environment.DRAFT_KEY;
+
     public calendarOpen: boolean = false;
     public startDate: any;
     public endDate: any;
-
-    private draftKey: string = '5e068d1cb81d1c5f29b62977';
-    private lastFilter: any = {};
 
     user: any = {};
     icurrentObj: {
@@ -521,7 +521,7 @@ export class RightContentComponent implements OnInit {
             sectionTypeKey: clone.sectionTypeKey,
             templateId: clone.templateId,
             userId: clone.userId,
-            stateId: this.draftKey,
+            stateId: this.DRAFT_KEY,
             sectionId: clone.sectionId,
             folderId: clone.folderId
         };
@@ -536,7 +536,7 @@ export class RightContentComponent implements OnInit {
         this.deleteReport(reportId);
     }
 
-     public openPreviewDialog(idReport): void {
+     public openPreviewDialog(idReport: string): void {
         var paramsDialog = {
             width: '80vw',
             height: '80vh',
