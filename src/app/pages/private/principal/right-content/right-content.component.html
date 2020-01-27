@@ -51,9 +51,9 @@
 							</mat-form-field>
 							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
 								<ul class="">
-									<li><a class="" >Recuperar</a></li>
+									<li><a (click)="restoreReports()"><i class="material-icons">restore_page</i>Recuperar</a></li>
 									<li><a class="icon icon-trash-alt" (click)="deeplyDeleteReports()">Eliminar</a></li>
-									<li><a class="icon icon-trash-alt active" >Eliminar todo</a></li>
+									<li><a class="icon icon-trash-alt active" (click)="deleteAllReports()">Eliminar todo</a></li>
 								</ul>
 							</div>
 						</div>
