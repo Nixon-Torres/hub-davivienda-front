@@ -407,7 +407,7 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    private deeplyDeleteReports(): void {
+    public deeplyDeleteReports(): void {
         let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
