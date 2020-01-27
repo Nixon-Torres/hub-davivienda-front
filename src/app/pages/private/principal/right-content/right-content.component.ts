@@ -27,6 +27,7 @@ export class RightContentComponent implements OnInit {
     public startDate: any;
     public endDate: any;
 
+    private draftKey: string = '5e068d1cb81d1c5f29b62977';
     private lastFilter: any = {};
 
     user: any = {};
@@ -105,6 +106,9 @@ export class RightContentComponent implements OnInit {
             'path': 'reports',
             'data': clone
         }).subscribe(() => {
+            this.loadReports();
+            this.folderService.loadStates();
+            this.folderService.loadFolders();
         });
     }
 
@@ -505,19 +509,19 @@ export class RightContentComponent implements OnInit {
 
     public onCloneReport(pos: number) {
         let clone = Object.assign({}, this.list.reports[pos]);
-        clone.name = clone.name + ' Copia';
-        clone.slug = clone.slug + '-copia';
-        this.list.reports.splice(pos + 1, 0, clone);
+        clone.name = `Duplicado ${clone.name}`;
+        clone.slug = `duplicado-${clone.slug}`;
 
         let newReport: any = {
             name: clone.name,
             slug: clone.slug,
             trash: clone.trash,
             content: clone.content,
+            styles: clone.styles,
             sectionTypeKey: clone.sectionTypeKey,
             templateId: clone.templateId,
             userId: clone.userId,
-            stateId: clone.stateId,
+            stateId: this.draftKey,
             sectionId: clone.sectionId,
             folderId: clone.folderId
         };
