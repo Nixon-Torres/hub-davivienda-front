@@ -27,6 +27,8 @@ export class RightContentComponent implements OnInit {
     public startDate: any;
     public endDate: any;
 
+    private lastFilter: any = {};
+
     user: any = {};
     icurrentObj: {
         currentFolder: null,
@@ -321,11 +323,11 @@ export class RightContentComponent implements OnInit {
         );
     }
 
-    public deleteReports(): void {
+    public restoreReports(): void {
         let selecteds: Array<string> = this.getCheckboxesSelected();
         let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
             if (selecteds.indexOf(a.id) !== -1) {
-                a.trash = true;
+                a.trash = false;
                 return true;
             }
             return false;
@@ -333,13 +335,90 @@ export class RightContentComponent implements OnInit {
 
         this.rcPutReport(toUpdate, 0, () => {
             this.loadReports(this.ifilter);
+            this.folderService.loadFolders();
+            this.folderService.loadStates();
         });
     }
 
-    private deeplyDeleteReports() {
-        let reports: Array<string> = this.getCheckboxesSelected();
-        this.rcDeeplyDeleteReport(reports, 0, () => {
-            this.loadReports(this.ifilter);
+    public deleteReports(): void {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '',
+                subtitle: '¿Esta seguro que desea eliminar el reporte?',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (!result) return;
+            let selecteds: Array<string> = this.getCheckboxesSelected();
+            let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+                if (selecteds.indexOf(a.id) !== -1) {
+                    a.trash = true;
+                    return true;
+                }
+                return false;
+            });
+
+            this.rcPutReport(toUpdate, 0, () => {
+                this.loadReports(this.ifilter);
+                this.folderService.loadFolders();
+                this.folderService.loadStates();
+            });
+        });
+    }
+
+    public deleteAllReports(): void {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '',
+                subtitle: '¿Esta seguro que desea vaciar la papelera?',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (!result) return;
+            this.http.get({
+                path: 'reports/',
+                data: {
+                    where: {
+                        ownerId: this.user.id,
+                        trash: true
+                    },
+                    fields: ['id']
+                },
+                encode: true
+            }).subscribe((response: any) => {
+                if (!response || !response.body || !response.body.length) return;
+                let toDelete = response.body.map((a: any) => a.id);
+                this.rcDeeplyDeleteReport(toDelete, 0, () => {
+                    this.loadReports(this.ifilter);
+                });
+            }, (error: any) => {
+                console.error(error);
+            });
+        });
+    }
+
+    private deeplyDeleteReports(): void {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '',
+                subtitle: '¿Esta seguro que desea eliminar el reporte?',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (!result) return;
+            let reports: Array<string> = this.getCheckboxesSelected();
+            this.rcDeeplyDeleteReport(reports, 0, () => {
+                this.loadReports(this.ifilter);
+            });
         });
     };
 
