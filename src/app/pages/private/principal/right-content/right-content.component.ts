@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { environment } from '../../../../../environments/environment';
 import { Report } from '../../board/board.model';
 import { loopback } from '../../../../models/common/loopback.model';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
@@ -22,6 +23,8 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
+
+    readonly DRAFT_KEY: string = environment.DRAFT_KEY;
 
     public calendarOpen: boolean = false;
     public startDate: any;
@@ -103,6 +106,9 @@ export class RightContentComponent implements OnInit {
             'path': 'reports',
             'data': clone
         }).subscribe(() => {
+            this.loadReports();
+            this.folderService.loadStates();
+            this.folderService.loadFolders();
         });
     }
 
@@ -321,11 +327,11 @@ export class RightContentComponent implements OnInit {
         );
     }
 
-    public deleteReports(): void {
+    public restoreReports(): void {
         let selecteds: Array<string> = this.getCheckboxesSelected();
         let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
             if (selecteds.indexOf(a.id) !== -1) {
-                a.trash = true;
+                a.trash = false;
                 return true;
             }
             return false;
@@ -333,13 +339,90 @@ export class RightContentComponent implements OnInit {
 
         this.rcPutReport(toUpdate, 0, () => {
             this.loadReports(this.ifilter);
+            this.folderService.loadFolders();
+            this.folderService.loadStates();
         });
     }
 
-    private deeplyDeleteReports() {
-        let reports: Array<string> = this.getCheckboxesSelected();
-        this.rcDeeplyDeleteReport(reports, 0, () => {
-            this.loadReports(this.ifilter);
+    public deleteReports(): void {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '',
+                subtitle: '¿Esta seguro que desea eliminar el reporte?',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (!result) return;
+            let selecteds: Array<string> = this.getCheckboxesSelected();
+            let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+                if (selecteds.indexOf(a.id) !== -1) {
+                    a.trash = true;
+                    return true;
+                }
+                return false;
+            });
+
+            this.rcPutReport(toUpdate, 0, () => {
+                this.loadReports(this.ifilter);
+                this.folderService.loadFolders();
+                this.folderService.loadStates();
+            });
+        });
+    }
+
+    public deleteAllReports(): void {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '',
+                subtitle: '¿Esta seguro que desea vaciar la papelera?',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (!result) return;
+            this.http.get({
+                path: 'reports/',
+                data: {
+                    where: {
+                        ownerId: this.user.id,
+                        trash: true
+                    },
+                    fields: ['id']
+                },
+                encode: true
+            }).subscribe((response: any) => {
+                if (!response || !response.body || !response.body.length) return;
+                let toDelete = response.body.map((a: any) => a.id);
+                this.rcDeeplyDeleteReport(toDelete, 0, () => {
+                    this.loadReports(this.ifilter);
+                });
+            }, (error: any) => {
+                console.error(error);
+            });
+        });
+    }
+
+    public deeplyDeleteReports(): void {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '',
+                subtitle: '¿Esta seguro que desea eliminar el reporte?',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (!result) return;
+            let reports: Array<string> = this.getCheckboxesSelected();
+            this.rcDeeplyDeleteReport(reports, 0, () => {
+                this.loadReports(this.ifilter);
+            });
         });
     };
 
@@ -426,19 +509,19 @@ export class RightContentComponent implements OnInit {
 
     public onCloneReport(pos: number) {
         let clone = Object.assign({}, this.list.reports[pos]);
-        clone.name = clone.name + ' Copia';
-        clone.slug = clone.slug + '-copia';
-        this.list.reports.splice(pos + 1, 0, clone);
+        clone.name = `Duplicado ${clone.name}`;
+        clone.slug = `duplicado-${clone.slug}`;
 
         let newReport: any = {
             name: clone.name,
             slug: clone.slug,
             trash: clone.trash,
             content: clone.content,
+            styles: clone.styles,
             sectionTypeKey: clone.sectionTypeKey,
             templateId: clone.templateId,
             userId: clone.userId,
-            stateId: clone.stateId,
+            stateId: this.DRAFT_KEY,
             sectionId: clone.sectionId,
             folderId: clone.folderId
         };
@@ -453,7 +536,7 @@ export class RightContentComponent implements OnInit {
         this.deleteReport(reportId);
     }
 
-     public openPreviewDialog(idReport): void {
+     public openPreviewDialog(idReport: string): void {
         var paramsDialog = {
             width: '80vw',
             height: '80vh',
