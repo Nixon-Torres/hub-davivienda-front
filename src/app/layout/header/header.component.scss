@@ -9,16 +9,16 @@
 }
 
 header {
-   height: 70px;
-    border-bottom: solid 1px #EDEDED;
-    width: 87%;
-    max-width: 1440px;
-    display: flex;
+    width: 100%;
+    height: 70px;
     margin: auto;
+    display: flex;
+    border-bottom: solid 1px #EDEDED;
 
     & > .container {
+        width: 88%;
         height: 100%;
-        width: 100%;
+        max-width: 1440px;
 
         img.logo {
             width: 20%;
@@ -55,7 +55,7 @@ header {
             span {
                 bottom: 27px;
                 position: relative;
-                margin-right: 15px; 
+                margin-right: 15px;
                 color: #616161;
                 font-size: 13px;
                 &:after {

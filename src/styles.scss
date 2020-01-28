@@ -169,24 +169,32 @@ $builder-bg: #f5f7fb;
 	color: #616161 !important;
 }
 
-#gjs {
-	border: 1px solid #eee;
-	border-radius: 5px !important;
+.builder {
+	& > .mat-figure {
+        display: block !important;
+        margin-top: 54px !important;
+        position: relative !important;
 
-	.gjs-editor {
-		border-radius: 10px !important;
-
-		.gjs-cv-canvas {
-			top: 0;
-			width: 100%;
-			height: 100%;
+		#gjs {
+			border: 1px solid #eee;
 			border-radius: 5px !important;
-		}
 
-		.gjs-pn-panel {
-			visibility: hidden;
+			.gjs-editor {
+				border-radius: 10px !important;
+
+				.gjs-cv-canvas {
+					top: 0;
+					width: 100%;
+					height: 100%;
+					border-radius: 5px !important;
+				}
+
+				.gjs-pn-panel {
+					visibility: hidden;
+				}
+			}
 		}
-	}
+    }
 }
 
 // -------------------------- COMMENTS --------------------------
@@ -723,7 +731,7 @@ margin-top: 2%;
 	&.btn-primary {
 		color: white;
 		background-color: #0080ff;
-	
+
 		&[disabled] {
 			background: rgba(180,180,180);
 			color: rgba(40,40,40);

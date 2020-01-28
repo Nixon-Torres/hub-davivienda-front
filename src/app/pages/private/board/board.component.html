@@ -1,7 +1,7 @@
 <section class="grapes-container">
 	<mat-toolbar id="toolbar">
 		<mat-toolbar-row id="export">
-			<section>
+			<section class="container">
 				<h6>Informe de negocio</h6>
 
 				<button mat-stroked-button class="btn-white descartar-cta" (click)="discard()">
@@ -38,7 +38,7 @@
 		</mat-toolbar-row>
 
 		<mat-toolbar-row id="actions">
-			<section>
+			<section class="container">
 				<div class="form-name">
 					<label for="reportName">Nombre informe:</label>
 					<div class="input-field">
@@ -57,7 +57,7 @@
 		</mat-toolbar-row>
 	</mat-toolbar>
 
-	<mat-grid-list cols="12" id="grapesBox">
+	<mat-grid-list cols="12" id="grapesBox" class="container">
 
 		<!-- EDITOR -->
 		<mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">

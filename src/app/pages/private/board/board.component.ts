@@ -39,7 +39,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public lastupdate: string;
     public grid: any = {
         col: {
-            builder: 9,
+            builder: 10,
             comments: 0,
             panel: 2
         },
@@ -191,7 +191,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private activeBlocks(): void {
         this.grapes.activeBlocks([
             'Description',
-            'Image',
             'Title'
         ]);
     }
@@ -501,7 +500,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     showComments() {
-        this.grid.col.builder = 7;
+        this.grid.col.builder = 8;
         this.grid.col.comments = 2;
         this.grid.col.panel = 2;
         document.querySelector('mat-grid-tile.comments').classList.add('show');
@@ -511,7 +510,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         document.querySelector('mat-grid-tile.comments').classList.remove('show');
 
         setTimeout(() => {
-            this.grid.col.builder = 9;
+            this.grid.col.builder = 10;
             this.grid.col.comments = 0;
             this.grid.col.panel = 2;
         }, 100);

@@ -4,8 +4,8 @@ import { Dimensions, Extras } from './sectors/sector.main';
 
 class Grapes {
     public config: Config = {
-        width: '80%',
-        height: '80%',
+        width: '90%',
+        height: '90%',
         container: '#gjs',
         fromElement: true,
         storageManager: false,

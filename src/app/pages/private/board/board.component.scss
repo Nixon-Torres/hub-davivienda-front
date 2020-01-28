@@ -10,6 +10,12 @@ $default-font: "Helvetica Neue", Medium;
 
 .grapes-container {
 
+    .container {
+        margin: auto;
+        max-width: 1440px;
+        width: 88% !important;
+    }
+
     #toolbar {
         font-size: 12px !important;
         font-weight: normal !important;
@@ -18,12 +24,6 @@ $default-font: "Helvetica Neue", Medium;
             padding: 0;
             height: 60px;
             border-bottom: solid 1px #EDEDED;
-
-            section {
-                padding-top: 2px !important;
-                margin: auto;
-                width: 88% !important;
-            }
         }
 
         #export {
