@@ -177,6 +177,7 @@ $default-font: "Helvetica Neue", Medium;
             background-color: $builder-bg;
             padding: 0 !important;
             transition: width 0.5s;
+            overflow: auto;
         }
 
         .comments {

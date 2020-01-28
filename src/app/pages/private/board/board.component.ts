@@ -10,6 +10,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
+import * as $ from "jquery/dist/jquery";
 import * as moment from 'moment';
 import * as qs from 'qs';
 
@@ -218,10 +219,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 if (this.timer.change) {
                     clearTimeout(this.timer.change);
                 }
+
                 this.timer.change = setTimeout(() => {
                     // this.onSave(true);
+                    this.autosetEditorHeight();
                 }, 3000);
             });
+
+            setTimeout(() => {
+                this.autosetEditorHeight();
+            }, 2000);
+        });
+    }
+
+    private autosetEditorHeight() {
+        let iframe = $('.builder iframe');
+        let tplBody = iframe.contents()[0].body;
+        iframe.contents().find("html")[0].style.overflow = "hidden";
+        tplBody.style.height = "auto";
+        let tplBodyHeight = tplBody.offsetHeight;
+        iframe.css({
+            'position': 'relative',
+            'height': tplBodyHeight + 'px'
         });
     }
 
