@@ -238,10 +238,19 @@ export class BoardComponent implements OnInit, AfterViewInit {
         iframe.contents().find("html")[0].style.overflow = "hidden";
         tplBody.style.height = "auto";
         let tplBodyHeight = tplBody.offsetHeight;
+
         iframe.css({
             'position': 'relative',
             'height': tplBodyHeight + 'px'
         });
+
+        // FIXME https://stackoverflow.com/questions/5489946/how-to-wait-for-the-end-of-resize-event-and-only-then-perform-an-action
+        tplBody.onresize = () => {
+            iframe.css({
+                'position': 'relative',
+                'height': tplBody.offsetHeight + 'px'
+            });
+        };
     }
 
     /** Set report styles on grapes editor
