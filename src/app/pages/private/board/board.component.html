@@ -45,10 +45,10 @@
 						<input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name">
 					</div>
 				</div>
-				<button mat-button>
+				<button mat-button (click)="focusOnReportName()">
 					<span class="icon icon-edit"></span>Editar nombre
 				</button>
-				<button mat-button [ngClass]="{'btn-primary': report.name}" (click)="onSave(true)" [disabled]="!report.name">
+				<button mat-button (click)="onSave(true)" [disabled]="!report.name">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 				<div class="divider"></div>

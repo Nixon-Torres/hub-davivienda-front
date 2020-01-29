@@ -77,9 +77,9 @@ $default-font: "Helvetica Neue", Medium;
                 }
 
                 .input-field {
-                    width: 24vw;
+                    width: 20vw;
                     display: inline-block;
-                    max-width: 311px;
+                    max-width: 300px;
 
                     input {
                         width: 100%;
@@ -108,24 +108,35 @@ $default-font: "Helvetica Neue", Medium;
 
                 span.icon {
                     color: #bec5d0;
-                    margin: 0 -5px;
                     vertical-align: sub;
+
+                    &::before {
+                        font-size: 16px;
+                        margin-right: 8px;
+                    }
                 }
 
-                .icon::before {
-                    font-size: 16px;
+                &[disabled="true"]:hover,
+                &[disabled="true"] {
+                    color: #CCC;
+                    cursor: no-drop;
+
+                    .icon::before {
+                        color: lightgrey;
+                    }
                 }
             }
 
             .divider {
-                height: 40px;
+                height: 36px;
                 margin: 0 26px 0 15px;
                 display: inline-block;
                 vertical-align: middle;
                 border-left: solid 1px #D7DBE2;
             }
-            .person-name{
-                i{
+
+            .person-name {
+                i {
                     margin-left: 10px;
                     color: #0080FF;
                     cursor: pointer;
@@ -303,12 +314,12 @@ $default-font: "Helvetica Neue", Medium;
 
             &.icon {
                 vertical-align: text-bottom;
-            }
-        }
 
-        .icon::before {
-            font-size: 15px;
-            margin-right: 8px;
+                &::before {
+                    font-size: 15px;
+                    margin-right: 8px;
+                }
+            }
         }
 
         &[disabled="true"]:hover,

@@ -542,4 +542,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.grid.col.panel = 2;
         }, 100);
     }
+
+    focusOnReportName() {
+        document.getElementById("reportName").focus();
+    }
 }
