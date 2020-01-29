@@ -247,7 +247,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
         // FIXME https://stackoverflow.com/questions/5489946/how-to-wait-for-the-end-of-resize-event-and-only-then-perform-an-action
         tplBody.onresize = () => {
             iframe.css({
-                'position': 'relative',
                 'height': tplBody.offsetHeight + 'px'
             });
         };

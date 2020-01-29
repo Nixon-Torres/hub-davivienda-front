@@ -4,33 +4,33 @@
 			<section class="container">
 				<h6>Informe de negocio</h6>
 
-				<button mat-stroked-button class="btn-white descartar-cta" (click)="discard()">
+				<button mat-flat-button class="btn btn-default" (click)="discard()">
 					<span class="icon icon-trash-alt"></span>Descartar
 				</button>
-				<button mat-stroked-button class="btn-white previa-cta" (click)="openPreviewDialog()" [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id">
+				<button mat-flat-button class="btn btn-default" (click)="openPreviewDialog()" [disabled]="!report.id">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
-				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendToRevision()"
+				<button mat-flat-button class="btn btn-default" *ngIf="canSendToRevision()"
                         [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-                <button mat-stroked-button class="btn-white revision-cta" *ngIf="canSendBackToRevision()"
+                <button mat-flat-button class="btn btn-default" *ngIf="canSendBackToRevision()"
                         [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendBacktoReview()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
-				<button mat-stroked-button class="btn-white revision-cta" *ngIf="canApprove()"
+				<button mat-flat-button class="btn btn-default" *ngIf="canApprove()"
                         [ngClass]="{'btn-primary': report.id}" (click)="approve()">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
-                <button mat-stroked-button class="btn-white revision-cta" *ngIf="canPublish()"
+                <button mat-flat-button class="btn btn-default" *ngIf="canPublish()"
                         [ngClass]="{'btn-primary': report.id}" (click)="publish()">
                     <span class="icon icon-check"></span>Publicar
                 </button>
-				<button mat-flat-button class="btn-primary guardar-cta" (click)="onSave()">
-					<span class="icon icon-save"></span>Guardar
-				</button>
-				<button mat-stroked-button class="btn-primary add-comment" (click)="showComments()">
+				<button mat-flat-button class="btn btn-primary add-comment" (click)="showComments()">
 					<img src="/assets/images/comment-plus.png">Añadir comentario
+				</button>
+				<button mat-flat-button class="btn btn-primary" (click)="onSave()">
+					<span class="icon icon-save"></span>Guardar
 				</button>
 
 				<small>Autoguardado {{lastupdate}}</small>
