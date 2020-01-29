@@ -10,6 +10,12 @@ $default-font: "Helvetica Neue", Medium;
 
 .grapes-container {
 
+    .container {
+        margin: auto;
+        max-width: 1440px;
+        width: 88% !important;
+    }
+
     #toolbar {
         font-size: 12px !important;
         font-weight: normal !important;
@@ -18,12 +24,6 @@ $default-font: "Helvetica Neue", Medium;
             padding: 0;
             height: 60px;
             border-bottom: solid 1px #EDEDED;
-
-            section {
-                padding-top: 2px !important;
-                margin: auto;
-                width: 88% !important;
-            }
         }
 
         #export {
@@ -48,44 +48,12 @@ $default-font: "Helvetica Neue", Medium;
             }
 
             button {
-                height: 35px;
                 float: right;
-                font-size: 12px;
                 margin-left: 10px;
-                font-weight: normal;
-
-                span.icon {
-                    vertical-align: text-bottom;
-                }
-
-                .icon::before {
-                    font-size: 15px;
-                    margin-right: 5px;
-                }
-
-                span {
-                    vertical-align: text-bottom !important;
-                }
-                &.guardar-cta{
-                    width: 103px;
-                    .icon::before {
-                        margin-right: 7px;
-                    }
-                }
-                &.revision-cta{
-                    padding: 0 13px;
-                }
-                &.previa-cta{
-                    padding: 0 9.5px;
-                }
-                &.descartar-cta{
-                    padding: 0 15.5px;
-                }
 
                 &.add-comment {
-
                     img {
-                        margin-right: 5px;
+                        margin-right: 8px;
                     }
                 }
 
@@ -109,9 +77,9 @@ $default-font: "Helvetica Neue", Medium;
                 }
 
                 .input-field {
-                    width: 24vw;
+                    width: 20vw;
                     display: inline-block;
-                    max-width: 311px;
+                    max-width: 300px;
 
                     input {
                         width: 100%;
@@ -140,24 +108,35 @@ $default-font: "Helvetica Neue", Medium;
 
                 span.icon {
                     color: #bec5d0;
-                    margin: 0 -5px;
                     vertical-align: sub;
+
+                    &::before {
+                        font-size: 16px;
+                        margin-right: 8px;
+                    }
                 }
 
-                .icon::before {
-                    font-size: 16px;
+                &[disabled="true"]:hover,
+                &[disabled="true"] {
+                    color: #CCC;
+                    cursor: no-drop;
+
+                    .icon::before {
+                        color: lightgrey;
+                    }
                 }
             }
 
             .divider {
-                height: 33px;
-                margin: 0 20px 0 14px;
+                height: 36px;
+                margin: 0 26px 0 15px;
                 display: inline-block;
                 vertical-align: middle;
-                border-left: solid 2px #BEC5D0;
+                border-left: solid 1px #D7DBE2;
             }
-            .person-name{
-                i{
+
+            #lastEditors {
+                i {
                     margin-left: 10px;
                     color: #0080FF;
                     cursor: pointer;
@@ -177,6 +156,7 @@ $default-font: "Helvetica Neue", Medium;
             background-color: $builder-bg;
             padding: 0 !important;
             transition: width 0.5s;
+            overflow: auto;
         }
 
         .comments {
@@ -323,10 +303,45 @@ $default-font: "Helvetica Neue", Medium;
         float: left;
     }
 
-    .btn-white {
-        color: #a5abb1;
+    .btn {
+        height: 35px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: normal;
+
+        span {
+            vertical-align: text-bottom !important;
+
+            &.icon {
+                vertical-align: text-bottom;
+
+                &::before {
+                    font-size: 15px;
+                    margin-right: 8px;
+                }
+            }
+        }
+
+        &[disabled="true"]:hover,
+        &[disabled="true"] {
+            color: #A5ABB1;
+            cursor: no-drop;
+            border: 1px solid #e2e4e8; // #D0D0D0;
+            background-color: transparent !important;
+        }
+    }
+
+    .btn-default {
+        color: #A5ABB1;
         box-shadow: none;
         background-color: white;
+        border: 1px solid #e2e4e8; // #D0D0D0;
+
+        &:hover {
+            color: #0080ff;
+            border-color: #0080ff;
+            background-color: white !important;
+        }
     }
 
     .btn-primary {

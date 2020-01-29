@@ -10,6 +10,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
+import * as $ from "jquery/dist/jquery";
 import * as moment from 'moment';
 import * as qs from 'qs';
 
@@ -39,7 +40,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public lastupdate: string;
     public grid: any = {
         col: {
-            builder: 9,
+            builder: 10,
             comments: 0,
             panel: 2
         },
@@ -191,7 +192,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private activeBlocks(): void {
         this.grapes.activeBlocks([
             'Description',
-            'Image',
             'Title'
         ]);
     }
@@ -219,11 +219,37 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 if (this.timer.change) {
                     clearTimeout(this.timer.change);
                 }
+
                 this.timer.change = setTimeout(() => {
                     // this.onSave(true);
+                    this.autosetEditorHeight();
                 }, 3000);
             });
+
+            setTimeout(() => {
+                this.autosetEditorHeight();
+            }, 2000);
         });
+    }
+
+    private autosetEditorHeight() {
+        let iframe = $('.builder iframe');
+        let tplBody = iframe.contents()[0].body;
+        iframe.contents().find("html")[0].style.overflow = "hidden";
+        tplBody.style.height = "auto";
+        let tplBodyHeight = tplBody.offsetHeight;
+
+        iframe.css({
+            'position': 'relative',
+            'height': tplBodyHeight + 'px'
+        });
+
+        // FIXME https://stackoverflow.com/questions/5489946/how-to-wait-for-the-end-of-resize-event-and-only-then-perform-an-action
+        tplBody.onresize = () => {
+            iframe.css({
+                'height': tplBody.offsetHeight + 'px'
+            });
+        };
     }
 
     /** Set report styles on grapes editor
@@ -501,7 +527,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     showComments() {
-        this.grid.col.builder = 7;
+        this.grid.col.builder = 8;
         this.grid.col.comments = 2;
         this.grid.col.panel = 2;
         document.querySelector('mat-grid-tile.comments').classList.add('show');
@@ -511,9 +537,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         document.querySelector('mat-grid-tile.comments').classList.remove('show');
 
         setTimeout(() => {
-            this.grid.col.builder = 9;
+            this.grid.col.builder = 10;
             this.grid.col.comments = 0;
             this.grid.col.panel = 2;
         }, 100);
+    }
+
+    focusOnReportName() {
+        document.getElementById("reportName").focus();
     }
 }
