@@ -7,23 +7,19 @@
 				<button mat-flat-button class="btn btn-default" (click)="discard()">
 					<span class="icon icon-trash-alt"></span>Descartar
 				</button>
-				<button mat-flat-button class="btn btn-default" (click)="openPreviewDialog()" [disabled]="!report.id">
+				<button mat-flat-button class="btn btn-default" [disabled]="!report.id" (click)="openPreviewDialog()">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
-				<button mat-flat-button class="btn btn-default" *ngIf="canSendToRevision()"
-                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="onSendToRevisionAction()">
+				<button mat-flat-button class="btn btn-default" *ngIf="canSendToRevision()" [disabled]="!report.id" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-                <button mat-flat-button class="btn btn-default" *ngIf="canSendBackToRevision()"
-                        [ngClass]="{'btn-primary': report.id}" [disabled]="!report.id" (click)="sendBacktoReview()">
+                <button mat-flat-button class="btn btn-default" *ngIf="canSendBackToRevision()" [disabled]="!report.id" (click)="sendBacktoReview()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
-				<button mat-flat-button class="btn btn-default" *ngIf="canApprove()"
-                        [ngClass]="{'btn-primary': report.id}" (click)="approve()">
+				<button mat-flat-button class="btn btn-default" *ngIf="canApprove()" (click)="approve()">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
-                <button mat-flat-button class="btn btn-default" *ngIf="canPublish()"
-                        [ngClass]="{'btn-primary': report.id}" (click)="publish()">
+                <button mat-flat-button class="btn btn-default" *ngIf="canPublish()" (click)="publish()">
                     <span class="icon icon-check"></span>Publicar
                 </button>
 				<button mat-flat-button class="btn btn-primary add-comment" (click)="showComments()">
@@ -52,7 +48,7 @@
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 				<div class="divider"></div>
-				<span class="person-name" style="display: none">Editado por Andres V...<i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+				<span id="lastEditors">Editado por Andres V...<i class="fa fa-chevron-down" aria-hidden="true"></i></span>
 			</section>
 		</mat-toolbar-row>
 	</mat-toolbar>
