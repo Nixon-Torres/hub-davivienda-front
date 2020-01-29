@@ -60,7 +60,14 @@
 						<div class="trash_info" *ngIf="icurrentObj.deletedFg">
 							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
 						</div>
+						<div *ngIf="!list.reports.length" class="delete_reports">
+							<div *ngIf="icurrentObj.deletedFg">
+								<img src="../../../../../assets/images/file-alt.png" alt="">
+								<p>No hay informes en la papelera</p>
+							</div>
+						</div>
 						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
+							
 							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
