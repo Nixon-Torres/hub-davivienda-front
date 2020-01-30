@@ -648,3 +648,19 @@ section {
 		height: 100%;
 		z-index: 100;	
 	}	
+
+.delete_reports{
+	height: 50vh;
+	div{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    top: 11em;
+	}
+	p{
+		padding-left: 15px;
+		color: #616161;
+		font-size: 1.125em;
+	}
+}
