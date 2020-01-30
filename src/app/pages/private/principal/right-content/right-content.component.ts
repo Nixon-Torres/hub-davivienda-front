@@ -112,16 +112,6 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    private deleteReport(id: string): void {
-        this.http.patch({
-            path: 'reports/' + id,
-            data: {
-                trash: true
-            }
-        }).subscribe(() => {
-        });
-    }
-
     private getFolders(): void {
         this.folderService.$listenFolders.subscribe((data: any) => {
             this.list.folders = data;
@@ -530,10 +520,54 @@ export class RightContentComponent implements OnInit {
     }
 
     public onDeleteReport(pos: number) {
-        let reportId = this.list.reports[pos].id;
-        this.list.reports.splice(pos, 1);
 
-        this.deleteReport(reportId);
+        let isOutTrash = (!this.icurrentObj.deletedFg);
+        let dialogTitle = isOutTrash ? '¿Está seguro de enviar el reporte a la papelera?' : '¿Está seguro de eliminar definitivamente el reporte?';
+        let reportId = this.list.reports[pos].id;
+        let reportName = this.list.reports[pos].name;
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: dialogTitle,
+                subtitle: '',
+                alert: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if(result) {
+                if (isOutTrash) {    // Move to trash
+                    this.http.patch({
+                        path: 'reports/' + reportId,
+                        data: {
+                            trash: true
+                        }
+                    }).subscribe(() => {
+                        this.dialog.open(ConfirmationDialogComponent, {
+                            width: '410px',
+                            data: {
+                                title: 'Ha sido eliminado exitosamente el informe:',
+                                subtitle: reportName
+                            }
+                        });
+                        this.list.reports.splice(pos, 1);
+                    });
+                } else {    // Delete from database
+                    this.http.delete({
+                        path: 'reports/' + reportId
+                    }).subscribe(() => {
+                        this.dialog.open(ConfirmationDialogComponent, {
+                            width: '410px',
+                            data: {
+                                title: 'Ha sido eliminado exitosamente el informe:',
+                                subtitle: reportName
+                            }
+                        });
+                        this.list.reports.splice(pos, 1);
+                    });
+                }
+            }
+        });
     }
 
      public openPreviewDialog(idReport: string): void {
