@@ -455,21 +455,43 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public discard() {
-        let data: object = {
-            'trash': true
-        };
 
-        this.http.patch({
-            'path': `reports/${this.report.id}`,
-            'data': data
-        }).subscribe(
-            (response: any) => {
-                this.goToPrincipalPage();
-            },
-            () => {
-                alert('Oops!!! \nNo actualizamos tus datos. Intenta más tarde');
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: '¿Está seguro de enviar el reporte a la papelera?',
+                subtitle: '',
+                alert: true
             }
-        );
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                let data: object = {
+                    'trash': true
+                };
+
+                this.http.patch({
+                    'path': `reports/${this.report.id}`,
+                    'data': data
+                }).subscribe(
+                    (response: any) => {
+                        this.dialog.open(ConfirmationDialogComponent, {
+                            width: '410px',
+                            data: {
+                                title: 'Ha sido eliminado exitosamente el informe:',
+                                subtitle: this.report.name
+                            }
+                        });
+                        this.goToPrincipalPage();
+                    },
+                    () => {
+                        alert('Oops!!! \nNo actualizamos tus datos. Intenta más tarde');
+                    }
+                );
+            }
+        });
+
     }
 
     private goToPrincipalPage(): void {
