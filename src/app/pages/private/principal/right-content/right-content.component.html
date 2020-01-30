@@ -46,7 +46,7 @@
 								<mat-label class="folder_label">Escoger</mat-label>
 								<mat-select (selectionChange)="moveReports($event)" class="info_select">
 									<mat-option class="info_options" *ngFor="let folder of list.folders" [value]="folder.id">{{folder.name}}</mat-option>
-									<mat-option class="info_options"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
+									<mat-option class="info_options" *ngIf="!icurrentObj.deletedFg"><p class="delete_field" (click)="deleteReports()">Papelera</p></mat-option>
 								</mat-select>
 							</mat-form-field>
 							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
@@ -73,10 +73,10 @@
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
-												<li><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
+												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-edit" (click)="gotoPage(report.id)">Editar</button></li>
 												<li><button class="icon icon-copy" (click)="onCloneReport(i)">Duplicar</button></li>
 												<li><button class="icon icon-trash-alt" (click)="onDeleteReport(i)">Eliminar</button></li>
-												<li><button class="icon icon-search-plus" (click)="openPreviewDialog(report.id)">Vista previa</button></li>
+												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus" (click)="openPreviewDialog(report.id)">Vista previa</button></li>
 											</ul>
 										</div>
 									</div>
