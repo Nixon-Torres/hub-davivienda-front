@@ -20,9 +20,31 @@ header {
         height: 100%;
         max-width: 1440px;
 
-        img.logo {
-            width: 20%;
-            height: auto;
+        img.logo-principal {
+            height: 70px;
+            margin-left: -15px;
+        }
+
+        a {
+            height: 70px;
+            color: #616161;
+            margin-left: -10px;
+            display: inline-block;
+            text-decoration: none;
+            border-left: 1px solid #EDEDED;
+            border-right: 1px solid #EDEDED;
+
+            img.logo-board {
+                height: 30px;
+                margin: 20px 8px 0 15px;
+            }
+
+            span {
+                bottom: 10px;
+                position: relative;
+                vertical-align: unset;
+                margin-right: 15px;
+            }
         }
 
         .h-btn {
