@@ -132,7 +132,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public goToBoard() {
-        let autorsId = JSON.stringify(encodeURI(this.createReportForm.value.authorsId));
         let path = 'app/board';
         path += `/${this.createReportForm.value.stateId}`;
         path += `/${this.createReportForm.value.sectionId}`;
@@ -140,7 +139,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         path += `/${(this.createReportForm.value.folderId)}`;
         path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
         path += `/${this.createReportForm.value.reportId}`;
-        path += `/${autorsId}`;
+        path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)): false}`;
         this.router.navigate([path]);
     }
 

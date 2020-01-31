@@ -44,7 +44,7 @@ export class LeftBarComponent implements OnInit {
             width: '600px',
             height: 'auto',
             maxHeight: '500px',
-            data: this.list.folders
+            data: this.list.folders.filter((a: any) => a.id !== 'shared')
         });
 
         dialogRef.afterClosed().subscribe((result : any) => {

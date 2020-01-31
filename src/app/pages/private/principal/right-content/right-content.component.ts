@@ -203,19 +203,25 @@ export class RightContentComponent implements OnInit {
                             ].concat(users, states, sections);
                             query.filter.where['and'].push({ or: orWhere });
                         } else {
-                            this.icurrentObj.currentFolder ? query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder }) : null;
+                            if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder != 'shared') {
+                              query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder });
+                            }
                             this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
                         }
 
-                        if(this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
-                            let iFilterReviewed = false;
-                            query.filter.where['and'].push({ reviewed: iFilterReviewed });
-                        }
-
-                        if (this.ifilterreviewed) {
-                            query.filter.where['and'].push({ ownerId: this.user.id });
+                        if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') {
+                          query.filter.include.push({ relation: "authors" });
                         } else {
-                            query.filter.where['and'].push({ id: {inq: reportsAsReviewer} });
+                          if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
+                              let iFilterReviewed = false;
+                              query.filter.where['and'].push({ reviewed: iFilterReviewed });
+                          }
+
+                          if (this.ifilterreviewed) {
+                              query.filter.where['and'].push({ ownerId: this.user.id });
+                          } else {
+                              query.filter.where['and'].push({ id: { inq: reportsAsReviewer } });
+                          }
                         }
 
                         if (pager) {
@@ -238,9 +244,10 @@ export class RightContentComponent implements OnInit {
     }
 
     private getReports(query: any) {
+        let path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') ? `users/${this.user.id}/reportsa` : 'reports';
         this.list.reports = [];
         this.http.get({
-            path: `reports`,
+            path: path,
             data: query.filter,
             encode: true
         }).subscribe((response: any) => {

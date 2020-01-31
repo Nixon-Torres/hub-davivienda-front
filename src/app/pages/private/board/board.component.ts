@@ -31,6 +31,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private timer: any = {
         change: null
     };
+    private authorsId: Array<string> = [];
     public users:any = [];
     public fromReportId: string = null;
     public user: any = {};
@@ -78,7 +79,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-
         moment.locale('es'); // Set locale lang for momentJs
 
         this.activatedRoute.paramMap.subscribe((params: any) => {
@@ -90,16 +90,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.loadReport(this.report.id);
 
             } else if (params.get("stateId")) {
-
                 let folderId = params.get('folderId');
                 let templateId = params.get('templateId');
+                let authorsId = params.get('authorsId');
+
                 this.fromReportId = params.get('reportId');
                 this.report.stateId = params.get('stateId');
                 this.report.sectionId = params.get('sectionId');
                 this.report.sectionTypeKey = params.get('sectionTypeKey');
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
-                let authorId = JSON.parse(decodeURI(params.get('usersId')));
+                this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)): null;
             }
         });
     }
@@ -370,8 +371,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': data
         }).subscribe(
             (response: any) => {
-                if (!autoSave) {
+                if (method == 'post' && this.authorsId && this.authorsId.length) {
+                    let authorsData = this.authorsId.map((a: string) => {
+                        return { 'authorId': a, 'reportId': response.body.id };
+                    });
+                    this.http.post({
+                        'path': 'reports/authors',
+                        'data': { 'authors': authorsData }
+                    }).subscribe(() => { });
+                }
 
+                if (!autoSave) {
                     if (cb) return cb();
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
