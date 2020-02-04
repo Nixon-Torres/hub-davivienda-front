@@ -23,6 +23,11 @@ export class AuthService {
         return token ? true : false;
     }
 
+    public getAuthorization(): string {
+        let token = this.get();
+        return token.id;
+    }
+
     public getUserData(attr?: string): any {
         let token = this.get();
         return (token ? (attr ? token.user[attr] : token.user) : {});
