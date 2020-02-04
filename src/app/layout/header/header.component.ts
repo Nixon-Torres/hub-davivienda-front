@@ -37,4 +37,10 @@ export class HeaderComponent implements OnInit {
             }
         });
     }
+
+    isOpened(evt: any) {
+        let ntContainer = document.getElementById('notificationHeader').parentElement;
+        ntContainer.classList.add('notifications');
+        console.log("ntContainer: ", ntContainer);
+    }
 }
