@@ -2,11 +2,10 @@
 	<div class="container">
 
 		<!-- LOGO -->
-		<img class="logo-principal" src="../assets/images/section/davivienda.svg" alt="Logo Davivienda" *ngIf="!onBoard">
-		<a routerLink="principal" *ngIf="onBoard" matRipple>
+		<img class="logo-principal" src="../assets/images/section/davivienda.svg" alt="Logo Davivienda" *ngIf="onPrincipal">
+		<a routerLink="principal" *ngIf="!onPrincipal" matRipple>
 			<img class="logo-board" src="../assets/images/casa-davivienda.svg" alt="Logo Davivienda">
 			<span>Regresar al dashboard</span>
-
 		</a>
 
 		<!-- USER MENU -->
@@ -58,7 +57,7 @@
 			  	</button>
 			</section>
 		  	<footer>
-		  		<a href="#">Ver todas las notificaciones</a>
+		  		<a [routerLink]="['notifications']">Ver todas las notificaciones</a>
 		  	</footer>
 		</mat-menu>
 	</div>

@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
     public user: any = {};
-    public onBoard: boolean = false;
+    public onPrincipal: boolean = false;
 
     constructor(
         private router: Router,
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
         router.events.subscribe(event => {
             if(event instanceof NavigationEnd){
                 let pageName = event.url.split("/")[2];
-                this.onBoard = pageName === 'board' ? true : false;
+                this.onPrincipal = pageName === 'principal' ? true : false;
             }
         });
     }
@@ -41,6 +41,5 @@ export class HeaderComponent implements OnInit {
     isOpened(evt: any) {
         let ntContainer = document.getElementById('notificationHeader').parentElement;
         ntContainer.classList.add('notifications');
-        console.log("ntContainer: ", ntContainer);
     }
 }

@@ -10,7 +10,7 @@ import { HeaderComponent } from './layout/header/header.component';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core'; 
-import { MatBadgeModule } from '@angular/material/badge'; 
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
