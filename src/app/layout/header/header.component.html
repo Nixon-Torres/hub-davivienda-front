@@ -26,34 +26,17 @@
 
 		<!-- NOTIFICATIONS -->
 		<button class="h-btn" mat-button [matMenuTriggerFor]="notifyMenu" (menuOpened)="isOpened($event)" matRipple>
-			<i class="material-icons notifications_icon" matBadge="15" matBadgeSize="medium">notifications</i>
+			<i class="material-icons notifications_icon" matBadge="{{ntfQty}}" matBadgeSize="medium">notifications</i>
 		</button>
 		<mat-menu #notifyMenu="matMenu">
 			<h1 id="notificationHeader">Notificaciones</h1>
 			<section>
-			  	<button mat-menu-item class="to-check">
-		  			<img class="indicator" src="../assets/images/comments.png">
-			  		<h6>COMENTARIOS</h6>
+			  	<button mat-menu-item class="to-check" *ngFor="let notification of notifications">
+		  			<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
+		  			<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
+			  		<h6>{{ notification.type === 'report-comment' ? 'COMENTARIOS' : 'INFORME' }}</h6>
 			  		<p>Lorem ipsum qwer wqe rwq er wegsdfgsdfg sdfg dfgsdfg</p>
 			  		<small>Hace 2 horas</small>
-			  	</button>
-			  	<button mat-menu-item class="to-check">
-		  			<div class="indicator bg-red"></div>
-			  		<h6>INFORME / Aprobado sin publicar</h6>
-			  		<p>Lorem ipsum qwer wqe rwq er wegsdfgsdfg sdfg dfgsdfg</p>
-			  		<small>Hace 16 min</small>
-			  	</button>
-			  	<button mat-menu-item>
-		  			<div class="indicator bg-blue"></div>
-			  		<h6>INFORME / Aprobado sin publicar</h6>
-			  		<p>Lorem ipsum qwer wqe rwq er wegsdfgsdfg sdfg dfgsdfg</p>
-			  		<small>Hace 16 min</small>
-			  	</button>
-			  	<button mat-menu-item>
-		  			<div class="indicator bg-blue"></div>
-			  		<h6>INFORME / Aprobado sin publicar</h6>
-			  		<p>Lorem ipsum qwer wqe rwq er wegsdfgsdfg sdfg dfgsdfg</p>
-			  		<small>Hace 16 min</small>
 			  	</button>
 			</section>
 		  	<footer>
