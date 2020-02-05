@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd   } from '@angular/router';
+
 import { AuthService } from '../../services/auth.service';
 import { HttpService } from '../../services/http.service';
 import { SocketService } from '../../services/socket.service';
+
+import { loopback } from '../../models/common/loopback.model';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-header',
@@ -28,39 +32,87 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.http.get({
-            'path': `notifications`
-        }).subscribe((response: any) => {
-            console.log("response: ", response);
-            if ("body" in response) {
-                let unprocessedData = response.body;
-                this.processNotificationsData(unprocessedData);
-                this.countNotifications();
-                console.log("r", this.notifications);
-            }
-        });
-    }
 
-    private processNotificationsData(unprocessedData: any) {
-        unprocessedData.map(item => {
-            let processedItem = {
-                type: item.type,
-                title: item.type === 'report-comment' ? 'COMENTARIOS' : 'INFORME',
-                description: "Julano ha dejado coentarios sobre el informe Estados financieros",
-                timeAgo: "Hace 2 horas",
-                readed: item.readed
-            };
-            this.notifications.push(processedItem);
+        moment.locale('es'); // Set locale lang for momentJs
+        var query = new loopback();
+
+        query.filter.include = [{
+                relation: "owner",
+                scope: {
+                    fields: ['name', 'tales']
+                }
+            },{
+                relation: "emitter",
+                scope: {
+                    fields: ['name', 'tales']
+                }
+            },{
+                relation: "report",
+                scope: {
+                    fields: ['name', 'tales']
+                }
+            } //, {
+            //     relation: "comment",
+            //     scope: {
+            //         fields: ['name', 'tales']
+            //     }
+            // }
+        ];
+
+        this.http.get({
+            'path': `notifications`,
+            'data': query.filter,
+            'encode': true
+        }).subscribe((response: any) => {
+            if ("body" in response) {
+                response.body.map( notification => { this.processNotification(notification) });
+                this.countNotifications();
+            }
         });
     }
 
     private startToListenSockets() {
         this.socket.start().subscribe(() => {
             this.socket.on("notification").subscribe((response) => {
-                this.notifications.push(response);
+                this.processNotification(response);
                 this.countNotifications();
             });
         });
+    }
+
+    private processNotification(item: any) {
+
+        let timeFromNow: string = moment(item.updatedAt).fromNow();
+        let existReport: boolean = "report" in item && "name" in item.report ? true : false;
+        let existEmitter: boolean = "emitter" in item && "name" in item.emitter ? true : false;
+
+        let notf: any = {
+            type: item.type,
+            timeAgo: timeFromNow[0].toUpperCase() + timeFromNow.slice(1),
+            readed: item.readed,
+            reportId: item.reportId
+        };
+
+        switch (item.type) {
+            case "report-comment":
+                notf.title = 'COMENTARIOS';
+                notf.description =  existEmitter ? `${item.emitter.name} ha dejado` : 'Han dejado';
+                notf.description += " un comentario en ";
+                notf.description +=  existReport ? `el informe ${item.report.name}` : 'un informe';
+                break;
+
+            case "report":
+                notf.title = 'INFORME';
+                notf.description = existReport ? `El informe ${item.report.name}` : 'Un informe';
+                notf.description += " ha sido actualizado";
+                break;
+            
+            default:
+                notf.title = 'GENERAL';
+                break;
+        }
+
+        this.notifications.push(notf);
     }
 
     private countNotifications() {
@@ -87,5 +139,16 @@ export class HeaderComponent implements OnInit {
     isOpened(evt: any) {
         let ntContainer = document.getElementById('notificationHeader').parentElement;
         ntContainer.classList.add('notifications');
+    }
+
+    openNotf(reportId: number) {
+        this.router.navigate(['app/board', reportId]);
+
+        // check to readed notifications
+        // this.http.patch({
+        //     'path': `notifications`
+        // }).subscribe((response: any) => {
+        //     //DO SOMETHING
+        // });
     }
 }

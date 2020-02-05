@@ -57,7 +57,7 @@ body {
 
 // --------------------- NOTIFICATIONS ---------------------
 .mat-menu-content.notifications {
-    width: 240px;
+    width: 241px;
 
     h1 {
 	    color: #0080FF;
@@ -144,7 +144,7 @@ body {
 
 	footer {
 		text-align: center;
-		padding: 10px 16px;
+		padding: 7px 16px 2px;
 		border-top: solid 1px #EDEDED;
 
 	    a {
@@ -864,4 +864,12 @@ margin-top: 2%;
 		background-color: transparent;
 		color: #A5ABB1;
 	}
+}
+
+
+/* =========================================================== *\
+    						NOTIFICATIONS
+\* =========================================================== */
+.bg-cyan {
+	background-color: darkcyan;
 }

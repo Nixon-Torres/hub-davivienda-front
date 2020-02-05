@@ -1,4 +1,17 @@
 <div class="container">
-	<p>notifications works!</p>
-	<mat-card>Simple card</mat-card>
+	<mat-drawer-container class="example-container">
+		<mat-drawer mode="side" opened>
+			<h6>Aside content</h6>
+		</mat-drawer>
+		<mat-drawer-content>
+			<h6>Main content</h6>
+			<mat-card *ngFor="let notification of notifications">
+				<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
+	  			<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
+				<h6>{{ notification.title }}</h6>
+		  		<p>{{ notification.description }}</p>
+		  		<small>Hace 2 horas</small>
+			</mat-card>
+		</mat-drawer-content>
+	</mat-drawer-container>
 </div>

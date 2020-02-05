@@ -31,12 +31,12 @@
 		<mat-menu #notifyMenu="matMenu">
 			<h1 id="notificationHeader">Notificaciones</h1>
 			<section>
-			  	<button mat-menu-item class="to-check" *ngFor="let notification of notifications">
+			  	<button mat-menu-item class="to-check" *ngFor="let notification of notifications" (click)="openNotf(notification.reportId)">
 		  			<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
 		  			<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
-			  		<h6>{{ notification.type === 'report-comment' ? 'COMENTARIOS' : 'INFORME' }}</h6>
-			  		<p>Lorem ipsum qwer wqe rwq er wegsdfgsdfg sdfg dfgsdfg</p>
-			  		<small>Hace 2 horas</small>
+			  		<h6>{{ notification.title }}</h6>
+			  		<p>{{ notification.description }}</p>
+			  		<small>{{ notification.timeAgo }}</small>
 			  	</button>
 			</section>
 		  	<footer>
