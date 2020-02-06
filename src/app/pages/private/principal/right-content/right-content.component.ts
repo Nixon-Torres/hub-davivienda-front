@@ -505,7 +505,7 @@ export class RightContentComponent implements OnInit {
         let newReport: any = {
             name: clone.name,
             slug: clone.slug,
-            trash: clone.trash,
+            trash: false,
             content: clone.content,
             styles: clone.styles,
             sectionTypeKey: clone.sectionTypeKey,
