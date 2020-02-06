@@ -6,13 +6,14 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { Report } from '../../board/board.model';
 import { loopback } from '../../../../models/common/loopback.model';
+import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
+import { HighlightDialogComponent } from '../highlight-dialog/highlight-dialog.component';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
-import { HttpService } from '../../../../services/http.service';
-import { AuthService } from '../../../../services/auth.service';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 import * as moment from 'moment';
-import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
-import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
+import { AuthService } from '../../../../services/auth.service';
+import { HttpService } from '../../../../services/http.service';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
@@ -582,6 +583,10 @@ export class RightContentComponent implements OnInit {
         };
 
         this.dialog.open(PreviewDialogComponent, paramsDialog);
+    }
+
+    public openHighlightDialog() {
+        this.dialog.open(HighlightDialogComponent, {width: '60vw'});
     }
 
 }
