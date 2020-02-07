@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 
 @Component({
@@ -10,15 +10,30 @@ export class RelatedReportsComponent implements OnInit {
 
 	public timer: any;
 	public ifilter;
+	public reportId: string;
+	private relatedReports: any = [];
+
+	@Input() set currentReport(value: any) {
+		this.reportId = value;
+	}
 
 	constructor(
 		private http: HttpService
 	) { }
 
 	ngOnInit() {
+		this.getRelatedReports();
 	}
 
-	getToRelated(): void {
+	private getRelatedReports() {
+		this.http.get({
+			path: `reports/${this.reportId}/relateds`
+		}).subscribe((response: any) => {
+			console.log('resultado de reportes relacionados', response.body);
+		});
+	}
+
+	searchReports(): void {
 		if (this.timer.toRelated) clearTimeout(this.timer.toRelated);
 		this.timer.toRelated = setTimeout(() => {
 			this.http.get({
@@ -26,7 +41,7 @@ export class RelatedReportsComponent implements OnInit {
 				data: {
 					where: {
 						id: {
-							nin: ['ya1', 'ya2', '...']
+							nin: this.relatedReports
 						},
 						name: {
 							like: this.ifilter, options: "i"
@@ -34,29 +49,30 @@ export class RelatedReportsComponent implements OnInit {
 					}
 				},
 				encode: true
-			}).suscribe((response: any) => {
+			}).subscribe((response: any) => {
 				console.log('resultado de reportes a relacionar', response.body);
 			});
 		}, 800);
 	}
 
-	saveReportRelate(): void {
+	relateReports(): void {
 		this.http.post({
 			path: 'reportsRelated',
 			data: {
-				reportId: 'uid del reporte papi',
-				relatedId: 'uid del reporte bebe',
-				order: 'orden del reporte'
+				reportId: this.reportId,
+				relatedId: '5e3afb52040ea7244a32be79',
+				pos: 1
 			}
-		}).suscribe((response) => {
+		}).subscribe((response) => {
 			console.log('Si guardo MK, jajajaj que Chimba!');
+
 		});
 	}
 
-	deleteReportRelate(): void {
+	deleteReportRelationship(): void {
 		this.http.delete({
 			path: 'reportsRelated/{id}'
-		}).suscribe(() => {
+		}).subscribe(() => {
 			console.log('Algun día te volvere a dar.... Jajajajjaj');
 			console.log('Traiganme unas chelas.');
 		});

@@ -145,6 +145,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
             this.setLastUpdate(response.body.updatedAt);
+            // console.log("report: ", response);
 
             if (!this.editorInitiated) {
                 setTimeout(() => {
