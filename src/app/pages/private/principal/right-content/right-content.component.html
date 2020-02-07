@@ -56,6 +56,12 @@
 									<li><a class="icon icon-trash-alt active" (click)="deleteAllReports()">Eliminar todo</a></li>
 								</ul>
 							</div>
+							<div class="operation-cta crown_btn" *ngIf="!icurrentObj.deletedFg">
+								<ul>
+									<li *ngIf="icurrentObj.currentState === '5e068c81d811c55eb40d14d0'"><a (click)="openHighlightDialog(i)"><span><img src="/assets/images/corona.svg" alt="">Destacar informe</span></a></li>
+									<li>{{ icurrentObj | json }}</li>
+								</ul>
+							</div>
 						</div>
 						<div class="trash_info" *ngIf="icurrentObj.deletedFg">
 							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
@@ -84,8 +90,8 @@
 												<li><button class="icon icon-copy" (click)="onCloneReport(i)">Duplicar</button></li>
 												<li><button class="icon icon-trash-alt" (click)="onDeleteReport(i)">Eliminar</button></li>
 												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus" (click)="openPreviewDialog(report.id)">Vista previa</button></li>
-												<li>
-													<button (click)="openHighlightDialog()">Destacar</button>
+												<li class="crown_menu">
+													<button class="icon" (click)="openHighlightDialog(i)"><span><img src="/assets/images/corona.svg" alt="">Destacar</span></button>
 												</li>
 											</ul>
 										</div>

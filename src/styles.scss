@@ -753,10 +753,10 @@ margin-top: 2%;
 		color: white;
 		background-color: #0080ff;
 
-		&[disabled] {
+		/* &[disabled] {
 			background: rgba(180,180,180);
 			color: rgba(40,40,40);
-		}
+		} */
 	}
 	&.btn-cancel {
 		background-color: transparent;

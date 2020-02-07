@@ -9,6 +9,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 
 export class HighlightDialogComponent implements OnInit {
 
+	pictureSelect: false;
+
 	constructor(
 		public dialogRef: MatDialogRef<HighlightDialogComponent>,
 		// @Inject(MAT_DIALOG_DATA) public data: any
@@ -17,4 +19,7 @@ export class HighlightDialogComponent implements OnInit {
 	ngOnInit() {
 	}
 
+	onNoClick(input: boolean): void {
+        this.dialogRef.close(input);
+    }
 }

@@ -664,3 +664,34 @@ section {
 		font-size: 1.125em;
 	}
 }
+
+.crown_menu{
+	span{
+		display: flex;
+	}
+	img{
+		width: 15%;
+		padding-right: 1em;
+	}
+}
+.crown_btn{
+	span{
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		width: 10em;
+		background: #ffff;
+		padding: 4px;
+		border-radius: 5px;
+		color: #0080FF;
+		font-size: 1.25em;
+		border: solid 1px;
+	}
+	a{
+		text-decoration: none !important;
+	}
+	img{
+		width: 14%;
+		padding-right: 0.5em;
+	}
+}
