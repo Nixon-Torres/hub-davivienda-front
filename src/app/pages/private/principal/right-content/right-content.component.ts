@@ -589,4 +589,13 @@ export class RightContentComponent implements OnInit {
         this.dialog.open(HighlightDialogComponent, {width: '60vw'});
     }
 
+    public canHighlightReport(): boolean {
+        if(this.getCheckboxesSelected().length !== 1) return false;
+        if(this.icurrentObj.currentState === '5e068c81d811c55eb40d14d0') return true;
+        const reportOnly = this.list.reports.filter(
+            (a) => a.id == this.getCheckboxesSelected()[0] && a.stateId == '5e068c81d811c55eb40d14d0'
+        );
+        return reportOnly.length ? true : false;
+    }
+
 }

@@ -58,8 +58,7 @@
 							</div>
 							<div class="operation-cta crown_btn" *ngIf="!icurrentObj.deletedFg">
 								<ul>
-									<li *ngIf="icurrentObj.currentState === '5e068c81d811c55eb40d14d0'"><a (click)="openHighlightDialog(i)"><span><img src="/assets/images/corona.svg" alt="">Destacar informe</span></a></li>
-									<li>{{ icurrentObj | json }}</li>
+									<li *ngIf="canHighlightReport()"><a (click)="openHighlightDialog(i)"><span><img src="/assets/images/corona.svg" alt="">Destacar informe</span></a></li>
 								</ul>
 							</div>
 						</div>
