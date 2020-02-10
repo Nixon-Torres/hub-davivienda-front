@@ -1,5 +1,7 @@
 .highlight_dialog{
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    overflow: scroll;
+    height: 100vh;
 
     .highlight_title{
         padding: 20px;
