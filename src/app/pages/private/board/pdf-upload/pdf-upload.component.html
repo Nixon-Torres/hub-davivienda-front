@@ -1,29 +1,46 @@
 <div id="pdfUpload">
-  <h2 mat-dialog-title>HTML + PDF</h2>
+  <div class="pdf-title">
+    <h2 mat-dialog-title>HTML + PDF</h2>
+    <a class="modal-close-cta" (click)="closeDialog(null)">Cerrar <span class="icon icon-times"></span></a>
+  </div>
+  
 
   <mat-dialog-content>
-      <div class="message-container">
+      <div class="message-container" *ngIf="!spinner">
         <div class="message-box divider">
           <div class="message-icon">
-            <img class="logo-board" src="../assets/images/check.png" alt="Check">
+            <img class="logo-board" src="/assets/images/warning.svg" alt="Check">
           </div>
           <div class="message-title">¡Ha ocurrido un error!</div>
         </div>
+        <div class="pdf-spinner" *ngIf="spinner">
+          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <p>Estamos cargando el archivo</p>
+        </div>
         <div class="message-box">
-          <div class="message-description">Ha superado del tamaño maximo del archivo</div>
+          <div class="message-description" *ngIf="errorMsg">{{errorMsg}}</div>
           <div class="message-upload-button">
         </div>
 
-
-          <button type="button" name="button">Subir archivo</button>
-          <span>Tamaño máximo hasta 10GB</span>
+        <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
+          <div>
+            <input id="iFile" type="file" formControlName="file" (change)="onFileSelect($event)" style="display: none;" accept=".pdf">
+            <label class="up-file" for="iFile"><img src="/assets/images/upload.svg" alt=""> Subir archivo</label>
+          </div>
+           <br>
+          <div class="size-txt">
+            <span>Tamaño máximo hasta 10GB</span>
+          </div>
+        </form>
         </div>
       </div>
   </mat-dialog-content>
 
   <mat-dialog-actions>
-      <button class="mat-raised-button" (click)="close()">Cancelar</button>
-      <button class="mat-raised-button mat-primary" (click)="save()">Aceptar</button>
+    <div class="pdf-btn">
+      <button class="mat-raised-button pdf-close" (click)="closeDialog(null)">Cancelar</button>
+      <button class="mat-raised-button mat-primary" (click)="closeDialog(fileData)" [disabled]="!fileData">Aceptar</button>
+    </div>
   </mat-dialog-actions>
 
 </div>

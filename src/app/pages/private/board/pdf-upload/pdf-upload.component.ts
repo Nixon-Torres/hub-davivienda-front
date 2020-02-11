@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -13,7 +13,7 @@ export class PdfUploadComponent implements OnInit {
     public uploadForm: FormGroup;
     public fileData: any = null;
     public spinner: boolean;
-    public errorMsg: string;
+    public errorMsg: string = 'Ha superado del tamaño maximo del archivo';
 
     constructor(
         public dialogRef: MatDialogRef<PdfUploadComponent>,
