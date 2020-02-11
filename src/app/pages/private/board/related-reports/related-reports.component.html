@@ -4,3 +4,10 @@
 		<option>Otra cosa</option>
 	</select>
 </form>
+
+<div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
+  	<div class="item" *ngFor="let movie of movies" cdkDrag>
+  		<span>{{ movie }}</span>
+  		<i class="material-icons">close</i>
+  	</div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HttpService } from '../../../../services/http.service';
 
 @Component({
@@ -13,17 +14,30 @@ export class RelatedReportsComponent implements OnInit {
 	public reportId: string;
 	private relatedReports: any = [];
 
-	@Input() set currentReport(value: any) {
-		this.reportId = value;
-	}
+	public movies = [
+		'1 prueba',
+		'2 prueba',
+		'3 prueba',
+		'4 prueba',
+	];
 
 	constructor(
 		private http: HttpService
 	) { }
 
 	ngOnInit() {
-		this.getRelatedReports();
+		// this.getRelatedReports();
 	}
+
+	drop(event: CdkDragDrop<string[]>) {
+		moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+	}
+
+	/*
+
+	// @Input() set currentReport(value: any) {
+	// 	this.reportId = "value";
+	// }
 
 	private getRelatedReports() {
 		this.http.get({
@@ -77,5 +91,6 @@ export class RelatedReportsComponent implements OnInit {
 			console.log('Traiganme unas chelas.');
 		});
 	}
+	*/
 
 }
