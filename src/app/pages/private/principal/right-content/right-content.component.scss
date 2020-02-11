@@ -384,21 +384,22 @@ section {
 			}
 			i{
 				padding-right: 3px;
+				font-size: 1.32em;
 			}
 		}
 	}
 	mat-form-field{
 		border: 1px solid #EDEDED;
 		position: relative;
-   		right: 5%;
+   		right: 3%;
 		&::before{
 			content: '';
-			border-left: 1px solid silver;
+			border-left: 1px solid rgba(192, 192, 192, 0.349);
 			width: 1px;
-			height: 50px;
+			height: 70px;
 			position: absolute;
-			left: 150%;
-			top: -8px;
+			left: 120%;
+			top: -16px;
 		}
 	}
 }
