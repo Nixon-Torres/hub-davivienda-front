@@ -7,6 +7,7 @@ import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
@@ -453,6 +454,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
+
+    public openUploadDialog(): void {
+      let dialogRef = this.dialog.open(PdfUploadComponent);
+      dialogRef.afterClosed().subscribe((response: any) => {
+          if (response) {
+              this.http.patch({
+                  path: `reports/${this.report.id}`,
+                  data: {
+                      pdfId: response.id
+                  }
+              }).subscribe(() => {
+                
+              });
+          }
+      });
+  }
 
     public discard() {
 

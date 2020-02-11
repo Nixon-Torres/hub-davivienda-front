@@ -3,11 +3,10 @@
     <h2 mat-dialog-title>HTML + PDF</h2>
     <a class="modal-close-cta" (click)="closeDialog(null)">Cerrar <span class="icon icon-times"></span></a>
   </div>
-  
 
   <mat-dialog-content>
       <div class="message-container" *ngIf="!spinner">
-        <div class="message-box divider">
+        <div class="message-box divider" *ngIf="errorMsg">
           <div class="message-icon">
             <img class="logo-board" src="/assets/images/warning.svg" alt="Check">
           </div>
@@ -24,7 +23,7 @@
 
         <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
           <div>
-            <input id="iFile" type="file" formControlName="file" (change)="onFileSelect($event)" style="display: none;" accept=".pdf">
+            <input id="iFile" type="file" (change)="onFileSelect($event)" style="display: none;" accept=".pdf">
             <label class="up-file" for="iFile"><img src="/assets/images/upload.svg" alt=""> Subir archivo</label>
           </div>
            <br>

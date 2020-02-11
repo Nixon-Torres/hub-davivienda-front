@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { Routes, RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -16,7 +17,7 @@ import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
-
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 
 const routes: Routes = [
     {
@@ -38,14 +39,21 @@ const materialModules: any[] = [
     MatToolbarModule,
     MatGridListModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
 ];
 
 @NgModule({
-    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent],
+    declarations: [
+      BoardComponent,
+      CommentBoxComponent,
+      RevisionModalComponent,
+      PdfUploadComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         materialModules,
         PreviewDialogModule,
         ConfirmationDialogModule,
@@ -57,7 +65,8 @@ const materialModules: any[] = [
         materialModules
     ],
     entryComponents: [
-        RevisionModalComponent
+        RevisionModalComponent,
+        PdfUploadComponent
     ]
 })
 export class BoardModule { }
