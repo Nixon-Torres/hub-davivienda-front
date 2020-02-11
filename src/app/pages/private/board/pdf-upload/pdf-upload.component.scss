@@ -1,0 +1,36 @@
+#pdfUpload {
+    min-width: 420px;
+    padding: 8px 16px;
+
+    h2 {
+        border-bottom: 1px solid rgba(165, 171, 177, .35);
+        color: #a5abb1;
+        font-size: 14px;
+    }
+
+    .message-container {
+        .message-box {
+            text-align: center;
+            padding: 32px;
+            position: relative;
+
+            &.divider {
+                &::after {
+                    border-bottom: 1px solid rgba(165, 171, 177, 0.35);
+                    content: " ";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 80%;
+                    margin-left: 10%;
+                }
+            }
+        }
+
+        .message-title {
+            color: #ff133b;
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+}

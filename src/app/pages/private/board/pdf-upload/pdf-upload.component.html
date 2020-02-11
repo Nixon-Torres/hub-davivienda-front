@@ -1,0 +1,29 @@
+<div id="pdfUpload">
+  <h2 mat-dialog-title>HTML + PDF</h2>
+
+  <mat-dialog-content>
+      <div class="message-container">
+        <div class="message-box divider">
+          <div class="message-icon">
+            <img class="logo-board" src="../assets/images/check.png" alt="Check">
+          </div>
+          <div class="message-title">¡Ha ocurrido un error!</div>
+        </div>
+        <div class="message-box">
+          <div class="message-description">Ha superado del tamaño maximo del archivo</div>
+          <div class="message-upload-button">
+        </div>
+
+
+          <button type="button" name="button">Subir archivo</button>
+          <span>Tamaño máximo hasta 10GB</span>
+        </div>
+      </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+      <button class="mat-raised-button" (click)="close()">Cancelar</button>
+      <button class="mat-raised-button mat-primary" (click)="save()">Aceptar</button>
+  </mat-dialog-actions>
+
+</div>
