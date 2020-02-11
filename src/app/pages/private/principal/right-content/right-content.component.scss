@@ -350,9 +350,7 @@ section {
 
 	.operation-cta{
 		display: inline-block;
-		width: 50%;
-		position: relative;
-		margin-left: 35px;
+		width: 60%;
 		ul{
 			display: flex;
 			align-items: flex-end;
@@ -368,9 +366,9 @@ section {
 					cursor: pointer;
 					display: flex;
 					align-items: center;
-					&.active{
+					/* &.active{
 						color: #A5ABB1;
-					}
+					} */
 				}
 				&:last-child{
 					margin-right: 0;
@@ -378,9 +376,21 @@ section {
 	
 			}
 		}
+		.delete_icons{
+			li{
+				display: flex;
+				align-self: stretch;
+				color: #616161;
+			}
+			i{
+				padding-right: 3px;
+			}
+		}
 	}
 	mat-form-field{
 		border: 1px solid #EDEDED;
+		position: relative;
+   		right: 5%;
 		&::before{
 			content: '';
 			border-left: 1px solid silver;
