@@ -30,7 +30,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public authors = [];
     public selectedAuthor: any = '';
     public user: any = {};
-    public originalUsers: [any] = [];
+    public originalUsers = [];
 
     public list: any = {
         sections: [],
@@ -100,8 +100,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.http.get({
             'path': 'users/list'
         }).subscribe((response) => {
-            this.originalUsers = response.body;
-            var users: [any] = response.body;
+            this.originalUsers = response.body as unknown as any[];
+            var users = this.originalUsers;
 
             users = users.filter((e) => this.isAuthorAddedAlready(e));
             this.list.users = users;
