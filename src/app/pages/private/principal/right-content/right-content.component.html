@@ -73,8 +73,9 @@
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span report_name">{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
-											<h2 class="report--title">{{report.name}}</h2>
+											
 										</mat-checkbox>
+										<h2 class="report--title">{{report.name}}</h2>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
 										<span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">
