@@ -14,7 +14,7 @@ export class PdfUploadComponent implements OnInit {
     public fileData: any = null;
     public spinner: boolean;
     public errorMsg: string;
-    public workMsg: string = "Ha subido el siguiente archivo:";
+    public workMsg: string;
 
     constructor(
         public dialogRef: MatDialogRef<PdfUploadComponent>,
@@ -42,18 +42,37 @@ export class PdfUploadComponent implements OnInit {
         formData.append('file', this.uploadForm.get('file').value);
         this.spinner = true;
         this.errorMsg = null;
+        this.fileData = null;
         this.http.post({
             path: 'upload',
             data: formData
         }).subscribe(
-          (response: any) => {
-            this.spinner = false;
-            if(response.body.name && (response.body.statusCode || response.body.code)) {
-              let err = response.body.name;
-              this.errorMsg = (err == 'ValidationError') ? 'Solo se permite archivos PDFS' : 'Ha superado del tamaño maximo del archivo';
-              return;
+            (response: any) => {
+                this.spinner = false;
+                if (response.body.name && (response.body.statusCode || response.body.code)) {
+                    let err = response.body.name;
+                    this.errorMsg = (err == 'ValidationError') ? 'Solo se permite archivos PDFS' : 'Ha superado del tamaño maximo del archivo';
+                    document.querySelector("#iFile")['value'] = '';
+                    return;
+                }
+                this.fileData = response.body;
+            },
+            () => {
+                this.spinner = false;
+                this.fileData = null;
+                document.querySelector("#iFile")['value'] = '';
             }
-            this.fileData = response.body;
+        );
+    }
+
+    deleteFile(): void {
+        this.spinner = true;
+        this.http.delete({
+            path: `media/${this.fileData.id}`
+        }).subscribe(() => {
+            this.spinner = false;
+            this.fileData = null;
+            document.querySelector("#iFile")['value'] = '';
         });
     }
 
