@@ -102,7 +102,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         }).subscribe((response) => {
             this.originalUsers = response.body;
             var users: [any] = response.body;
-            console.log('current user:', this.user.id);
 
             users = users.filter((e) => this.isAuthorAddedAlready(e));
             this.list.users = users;
