@@ -19,7 +19,13 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
         margin-top: 15px;
         font-size: 12px;
         color: #939393;
-        cursor: pointer;
+		cursor: pointer;
+		a{
+			font-family: "Helvetica Neue",sans-serif;
+			color: #616161;
+			font-weight: bold;
+			font-size: 1em;
+		}
     }
 
     .search-container  {
