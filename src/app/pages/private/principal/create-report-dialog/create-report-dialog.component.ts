@@ -143,11 +143,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public onDeleteAuthor(pos) {
-        if (this.selectedAuthor) {
-            this.list.authors.splice(pos, 1);
-            this.selectedAuthor = null;
-        }
-
+        this.list.authors.splice(pos, 1);
         this.list.users = this.originalUsers.filter((e) => this.isAuthorAddedAlready(e));
     }
 
