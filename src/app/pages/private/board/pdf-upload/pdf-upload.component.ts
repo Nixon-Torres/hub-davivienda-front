@@ -14,6 +14,7 @@ export class PdfUploadComponent implements OnInit {
     public fileData: any = null;
     public spinner: boolean;
     public errorMsg: string;
+    public workMsg: string = "Ha subido el siguiente archivo:";
 
     constructor(
         public dialogRef: MatDialogRef<PdfUploadComponent>,

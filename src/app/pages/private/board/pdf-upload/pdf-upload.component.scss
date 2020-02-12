@@ -78,6 +78,32 @@
             font-size: 1.3em;
             font-weight: bold;
             padding-top: 15px;
+            &.check{
+              color: #19d600;
+            }
+        }
+
+        .info-pdf{
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          font-weight: 500;
+          background: #f5f7fb;
+          padding: 18px;
+          margin-bottom: 6%;
+          p{
+            font-size: .88em;
+            color: #a0a2a3;
+          }
+          div{
+            display: flex;
+            align-items: center;
+            p{
+              font-size: .75em;
+              color: #bdc2c7;
+              padding-right: 20px;
+            }
+          }
         }
     }
 
@@ -103,6 +129,8 @@
         }
     }
 }
+
+/* Loader */
 
 .pdf-spinner{
     display: flex;

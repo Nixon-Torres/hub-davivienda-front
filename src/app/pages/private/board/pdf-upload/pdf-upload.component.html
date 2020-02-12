@@ -6,19 +6,38 @@
 
   <mat-dialog-content>
       <div class="message-container" *ngIf="!spinner">
+        <!-- Error -->
         <div class="message-box divider" *ngIf="errorMsg">
           <div class="message-icon">
             <img class="logo-board" src="/assets/images/warning.svg" alt="Check">
           </div>
           <div class="message-title">¡Ha ocurrido un error!</div>
         </div>
+        <!-- Work -->
+        <div class="message-box divider" *ngIf="!errorMsg">
+          <div class="message-icon">
+            <img class="logo-board" src="/assets/images/check.png" alt="Check">
+          </div>
+          <div class="message-title check">¡Cargado exitosamente!</div>
+        </div>
+        <!-- Spinner -->
         <div class="pdf-spinner" *ngIf="spinner">
           <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           <p>Estamos cargando el archivo</p>
         </div>
+
         <div class="message-box">
           <div class="message-description" *ngIf="errorMsg">{{errorMsg}}</div>
+          <div class="message-description" *ngIf="!errorMsg">{{workMsg}}</div>
           <div class="message-upload-button">
+        </div>
+        <!-- Work Text -->
+        <div class="info-pdf" *ngIf="!errorMsg">
+          <p>Informefinanzas.pdf</p>
+          <div>
+            <p>3 GB</p>
+            <img src="/assets/images/cancel.png" alt="">
+          </div>            
         </div>
 
         <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
