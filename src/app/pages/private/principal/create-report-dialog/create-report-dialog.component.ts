@@ -148,7 +148,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public onOptionsSelected(event) {
-        console.log('selected', event);
         this.selectedAuthor = event;
     }
 
