@@ -6,8 +6,8 @@
 </form>
 
 <div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
-  	<div class="item" *ngFor="let movie of movies" cdkDrag>
+  	<div class="item" *ngFor="let movie of movies; index as i;" cdkDrag>
   		<span>{{ movie }}</span>
-  		<i class="material-icons">close</i>
+  		<i class="material-icons" (click)="deleteRelationship($event)" [attr.data-index]="i">close</i>
   	</div>
 </div>

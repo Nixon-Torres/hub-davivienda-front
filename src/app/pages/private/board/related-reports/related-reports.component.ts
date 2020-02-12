@@ -7,11 +7,11 @@ import { HttpService } from '../../../../services/http.service';
 	templateUrl: './related-reports.component.html',
 	styleUrls: ['./related-reports.component.scss']
 })
+
 export class RelatedReportsComponent implements OnInit {
 
 	public timer: any;
 	public ifilter;
-	public reportId: string;
 	private relatedReports: any = [];
 
 	public movies = [
@@ -25,21 +25,24 @@ export class RelatedReportsComponent implements OnInit {
 		private http: HttpService
 	) { }
 
-	ngOnInit() {
-		// this.getRelatedReports();
-	}
+	@Input('reportId') private reportId: string;
 
-	drop(event: CdkDragDrop<string[]>) {
+	public drop(event: CdkDragDrop<string[]>) {
 		moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
 	}
 
-	/*
+	public deleteRelationship(e) {
+		let key = e.target.getAttribute("data-index");
+		this.movies.splice(key, 1);
+	}
 
-	// @Input() set currentReport(value: any) {
-	// 	this.reportId = "value";
-	// }
+	ngOnInit() {
+		console.log("ID: ", this.reportId);
+		this.getRelatedReports();
+	}
 
 	private getRelatedReports() {
+		console.log("get");
 		this.http.get({
 			path: `reports/${this.reportId}/relateds`
 		}).subscribe((response: any) => {
@@ -79,7 +82,6 @@ export class RelatedReportsComponent implements OnInit {
 			}
 		}).subscribe((response) => {
 			console.log('Si guardo MK, jajajaj que Chimba!');
-
 		});
 	}
 
@@ -91,6 +93,5 @@ export class RelatedReportsComponent implements OnInit {
 			console.log('Traiganme unas chelas.');
 		});
 	}
-	*/
 
 }

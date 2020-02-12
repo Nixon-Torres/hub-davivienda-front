@@ -22,11 +22,15 @@
 
     span {
         line-height: 1.8;
+        padding-left: 8px;
     }
 
     i {
+        padding: 0 4px;
+        cursor: pointer;
         font-size: 14px;
         line-height: 1.8;
+        border-left: 1px solid #ccc;
     }
 }
 

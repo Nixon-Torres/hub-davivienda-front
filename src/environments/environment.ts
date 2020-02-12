@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   // URL_API:  'http://localhost:3000/api/',
-  URL_API:  'http://3.91.179.96:3000/api/',
+  // URL_API:  'http://3.91.179.96:3000/api/',
+  URL_API:  'http://192.168.1.123:3100/api/',
   DRAFT_KEY: '5e068d1cb81d1c5f29b62977'
 };
 

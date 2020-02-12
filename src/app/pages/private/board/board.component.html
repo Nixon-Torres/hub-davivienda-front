@@ -117,7 +117,7 @@
 								<mat-panel-title>
 									<span class="icon icon-chart-pie"></span>
 									<span>Seo</span>
-								</mat-panel-title>
+								</mat-panel-title> 
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>
@@ -132,7 +132,7 @@
 								</mat-panel-title>
 							</mat-expansion-panel-header>
 
-							<app-related-reports ></app-related-reports>
+							<app-related-reports [reportId]="report.id"></app-related-reports>
 
 						</mat-expansion-panel>
 
