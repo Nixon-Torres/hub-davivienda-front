@@ -1,13 +1,16 @@
-<form>
-	<select>
-		<option>Prueba</option>
-		<option>Otra cosa</option>
-	</select>
-</form>
+<div id="searchReports">
+	<input type="text" [(ngModel)]="ifilter" (keyup)="searchReports()">
+</div>
+
+<mat-action-list id="foundedReports">
+	<button mat-list-item *ngFor="let report of findedReports;" (click)="relateReport(report)">
+		<span>{{ report.name }}</span>
+	</button>
+</mat-action-list>
 
 <div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
-  	<div class="item" *ngFor="let movie of movies; index as i;" cdkDrag>
-  		<span>{{ movie }}</span>
-  		<i class="material-icons" (click)="deleteRelationship($event)" [attr.data-index]="i">close</i>
+  	<div class="item" *ngFor="let report of relatedReports; index as i;" cdkDrag>
+  		<span *ngIf="report.related">{{ report.related.name }}</span>
+  		<i class="material-icons" (click)="deleteReportRelationship(report)" [attr.data-index]="i">close</i>
   	</div>
 </div>

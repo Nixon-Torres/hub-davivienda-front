@@ -11,6 +11,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatListModule } from '@angular/material/list';
 
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
@@ -34,6 +35,7 @@ const routes: Routes = [
         component: BoardComponent
     }
 ];
+
 const materialModules: any[] = [
     MatRippleModule,
     MatButtonModule,
@@ -41,7 +43,8 @@ const materialModules: any[] = [
     MatGridListModule,
     MatExpansionModule,
     MatCardModule,
-    DragDropModule
+    DragDropModule,
+    MatListModule
 ];
 
 @NgModule({

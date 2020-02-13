@@ -15,8 +15,8 @@ import * as moment from 'moment';
 import * as qs from 'qs';
 
 import { Report } from './board.model';
-import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
 
 declare var grapesjs: any;
 
@@ -145,7 +145,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
             this.setLastUpdate(response.body.updatedAt);
-            // console.log("report: ", response);
 
             if (!this.editorInitiated) {
                 setTimeout(() => {
