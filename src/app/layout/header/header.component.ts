@@ -106,7 +106,7 @@ export class HeaderComponent implements OnInit {
                 notf.description = existReport ? `El informe ${item.report.name}` : 'Un informe';
                 notf.description += " ha sido actualizado";
                 break;
-            
+
             default:
                 notf.title = 'GENERAL';
                 break;
@@ -142,13 +142,12 @@ export class HeaderComponent implements OnInit {
     }
 
     openNotf(reportId: number) {
+        this.notifications.filter((a) => {
+            if(a.reportId == reportId) {
+                a.readed = true;
+            }
+            return true;
+        });
         this.router.navigate(['app/board', reportId]);
-
-        // check to readed notifications
-        // this.http.patch({
-        //     'path': `notifications`
-        // }).subscribe((response: any) => {
-        //     //DO SOMETHING
-        // });
     }
 }

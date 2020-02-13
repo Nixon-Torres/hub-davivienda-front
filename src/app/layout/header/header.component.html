@@ -31,7 +31,7 @@
 		<mat-menu #notifyMenu="matMenu">
 			<h1 id="notificationHeader">Notificaciones</h1>
 			<section>
-			  	<button mat-menu-item class="to-check" *ngFor="let notification of notifications" (click)="openNotf(notification.reportId)">
+			  	<button mat-menu-item [ngClass]="{'to-check' : !notification.readed}" *ngFor="let notification of notifications" (click)="openNotf(notification.reportId)">
 		  			<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
 		  			<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
 			  		<h6>{{ notification.title }}</h6>
