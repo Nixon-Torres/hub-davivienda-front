@@ -44,7 +44,7 @@ export class PdfUploadComponent implements OnInit {
         this.errorMsg = null;
         this.fileData = null;
         this.http.post({
-            path: 'upload',
+            path: 'media/upload',
             data: formData
         }).subscribe(
             (response: any) => {
