@@ -266,6 +266,7 @@ $builder-bg: #f5f7fb;
 			// Accordion panel content
 			.mat-expansion-panel-body {
 				font-size: 12px;
+				padding: 0 16px 16px;
 			}
 		}
 	}
@@ -762,6 +763,26 @@ margin-top: 2%;
 	}
 	&.btn-cancel {
 		background-color: transparent;
-		color: #A5ABB1;
+		color: rgb(202, 205, 209);
 	}
+}
+
+.related{
+    .filter{
+        app-related-reports{
+           input{
+            background-image: url('assets/images/related.png');
+            background-repeat: no-repeat;
+			background-position: right;
+			border: solid 1px #c4c4c4;
+			padding: 7px 5px;
+			background-size: 16%;
+			background-color: #f5f7fb;
+			width: 89%;
+			margin-top: 7%;
+			font-family: Roboto, "Helvetica Neue", sans-serif;
+        } 
+        }
+        
+    }
 }

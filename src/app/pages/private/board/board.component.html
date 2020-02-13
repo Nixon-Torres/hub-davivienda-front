@@ -131,8 +131,13 @@
 									<span>Informes relacionados</span>
 								</mat-panel-title>
 							</mat-expansion-panel-header>
+							<div class="related">
+								<p>Seleccione entre 1 y 4 informes relacionados con su contenido</p>
 
-							<app-related-reports [reportId]="report.id"></app-related-reports>
+								<div class="filter">
+									<app-related-reports [reportId]="report.id"></app-related-reports>
+								</div>
+							</div>
 
 						</mat-expansion-panel>
 

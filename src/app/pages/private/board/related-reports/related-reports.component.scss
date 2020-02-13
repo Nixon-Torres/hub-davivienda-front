@@ -17,12 +17,14 @@
     box-sizing: border-box;
     border: solid 1px #ccc;
     margin: 10px 10px 10px 0;
-    color: rgba(0, 0, 0, 0.87);
+    color: #adb3b8;
     justify-content: space-between;
 
     span {
         line-height: 1.8;
         padding-left: 8px;
+        width: 100%;
+        font-size: 0.86em;
     }
 
     i {
@@ -31,6 +33,9 @@
         font-size: 14px;
         line-height: 1.8;
         border-left: 1px solid #ccc;
+        img{
+            width: 1em;
+        }
     }
 }
 
@@ -61,5 +66,9 @@
         display: block !important;
     }
     display: none;
-    background-color: red;
+}
+
+input::placeholder{
+    font-size: 0.77em;
+    color: #a5abb1;
 }
