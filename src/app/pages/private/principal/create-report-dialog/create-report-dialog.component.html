@@ -39,13 +39,13 @@
 					<p class="cargue">{{author.charge}}</p>
 					<button class="del icon icon-times" (click)=onDeleteAuthor(indice)></button>
 				</li>
-				<li>
+				<li *ngIf="list.authors.length < 3">
 					<button type="button" class="add icon icon-plus" (click)=onAddAuthor()></button>
 					<p>Agregar<span>Autor / Colaborador</span></p>
 				</li>
 			</ul>
 
-			<div class="select-content--medium">
+			<div class="select-content--medium" *ngIf="list.authors.length < 3">
 				<ng-select [items]="list.users" bindValue="name" bindLabel="name"
 					placeholder="Escriba o seleccione el autor o colaborar" (change)="onOptionsSelected($event)"
                            [virtualScroll]="true"
