@@ -40,6 +40,7 @@ export class PdfUploadComponent implements OnInit {
         const formData = new FormData();
         formData.append('types', encodeURI(JSON.stringify(['pdf'])));
         formData.append('file', this.uploadForm.get('file').value);
+        formData.append('key', 'pdf');
         this.spinner = true;
         this.errorMsg = null;
         this.fileData = null;
