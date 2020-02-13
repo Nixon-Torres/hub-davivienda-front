@@ -15,9 +15,9 @@ export class RelatedReportsComponent implements OnInit {
 	public timer: any = {
 		toRelated: null
 	}
-	public ifilter;
+	public ifilter: string;
 	public relatedReports: any = [];
-	public findedReports: any = [];
+	public foundedReports: any = [];
 
 	constructor(
 		private http: HttpService
@@ -37,7 +37,7 @@ export class RelatedReportsComponent implements OnInit {
 			path: `reports/${this.reportId}/relateds`,
 			data: {
 				include: [
-					{ 
+					{
 						relation: 'related',
 						scope: {
 							fields: ['name']
@@ -48,15 +48,14 @@ export class RelatedReportsComponent implements OnInit {
 			},
 			encode: true
 		}).subscribe((response: any) => {
-			this.relatedReports = response.body; 
+			this.relatedReports = response.body;
 		});
 	}
 
 	public searchReports(): void {
 		if (this.timer.toRelated) clearTimeout(this.timer.toRelated);
 		if (!this.ifilter.replace(/\s/g, '').length) {
-			this.findedReports = [];
-			document.getElementById("foundedReports").classList.remove("show");
+			this.foundedReports = [];
 			return;
 		}
 
@@ -68,7 +67,7 @@ export class RelatedReportsComponent implements OnInit {
 					where: {
 						and: [{
 							id: {
-								nin: [this.reportId].concat(this.relatedReports.map((a) => a.id))
+								nin: [this.reportId].concat(this.relatedReports.map((a: any) => a.relateId))
 							},
 							name: {
 								like: this.ifilter, options: "i"
@@ -79,8 +78,7 @@ export class RelatedReportsComponent implements OnInit {
 				},
 				encode: true
 			}).subscribe((response: any) => {
-				this.findedReports = response.body;
-				document.getElementById("foundedReports").classList.add("show");
+				this.foundedReports = response.body;
 			});
 		}, 800);
 	}
@@ -91,7 +89,7 @@ export class RelatedReportsComponent implements OnInit {
 		});
 	}
 
-	private rcSaveRelations(input, index, fn): Function {
+	private rcSaveRelations(input: Array<any>, index: number, fn: Function): Function {
 		if(index == input.length) return fn();
 		let val = input[index];
 		let path = val.id ? `reportsRelated/${val.id}` : 'reportsRelated';
@@ -117,7 +115,7 @@ export class RelatedReportsComponent implements OnInit {
 		});
 	}
 
-	public relateReport(related): void {
+	public relateReport(related: any): void {
 		this.saveRelatations([
 			{
 				reportId: this.reportId,
@@ -129,13 +127,12 @@ export class RelatedReportsComponent implements OnInit {
 				}
 			}
 		], () => {
-			document.getElementById("foundedReports").classList.remove("show");
-			document.getElementById("searchReports").firstChild.value = "";
-			this.findedReports = [];
+			this.ifilter = '';
+			this.foundedReports = [];
 		});
 	}
 
-	public deleteReportRelationship(related): void {
+	public deleteReportRelationship(related: any): void {
 		this.http.delete({
 			path: `reportsRelated/${related.id}`
 		}).subscribe(() => {

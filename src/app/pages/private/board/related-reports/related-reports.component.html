@@ -1,9 +1,9 @@
-<div id="searchReports">
+<div>
 	<input type="text" [(ngModel)]="ifilter" (keyup)="searchReports()">
 </div>
 
-<mat-action-list id="foundedReports">
-	<button mat-list-item *ngFor="let report of findedReports;" (click)="relateReport(report)">
+<mat-action-list id="foundedReports" [ngClass]="{'show': foundedReports.length}">
+	<button mat-list-item *ngFor="let report of foundedReports;" (click)="relateReport(report)">
 		<span>{{ report.name }}</span>
 	</button>
 </mat-action-list>
