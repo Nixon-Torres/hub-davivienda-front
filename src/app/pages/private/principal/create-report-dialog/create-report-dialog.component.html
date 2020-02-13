@@ -20,7 +20,7 @@
 				placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
 				[clearable]="false" class="custom-select ">
 			</ng-select>
-		</div>			
+		</div>
 
 		<span class="divider"></span>
 
@@ -28,8 +28,13 @@
 		<p class="intro">Agregue / edite el autor o colaborador que participará en el informe</p>
 		<div class="authors-box">
 			<ul>
+                <li>
+                    <img src="/assets/images/user/{{user.photo ? user.photo : 'user.png'}}" width="44">
+                    <p class="name">{{user.name}}</p>
+                    <p class="cargue">{{user.charge}}</p>
+                </li>
 				<li *ngFor="let author of list.authors; let indice=index">
-					<img src="/assets/images/user/{{author.photo}}" width="44">
+					<img src="/assets/images/user/{{author.photo ? author.photo : 'user.png'}}" width="44">
 					<p class="name">{{author.name}}</p>
 					<p class="cargue">{{author.charge}}</p>
 					<button class="del icon icon-times" (click)=onDeleteAuthor(indice)></button>
@@ -42,10 +47,11 @@
 
 			<div class="select-content--medium">
 				<ng-select [items]="list.users" bindValue="name" bindLabel="name"
-					placeholder="Escriba o seleccione el autor o colaborar" (change)="onOptionsSelected($event)" [virtualScroll]="true"
+					placeholder="Escriba o seleccione el autor o colaborar" (change)="onOptionsSelected($event)"
+                           [virtualScroll]="true"
 					[clearable]="false" class="custom-select custom-select--no-height">
 				</ng-select>
-			</div>	
+			</div>
 
 		</div>
 	</div>
@@ -60,7 +66,7 @@
 						<div class="group-radio-two--option" *ngFor="let template of list.templates">
 							<input type="radio" formControlName="templateId" [value]="template.id" [id]="template.id">
 							<label class="" [for]="template.id">
-								<img class="template_img" src="/assets/images/section/{{template.thumbnail}}" alt="">		
+								<img class="template_img" src="/assets/images/section/{{template.thumbnail}}" alt="">
 								{{template.name}}
 							</label>
 						</div>

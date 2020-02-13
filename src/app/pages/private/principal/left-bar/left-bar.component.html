@@ -13,7 +13,7 @@
         <ul class="options--list options-folder">
             <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}" (click)="setCurrentFolder(folder)">
                 <a>{{folder.name}}</a>
-                <span class="cnt">{{folder.reports ? folder.reports.length : 0}}</span></li>
+                <span class="cnt">{{folder.count}}</span></li>
             <li class="edit-btn-item">
                 <button mat-raised-button (click)="openDialog()"><span class="icon icon-cog cog_icon"></span> Editar y crear carpetas</button>
             </li>

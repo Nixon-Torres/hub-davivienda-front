@@ -464,9 +464,7 @@ $builder-bg: #f5f7fb;
 
 .info_content{
 	mat-checkbox{
-		width: 40%;
-		/* margin: 0 auto; */
-
+		width: 8%;
 		&::before{
 			content: "";
 			border: solid 1px #f3f3f373;
@@ -485,14 +483,16 @@ $builder-bg: #f5f7fb;
 		}
 	}
 	.report_name{
-		width: 14%;
+		width: 12%;
+		padding-right: 2%;
 	}
 	.report_content{
 		margin: 0 auto;
 		max-width: 80px;
 	}
 	.report--title{
-		margin-left: 2.5em;
+		max-width: 40%;
+    width: 35%
 	}
 }
 
@@ -509,6 +509,8 @@ $builder-bg: #f5f7fb;
 	color: #616161;
 	font-weight: bold;
 	font-size: 14px;
+	position: relative;
+    right: 3%;
 }
 
 
