@@ -19,7 +19,7 @@
 				<a href="#"><i class="material-icons" >chevron_left</i>Volver</a>
 			
 			<div class="mat-card-container">
-				<mat-card *ngFor="let notification of notifications">
+				<mat-card *ngFor="let notification of notifications" (click)="openNotification(notification.reportId)" matRipple>
 					<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
 					<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
 					

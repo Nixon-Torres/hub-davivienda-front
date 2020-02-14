@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { HttpService } from '../../../services/http.service';
 import { SocketService } from '../../../services/socket.service';
@@ -18,6 +19,7 @@ export class NotificationsComponent implements OnInit {
 	public notifications: any = [];
 
 	constructor (
+        private router: Router,
 		private http: HttpService,
         private socket: SocketService
 	) {
@@ -106,6 +108,10 @@ export class NotificationsComponent implements OnInit {
 
     private countNotifications() {
         this.ntfQty = this.notifications.length;
+    }
+
+    public openNotification(reportId) {
+        this.router.navigate(['app/board', reportId]);
     }
 
 }
