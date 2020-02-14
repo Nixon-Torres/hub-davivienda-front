@@ -54,8 +54,9 @@ export class RelatedReportsComponent implements OnInit {
 
 	public searchReports(): void {
 		if (this.timer.toRelated) clearTimeout(this.timer.toRelated);
-		if (!this.ifilter.replace(/\s/g, '').length) {
+		if (!this.ifilter.replace(/\s/g, '').length || this.relatedReports.length >= 4) {
 			this.foundedReports = [];
+			this.ifilter = '';
 			return;
 		}
 
@@ -67,7 +68,7 @@ export class RelatedReportsComponent implements OnInit {
 					where: {
 						and: [{
 							id: {
-								nin: [this.reportId].concat(this.relatedReports.map((a: any) => a.relateId))
+								nin: [this.reportId].concat(this.relatedReports.map((a: any) => a.relatedId))
 							},
 							name: {
 								like: this.ifilter, options: "i"
@@ -116,6 +117,11 @@ export class RelatedReportsComponent implements OnInit {
 	}
 
 	public relateReport(related: any): void {
+		this.foundedReports = [];
+		if (this.relatedReports.length >= 4) {
+			this.ifilter = '';
+			return;
+		}
 		this.saveRelatations([
 			{
 				reportId: this.reportId,
@@ -128,7 +134,6 @@ export class RelatedReportsComponent implements OnInit {
 			}
 		], () => {
 			this.ifilter = '';
-			this.foundedReports = [];
 		});
 	}
 
@@ -136,7 +141,7 @@ export class RelatedReportsComponent implements OnInit {
 		this.http.delete({
 			path: `reportsRelated/${related.id}`
 		}).subscribe(() => {
-			this.relatedReports.splice(related.pos, 1);
+			this.relatedReports = this.relatedReports.filter((a) => a.id != related.id);
 		});
 	}
 
