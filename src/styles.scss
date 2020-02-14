@@ -793,6 +793,17 @@ margin-top: 2%;
 }
 
 mat-expansion-panel {
+
+	& .mat-list-base{
+		position: absolute;
+		left: 0;
+		border-right: solid 1px #F0EFEF;
+    	border-left: solid 1px #EAEAEA;
+	}
+
+	& .mat-action-list{
+		z-index: 10;
+	}
 	
 	& .mat-list-base .mat-list-item{
 		height: auto;
@@ -825,6 +836,5 @@ mat-expansion-panel {
 
 	}
 }
-
 
 
