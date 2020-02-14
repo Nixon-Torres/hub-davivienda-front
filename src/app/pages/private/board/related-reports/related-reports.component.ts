@@ -29,6 +29,10 @@ export class RelatedReportsComponent implements OnInit {
 
 	public drop(event: CdkDragDrop<string[]>) {
 		moveItemInArray(this.relatedReports, event.previousIndex, event.currentIndex);
+		this.relatedReports.map((val, ind) => {
+			val.pos = ind;
+			return val;
+		});
 		this.saveRelatations(this.relatedReports);
 	}
 
