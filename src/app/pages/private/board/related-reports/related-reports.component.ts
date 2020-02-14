@@ -99,7 +99,7 @@ export class RelatedReportsComponent implements OnInit {
 		} : {
 			pos: val.pos,
 			reportId: val.reportId,
-			relateId: val.relatedId
+			relatedId: val.relatedId
 		}
 
 		this.http[method]({
