@@ -784,7 +784,8 @@ margin-top: 2%;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			color: #a5abb1;
-			padding-right: 10px;
+			padding-right: 30px;
+			width: calc(100% - 30px);
         } 
         }
         
