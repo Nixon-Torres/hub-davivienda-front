@@ -872,6 +872,9 @@ margin-top: 2%;
 /* =========================================================== *\
     						NOTIFICATIONS
 \* =========================================================== */
-.bg-cyan {
-	background-color: darkcyan;
-}
+.bg-publish { background-color: #19D600; }
+.bg-approved { background-color: #00FFF5; }
+.bg-reviewed { background-color: #FF003B; }
+.bg-toReview { background-color: #F9E333; }
+.bg-draft { background-color: #D9D9D9; }
+.bg-default { background-color: black; }

@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpService } from '../../services/http.service';
 import { SocketService } from '../../services/socket.service';
 
-import { loopback } from '../../models/common/loopback.model';
+// import { loopback } from '../../models/common/loopback.model';
 import * as moment from 'moment';
 
 @Component({
@@ -34,34 +34,16 @@ export class HeaderComponent implements OnInit {
     ngOnInit() {
 
         moment.locale('es'); // Set locale lang for momentJs
-        var query = new loopback();
-
-        query.filter.include = [{
-                relation: "owner",
-                scope: {
-                    fields: ['name', 'tales']
-                }
-            },{
-                relation: "emitter",
-                scope: {
-                    fields: ['name', 'tales']
-                }
-            },{
-                relation: "report",
-                scope: {
-                    fields: ['name', 'tales']
-                }
-            } //, {
-            //     relation: "comment",
-            //     scope: {
-            //         fields: ['name', 'tales']
-            //     }
-            // }
-        ];
 
         this.http.get({
             'path': `notifications`,
-            'data': query.filter,
+            'data': {
+                order: 'id DESC',
+                include: [
+                    { relation: "emitter", scope: { fields: ['name'] } },
+                    { relation: "report", scope: { fields: ['name', 'stateId'] } }
+                ]
+            },
             'encode': true
         }).subscribe((response: any) => {
             if ("body" in response) {
@@ -81,11 +63,9 @@ export class HeaderComponent implements OnInit {
     }
 
     private processNotification(item: any) {
-
         let timeFromNow: string = moment(item.updatedAt).fromNow();
         let existReport: boolean = "report" in item && "name" in item.report ? true : false;
         let existEmitter: boolean = "emitter" in item && "name" in item.emitter ? true : false;
-
         let notf: any = {
             type: item.type,
             timeAgo: timeFromNow[0].toUpperCase() + timeFromNow.slice(1),
@@ -105,6 +85,32 @@ export class HeaderComponent implements OnInit {
                 notf.title = 'INFORME';
                 notf.description = existReport ? `El informe ${item.report.name}` : 'Un informe';
                 notf.description += " ha sido actualizado";
+                notf.bgColor = 'bg-default';
+
+                if ("report" in item && "stateId" in item.report) {
+                    switch (item.report.stateId) {
+                        case "5e068c81d811c55eb40d14d0":
+                            notf.bgColor = 'bg-publish';
+                            break;
+
+                        case "5e068d1cb81d1c5f29b62974":
+                            notf.bgColor = 'bg-approved';
+                            break;
+                            
+                        case "5e068d1cb81d1c5f29b62975":
+                            notf.bgColor = 'bg-reviewed';
+                            break;
+                            
+                        case "5e068d1cb81d1c5f29b62976":
+                            notf.bgColor = 'bg-toReview';
+                            break;
+                            
+                        case "5e068d1cb81d1c5f29b62977":
+                            notf.bgColor = 'bg-draft';
+                            break;
+                    }
+                }
+
                 break;
 
             default:

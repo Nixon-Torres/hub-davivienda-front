@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { HttpService } from '../../../services/http.service';
 import { SocketService } from '../../../services/socket.service';
 
-import { loopback } from '../../../models/common/loopback.model';
 import * as moment from 'moment';
 
 @Component({
@@ -27,33 +26,16 @@ export class NotificationsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		var query = new loopback();
-        query.filter.include = [{
-                relation: "owner",
-                scope: {
-                    fields: ['name', 'tales']
-                }
-            },{
-                relation: "emitter",
-                scope: {
-                    fields: ['name', 'tales']
-                }
-            },{
-                relation: "report",
-                scope: {
-                    fields: ['name', 'tales']
-                }
-            } //, {
-            //     relation: "comment",
-            //     scope: {
-            //         fields: ['name', 'tales']
-            //     }
-            // }
-        ];
 
         this.http.get({
             'path': `notifications`,
-            'data': query.filter,
+            'data': {
+                order: 'id DESC',
+                include: [
+                    { relation: "emitter", scope: { fields: ['name'] } },
+                    { relation: "report", scope: { fields: ['name', 'stateId'] } }
+                ]
+            },
             'encode': true
         }).subscribe((response: any) => {
             if ("body" in response) {
@@ -73,13 +55,13 @@ export class NotificationsComponent implements OnInit {
     }
 
     private processNotification(item: any) {
-
+        let timeFromNow: string = moment(item.updatedAt).fromNow();
         let existReport: boolean = "report" in item && "name" in item.report ? true : false;
         let existEmitter: boolean = "emitter" in item && "name" in item.emitter ? true : false;
 
         let notf: any = {
             type: item.type,
-            timeAgo: "Hace 2 horas",
+            timeAgo: timeFromNow[0].toUpperCase() + timeFromNow.slice(1),
             readed: item.readed,
             reportId: item.reportId
         };

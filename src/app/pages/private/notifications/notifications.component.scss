@@ -138,32 +138,41 @@ mat-drawer{
 		line-height: 1.35;
 		padding-left: 3rem;
 		position: relative;
-			h6{
-				font-weight: 500;
-				color: #A5ABB1;
-				padding-bottom: .3rem;
-				font-size: .85rem;
-			}
 
-			p{
-				font-size: .85rem;
-				padding-bottom: .9rem;
-				color: #5C5C5C;
-				font-weight: 500;
-			}
+		&.to-check {
+			background-color: #FDFDFD;
 
-			small{
-				font-size: .6rem;
+			&:hover {
+				background-color: #E9EBF0;
 			}
+		}
 
-			img{
-				position: absolute;
-				top: 0;
-				left: 15px;
-				max-width: 15px;
-				bottom: 0;
-				margin: auto;
-			}
+		h6 {
+			font-weight: 500;
+			color: #A5ABB1;
+			padding-bottom: .3rem;
+			font-size: .85rem;
+		}
+
+		p {
+			font-size: .85rem;
+			padding-bottom: .9rem;
+			color: #5C5C5C;
+			font-weight: 500;
+		}
+
+		small {
+			font-size: .6rem;
+		}
+
+		img {
+			position: absolute;
+			top: 0;
+			left: 15px;
+			max-width: 15px;
+			bottom: 0;
+			margin: auto;
+		}
 	}
 }
 

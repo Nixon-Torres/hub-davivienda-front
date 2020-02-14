@@ -89,6 +89,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
                 this.report.id = params.get("id");
                 this.loadReport(this.report.id);
+                this.notfAsReaded();
 
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -577,5 +578,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     focusOnReportName() {
         document.getElementById("reportName").focus();
+    }
+
+    public notfAsReaded() {
+        // console.log("id: ", this.report.id);
+
+        // this.http.get({
+        //     'path': `reports/${this.report.id}/notifications`
+        // }).subscribe((response: any) => {
+
+        //     console.log("response", response);
+        // });
     }
 }
