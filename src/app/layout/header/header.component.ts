@@ -42,7 +42,8 @@ export class HeaderComponent implements OnInit {
                 include: [
                     { relation: "emitter", scope: { fields: ['name'] } },
                     { relation: "report", scope: { fields: ['name', 'stateId'] } }
-                ]
+                ],
+                where: { ownerId: this.user.id }
             },
             'encode': true
         }).subscribe((response: any) => {
