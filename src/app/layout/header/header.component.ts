@@ -149,6 +149,7 @@ export class HeaderComponent implements OnInit {
     }
 
     openNotf(reportId: number) {
+        --this.ntfQty;
         this.notifications.filter((a) => {
             if(a.reportId == reportId) {
                 a.readed = true;
