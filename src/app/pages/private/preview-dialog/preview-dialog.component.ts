@@ -23,8 +23,6 @@ export class PreviewDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.report.id = this.data.reportId;
-        this.report.content = this.data.content;
-        this.report.styles = this.data.styles;
     }
 
     ngOnInit() {
@@ -36,17 +34,14 @@ export class PreviewDialogComponent implements OnInit {
 
         document.querySelector('.mat-dialog-container').classList.add('not-scrollable');
 
-        if (this.report.content && this.report.styles) {
+        this.http.get({
+            'path': `reports/view?id=${this.report.id}`
+        }).subscribe((response: any) => {
+            console.log("r", response);
+            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
+            this.report.content = response.body.view.content ? response.body.view.content : '';
             this.loadReport();
-        } else {
-            this.http.get({
-                'path': `reports/${this.report.id}`
-            }).subscribe((response: any) => {
-                this.report.styles = response.body.styles ? response.body.styles : '';
-                this.report.content = response.body.content ? response.body.content : '';
-                this.loadReport();
-            });
-        }
+        });
     }
 
     public loadReport(): void {
