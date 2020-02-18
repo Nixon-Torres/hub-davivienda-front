@@ -25,17 +25,23 @@
 		</mat-menu>
 
 		<!-- NOTIFICATIONS -->
-		<button class="h-btn" mat-button [matMenuTriggerFor]="notifyMenu" (menuOpened)="isOpened($event)" matRipple>
+		<button 
+			class="h-btn" mat-button matRipple
+			[matMenuTriggerFor]="notifyMenu" 
+			(menuOpened)="isOpened($event)">
 			<i class="material-icons notifications_icon" matBadge="{{ntfQty}}" matBadgeSize="medium">notifications</i>
 		</button>
 		<mat-menu #notifyMenu="matMenu">
 			<h1 id="notificationHeader">Notificaciones</h1>
 			<section>
-			  	<button mat-menu-item [ngClass]="{'to-check' : !notification.readed}" *ngFor="let notification of notifications" (click)="openNotf(notification.reportId)">
+			  	<button mat-menu-item 
+			  		[ngClass]="{'to-check' : !notification.readed}" 
+			  		*ngFor="let notification of notifications"
+			  		(click)="openNotf(notification.reportId, notification.readed)">
 		  			<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
-		  			<div class="indicator {{ notification.bgColor }}" *ngIf="notification.type === 'report'"></div>
-			  		<h6>{{ notification.title }}</h6>
-			  		<p>{{ notification.description }}</p>
+		  			<div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
+			  		<h6>{{ notification.subject }}</h6>
+			  		<p>{{ notification.text }}</p>
 			  		<small>{{ notification.timeAgo }}</small>
 			  	</button>
 			</section>

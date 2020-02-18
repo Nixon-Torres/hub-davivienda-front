@@ -19,6 +19,13 @@ export class HeaderComponent implements OnInit {
     public ntfQty: number = 0;
     public onPrincipal: boolean = false;
     public notifications: any = [];
+    private stateColors: any = {
+        '5e068c81d811c55eb40d14d0': 'bg-publish',
+        '5e068d1cb81d1c5f29b62974': 'bg-approved',
+        '5e068d1cb81d1c5f29b62975': 'bg-reviewed',
+        '5e068d1cb81d1c5f29b62976': 'bg-toReview',
+        '5e068d1cb81d1c5f29b62977': 'bg-draft'
+    };
 
     constructor(
         private router: Router,
@@ -32,10 +39,16 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getNotifications();
+        this.getCountNotifications();
 
         moment.locale('es'); // Set locale lang for momentJs
 
-        this.http.get({
+       
+    }
+
+    private getNotifications(): void {
+     this.http.get({
             'path': `notifications`,
             'data': {
                 order: 'id DESC',
@@ -43,13 +56,27 @@ export class HeaderComponent implements OnInit {
                     { relation: "emitter", scope: { fields: ['name'] } },
                     { relation: "report", scope: { fields: ['name', 'stateId'] } }
                 ],
-                where: { ownerId: this.user.id }
+                where: { ownerId: this.user.id },
+                limit: 10
             },
             'encode': true
         }).subscribe((response: any) => {
             if ("body" in response) {
                 response.body.map( notification => { this.processNotification(notification) });
-                this.countNotifications();
+            }
+        });
+    }
+
+    private getCountNotifications(): void {
+        this.http.get({
+            'path': `notifications/count?where=`,
+            'data': {
+                    ownerId: this.user.id,
+                    readed: false
+            }
+        }).subscribe((response: any) => {
+            if ("body" in response) {
+               this.ntfQty = response.body.count;
             }
         });
     }
@@ -58,72 +85,32 @@ export class HeaderComponent implements OnInit {
         this.socket.start().subscribe(() => {
             this.socket.on("notification").subscribe((response) => {
                 this.processNotification(response);
-                this.countNotifications();
+                this.getCountNotifications();
             });
         });
     }
 
     private processNotification(item: any) {
         let timeFromNow: string = moment(item.updatedAt).fromNow();
-        let existReport: boolean = "report" in item && "name" in item.report ? true : false;
-        let existEmitter: boolean = "emitter" in item && "name" in item.emitter ? true : false;
+        let txtDescription: string = item.text
+                                    .replace(/{{emitter_name}}/, item.emitter.name)
+                                    .replace(/{{report_name}}/, item.report.name);
         let notf: any = {
+            id: item.id,
             type: item.type,
-            timeAgo: timeFromNow[0].toUpperCase() + timeFromNow.slice(1),
+            subject: item.subject,
+            text: txtDescription,
+            timeAgo: timeFromNow,
             readed: item.readed,
             reportId: item.reportId
         };
 
-        switch (item.type) {
-            case "report-comment":
-                notf.title = 'COMENTARIOS';
-                notf.description =  existEmitter ? `${item.emitter.name} ha dejado` : 'Han dejado';
-                notf.description += " un comentario en ";
-                notf.description +=  existReport ? `el informe ${item.report.name}` : 'un informe';
-                break;
-
-            case "report":
-                notf.title = 'INFORME';
-                notf.description = existReport ? `El informe ${item.report.name}` : 'Un informe';
-                notf.description += " ha sido actualizado";
-                notf.bgColor = 'bg-default';
-
-                if ("report" in item && "stateId" in item.report) {
-                    switch (item.report.stateId) {
-                        case "5e068c81d811c55eb40d14d0":
-                            notf.bgColor = 'bg-publish';
-                            break;
-
-                        case "5e068d1cb81d1c5f29b62974":
-                            notf.bgColor = 'bg-approved';
-                            break;
-                            
-                        case "5e068d1cb81d1c5f29b62975":
-                            notf.bgColor = 'bg-reviewed';
-                            break;
-                            
-                        case "5e068d1cb81d1c5f29b62976":
-                            notf.bgColor = 'bg-toReview';
-                            break;
-                            
-                        case "5e068d1cb81d1c5f29b62977":
-                            notf.bgColor = 'bg-draft';
-                            break;
-                    }
-                }
-
-                break;
-
-            default:
-                notf.title = 'GENERAL';
-                break;
+        if (item.type !== "report-comment" && "report" in item && "stateId" in item.report) {
+            notf.bgColor = this.stateColors[item.report.stateId] || 'bg-default';
         }
 
         this.notifications.push(notf);
-    }
-
-    private countNotifications() {
-        this.ntfQty = this.notifications.length;
+        this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
     }
 
     private startToListenRouter(router: Router) {
@@ -148,8 +135,8 @@ export class HeaderComponent implements OnInit {
         ntContainer.classList.add('notifications');
     }
 
-    openNotf(reportId: number) {
-        --this.ntfQty;
+    openNotf(reportId: number, readed: boolean) {
+        if (!readed) --this.ntfQty;
         this.notifications.filter((a) => {
             if(a.reportId == reportId) {
                 a.readed = true;
