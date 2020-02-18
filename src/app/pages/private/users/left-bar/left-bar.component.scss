@@ -1,0 +1,158 @@
+.options {
+	background: #FFFFFF;
+	border: solid 1px #E7EAF1;
+	border-bottom: none;
+	font-size: 1em;
+	min-height: 430px;
+
+	&--name {
+		color: #616161;
+		font-weight: 700;
+		height: 60px;
+		line-height: 60px;
+		padding-left: 6%;
+		text-align: left;
+
+		&:before  {
+			color: #bec5d0;
+		}
+
+		&.variation {
+			background: #F2F2F2;
+		}
+	}
+
+		&--list {
+			box-sizing: border-box;
+			padding: 20px 10% 20px 7%;
+	        padding-top: 0px;
+	        padding-bottom: 0px;
+			border-top: solid 1px #E7EAF1;
+
+			li {
+				border-bottom: 1px solid #E7EAF1;
+				padding: 20px 0;
+				position: relative;
+				cursor: pointer;
+
+				a {
+					color: #616161;
+					font-size: 0.875em;
+					padding-left: 22px;
+					text-decoration: none;
+	                cursor: pointer;
+				}
+
+				&:before {
+					content: "";
+					bottom: 0;
+					height: 50%;
+					position: absolute;
+					top: 0;
+					left: 4px;
+					margin: auto;
+					width: 2px;
+				}
+
+				&.cian {
+					&:before {
+						background: #00FFF5;
+					}
+				}
+
+	            &.cian.active {
+	                a {
+	                    color: #00FFF5;
+	                    font-weight: 500;
+	                }
+	            }
+
+				&.green {
+					&:before {
+						background: #19D600;
+					}
+				}
+
+	            &.green.active {
+	                a {
+	                    color: #19D600;
+	                    font-weight: 500;
+	                }
+	            }
+
+				&.red {
+					&:before {
+						background: #FF003B;
+					}
+				}
+
+	            &.red.active {
+	                a {
+	                    color: #FF003B;
+	                    font-weight: 500;
+	                }
+	            }
+
+				&.yellow {
+					&:before {
+						background: #F9E333;
+					}
+				}
+
+	            &.yellow.active {
+	                a {
+	                    color: #F9E333;
+	                    font-weight: 500;
+	                }
+	            }
+
+				&.gray {
+					&:before {
+						background: #D9D9D9;
+					}
+				}
+
+	            &.gray.active {
+	                a {
+	                    color: #D9D9D9;
+	                    font-weight: 500;
+	                }
+	            }
+
+				.cnt {
+					background: #F5F7FB;
+					bottom: 0;
+					border-radius: 20px;
+					box-sizing: border-box;
+					color: #616161;
+					font-size: 0.875em;
+					height: 28px;
+					line-height: 28px;
+					margin: auto 0;
+					min-width: 30px;
+					padding: 0 10px;
+					position: absolute;
+					right: 0px;
+					text-align: center;
+					top: 0;
+					width: auto;
+				}
+
+				&.active {
+					color: #0080FF;
+
+					.cnt, a {
+						color: #0080FF;
+						font-weight: 700;
+					}
+
+					&:before {
+						background: #0080FF;
+					}
+				}
+
+
+			}
+		}
+
+}
