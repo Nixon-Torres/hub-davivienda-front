@@ -11,12 +11,15 @@ import { loopback } from '../../../../models/common/loopback.model';
 })
 export class LeftBarComponent implements OnInit {
 
+	private static ROLE: String = 'Admin';
+
 	public list: any = {
 		groups: []
 	}
 
 	private idCurrentGroup: any;
 	public user: any = {};
+	public showGruopsUser: boolean;
 
 	constructor(
 		private http: HttpService,
@@ -27,6 +30,7 @@ export class LeftBarComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.setShowGruopsUser();
 		this.getGroups();
 	}
 
@@ -47,8 +51,13 @@ export class LeftBarComponent implements OnInit {
 	}
 
 	public isActive(id) {
-		console.log(this.user);
 		return this.idCurrentGroup === id;
-	}	 
+	}
+
+	public setShowGruopsUser() {
+		let found = this.user.roles.find(element => element === LeftBarComponent.ROLE);
+		this.showGruopsUser = found === undefined ? false : true ;
+		return this.showGruopsUser;
+	}	 	
 
 }
