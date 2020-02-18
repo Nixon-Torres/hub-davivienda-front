@@ -15,11 +15,30 @@
 			</div>
 		</div>
 
-		<div class="select-content--medium">
-			<ng-select [items]="list.typeSections" bindValue="value" bindLabel="value"
-				placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
-				[clearable]="false" class="custom-select ">
-			</ng-select>
+		<div style="width: 80%; margin: 0 auto">
+			<div class="select-content--medium">
+				<ng-select [items]="list.typeSections" bindValue="key" bindLabel="value"
+					placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
+					[clearable]="false" class="custom-select " (change)="typeChanged()"
+					[(ngModel)]="typeSelected" [ngModelOptions]="{standalone: true}">
+				</ng-select>
+			</div>
+	
+			<div class="new-section-block" *ngIf="typeSelected === 'add-new-section'" style="height: 30px">
+				<div class="select-content--medium" style="width: 45%; float: left; margin-right: 5%">
+					<ng-select [items]="list.sections" bindValue="id" bindLabel="name"
+						placeholder="Seleccione sección del Informe" [virtualScroll]="true"
+						[clearable]="false" class="custom-select " 
+						[(ngModel)]="newSectionSelected" [ngModelOptions]="{standalone: true}">
+					</ng-select>
+				</div>
+				<div class="select-content--medium" style="width: 45%; float: left">
+					<div class="input-field" style="width: 100%;">
+						<input id="newSectionName" type="text" placeholder="Escriba aquí"
+						[(ngModel)]="newSectionName" [ngModelOptions]="{standalone: true}">
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<span class="divider"></span>

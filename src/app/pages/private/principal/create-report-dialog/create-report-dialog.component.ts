@@ -32,9 +32,13 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public user: any = {};
     public originalUsers = [];
 
+    public typeSelected;
+    public newSectionSelected;
+    private newReportObj = {key: 'add-new-section', value: 'Agregar nuevo tipo de informe'};
+
     public list: any = {
         sections: [],
-        typeSections: [],
+        typeSections: [this.newReportObj],
         authors: this.authors,
         templates: [],
         users: [],
@@ -126,8 +130,18 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public typeChanged() {
+        console.log(this.typeSelected);
+    }
+
     public onUpdateTypes($event, index) {
-        this.list.typeSections = this.list.sections[index].types;
+        var types = this.list.sections[index].types;
+        types = types.reduce((y, x) => {
+            if (!y.find((e) => e.key === x.key)) y.push(x);
+            return y;
+        }, []);
+        types.push(this.newReportObj);
+        this.list.typeSections = types;
         this.createReportForm.patchValue({'sectionTypeKey': null});
     }
 

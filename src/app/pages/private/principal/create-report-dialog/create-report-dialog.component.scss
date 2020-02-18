@@ -1,5 +1,30 @@
 @import '../../../../../assets/sass/_mixins';
 
+.new-section-block {
+	margin-top: 20px;
+}
+
+.input-field {
+	width: 20vw;
+	display: inline-block;
+	max-width: 300px;
+
+	input {
+		width: 100%;
+		color: #616161;
+		padding: 0 5px;
+		font-size: 12px;
+		margin-bottom: 0;
+		height: 2rem !important;
+		border: 1px solid #C2CBD1;
+
+		&:focus {
+			box-shadow: none;
+			border-color: #0080FF;
+		}
+	}
+}
+
 .modal-form {
 	@include display-flex;
 	justify-content: flex-start;
@@ -263,7 +288,7 @@
 	.select-content {
 		&--medium {
 			margin: 0 auto;
-			width: 70%;
+			width: 100%;
 		}
 	}
 }
