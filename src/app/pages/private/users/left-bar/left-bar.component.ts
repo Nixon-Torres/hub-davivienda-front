@@ -16,11 +16,15 @@ export class LeftBarComponent implements OnInit {
 	}
 
 	private idCurrentGroup: any;
+	public user: any = {};
 
 	constructor(
 		private http: HttpService,
 		private auth: AuthService
-	) {}
+	) {
+		this.user = this.auth.getUserData();
+		this.setActive(this.user.id);
+	}
 
 	ngOnInit() {
 		this.getGroups();
@@ -34,7 +38,6 @@ export class LeftBarComponent implements OnInit {
 			data: query.filter,
 			encode: true
 		}).subscribe((response: any) => {
-			console.log(response.body);
 			this.list.groups = response.body;
 		});
 	}
@@ -44,6 +47,7 @@ export class LeftBarComponent implements OnInit {
 	}
 
 	public isActive(id) {
+		console.log(this.user);
 		return this.idCurrentGroup === id;
 	}	 
 
