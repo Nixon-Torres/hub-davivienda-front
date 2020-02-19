@@ -4,6 +4,9 @@ import { UsersComponent } from './users.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
+import { GalleryDialogComponent } from './gallery-dialog/gallery-dialog.component';
+
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 const routes: Routes = [{
@@ -11,11 +14,22 @@ const routes: Routes = [{
 	component: UsersComponent
 }];
 
+const materialModules: any[] = [
+	MatDialogModule
+];
+
 @NgModule({
-  declarations: [UsersComponent, LeftBarComponent, RightContentComponent],
-  imports: [
-	CommonModule,
-	RouterModule.forChild(routes)
-  ]
+	declarations: [UsersComponent, LeftBarComponent, RightContentComponent, GalleryDialogComponent],
+	imports: [
+		CommonModule,
+		RouterModule.forChild(routes),
+		materialModules
+	],
+	exports: [
+		materialModules
+	],
+	entryComponents: [
+		GalleryDialogComponent
+	]
 })
 export class UsersModule { }

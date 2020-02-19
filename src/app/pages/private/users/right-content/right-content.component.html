@@ -13,7 +13,7 @@
 		<form>
 			<div class="column--small">
 				<img src="../assets/images/user/{{user.photo ? user.photo : 'profile-default.png'}}">
-				<button type="" class="simple">Subir foto</button>
+				<button type="button" (click)="openDialog()" class="simple">Subir foto</button>
 			</div>
 			<div class="column">
 				<input class="bolder" type="text" value="{{user.name}}">

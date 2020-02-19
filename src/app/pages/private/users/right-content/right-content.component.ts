@@ -1,6 +1,9 @@
+
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
 
 
 @Component({
@@ -22,10 +25,10 @@ export class RightContentComponent implements OnInit {
 
 	constructor(
 		private auth: AuthService,
-		private users: UsersService
+		private users: UsersService,
+		public dialog: MatDialog
 	) { 
 		this.user = this.auth.getUserData();
-		console.log(this.user);
 	}
 
 	ngOnInit() {
@@ -65,6 +68,18 @@ export class RightContentComponent implements OnInit {
 			this.currentUsersGroup = response;
 		});
 	}
+
+	public openDialog(): void {
+		const dialogRef = this.dialog.open(GalleryDialogComponent, {
+			width: '900px',
+			height: '500px'
+		});
+
+		dialogRef.afterClosed().subscribe((result : any) => {
+
+		});
+	}
+
 
 
 

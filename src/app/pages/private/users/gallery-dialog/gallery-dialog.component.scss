@@ -1,0 +1,109 @@
+@import '../../../../../assets/sass/_mixins'; 
+
+ .galerie-content {
+	padding: 22px 0 16px 0	;
+	position: relative;
+
+	.title {
+		color: #A5ABB1;
+		font-size: 0.875em;
+		margin-left: 22px;
+	}
+
+	&--list {
+
+		margin-top: 45px;
+		border-top: 1px solid #E7EAF1;
+		position: relative;
+
+		label  {
+			font-size: 0.750em;
+			color: #0080FF;
+			position: absolute;
+			left: 45px;
+			top: -28px;
+			line-height: 2.2em;
+			border-bottom: 2px solid #0080FF;
+			font-weight: bolder;			
+		}
+
+		ul {
+			@include display-flex;
+			color: #A5ABB1;
+			font-size: 0.625em;
+			padding: 30px 12px 30px 22px;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			height: 290px;
+			align-content: baseline;
+
+			img {
+				height: auto;
+				width: 133px;
+
+			}
+
+			li {
+				margin: 20px 11px 0 0;
+				text-align: center;
+			}
+		}
+
+	}
+
+	.box-buttons {
+		border-top: 1px solid #E7EAF1;
+	}
+
+}
+
+.modal-close-cta {
+	position: absolute;
+	right: 10px;
+	top: 15px;
+	color: #616161;
+	font-style: italic;
+	font-size: 12px;
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	cursor: pointer;
+
+	span {
+		font-size: 16px;
+		font-style: normal;
+		font-weight: bold;
+		padding-left: 10px;
+	}
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+	font-size: 0.750em;
+	font-weight: 700;
+	color: white;
+	background-color: #616161;
+	display: inline-block;
+	width: 108px;
+	text-align: center;
+	padding: 7px;
+	border-radius: 3px;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #0080FF;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
