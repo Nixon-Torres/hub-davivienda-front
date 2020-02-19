@@ -62,7 +62,20 @@ header {
             background: transparent;
 
             i {
-                margin: auto 5px;
+                margin: 10px 5px 0;
+                font-size: 26px;
+
+                .mat-badge-content {
+                    top: -12px;
+                    right: -10px;
+                    width: 18px;
+                    height: 18px;
+                    font-size: 11px;
+                    line-height: 18px;
+                    font-family: arial;
+                    border: 2px solid white;
+                    background-color: #0080FF;
+                }
             }
         }
 
@@ -91,7 +104,8 @@ header {
                 }
             }
         }
-        button{
+
+        button {
             .notifications_icon{
                 color: silver;
             }

@@ -42,6 +42,10 @@ const routes: Routes = [
                 loadChildren: './pages/private/board/board.module#BoardModule'
             },
             {
+                path: 'notifications',
+                loadChildren: './pages/private/notifications/notifications.module#NotificationsModule'
+            },
+            {
                 path: '404',
                 loadChildren: './pages/public/not-found/not-found.module#NotFoundModule'
             },
