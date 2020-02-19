@@ -368,6 +368,7 @@ $builder-bg: #f5f7fb;
 			// Accordion panel content
 			.mat-expansion-panel-body {
 				font-size: 12px;
+				padding: 0 16px 16px;
 			}
 		}
 	}
@@ -864,7 +865,78 @@ margin-top: 2%;
 	}
 	&.btn-cancel {
 		background-color: transparent;
+		color: rgb(202, 205, 209);
+	}
+}
+
+.related{
+    .filter{
+        app-related-reports{
+           input{
+            background-image: url('assets/images/related.png');
+            background-repeat: no-repeat;
+			background-position: right;
+			border: solid 1px #c4c4c4;
+			padding: 7px 5px;
+			background-size: 16%;
+			background-color: #f5f7fb;
+			width: 89%;
+			margin-top: 7%;
+			font-family: Roboto, "Helvetica Neue", sans-serif;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			color: #a5abb1;
+			padding-right: 30px;
+			width: calc(100% - 30px);
+        } 
+        }
+        
+    }
+}
+
+mat-expansion-panel {
+
+	& .mat-list-base{
+		position: absolute;
+		left: 0;
+		width: 100%;
+		border-right: solid 1px #F0EFEF;
+    	border-left: solid 1px #EAEAEA;
+	}
+
+	& .mat-action-list{
+		z-index: 10;
+	}
+	
+	& .mat-list-base .mat-list-item{
+		height: auto;
+		background-color: #fff;
+		color: rgba(0,0,0,0.87);
+		padding: 8px 10px;
+
+		&:last-child {
+			border-bottom: solid 2px #f5faff;
+			padding-bottom: 10px;
+		}
+
+		&:hover{
+			background-color: #f5faff;
+    		color: #333
+		}
+
+		& .mat-list-item-content{
+			padding: 0 6px;
+		}
+	}
+
+	& .mat-list-base .mat-list-item .mat-list-item-content > span {
 		color: #A5ABB1;
+		font-size: 0.875em;
+		font-style: italic;
+		line-height: 1.2;
+		text-overflow: ellipsis;
+		overflow: hidden;
+
 	}
 }
 

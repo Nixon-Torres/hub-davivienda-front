@@ -1,0 +1,17 @@
+<div id="searchReports">
+	<input type="text" [(ngModel)]="ifilter" (keyup)="searchReports()" placeholder="Escribe el nombre del informe">
+</div>
+
+<mat-action-list id="foundedReports" [ngClass]="{'show': foundedReports.length}">
+	<button mat-list-item *ngFor="let report of foundedReports;" (click)="relateReport(report)">
+		<span>{{ report.name }}</span>
+	</button>
+</mat-action-list>
+
+<div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
+  	<div class="item" *ngFor="let report of relatedReports; index as i;" cdkDrag>
+  		<span *ngIf="report.related">{{ report.related.name }}</span>
+  		<i class="material-icons"><img src="/assets/images/move.png" alt=""></i>
+  		<i class="material-icons" (click)="deleteReportRelationship(report)" [attr.data-index]="i">close</i>
+  	</div>
+</div>
