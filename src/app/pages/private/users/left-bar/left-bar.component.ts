@@ -54,6 +54,8 @@ export class LeftBarComponent implements OnInit {
 		this.idCurrentGroup = id;
 		this.users.setShowProfile(value);
 		this.users.setNameGroup(name);
+		if (!value)
+			this.setCurrentUsersGroup(id);
 	}
 
 	public getName (id) {
@@ -69,6 +71,11 @@ export class LeftBarComponent implements OnInit {
 		let found = this.user.roles.find(element => element === LeftBarComponent.ROLE);
 		this.showGruopsUser = found === undefined ? false : true ;
 		return this.showGruopsUser;
+	}
+
+	public setCurrentUsersGroup(id) {
+		let found = this.list.groups.find(element => element.id === id);
+		this.users.setCurrentUsersGroup(found.users);
 	}
 
 }

@@ -12,15 +12,14 @@
 	<section class="profile" *ngIf="profile">
 		<form>
 			<div class="column--small">
-				<img src="../assets/images/user/user_2.png">
+				<img src="../assets/images/user/{{user.photo ? user.photo : 'profile-default.png'}}">
 				<button type="" class="simple">Subir foto</button>
 			</div>
 			<div class="column">
-				<input class="bolder" type="text" value="Andrés Villanueva">
-				<input class="regular" type="text" value="Analista financiero">
-				<input class="regular" type="text" value="andresvillanueva@bancodavivienda.com">
-				<textarea>lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non nibh sit amet elit dictum tincidunt. Fusce facilisis mauris et libero lacinia varius. Sed vitae feugiat dolor. Aenean vulputate facilisis tortor, eget semper neque. Sed iaculis molestie auctor. Vestibulum sed tellus efficitur, consectetur elit vel, consequat purus. Nunc odio justo, laoreet et augue elementum, interdum ornare dolor. Duis ultrices scelerisque diam, vel interdum libero ornare non. Ut ultricies mauris eget arcu euismod, lacinia hendrerit sapien ornare. Class aptent taciti sociosqu ad litora torquent p[ngClass]="{active: isActive(user.id)}"er conubia nostra, per inceptos himenaeos. Sed efficitur risus nibh, vel feugiat felis efficitur id. In faucibus ex a nisi interdum, et molestie arcu laoreet. Aenean et nisl lacus. 
-				Nullam quis arcu pretium, ultricies nulla vitae, tempor arcu. Suspendisse velit libero, viverra et aliquet in, tempus ac ante. Integer mollis, metus ac dictum blandit, eros massa vehicula sapien, at facilisis ex nulla eget velit. Phasellus nibh nisl, porttitor in purus sit amet, eleifend viverra purus. Vestibulum eget aliquet neque, dignissim mollis erat. Etiam erat lectus, lobortis quis rhoncus vel, facilisis eget justo. Quisque erat lacus, fringilla eu justo sed, aliquam facilisis dui. Donec hendrerit lacus vitae elementum congue. Maecenas at bibendum leo. Praesent vel sagittis urna. Maecenas convallis sodales aliquam. Nulla vitae dictum ipsum. Duis cursus nibh lobortis est ullamcorper, non dictum odio tristique. Ut eget laoreet tortor, et malesuada nisi. In pulvinar eros eu neque suscipit, vel facilisis nunc luctus. In ac ipsum sodales, faucibus tortor sit amet, pulvinar tortor.
+				<input class="bolder" type="text" value="{{user.name}}">
+				<input class="regular" type="text" value="{{user.charge}}">
+				<input class="regular" type="text" value="{{user.email}}">
+				<textarea>{{user.leyend}}
 				</textarea>
 				<div class="box">
 					<button type="button" class="form-button mat-button mat-raised-button">Guardar</button>
@@ -31,73 +30,22 @@
 	</section>
 
 	<section class="user" *ngIf="!profile">
-		<form>
+		<form *ngFor="let user of currentUsersGroup">
 			<div class="top">
 				<div class="column--small">
-					<img class="photo" src="../assets/images/user/user.png">
+					<img class="photo" src="../assets/images/user/{{user.photo ? user.photo : 'user-default.png' }}">
 					<button type="" class="simple">Subir foto</button>
 				</div>
 				<div class="column">
-					<input class="bolder" type="text" value="Andrés Villanueva">
-					<input class="regular" type="text" value="Analista financiero">
-					<input class="regular" type="text" value="andresvillanueva@bancodavivienda.com">		
+					<input class="bolder" type="text" value="{{user.name}}">
+					<input class="regular" type="text" value="{{user.charge}}">
+					<input class="regular" type="text" value="test@test.test">		
 				</div>
 				<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
 			</div>	
 			<div class="content" [ngClass]="{hide: isHide()}">
 				<div class="description">
-					<textarea>lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non nibh sit amet elit dictum tincidunt. Fusce facilisis mauris et libero lacinia varius. Sed vitae feugiat dolor. Aenean vulputate facilisis tortor, eget semper neque. Sed iaculis molestie auctor. Vestibulum sed tellus efficitur, consectetur elit vel, consequat purus. Nunc odio justo, laoreet et augue elementum, interdum ornare dolor. Duis ultrices scelerisque diam, vel interdum libero ornare non. Ut ultricies mauris eget arcu euismod, lacinia hendrerit sapien ornare. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed efficitur risus nibh, vel feugiat felis efficitur id. In faucibus ex a nisi interdum, et molestie arcu laoreet. Aenean et nisl lacus. 
-					Nullam quis arcu pretium, ultricies nulla vitae, tempor arcu. Suspendisse velit libero, viverra et aliquet in, tempus ac ante. Integer mollis, metus ac dictum blandit, eros massa vehicula sapien, at facilisis ex nulla eget velit. Phasellus nibh nisl, porttitor in purus sit amet, eleifend viverra purus. Vestibulum eget aliquet neque, dignissim mollis erat. Etiam erat lectus, lobortis quis rhoncus vel, facilisis eget justo. Quisque erat lacus, fringilla eu justo sed, aliquam facilisis dui. Donec hendrerit lacus vitae elementum congue. Maecenas at bibendum leo. Praesent vel sagittis urna. Maecenas convallis sodales aliquam. Nulla vitae dictum ipsum. Duis cursus nibh lobortis est ullamcorper, non dictum odio tristique. Ut eget laoreet tortor, et malesuada nisi. In pulvinar eros eu neque suscipit, vel facilisis nunc luctus. In ac ipsum sodales, faucibus tortor sit amet, pulvinar tortor.
-					</textarea>
-				</div>
-				<div class="box">
-					<button type="button" class="form-button mat-button mat-raised-button">Guardar</button>
-					<button type="button" class="form-button mat-button mat-button-base">Cancelar</button>
-				</div>
-			</div>
-		</form>
-		<form>
-			<div class="top">
-				<div class="column--small">
-					<img class="photo" src="../assets/images/user/user.png">
-					<button type="" class="simple">Subir foto</button>
-				</div>
-				<div class="column">
-					<input class="bolder" type="text" value="Andrés Villanueva">
-					<input class="regular" type="text" value="Analista financiero">
-					<input class="regular" type="text" value="andresvillanueva@bancodavivienda.com">		
-				</div>
-				<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
-			</div>	
-			<div class="content" [ngClass]="{hide: isHide()}">
-				<div class="description">
-					<textarea>lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non nibh sit amet elit dictum tincidunt. Fusce facilisis mauris et libero lacinia varius. Sed vitae feugiat dolor. Aenean vulputate facilisis tortor, eget semper neque. Sed iaculis molestie auctor. Vestibulum sed tellus efficitur, consectetur elit vel, consequat purus. Nunc odio justo, laoreet et augue elementum, interdum ornare dolor. Duis ultrices scelerisque diam, vel interdum libero ornare non. Ut ultricies mauris eget arcu euismod, lacinia hendrerit sapien ornare. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed efficitur risus nibh, vel feugiat felis efficitur id. In faucibus ex a nisi interdum, et molestie arcu laoreet. Aenean et nisl lacus. 
-					Nullam quis arcu pretium, ultricies nulla vitae, tempor arcu. Suspendisse velit libero, viverra et aliquet in, tempus ac ante. Integer mollis, metus ac dictum blandit, eros massa vehicula sapien, at facilisis ex nulla eget velit. Phasellus nibh nisl, porttitor in purus sit amet, eleifend viverra purus. Vestibulum eget aliquet neque, dignissim mollis erat. Etiam erat lectus, lobortis quis rhoncus vel, facilisis eget justo. Quisque erat lacus, fringilla eu justo sed, aliquam facilisis dui. Donec hendrerit lacus vitae elementum congue. Maecenas at bibendum leo. Praesent vel sagittis urna. Maecenas convallis sodales aliquam. Nulla vitae dictum ipsum. Duis cursus nibh lobortis est ullamcorper, non dictum odio tristique. Ut eget laoreet tortor, et malesuada nisi. In pulvinar eros eu neque suscipit, vel facilisis nunc luctus. In ac ipsum sodales, faucibus tortor sit amet, pulvinar tortor.
-					</textarea>
-				</div>
-				<div class="box">
-					<button type="button" class="form-button mat-button mat-raised-button">Guardar</button>
-					<button type="button" class="form-button mat-button mat-button-base">Cancelar</button>
-				</div>
-			</div>
-		</form>
-		<form>
-			<div class="top">
-				<div class="column--small">
-					<img class="photo" src="../assets/images/user/user.png">
-					<button type="" class="simple">Subir foto</button>
-				</div>
-				<div class="column">
-					<input class="bolder" type="text" value="Andrés Villanueva">
-					<input class="regular" type="text" value="Analista financiero">
-					<input class="regular" type="text" value="andresvillanueva@bancodavivienda.com">		
-				</div>
-				<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
-			</div>	
-			<div class="content" [ngClass]="{hide: isHide()}">
-				<div class="description">
-					<textarea>lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non nibh sit amet elit dictum tincidunt. Fusce facilisis mauris et libero lacinia varius. Sed vitae feugiat dolor. Aenean vulputate facilisis tortor, eget semper neque. Sed iaculis molestie auctor. Vestibulum sed tellus efficitur, consectetur elit vel, consequat purus. Nunc odio justo, laoreet et augue elementum, interdum ornare dolor. Duis ultrices scelerisque diam, vel interdum libero ornare non. Ut ultricies mauris eget arcu euismod, lacinia hendrerit sapien ornare. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed efficitur risus nibh, vel feugiat felis efficitur id. In faucibus ex a nisi interdum, et molestie arcu laoreet. Aenean et nisl lacus. 
-					Nullam quis arcu pretium, ultricies nulla vitae, tempor arcu. Suspendisse velit libero, viverra et aliquet in, tempus ac ante. Integer mollis, metus ac dictum blandit, eros massa vehicula sapien, at facilisis ex nulla eget velit. Phasellus nibh nisl, porttitor in purus sit amet, eleifend viverra purus. Vestibulum eget aliquet neque, dignissim mollis erat. Etiam erat lectus, lobortis quis rhoncus vel, facilisis eget justo. Quisque erat lacus, fringilla eu justo sed, aliquam facilisis dui. Donec hendrerit lacus vitae elementum congue. Maecenas at bibendum leo. Praesent vel sagittis urna. Maecenas convallis sodales aliquam. Nulla vitae dictum ipsum. Duis cursus nibh lobortis est ullamcorper, non dictum odio tristique. Ut eget laoreet tortor, et malesuada nisi. In pulvinar eros eu neque suscipit, vel facilisis nunc luctus. In ac ipsum sodales, faucibus tortor sit amet, pulvinar tortor.
+					<textarea>{{user.leyend}}
 					</textarea>
 				</div>
 				<div class="box">

@@ -11,6 +11,8 @@ export class UsersService {
 	public $showProfile = this.showProfile.asObservable();
 	private nameGroup = new Subject<void>();
 	public $nameGroup = this.nameGroup.asObservable();
+	private currentUsersGroup = new Subject<void>();
+	public $currentUsersGroup = this.currentUsersGroup.asObservable();
 
 	constructor() { }
 
@@ -28,5 +30,13 @@ export class UsersService {
 
 	public getNameGroup() {
 		return this.$nameGroup;
+	}
+
+	public setCurrentUsersGroup(data) {
+		this.currentUsersGroup.next(data);
+	}
+
+	public getCurrentUsersGroup() {
+		return this.$currentUsersGroup;
 	}
 }
