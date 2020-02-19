@@ -586,15 +586,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public checkNotifications(reportId: string) {
-        console.log("reportId: ", reportId);
-
-        // this.http.post({
-        //     'path': 'reports/refuse',
-        //     'data': {  }
-        // }).subscribe((response: any) => {
-        //     console.log(response);
-        // }, (err) => {
-        //     console.log("error: ", err);
-        // });
+        this.http.post({
+            'path': `reports/${reportId}/notifications`,
+            'data': { "readed": true }
+        }).subscribe();
     }
 }
