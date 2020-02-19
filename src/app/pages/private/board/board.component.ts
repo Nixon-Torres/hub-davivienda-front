@@ -15,8 +15,8 @@ import * as moment from 'moment';
 import * as qs from 'qs';
 
 import { Report } from './board.model';
-import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
 
 declare var grapesjs: any;
 
