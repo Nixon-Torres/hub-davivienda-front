@@ -82,6 +82,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         moment.locale('es'); // Set locale lang for momentJs
 
+
         this.activatedRoute.paramMap.subscribe((params: any) => {
 
             // Load report for edit, but if is a new report load basic data from URI
@@ -89,7 +90,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
                 this.report.id = params.get("id");
                 this.loadReport(this.report.id);
-                this.notfAsReaded();
+                this.checkNotifications(this.report.id);
 
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -306,10 +307,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
-    public sendBacktoReview() {
-        this.report.reviewed = false;
-        this.report.stateId = '5e068d1cb81d1c5f29b62975';
-        this.onSave(false, () =>  {
+    public returnToEdit(): void {
+        this.http.patch({
+            'path': 'reports/refuse',
+            'data': { reportId: this.report.id }
+        }).subscribe((response: any) => {
+            this.report.state = response.body.report.state;
+            this.report.stateId = response.body.report.stateId;
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
@@ -333,7 +337,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 reportId: this.report.id,
                 reviewers: this.getReviewers(reviewers)
             }
-        }).subscribe( (resp) => {
+        }).subscribe( (resp: any) => {
             if(resp) {
                 this.dialog.open(ConfirmationDialogComponent, {
                     width: '410px',
@@ -343,7 +347,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
-            this.loadReport(this.report.id);
+            this.report.state = resp.body.report.state;
+            this.report.stateId = resp.body.report.stateId;
         })
     }
 
@@ -509,30 +514,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.router.navigate(['app/principal']);
     }
 
-    canPublish(): boolean {
+    public canPublish(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
     }
 
-    canApprove(): boolean {
+    public canApprove(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
             this.report.state.name !== 'Publicados';
     }
 
-    canSendToRevision(): boolean {
+    public canSendToRevision(): boolean {
         var role = this.user.roles.find(e => (e === 'analyst'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
             this.report.state.name === 'Revisado con ajustes');
     }
 
-    canSendBackToRevision(): boolean {
+    public canReturnToEdit(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
             this.report.state.name === 'En revisión');
     }
 
-    onSendToRevisionAction(): void {
+    public onSendToRevisionAction(): void {
         this.http.get({
             'path': 'users',
             'data': {
@@ -559,14 +564,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    showComments() {
+    public showComments() {
         this.grid.col.builder = 8;
         this.grid.col.comments = 2;
         this.grid.col.panel = 2;
         document.querySelector('mat-grid-tile.comments').classList.add('show');
     }
 
-    hideComments() {
+    public hideComments() {
         document.querySelector('mat-grid-tile.comments').classList.remove('show');
 
         setTimeout(() => {
@@ -576,18 +581,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, 100);
     }
 
-    focusOnReportName() {
+    public focusOnReportName() {
         document.getElementById("reportName").focus();
     }
 
-    public notfAsReaded() {
-        // console.log("id: ", this.report.id);
+    public checkNotifications(reportId: string) {
+        console.log("reportId: ", reportId);
 
-        // this.http.get({
-        //     'path': `reports/${this.report.id}/notifications`
+        // this.http.post({
+        //     'path': 'reports/refuse',
+        //     'data': {  }
         // }).subscribe((response: any) => {
-
-        //     console.log("response", response);
+        //     console.log(response);
+        // }, (err) => {
+        //     console.log("error: ", err);
         // });
     }
 }

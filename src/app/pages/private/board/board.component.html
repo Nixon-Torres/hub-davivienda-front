@@ -13,7 +13,7 @@
 				<button mat-flat-button class="btn btn-default" *ngIf="canSendToRevision()" [disabled]="!report.id" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-                <button mat-flat-button class="btn btn-default" *ngIf="canSendBackToRevision()" [disabled]="!report.id" (click)="sendBacktoReview()">
+                <button mat-flat-button class="btn btn-default" *ngIf="canReturnToEdit()" [disabled]="!report.id" (click)="returnToEdit()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
 				<button mat-flat-button class="btn btn-default" *ngIf="canApprove()" (click)="approve()">
