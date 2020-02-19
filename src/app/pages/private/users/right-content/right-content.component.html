@@ -1,6 +1,6 @@
  <div class="content">
 	<div class="content--top">
-		<span class="message">Perfil Administrador</span>
+		<span class="message">{{nameGroup}}</span>
 	</div>
  
 	<div class="top-section-list">
@@ -9,7 +9,7 @@
 		</div>
 	</div>
 
-	<section class="profile">
+	<section class="profile" *ngIf="profile">
 		<form>
 			<div class="column--small">
 				<img src="../assets/images/user/user_2.png">
@@ -30,7 +30,7 @@
 		</form>	
 	</section>
 
-	<section class="user">
+	<section class="user" *ngIf="!profile">
 		<form>
 			<div class="top">
 				<div class="column--small">
