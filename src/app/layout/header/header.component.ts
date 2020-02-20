@@ -60,7 +60,6 @@ export class HeaderComponent implements OnInit {
         }).subscribe((response: any) => {
             if ("body" in response) {
                 response.body.map( notification => { this.processNotification(notification) });
-                // this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
             }
         });
     }
@@ -81,18 +80,19 @@ export class HeaderComponent implements OnInit {
 
     private startToListenSockets() {
         this.socket.start().subscribe(() => {
+
+            // If listen a new notification for be processed and get qty of notifications unreaded
             this.socket.on("notification").subscribe((response) => {
                 this.processNotification(response);
                 this.getCountNotifications();
+                this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
             });
-            this.readedNotifications();
-        });
-    }
 
-    private readedNotifications() {
-        this.socket.on("readed").subscribe(() => {
-            this.getNotifications();
-            this.getCountNotifications();
+            // If listen when a notification was readed, get all notifications again and and their qty
+            this.socket.on("readed").subscribe(() => {
+                this.getNotifications();
+                this.getCountNotifications();
+            });
         });
     }
 
@@ -141,7 +141,7 @@ export class HeaderComponent implements OnInit {
     }
 
     openNotf(reportId: number, readed: boolean) {
-        if (!readed) --this.ntfQty;
+        this.getCountNotifications();
         this.notifications.filter((a) => {
             if(a.reportId == reportId) {
                 a.readed = true;

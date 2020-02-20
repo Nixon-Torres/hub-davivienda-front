@@ -46,10 +46,12 @@ export class NotificationsComponent implements OnInit {
                 include: [
                     { relation: "emitter", scope: { fields: ['name'] } },
                     { relation: "report", scope: { fields: ['name', 'stateId'] } }
-                ]
+                ],
+                where: { ownerId: this.user.id }
             },
             'encode': true
         }).subscribe((response: any) => {
+            console.log(response.body);
             if ("body" in response) {
                 response.body.map( notification => { this.processNotification(notification) });
                 this.getCountNotifications();
@@ -67,7 +69,6 @@ export class NotificationsComponent implements OnInit {
     }
 
     private processNotification(item: any) {
-        console.log("item: ", item);
         let timeFromNow: string = moment(item.updatedAt).fromNow();
         let txtDescription: string = item.text
                                     .replace(/{{emitter_name}}/, item.emitter.name)
