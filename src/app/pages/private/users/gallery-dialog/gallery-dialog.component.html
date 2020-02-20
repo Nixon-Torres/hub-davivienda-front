@@ -4,38 +4,16 @@
 	<div class="galerie-content--list">
 		<label>Mis imágenes</label>
 		<ul>
-			<li>
+			<li *ngFor="let imagen of list.gallery">
 				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
-			</li>
-			<li>
-				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
-			</li>
-			<li>
-				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
-			</li>
-			<li>
-				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
-			</li>
-			<li>
-				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
-			</li>
-			<li>
-				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
-			</li>
-			<li>
-				<img src="/assets/images/imagen.png">
-				<p>Imagen01.png</p>
+				<p>{{imagen.name}}</p>
 			</li>
 		</ul>	
 	</div>
 	<div class="box-buttons">
-		<input type="file" name="file" id="file" class="inputfile" />
-		<label for="file">Subir Imagen</label>
+		<form [formGroup] = "imageForm">
+			<input type="file" name="file" id="file" class="inputfile" (change)="onSelectFile($event)"/>
+			<label for="file">Subir Imagen</label>
+		</form>
 	</div>	
 </div>	

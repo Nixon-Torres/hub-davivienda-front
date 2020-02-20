@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
 import { GalleryDialogComponent } from './gallery-dialog/gallery-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -23,7 +24,9 @@ const materialModules: any[] = [
 	imports: [
 		CommonModule,
 		RouterModule.forChild(routes),
-		materialModules
+		materialModules,
+		FormsModule,
+		ReactiveFormsModule
 	],
 	exports: [
 		materialModules
