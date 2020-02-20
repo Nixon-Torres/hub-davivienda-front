@@ -39,12 +39,9 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        moment.locale('es'); // Set locale lang for momentJs
         this.getNotifications();
         this.getCountNotifications();
-
-        moment.locale('es'); // Set locale lang for momentJs
-
-       
     }
 
     private getNotifications(): void {
@@ -63,6 +60,7 @@ export class HeaderComponent implements OnInit {
         }).subscribe((response: any) => {
             if ("body" in response) {
                 response.body.map( notification => { this.processNotification(notification) });
+                // this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
             }
         });
     }
@@ -71,8 +69,8 @@ export class HeaderComponent implements OnInit {
         this.http.get({
             'path': `notifications/count?where=`,
             'data': {
-                    ownerId: this.user.id,
-                    readed: false
+                ownerId: this.user.id,
+                readed: false
             }
         }).subscribe((response: any) => {
             if ("body" in response) {
@@ -87,6 +85,14 @@ export class HeaderComponent implements OnInit {
                 this.processNotification(response);
                 this.getCountNotifications();
             });
+            this.readedNotifications();
+        });
+    }
+
+    private readedNotifications() {
+        this.socket.on("readed").subscribe(() => {
+            this.getNotifications();
+            this.getCountNotifications();
         });
     }
 
@@ -110,7 +116,6 @@ export class HeaderComponent implements OnInit {
         }
 
         this.notifications.push(notf);
-        this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
     }
 
     private startToListenRouter(router: Router) {

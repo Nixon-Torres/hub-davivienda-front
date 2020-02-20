@@ -586,8 +586,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public checkNotifications(reportId: string) {
-        this.http.post({
-            'path': `reports/${reportId}/notifications`,
+        let dataFilter = encodeURI(JSON.stringify({reportId: reportId}));
+        this.http.patch({
+            'path': `notifications/read?filter=${dataFilter}`,
             'data': { "readed": true }
         }).subscribe();
     }

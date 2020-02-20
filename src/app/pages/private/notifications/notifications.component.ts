@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { AuthService } from '../../../services/auth.service';
 import { HttpService } from '../../../services/http.service';
@@ -27,6 +28,7 @@ export class NotificationsComponent implements OnInit {
 
 	constructor (
         private router: Router,
+        private location: Location,
         private auth: AuthService,
 		private http: HttpService,
         private socket: SocketService
@@ -103,6 +105,10 @@ export class NotificationsComponent implements OnInit {
 
     public openNotification(reportId) {
         this.router.navigate(['app/board', reportId]);
+    }
+
+    public goBack() {
+        this.location.back();
     }
 
 }

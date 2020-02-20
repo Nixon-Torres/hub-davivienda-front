@@ -7,7 +7,7 @@
 					<i class="material-icons notifications_icon">notifications</i>
 					<h6>Filtro de notificaciones</h6>
 				</li>
-				<li class="mat-drawer-aside-item active 	">Todas las notificaciones <span>{{ ntfQty }}</span></li>
+				<li class="mat-drawer-aside-item active">Todas las notificaciones <span>{{ ntfQty }}</span></li>
 				<li class="mat-drawer-aside-item">Informes editados por otros <span>35</span></li>
 				<li class="mat-drawer-aside-item">Informes publicados por otros <span>0</span> </li>
 			</ul>
@@ -16,7 +16,7 @@
 		<mat-drawer-content>
 			
 			<h6>Tus notificaciones ({{ ntfQty }})</h6>
-			<a href="#"><i class="material-icons" >chevron_left</i>Volver</a>
+			<a (click)="goBack()"><i class="material-icons" >chevron_left</i>Volver</a>
 			
 			<div class="mat-card-container">
 				<mat-card  
