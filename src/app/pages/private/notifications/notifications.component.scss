@@ -147,6 +147,27 @@ mat-drawer{
 			}
 		}
 
+		%indicator {
+			left: 16px;
+			position: absolute;
+			top: calc(50% - 6px);
+		}
+
+		img.indicator {
+			width: 16px;
+			@extend %indicator;
+		}
+
+		div.indicator {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			@extend %indicator;
+
+			&.bg-red { background: red; }
+			&.bg-blue { background: blue; }
+		}
+
 		h6 {
 			font-weight: 500;
 			color: #A5ABB1;
@@ -163,15 +184,6 @@ mat-drawer{
 
 		small {
 			font-size: .6rem;
-		}
-
-		img {
-			position: absolute;
-			top: 0;
-			left: 15px;
-			max-width: 15px;
-			bottom: 0;
-			margin: auto;
 		}
 	}
 }

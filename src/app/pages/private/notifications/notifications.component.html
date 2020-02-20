@@ -7,7 +7,7 @@
 					<i class="material-icons notifications_icon">notifications</i>
 					<h6>Filtro de notificaciones</h6>
 				</li>
-				<li class="mat-drawer-aside-item active 	">Todas las notificaciones <span>55</span></li>
+				<li class="mat-drawer-aside-item active 	">Todas las notificaciones <span>{{ ntfQty }}</span></li>
 				<li class="mat-drawer-aside-item">Informes editados por otros <span>35</span></li>
 				<li class="mat-drawer-aside-item">Informes publicados por otros <span>0</span> </li>
 			</ul>
@@ -15,7 +15,7 @@
 
 		<mat-drawer-content>
 			
-			<h6>Tus notificaciones (55)</h6>
+			<h6>Tus notificaciones ({{ ntfQty }})</h6>
 			<a href="#"><i class="material-icons" >chevron_left</i>Volver</a>
 			
 			<div class="mat-card-container">
@@ -25,10 +25,10 @@
 					[ngClass]="{'to-check' : !notification.readed}"
 					matRipple>
 					<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
-					<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
+					<div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
 					
-					<h6>{{ notification.title }}</h6>
-					<p>{{ notification.description }}</p>
+					<h6>{{ notification.subject }}</h6>
+					<p>{{ notification.text }}</p>
 					<small>{{ notification.timeAgo }}</small>
 				</mat-card>
 			</div>
