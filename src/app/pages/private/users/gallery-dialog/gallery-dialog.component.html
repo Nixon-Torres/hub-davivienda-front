@@ -4,7 +4,7 @@
 	<div class="galerie-content--list">
 		<label>Mis imágenes</label>
 		<ul>
-			<li *ngFor="let imagen of list.gallery">
+			<li [ngClass]="{selected: isActive(imagen.id)}" *ngFor="let imagen of list.gallery" (click)="onSelectImage(imagen.id)">
 				<img src="/assets/images/imagen.png">
 				<p>{{imagen.name}}</p>
 			</li>
@@ -15,5 +15,9 @@
 			<input type="file" name="file" id="file" class="inputfile" (change)="onSelectFile($event)"/>
 			<label for="file">Subir Imagen</label>
 		</form>
+		<div class="right-box">
+			<button type="button" class="form-button" (click)="onNoClick()">Cancelar</button>
+			<button type="button" class="form-button plus" (click)="onSave()">Guardar</button>
+		</div>
 	</div>	
 </div>	

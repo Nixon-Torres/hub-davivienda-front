@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,7 +21,8 @@ export class RightContentComponent implements OnInit {
 	private nameGroupSuscription: any;
 	private currentUsersGroup: any = [];
 	private currentUsersGroupSuscription: any;
-	private user:any = [];
+	private user: any = [];
+	private imageProfile: any;
 
 	constructor(
 		private auth: AuthService,
@@ -76,7 +77,8 @@ export class RightContentComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe((result : any) => {
-
+			if (result != undefined)
+				this.imageProfile = result.data;	
 		});
 	}
 

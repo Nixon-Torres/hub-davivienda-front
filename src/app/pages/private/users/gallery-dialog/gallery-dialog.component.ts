@@ -11,6 +11,7 @@ import { HttpService } from '../../../../services/http.service';
 export class GalleryDialogComponent implements OnInit {
 
 	public imageForm: FormGroup;
+	public selectImage: any;
 
 	public list: any = {
 		gallery: []
@@ -52,7 +53,6 @@ export class GalleryDialogComponent implements OnInit {
 				//console.log('error');
 			} else  {
 				this.list.gallery = response.body;
-				console.log(this.list.gallery);
 			}
 		});
 	}	
@@ -74,5 +74,19 @@ export class GalleryDialogComponent implements OnInit {
 		});
 
 	}
+
+	public onSelectImage(id) {
+		this.selectImage = id;
+	}
+
+	public isActive(id) {
+		return this.selectImage === id ? true: false;
+	}
+
+	public onSave(){
+		let found = this.list.gallery.find(element => element.id === this.selectImage);
+		this.dialogRef.close({event:'close',data:found.name}); 
+	}
+
 
 }
