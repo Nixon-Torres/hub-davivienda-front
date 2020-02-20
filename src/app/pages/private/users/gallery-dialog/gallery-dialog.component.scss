@@ -1,8 +1,10 @@
 @import '../../../../../assets/sass/_mixins'; 
 
  .galerie-content {
-	padding: 22px 0 16px 0	;
-	position: relative;
+ 	box-sizing: border-box;
+ 	height: 100%;
+ 	padding: 22px 0 0 0;
+ 	position: relative;
 
 	.title {
 		color: #A5ABB1;
@@ -37,6 +39,7 @@
 			justify-content: flex-start;
 			height: 290px;
 			align-content: baseline;
+			overflow: scroll;
 
 			img {
 				height: auto;
@@ -47,13 +50,42 @@
 			li {
 				margin: 20px 11px 0 0;
 				text-align: center;
+
+				img {
+					@include border-radius(5px);
+				}
+
+				&.selected {
+					img {
+						border: 1px solid #0080FF;
+					}
+
+					p {
+						color: #0080FF;
+					}
+				}
 			}
 		}
 
 	}
 
 	.box-buttons {
+		@include display-flex;
+		align-items: center;
 		border-top: 1px solid #E7EAF1;
+		bottom: 0px;
+		box-sizing: border-box;
+		height: 50px;
+		padding:0 16px;
+		position: absolute;
+		width: 100%;
+		z-index: 100;
+
+		.right-box {
+			position: absolute;
+			right: 16px;
+		}
+
 	}
 
 }
@@ -79,6 +111,37 @@
 	}
 }
 
+form {
+	.inputfile {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.inputfile + label {
+		font-size: 0.750em;
+		font-weight: 700;
+		color: white;
+		background-color: #616161;
+		display: inline-block;
+		width: 108px;
+		text-align: center;
+		padding: 7px;
+		border-radius: 3px;
+	}
+	.inputfile:focus + label,
+	.inputfile + label:hover {
+	    background-color: #0080FF;
+	}
+
+	.inputfile + label {
+		cursor: pointer;
+	}	
+}
+
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -92,7 +155,7 @@
 	font-size: 0.750em;
 	font-weight: 700;
 	color: white;
-	background-color: #616161;
+	background-color: #A5ABB1;
 	display: inline-block;
 	width: 108px;
 	text-align: center;
@@ -106,4 +169,21 @@
 
 .inputfile + label {
 	cursor: pointer; /* "hand" cursor */
+}
+
+.form-button {
+	@include border-radius(3px);
+	border: 1px solid #0080FF; 
+	box-shadow: none;
+	color: #0080FF;
+	cursor: pointer;
+	font-size: 0.75em;
+	height: 26px;
+	margin-left: 16px;
+	width: 95px;
+
+	&.plus {
+		background: #0080FF;
+		color: #ffffff;
+	}
 }
