@@ -390,7 +390,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     */
     public onSave(autoSave?: boolean, cb?: any): void {
         let isUpdate: boolean = this.report.id ? true : false;
-        let method: string = isUpdate ? 'put' : 'post';
+        let method: string = isUpdate ? 'patch' : 'post';
         let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
         if (this.timer.change) {
             clearTimeout(this.timer.change);
