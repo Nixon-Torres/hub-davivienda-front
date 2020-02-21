@@ -41,22 +41,29 @@
 			align-content: baseline;
 			overflow: scroll;
 
+			.img-frame {
+				@include border-radius(5px);
+				border: 1px solid #E7EAF1;
+				height: 80px;
+				overflow: hidden;;
+				width: 130px;
+			}
+
 			img {
 				height: auto;
-				width: 133px;
+				width: 100%;
+			}
 
+			p {
+				line-height: 2.2em;
 			}
 
 			li {
 				margin: 20px 11px 0 0;
 				text-align: center;
 
-				img {
-					@include border-radius(5px);
-				}
-
 				&.selected {
-					img {
+					.img-frame {
 						border: 1px solid #0080FF;
 					}
 
