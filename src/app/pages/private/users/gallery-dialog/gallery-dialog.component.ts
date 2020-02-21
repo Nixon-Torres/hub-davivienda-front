@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpService } from '../../../../services/http.service';
+import { loopback } from '../../../../models/common/loopback.model';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-gallery-dialog',
@@ -12,6 +14,8 @@ export class GalleryDialogComponent implements OnInit {
 
 	public imageForm: FormGroup;
 	public selectImage: any;
+	public galleryError: boolean = false;
+	public storageBase: String =  environment.STORAGE_FILES;
 
 	public list: any = {
 		gallery: []
@@ -46,12 +50,19 @@ export class GalleryDialogComponent implements OnInit {
 	}
 
 	public getGalleryImages() {
+		let query = new loopback();
+
+		query.filter.where = { or: [] };
+		query.filter.where['or'].push({ext:'.jpg'},{ext:'.gif'},{ext:'.png'},);
+
 		this.http.get({
-		    path: 'media'
+		    path: 'media?filter=',
+		    data: query.filter
 		}).subscribe((response: any) => {
 			if (response.body.name && (response.body.statusCode || response.body.code)) {
 				//console.log('error');
 			} else  {
+				console.log(response.body);
 				this.list.gallery = response.body;
 			}
 		});
@@ -68,8 +79,10 @@ export class GalleryDialogComponent implements OnInit {
 		    data: formData
 		}).subscribe((response: any) => {
 			if (response.body.name && (response.body.statusCode || response.body.code)) {
-				alert('error');
+				console.log(response.body);
+				this.galleryError =  true;
 			}
+			this.galleryError = false;
 			this.list.gallery.unshift(response.body.file);
 		});
 
@@ -84,8 +97,8 @@ export class GalleryDialogComponent implements OnInit {
 	}
 
 	public onSave(){
-		let found = this.list.gallery.find(element => element.id === this.selectImage);
-		this.dialogRef.close({event:'close',data:found.name}); 
+		let found = this.list.gallery.find(element => element.id == this.selectImage);
+		this.dialogRef.close({event:'close',data:found.fileName}); 
 	}
 
 

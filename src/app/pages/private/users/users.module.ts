@@ -8,6 +8,8 @@ import { GalleryDialogComponent } from './gallery-dialog/gallery-dialog.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { UserFormComponent } from './user-form/user-form.component';
 
 
 const routes: Routes = [{
@@ -20,7 +22,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-	declarations: [UsersComponent, LeftBarComponent, RightContentComponent, GalleryDialogComponent],
+	declarations: [UsersComponent, LeftBarComponent, RightContentComponent, GalleryDialogComponent, ProfileFormComponent, UserFormComponent],
 	imports: [
 		CommonModule,
 		RouterModule.forChild(routes),

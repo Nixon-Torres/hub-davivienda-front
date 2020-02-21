@@ -5,7 +5,9 @@
 		<label>Mis imágenes</label>
 		<ul>
 			<li [ngClass]="{selected: isActive(imagen.id)}" *ngFor="let imagen of list.gallery" (click)="onSelectImage(imagen.id)">
-				<img src="/assets/images/imagen.png">
+				<div class="img-frame">
+					<img src="{{storageBase}}{{imagen.fileName}}">
+				</div>
 				<p>{{imagen.name}}</p>
 			</li>
 		</ul>	
@@ -13,11 +15,12 @@
 	<div class="box-buttons">
 		<form [formGroup] = "imageForm">
 			<input type="file" name="file" id="file" class="inputfile" (change)="onSelectFile($event)"/>
-			<label for="file">Subir Imagen</label>
+			<label class="icong-upload" for="file" accept="image/png,image/jpg">Subir Imagen</label>
 		</form>
+		<p class="message-error" *ngIf="galleryError">Los formatos permitidos son .JPG y .PNG</p>
 		<div class="right-box">
 			<button type="button" class="form-button" (click)="onNoClick()">Cancelar</button>
-			<button type="button" class="form-button plus" (click)="onSave()">Guardar</button>
+			<button type="button" class="form-button plus" (click)="onSave()">Seleccionar</button>
 		</div>
 	</div>	
 </div>	

@@ -8,53 +8,11 @@
 			<a>&#60; Volver </a>
 		</div>
 	</div>
-
 	<section class="profile" *ngIf="profile">
-		<form>
-			<div class="column--small">
-				<img src="../assets/images/user/{{user.photo ? user.photo : 'profile-default.png'}}">
-				<button type="button" (click)="openDialog()" class="simple">Subir foto</button>
-			</div>
-			<div class="column">
-				<input class="bolder" type="text" value="{{user.name}}">
-				<input class="regular" type="text" value="{{user.charge}}">
-				<input class="regular" type="text" value="{{user.email}}">
-				<textarea>{{user.leyend}}
-				</textarea>
-				<div class="box">
-					<button type="button" class="form-button mat-button mat-raised-button">Guardar</button>
-					<button type="button" class="form-button mat-button mat-button-base">Cancelar</button>
-				</div>	
-			</div>
-		</form>	
-	</section>
-
-	<section class="user" *ngIf="!profile">
-		<form *ngFor="let user of currentUsersGroup">
-			<div class="top">
-				<div class="column--small">
-					<img class="photo" src="../assets/images/user/{{user.photo ? user.photo : 'user-default.png' }}">
-					<button type="" class="simple">Subir foto</button>
-				</div>
-				<div class="column">
-					<input class="bolder" type="text" value="{{user.name}}">
-					<input class="regular" type="text" value="{{user.charge}}">
-					<input class="regular" type="text" value="test@test.test">		
-				</div>
-				<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
-			</div>	
-			<div class="content" [ngClass]="{hide: isHide()}">
-				<div class="description">
-					<textarea>{{user.leyend}}
-					</textarea>
-				</div>
-				<div class="box">
-					<button type="button" class="form-button mat-button mat-raised-button">Guardar</button>
-					<button type="button" class="form-button mat-button mat-button-base">Cancelar</button>
-				</div>
-			</div>
-		</form>
+		<app-profile-form ></app-profile-form>
 	</section>	
-
+	<section class="user" *ngIf="!profile">
+		<app-user-form *ngFor="let user of currentUsersGroup" [user]= "user"></app-user-form>
+	</section>	
 </div>
 

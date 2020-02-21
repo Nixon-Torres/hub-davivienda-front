@@ -1,9 +1,10 @@
-
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
+import { ProfileFormComponent } from '../profile-form/profile-form.component';
+import { UserFormComponent } from '../user-form/user-form.component';
 
 
 @Component({
@@ -44,14 +45,6 @@ export class RightContentComponent implements OnInit {
 		this.currentUsersGroupSuscription.unsubscribe();
 	}
 
-	public setHide() {
-		this.collapse = this.collapse === false ? true : false;
-	}
-
-	public  isHide() {
-		return this.collapse;
-	}
-
 	public showProfile () {
 		this.profileSuscription = this.users.getShowProfile().subscribe((response:any) => {
 			this.profile = response;
@@ -81,8 +74,4 @@ export class RightContentComponent implements OnInit {
 				this.imageProfile = result.data;	
 		});
 	}
-
-
-
-
 }
