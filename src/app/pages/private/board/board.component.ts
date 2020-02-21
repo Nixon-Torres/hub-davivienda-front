@@ -309,11 +309,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public returnToEdit(): void {
         this.http.patch({
-            'path': 'reports/refuse',
-            'data': { reportId: this.report.id }
+            'path': `reports/${this.report.id}`,
+            'data': { 
+                reviewed: false,
+                stateId: '5e068d1cb81d1c5f29b62975'
+            }
         }).subscribe((response: any) => {
-            this.report.state = response.body.report.state;
-            this.report.stateId = response.body.report.stateId;
+            this.report.stateId = response.body.stateId;
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
@@ -514,6 +516,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.router.navigate(['app/principal']);
     }
 
+    // TODO read by stateId
     public canPublish(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'

@@ -115,7 +115,7 @@ export class HeaderComponent implements OnInit {
             notf.bgColor = this.stateColors[item.report.stateId] || 'bg-default';
         }
 
-        this.notifications.push(notf);
+        this.notifications = [notf].concat(this.notifications);
     }
 
     private startToListenRouter(router: Router) {

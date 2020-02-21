@@ -115,6 +115,8 @@ mat-drawer{
 	height: 65vh;
 	overflow: auto;
 	overflow-x: hidden;
+	scrollbar-width: thin; // Gecko
+	scrollbar-color: #CCC white; // Gecko
 
 	&::-webkit-scrollbar{
 		background-color: #fff;
@@ -233,4 +235,33 @@ mat-drawer{
 		}
 	}
 	
+}
+
+.loader {
+
+	&:after {
+		content: " ";
+		display: block;
+		width: 20px;
+		height: 20px;
+		margin: 40px auto;
+		border-radius: 50%;
+		border: 3px solid;
+		border-color: #0080FF transparent #0080FF transparent;
+		animation: rotate 1s linear infinite;
+	}
+
+	&.hide {
+		display: none;
+	}
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
 }

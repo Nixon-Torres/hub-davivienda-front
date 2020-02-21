@@ -44,6 +44,7 @@ export class NotificationsComponent implements OnInit {
         let ntfContainer = document.getElementsByClassName("mat-card-container")[0];
         ntfContainer.addEventListener('scroll', function(e) {
             if((this.scrollHeight - this.scrollTop) === this.offsetHeight) {
+                document.getElementsByClassName("loader")[0].classList.remove("hide");
                 _this.getNotifications();
             }
         });
@@ -64,6 +65,7 @@ export class NotificationsComponent implements OnInit {
             },
             'encode': true
         }).subscribe((response: any) => {
+            document.getElementsByClassName("loader")[0].classList.add("hide");
             response.body.map( notification => { this.processNotification(notification) });
         });
     }
