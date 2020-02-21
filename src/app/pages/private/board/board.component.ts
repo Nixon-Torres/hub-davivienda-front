@@ -237,6 +237,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private autosetEditorHeight() {
         let iframe = $('.builder iframe');
+        if (!iframe.length) return;
         let tplBody = iframe.contents()[0].body;
         iframe.contents().find("html")[0].style.overflow = "hidden";
         tplBody.style.height = "auto";
@@ -310,7 +311,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public returnToEdit(): void {
         this.http.patch({
             'path': `reports/${this.report.id}`,
-            'data': { 
+            'data': {
                 reviewed: false,
                 stateId: '5e068d1cb81d1c5f29b62975'
             }
