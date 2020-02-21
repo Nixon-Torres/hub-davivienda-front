@@ -35,6 +35,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public typeSelected;
     public newSectionSelected;
     private newReportObj = {key: 'add-new-section', value: 'Agregar nuevo tipo de informe'};
+    private newSectionAnalysisObj = {id: 'add-new-company-analysis', name: 'Análisis compañía', types: []};
+    private sectionsList;
 
     public list: any = {
         sections: [],
@@ -43,7 +45,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         templates: [],
         users: [],
         reports: [],
-        authorsId: []
+        authorsId: [],
+        companies: [{id: 'company1', name: 'Compañia 1'}, {id: 'company2', name: 'Compañia 2'}]
     }
 
     ngOnInit() {
@@ -97,6 +100,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             'path': 'sections'
         }).subscribe((response) => {
             this.list.sections = response.body;
+            this.sectionsList = this.list.sections.map((e) => Object.assign({}, e));
+            this.sectionsList.push(this.newSectionAnalysisObj);
         });
     }
 
@@ -135,7 +140,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public onUpdateTypes($event, index) {
-        var types = this.list.sections[index].types;
+        var types = this.sectionsList[index].types;
         types = types.reduce((y, x) => {
             if (!y.find((e) => e.key === x.key)) y.push(x);
             return y;
