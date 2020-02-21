@@ -19,17 +19,18 @@
 			<a (click)="goBack()"><i class="material-icons" >chevron_left</i>Volver</a>
 			
 			<div class="mat-card-container">
-				<mat-card  
-					*ngFor="let notification of notifications" 
+				<mat-card>
+					<div class="notification_info" *ngFor="let notification of notifications" 
 					(click)="openNotification(notification.reportId)" 
 					[ngClass]="{'to-check' : !notification.readed}"
 					matRipple>
-					<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
-					<div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
-					
-					<h6>{{ notification.subject }}</h6>
-					<p>{{ notification.text }}</p>
-					<small>{{ notification.timeAgo }}</small>
+						<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
+						<div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
+						
+						<h6>{{ notification.subject }}</h6>
+						<p>{{ notification.text }}</p>
+						<small>{{ notification.timeAgo }}</small>
+					</div>
 				</mat-card>
 				<div class="loader"></div>
 			</div>

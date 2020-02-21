@@ -1,6 +1,7 @@
 .container {
 	width: 88%;
 	max-width: 1440px;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
 
 	mat-drawer-container{
 		height: auto;
@@ -17,33 +18,39 @@ mat-drawer-content{
 	overflow: hidden;
 
 	& > h6{
-		font-weight: 600;
+		font-weight: 500;
 		width: 100%;
 		display: block;
 		padding: 1.5rem 2rem;	
 		background-color: #fff;
 		border: solid 1px #E7EAF1;
 		height: 25px;
+		color: #616161;
 	}
 
 
 	& > a{
-		font-weight: 600;
 		font-size: .9rem;
-		padding: 1rem 2rem;
+		padding: 1rem;
 		color: rgba(0,0,0,.87);;
 		display: flex;
 		text-decoration: none;
 		align-items: center;
+		cursor: pointer;
 		span{
 			margin-right: .5rem;
 		}
+	}
+
+	.notification_info{
+		background-color: #f5f7fb;
+		padding: 1rem 3rem;
+		border-bottom: solid 1px #eaedf2;
 	}
 }
 
 mat-drawer{
 	width: 23%;
-
 	.mat-drawer-aside-title{
 		display: flex;
 		align-items: center;	
@@ -57,9 +64,10 @@ mat-drawer{
 
 		h6{
 			display: block;
-			font-weight: 600;
-			font-size: 0.9rem;
+			font-weight: 500;
+			font-size: 1rem;
 			padding-left: 0;
+			color: #616161;
 		}
 	}
 
@@ -70,7 +78,7 @@ mat-drawer{
 		margin: 0 1rem;
 		border-bottom: solid 2px #E7EAF1;
 		position: relative;
-
+		cursor: pointer;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -83,7 +91,8 @@ mat-drawer{
 
 
 		&.active{
-			font-weight: 600;
+			font-weight: 500;
+			color: #0080ff;
 
 			&::before{
 				content: "";
@@ -100,10 +109,11 @@ mat-drawer{
 
 			
 			span{
-				background-color: #f6f7fb;
-				border-radius: 5px;
+				background-color: #f5f7fb;
+				border-radius: 20px;
 				color: #0080FF;
 				font-weight: 600;
+				padding: 8px 16px;
 			}
 		}
 	}
@@ -111,7 +121,7 @@ mat-drawer{
 
 .mat-card-container{
 	padding-right: 0;
-	padding: 1rem;
+	padding: 0 0 0 2rem;
 	height: 65vh;
 	overflow: auto;
 	overflow-x: hidden;
@@ -135,22 +145,21 @@ mat-drawer{
 	mat-card {
 		margin: 0;
 		cursor: pointer;
-		padding-right: 0;
 		border-radius: 0;
 		line-height: 1.35;
-		padding-left: 3rem;
 		position: relative;
+		padding: 2% 1.5%;
 
 		&.to-check {
 			background-color: #FDFDFD;
 
 			&:hover {
-				background-color: #E9EBF0;
+				background-color: #f5f7fb;
 			}
 		}
 
 		%indicator {
-			left: 16px;
+			left: 17px;
 			position: absolute;
 			top: calc(50% - 6px);
 		}
@@ -175,17 +184,19 @@ mat-drawer{
 			color: #A5ABB1;
 			padding-bottom: .3rem;
 			font-size: .85rem;
+			text-transform: uppercase;
 		}
 
 		p {
 			font-size: .85rem;
 			padding-bottom: .9rem;
-			color: #5C5C5C;
+			color: #000000;
 			font-weight: 500;
 		}
 
 		small {
-			font-size: .6rem;
+			font-size: .75rem;
+			color: #acb4ba;
 		}
 	}
 }
@@ -234,7 +245,6 @@ mat-drawer{
 			display: none;
 		}
 	}
-	
 }
 
 .loader {
