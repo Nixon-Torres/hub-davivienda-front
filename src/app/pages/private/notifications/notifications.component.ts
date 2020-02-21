@@ -38,7 +38,18 @@ export class NotificationsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+        this.getNotifications();
+        this.getCountNotifications();
+        let _this = this;
+        let ntfContainer = document.getElementsByClassName("mat-card-container")[0];
+        ntfContainer.addEventListener('scroll', function(e) {
+            if((this.scrollHeight - this.scrollTop) === this.offsetHeight) {
+                _this.getNotifications();
+            }
+        });
+	}
 
+    private getNotifications() {
         this.http.get({
             'path': `notifications`,
             'data': {
@@ -47,24 +58,25 @@ export class NotificationsComponent implements OnInit {
                     { relation: "emitter", scope: { fields: ['name'] } },
                     { relation: "report", scope: { fields: ['name', 'stateId'] } }
                 ],
-                where: { ownerId: this.user.id }
+                where: { ownerId: this.user.id },
+                limit: 15,
+                skip: this.notifications.length
             },
             'encode': true
         }).subscribe((response: any) => {
-            console.log(response.body);
-            if ("body" in response) {
-                response.body.map( notification => { this.processNotification(notification) });
-                this.getCountNotifications();
-            }
+            response.body.map( notification => { this.processNotification(notification) });
         });
-	}
+    }
 
-	private startToListenSockets() {
-        this.socket.start().subscribe(() => {
-            this.socket.on("notification").subscribe((response) => {
-                this.processNotification(response);
-                this.getCountNotifications();
-            });
+    private getCountNotifications(): void {
+        this.http.get({
+            'path': `notifications/count?where=`,
+            'data': {
+                    ownerId: this.user.id,
+                    readed: false
+            }
+        }).subscribe((response: any) => {
+            this.ntfQty = response.body.count;
         });
     }
 
@@ -90,17 +102,12 @@ export class NotificationsComponent implements OnInit {
         this.notifications.push(notf);
     }
 
-    private getCountNotifications(): void {
-        this.http.get({
-            'path': `notifications/count?where=`,
-            'data': {
-                    ownerId: this.user.id,
-                    readed: false
-            }
-        }).subscribe((response: any) => {
-            if ("body" in response) {
-               this.ntfQty = response.body.count;
-            }
+    private startToListenSockets() {
+        this.socket.start().subscribe(() => {
+            this.socket.on("notification").subscribe((response) => {
+                this.processNotification(response);
+                this.getCountNotifications();
+            });
         });
     }
 
