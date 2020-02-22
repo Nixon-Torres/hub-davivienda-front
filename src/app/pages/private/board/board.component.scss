@@ -63,7 +63,11 @@ $default-font: "Helvetica Neue", Medium;
         #actions {
             color: #616161;
             background-color: white;
-
+            .container {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
             .form-name {
                 padding-top: 2px;
                 margin-right: 20px;
@@ -348,5 +352,105 @@ $default-font: "Helvetica Neue", Medium;
         color: white;
         box-shadow: none;
         background-color: #0080ff;
+    }
+    .editors {
+        display: inline-block;
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        &__placeholder { 
+            @include no-selection;
+        }
+        &__count {
+            font-weight: 700;
+        }
+        &__list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            background-color: #ffffff;
+            padding: 0 7.5px;
+            border: 1px solid #0080FF;
+        }
+        &__item {
+            border-bottom: 1px solid #E7EAF1;
+            @include no-selection;
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+    }
+    .authors {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .select-authors, &__list {
+            position: absolute;
+            top: 100%;
+            z-index: 2;
+            left: 0;
+            display: none;
+        }
+        &__list {
+            background-color: #ffffff;
+            padding: 0 7.5px;
+            text-align: left;
+            border: 1px solid #0080FF;
+            min-width: 180px;
+            
+        }
+        &__add {
+            color: #A5ABB1;
+            font-size: 10px;
+            display: flex;
+            justify-content: center;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .author {
+            border-bottom: 1px solid #E7EAF1;
+            display: flex;
+            justify-content: space-between;
+            &__name {
+                color: #616161;
+                font-size: 10px;
+                font-weight: 500;
+                padding-left: 10px;
+                line-height: 30px;
+            }
+            &__remove {
+                color: #FF003B;
+                border: 0;
+                background-color: transparent;
+                padding: 0;
+                cursor: pointer;
+                outline: 0;
+                &:before {
+                    font-size: 10px;
+                    margin-right: 0;
+                }
+            }
+        }
+        &--list-authors {
+            .authors__list {
+                display: block;
+            }
+            .select-authors {
+                display: none;
+            }
+        }
+        &--list-users {
+            .authors__list {
+                display: none;
+            }
+            .select-authors {
+                display: block;
+            }
+        }
     }
 }
