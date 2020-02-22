@@ -8,6 +8,7 @@ import * as qs from 'qs';
 import {HttpService} from '../../../../services/http.service';
 import {AuthService} from '../../../../services/auth.service';
 import {loopback} from '../../../../models/common/loopback.model';
+import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-create-report-dialog',
@@ -34,6 +35,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     public typeSelected;
     public newSectionSelected;
+    public newSectionCompanySelected;
+    public newSectionName;
     private newReportObj = {key: 'add-new-section', value: 'Agregar nuevo tipo de informe'};
     private newSectionAnalysisObj = {id: 'add-new-company-analysis', name: 'Análisis compañía', types: []};
     private sectionsList;
@@ -182,4 +185,41 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.router.navigate([path]);
     }
 
+    public createNewSection(event) {
+        if (event.keyCode !== 13) {
+            return;
+        }
+
+        event.preventDefault();
+        if (!this.newSectionSelected) {
+            return;
+        }
+
+        if (this.newSectionSelected && !this.newSectionCompanySelected) {
+            return;
+        }
+        if (!this.newSectionName) {
+            return false;
+        }
+
+        console.log('new:', this.newSectionName);
+        this.http.patch({
+            path: `reports/reviewers`,
+            data: {
+                reportId: this.report.id,
+                reviewers: this.getReviewers(reviewers)
+            }
+        }).subscribe( (resp) => {
+            if(resp) {
+                this.dialog.open(ConfirmationDialogComponent, {
+                    width: '410px',
+                    data: {
+                        title: 'Tu informe ha sido enviado a revisión:',
+                        subtitle: this.report.name
+                    }
+                });
+            }
+            this.loadReport(this.report.id);
+        })
+    }
 }

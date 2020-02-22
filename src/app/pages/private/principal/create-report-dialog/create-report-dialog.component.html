@@ -23,12 +23,12 @@
 					[(ngModel)]="typeSelected" [ngModelOptions]="{standalone: true}">
 				</ng-select>
 			</div>
-	
+
 			<div class="new-section-block" *ngIf="typeSelected === 'add-new-section'" style="height: 30px">
 				<div class="select-content--medium" style="width: 45%; float: left; margin-right: 10%">
 					<ng-select [items]="sectionsList" bindValue="id" bindLabel="name"
 						placeholder="Seleccione sección del Informe" [virtualScroll]="true"
-						[clearable]="false" class="custom-select " 
+						[clearable]="false" class="custom-select "
 						[(ngModel)]="newSectionSelected" [ngModelOptions]="{standalone: true}">
 					</ng-select>
 				</div>
@@ -36,14 +36,15 @@
 					*ngIf="newSectionSelected === 'add-new-company-analysis'">
 					<ng-select [items]="list.companies" bindValue="id" bindLabel="name"
 						placeholder="Seleccione Compañia" [virtualScroll]="true"
-						[clearable]="false" class="custom-select " 
+						[clearable]="false" class="custom-select "
 						[(ngModel)]="newSectionCompanySelected" [ngModelOptions]="{standalone: true}">
 					</ng-select>
 				</div>
 				<div class="select-content--medium" style="width: 45%; float: left">
 					<div class="input-field" style="width: 100%;">
 						<input id="newSectionName" type="text" placeholder="Escriba el nombre del informe"
-						[(ngModel)]="newSectionName" [ngModelOptions]="{standalone: true}">
+                               (keydown)="createNewSection($event)"
+						        [(ngModel)]="newSectionName" [ngModelOptions]="{standalone: true}">
 					</div>
 				</div>
 			</div>
