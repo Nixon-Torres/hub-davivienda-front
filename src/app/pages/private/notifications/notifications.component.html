@@ -1,0 +1,39 @@
+<div class="container">
+	<mat-drawer-container class="example-container">
+		<mat-drawer mode="side" opened>
+			<a class="aside-back"><i class="material-icons" >chevron_left</i>Volver</a>
+			<ul>
+				<li class="mat-drawer-aside-title">
+					<i class="material-icons notifications_icon">notifications</i>
+					<h6>Filtro de notificaciones</h6>
+				</li>
+				<li class="mat-drawer-aside-item active 	">Todas las notificaciones <span>55</span></li>
+				<li class="mat-drawer-aside-item">Informes editados por otros <span>35</span></li>
+				<li class="mat-drawer-aside-item">Informes publicados por otros <span>0</span> </li>
+			</ul>
+		</mat-drawer>
+
+		<mat-drawer-content>
+			
+			<h6>Tus notificaciones (55)</h6>
+			<a href="#"><i class="material-icons" >chevron_left</i>Volver</a>
+			
+			<div class="mat-card-container">
+				<mat-card  
+					*ngFor="let notification of notifications" 
+					(click)="openNotification(notification.reportId)" 
+					[ngClass]="{'to-check' : !notification.readed}"
+					matRipple>
+					<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
+					<div class="indicator bg-red" *ngIf="notification.type === 'report'"></div>
+					
+					<h6>{{ notification.title }}</h6>
+					<p>{{ notification.description }}</p>
+					<small>{{ notification.timeAgo }}</small>
+				</mat-card>
+			</div>
+			
+		</mat-drawer-content>
+
+	</mat-drawer-container>
+</div>

@@ -15,6 +15,7 @@ import * as moment from 'moment';
 
 import { Report } from './board.model';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
 
 declare var grapesjs: any;
 
@@ -108,6 +109,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.loadReport(this.report.id);
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
+                this.notfAsReaded();
 
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -716,5 +718,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.flags.authorsList = false;
         this.flags.usersList = false; 
         event.stopPropagation();
+    }
+    public notfAsReaded() {
+        // console.log("id: ", this.report.id);
+
+        // this.http.get({
+        //     'path': `reports/${this.report.id}/notifications`
+        // }).subscribe((response: any) => {
+
+        //     console.log("response", response);
+        // });
     }
 }
