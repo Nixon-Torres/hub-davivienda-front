@@ -100,6 +100,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         moment.locale('es'); // Set locale lang for momentJs
 
+
         this.activatedRoute.paramMap.subscribe((params: any) => {
 
             // Load report for edit, but if is a new report load basic data from URI
@@ -110,6 +111,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
                 this.notfAsReaded();
+                this.checkNotifications(this.report.id);
 
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -246,6 +248,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private autosetEditorHeight() {
         let iframe = $('.builder iframe');
+        if (!iframe.length) return;
         let tplBody = iframe.contents()[0].body;
         iframe.contents().find("html")[0].style.overflow = "hidden";
         tplBody.style.height = "auto";
@@ -316,10 +319,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
-    public sendBacktoReview() {
-        this.report.reviewed = false;
-        this.report.stateId = '5e068d1cb81d1c5f29b62975';
-        this.onSave(false, () => {
+    public returnToEdit(): void {
+        this.http.patch({
+            'path': `reports/${this.report.id}`,
+            'data': {
+                reviewed: false,
+                stateId: '5e068d1cb81d1c5f29b62975'
+            }
+        }).subscribe((response: any) => {
+            this.report.stateId = response.body.stateId;
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
@@ -343,8 +351,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 reportId: this.report.id,
                 reviewers: this.getReviewers(reviewers)
             }
-        }).subscribe((resp) => {
-            if (resp) {
+        }).subscribe( (resp: any) => {
+            if(resp) {
                 this.dialog.open(ConfirmationDialogComponent, {
                     width: '410px',
                     data: {
@@ -353,7 +361,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     }
                 });
             }
-            this.loadReport(this.report.id);
+            this.report.state = resp.body.report.state;
+            this.report.stateId = resp.body.report.stateId;
         })
     }
 
@@ -392,7 +401,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     */
     public onSave(autoSave?: boolean, cb?: any): void {
         let isUpdate: boolean = this.report.id ? true : false;
-        let method: string = isUpdate ? 'put' : 'post';
+        let method: string = isUpdate ? 'patch' : 'post';
         let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
         if (this.timer.change) {
             clearTimeout(this.timer.change);
@@ -520,30 +529,31 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.router.navigate(['app/principal']);
     }
 
-    canPublish(): boolean {
+    // TODO read by stateId
+    public canPublish(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
     }
 
-    canApprove(): boolean {
+    public canApprove(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
             this.report.state.name !== 'Publicados';
     }
 
-    canSendToRevision(): boolean {
+    public canSendToRevision(): boolean {
         var role = this.user.roles.find(e => (e === 'analyst'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
             this.report.state.name === 'Revisado con ajustes');
     }
 
-    canSendBackToRevision(): boolean {
+    public canReturnToEdit(): boolean {
         var role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
             this.report.state.name === 'En revisión');
     }
 
-    onSendToRevisionAction(): void {
+    public onSendToRevisionAction(): void {
         this.http.get({
             'path': 'users',
             'data': {
@@ -570,14 +580,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    showComments() {
+    public showComments() {
         this.grid.col.builder = 8;
         this.grid.col.comments = 2;
         this.grid.col.panel = 2;
         document.querySelector('mat-grid-tile.comments').classList.add('show');
     }
 
-    hideComments() {
+    public hideComments() {
         document.querySelector('mat-grid-tile.comments').classList.remove('show');
 
         setTimeout(() => {
@@ -587,7 +597,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, 100);
     }
 
-    focusOnReportName() {
+    public focusOnReportName() {
         document.getElementById("reportName").focus();
     }
 
@@ -728,5 +738,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         //     console.log("response", response);
         // });
+    }
+    public checkNotifications(reportId: string) {
+        let dataFilter = encodeURI(JSON.stringify({reportId: reportId}));
+        this.http.patch({
+            'path': `notifications/read?filter=${dataFilter}`,
+            'data': { "readed": true }
+        }).subscribe();
     }
 }
