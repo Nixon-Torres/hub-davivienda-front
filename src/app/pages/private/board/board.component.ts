@@ -16,6 +16,7 @@ import * as moment from 'moment';
 import { Report } from './board.model';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
+import { UserInterface } from 'src/app/services/auth.service.model';
 
 declare var grapesjs: any;
 
@@ -66,8 +67,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
     };
-    public owner: object; 
-    public editorsList: Array<object>;
+    public owner: any; 
+    public editorsList: Array<any>;
     public list: any = {
         users: [],
         authors: []
@@ -679,7 +680,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    private onDeleteAuthor(event, authorId) {
+    public onDeleteAuthor(event, authorId) {
         event.stopPropagation();
         this.isDeleting = true;
         this.http.delete({
@@ -691,7 +692,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         });
     }
-    private onAddAuthor(author) {
+    public onAddAuthor(author) {
         this.isAdding = true;
         if(!this.maxAuthors) {
             this.http.post({
@@ -712,18 +713,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private toogleAuthorsList(event) {
+    public toggleAuthorsList(event) {
         this.flags.authorsList = !this.flags.authorsList;
         this.flags.usersList = false;
         this.flags.editorsList = false;
         event.stopPropagation();
     }
 
-    private toogleUsersList(event) {
+    public toggleUsersList(event) {
         this.flags.usersList = !this.flags.usersList;
         event.stopPropagation();
     }
-    private toogleEditorsList(event) {
+    public toggleEditorsList(event) {
         this.flags.editorsList = !this.flags.editorsList;
         this.flags.authorsList = false;
         this.flags.usersList = false; 
