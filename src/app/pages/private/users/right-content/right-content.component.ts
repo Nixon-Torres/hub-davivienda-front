@@ -16,13 +16,13 @@ import { UserFormComponent } from '../user-form/user-form.component';
 export class RightContentComponent implements OnInit {
 
 	private collapse: boolean = true;
-	private profile: boolean = true;
+	public profile: boolean = true;
 	private profileSuscription: any;
-	private nameGroup: String = 'Perfil';
+	public nameGroup: String = 'Perfil';
 	private nameGroupSuscription: any;
-	private currentUsersGroup: any = [];
+	public currentUsersGroup: any = [];
 	private currentUsersGroupSuscription: any;
-	private user: any = [];
+	public user: any = [];
 	private imageProfile: any;
 
 	constructor(
