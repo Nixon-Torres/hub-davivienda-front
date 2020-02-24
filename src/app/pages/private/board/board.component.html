@@ -13,7 +13,7 @@
 				<button mat-flat-button class="btn btn-default" *ngIf="canSendToRevision()" [disabled]="!report.id" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-                <button mat-flat-button class="btn btn-default" *ngIf="canSendBackToRevision()" [disabled]="!report.id" (click)="sendBacktoReview()">
+                <button mat-flat-button class="btn btn-default" *ngIf="canReturnToEdit()" [disabled]="!report.id" (click)="returnToEdit()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
 				<button mat-flat-button class="btn btn-default" *ngIf="canApprove()" (click)="approve()">
@@ -47,8 +47,38 @@
 				<button mat-button (click)="onSave(true)" [disabled]="!report.name">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
-				<div class="divider"></div>
-				<span id="lastEditors">Editado por Andres V...<i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+				<div class="authors" 
+				[ngClass]="{'authors--list-authors': flags.authorsList, 'authors--list-users': flags.usersList}" #authorsParent>
+					<button mat-button [disabled]="!report.name" (click)="toggleAuthorsList($event)">
+						<span class="icon icon icon-user-alt"></span>Ver autores</button>
+					<div class="select-authors"	(click)="$event.stopPropagation()" >
+						<ng-select [items]="list.users" bindValue="name" bindLabel="name"
+							placeholder="Escriba nombre para agregar" (change)="onAddAuthor($event)" [virtualScroll]="true"
+							[clearable]="false" [loading]="isAdding" class="custom-select custom-select--authors">
+						</ng-select>
+					</div>
+					<ul class="authors__list" #authorsList>
+						<li class="author" *ngIf="!isOwner">
+							<span class="author__name">{{ owner?.name }}</span>
+						</li>
+						<li class="author" *ngFor="let author of list.authors">
+							<span class="author__name">{{ author.author.name }}</span>
+							<button class="author__remove icon icon-times" *ngIf="isOwner" (click)="onDeleteAuthor($event, author.id)" [disabled]="isDeleting"></button>
+						</li>
+						<li class="authors__add" *ngIf="!maxAuthors && isOwner" (click)="toggleUsersList($event)">Añadir autor</li>
+					</ul>
+				</div>
+				
+				<div class="divider" *ngIf="report.id"></div>
+				<article class="editors" *ngIf="report.id" #editorsParent>
+					<span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}... 
+						<span class="editors__count" *ngIf="editorsList?.length > 1">+ {{ editorsList ? editorsList?.length - 1 : 0}}</span>
+						<i class="fa " [ngClass]="{'fa-chevron-up': flags.editorsList, 'fa-chevron-down': !flags.editorsList}" aria-hidden="true"></i>
+					</span>
+					<ul class="editors__list" *ngIf="flags.editorsList" >
+						<li class="editors__item" *ngFor="let editor of editorsList">{{ editor.name }}</li>
+					</ul>
+				</article>
 			</section>
 		</mat-toolbar-row>
 	</mat-toolbar>
@@ -117,7 +147,7 @@
 								<mat-panel-title>
 									<span class="icon icon-chart-pie"></span>
 									<span>Seo</span>
-								</mat-panel-title>
+								</mat-panel-title> 
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>
@@ -131,8 +161,13 @@
 									<span>Informes relacionados</span>
 								</mat-panel-title>
 							</mat-expansion-panel-header>
+							<div class="related">
+								<p>Seleccione entre 1 y 4 informes relacionados con su contenido</p>
 
-							<p>This is the primary content of the panel.</p>
+								<div class="filter">
+									<app-related-reports [reportId]="report.id"></app-related-reports>
+								</div>
+							</div>
 
 						</mat-expansion-panel>
 
