@@ -195,7 +195,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        if (this.newSectionSelected && !this.newSectionCompanySelected) {
+        if (this.newSectionSelected && this.newSectionSelected === 'add-new-company-analysis' &&
+            !this.newSectionCompanySelected) {
             return;
         }
         if (!this.newSectionName) {
@@ -203,23 +204,21 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         }
 
         console.log('new:', this.newSectionName);
+        const section = this.sectionsList.find(e => e.id === this.newSectionSelected);
+        let values = section.types;
+        values.push({key: this.newSectionName, value: this.newSectionName});
+
         this.http.patch({
-            path: `reports/reviewers`,
+            path: `sections/${this.newSectionSelected}`,
             data: {
-                reportId: this.report.id,
-                reviewers: this.getReviewers(reviewers)
+                types: values
             }
         }).subscribe( (resp) => {
-            if(resp) {
-                this.dialog.open(ConfirmationDialogComponent, {
-                    width: '410px',
-                    data: {
-                        title: 'Tu informe ha sido enviado a revisión:',
-                        subtitle: this.report.name
-                    }
-                });
-            }
-            this.loadReport(this.report.id);
-        })
+            this.typeSelected = this.newSectionSelected;
+            this.newSectionSelected = null;
+            this.newSectionName = null;
+            this.newSectionCompanySelected = null;
+            this.loadSections();
+        });
     }
 }
