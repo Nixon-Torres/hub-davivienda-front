@@ -1,7 +1,11 @@
 <div class="galerie-content">
 	<p class="title">Cambiar foto de perfil</p>
-	<a (click)="onNoClick()" class="modal-close-cta">Cerrar <span class="icon icon-times"></span> </a>
+	<a (click)="onNoClick()" class="modal-close-cta">Cerrar <span class="icon icon-times"></span> </a>	
 	<div class="galerie-content--list">
+		<form [formGroup]="searchForm" class="form-actions">
+			<input class="search" formControlName="search" type="search" placeholder='Buscar "Mis imágenes"' value="" (keydown)="onSearch($event)">
+			<button type="button" class="icon icon-trash-alt simple" (click)="onDelete()">Eliminar Imagen</button>
+		</form>
 		<label>Mis imágenes</label>
 		<ul>
 			<li [ngClass]="{selected: isActive(imagen.id)}" *ngFor="let imagen of list.gallery" (click)="onSelectImage(imagen.id)">
@@ -14,10 +18,11 @@
 	</div>
 	<div class="box-buttons">
 		<form [formGroup] = "imageForm">
-			<input type="file" name="file" id="file" class="inputfile" (change)="onSelectFile($event)"/>
+			<input type="file" name="file" id="file" class="inputfile icon icon-search" (change)="onSelectFile($event)"/>
 			<label class="icong-upload" for="file" accept="image/png,image/jpg">Subir Imagen</label>
 		</form>
 		<p class="message-error" *ngIf="galleryError">Los formatos permitidos son .JPG y .PNG</p>
+		<p class="icon icon-check message" *ngIf="deleteImage">El archivo a sido eliminado</p>
 		<div class="right-box">
 			<button type="button" class="form-button" (click)="onNoClick()">Cancelar</button>
 			<button type="button" class="form-button plus" (click)="onSave()">Seleccionar</button>

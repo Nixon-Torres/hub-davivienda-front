@@ -95,6 +95,72 @@
 
 	}
 
+	.form-actions {
+		@include display-flex();
+
+		position: absolute;
+		top: -30px;
+		right: 0;
+
+		.search {
+			@include border-radius(0px);
+			color: #A5ABB1;
+			height: 26px;
+			font-size: 1em;
+			font-style: italic;
+			width: 182px;
+
+			&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+
+			&::-moz-placeholder { /* Firefox 19+ */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+			&:-ms-input-placeholder { /* IE 10+ */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+			&:-moz-placeholder { /* Firefox 18- */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+
+		}
+	}
+
+	button {
+		&.simple {
+			display: block;
+			border: none;
+			background: transparent;
+			color: #616161;
+			cursor: pointer;
+			font-size: 0.65em;
+			font-weight: 500;
+			letter-spacing: -0.8px;
+			width: 100%;
+		}
+	}
+
+	.message {
+		bottom: 40px;
+		color: #616161;
+		left: 40px;
+		font-size: 0.75em;
+		font-style: italic;
+		margin-left: 20px; 
+
+		&:before {
+			color: #19D600;
+		}
+	} 
 }
 
 .modal-close-cta {
