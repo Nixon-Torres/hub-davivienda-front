@@ -40,6 +40,8 @@ export class ProfileFormComponent implements OnInit {
 			leyend: new FormControl(this.user.leyend),
 			photo: new FormControl(this.user.photo)
 		});
+
+		this.imageProfile = this.user.photo;
 	}
 
 	public setForm() {

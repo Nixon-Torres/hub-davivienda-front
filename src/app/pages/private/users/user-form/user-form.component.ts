@@ -35,6 +35,9 @@ export class UserFormComponent implements OnInit {
 			leyend: new FormControl(this.user.leyend),
 			photo: new FormControl(this.user.photo)
 		});
+
+		this.imageProfile = this.user.photo;
+
 	}
 
 	public setHide() {
