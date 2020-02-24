@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -152,5 +153,10 @@ export class HeaderComponent implements OnInit {
             return true;
         });
         this.router.navigate(['app/board', reportId]);
+    }
+
+    public gotoTo() {
+        this.router.navigate(['app/users']);
+
     }
 }
