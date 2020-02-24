@@ -18,7 +18,7 @@ export class RightContentComponent implements OnInit {
 	private collapse: boolean = true;
 	private profile: boolean = true;
 	private profileSuscription: any;
-	private nameGroup: String = 'Perfil Administrador';
+	private nameGroup: String = 'Perfil';
 	private nameGroupSuscription: any;
 	private currentUsersGroup: any = [];
 	private currentUsersGroupSuscription: any;
