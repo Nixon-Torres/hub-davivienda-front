@@ -267,7 +267,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         if (!this.report.id) this.loadTemplate(this.report.templateId); // If is a new report, load data template
-        M.Tabs.init(document.querySelectorAll('.grapes-container .tabs')[0]); // Initialize the tabs materialize function
+
+        let tabsEl: Element = document.querySelectorAll('.grapes-container .tabs')[0];
+        M.Tabs.init(tabsEl); // Initialize the tabs materialize function
+
+        let elems = document.querySelectorAll('.fixed-action-btn');
+        M.FloatingActionButton.init(elems, { direction: 'top' });
     }
 
     /** Load a template for report if exist template ID else load an empty report

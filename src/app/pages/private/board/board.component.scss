@@ -9,6 +9,13 @@ $builder-bg: #f5f7fb;
 $default-font: "Helvetica Neue", Medium;
 
 .grapes-container {
+    @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
+
+    .fixed-action-btn {
+        left: 25px;
+        right: unset;
+        bottom: 30px;
+    }
 
     .container {
         margin: auto;
@@ -146,10 +153,14 @@ $default-font: "Helvetica Neue", Medium;
     }
 
     #grapesBox {
-        @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
-
         min-height: calc(100vh - (128px + 70px));
         padding: 0 !important;
+
+        &.fullscreen-container {
+            margin: auto;
+            max-width: none;
+            width: 90% !important;
+        }
 
         .builder {
             height: 100%;
@@ -359,4 +370,8 @@ $default-font: "Helvetica Neue", Medium;
     filter{
         margin-top: 10px;
     }
+}
+
+.blue-hub {
+    background-color: #0080ff !important;
 }

@@ -269,6 +269,12 @@ $builder-bg: #f5f7fb;
 	color: #616161 !important;
 }
 
+.fullscreen-container {
+	iframe.gjs-frame {
+        width: 95% !important;
+    }
+}
+
 .builder {
 	& > .mat-figure {
         display: block !important;
