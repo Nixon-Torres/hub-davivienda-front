@@ -90,6 +90,9 @@ export class UserFormComponent implements OnInit {
 				console.log('error');
 			} else {
 				this.save = true;
+				this.user.name = this.userForm.get('name').value;
+				this.user.charge = this.userForm.get('charge').value,
+				this.user.leyend = this.userForm.get('leyend').value
 			}
 		});
 	}
