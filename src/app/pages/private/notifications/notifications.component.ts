@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 
 import { AuthService } from '../../../services/auth.service';
 import { HttpService } from '../../../services/http.service';
-// import { SocketService } from '../../../services/socket.service';
+import { SocketService } from '../../../services/socket.service';
 
 import * as moment from 'moment';
 
@@ -31,9 +31,9 @@ export class NotificationsComponent implements OnInit {
         private location: Location,
         private auth: AuthService,
 		private http: HttpService,
-        // private socket: SocketService
+        private socket: SocketService
 	) {
-        // this.startToListenSockets()
+        // this.startToListenSockets() // TODO refactory this service for panel
         this.user = this.auth.getUserData();
 	}
 
@@ -104,14 +104,14 @@ export class NotificationsComponent implements OnInit {
         this.notifications.push(notf);
     }
 
-    // private startToListenSockets() {
-    //     this.socket.start().subscribe(() => {
-    //         this.socket.on("notification").subscribe((response) => {
-    //             this.processNotification(response);
-    //             this.getCountNotifications();
-    //         });
-    //     });
-    // }
+    private startToListenSockets() {
+        this.socket.start().subscribe(() => {
+            this.socket.on("notification").subscribe((response) => {
+                this.processNotification(response);
+                this.getCountNotifications();
+            });
+        });
+    }
 
     public openNotification(reportId) {
         this.router.navigate(['app/board', reportId]);

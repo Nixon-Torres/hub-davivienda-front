@@ -85,7 +85,6 @@ export class HeaderComponent implements OnInit {
             this.socket.on("notification").subscribe((response) => {
                 this.processNotification(response, true);
                 this.getCountNotifications();
-                // this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
             });
 
             // If listen when a notification was readed, get all notifications again and and their qty
