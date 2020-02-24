@@ -83,9 +83,9 @@ export class HeaderComponent implements OnInit {
 
             // If listen a new notification for be processed and get qty of notifications unreaded
             this.socket.on("notification").subscribe((response) => {
-                this.processNotification(response);
+                this.processNotification(response, true);
                 this.getCountNotifications();
-                this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
+                // this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
             });
 
             // If listen when a notification was readed, get all notifications again and and their qty
@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    private processNotification(item: any) {
+    private processNotification(item: any, isSocket: boolean = false) {
         let timeFromNow: string = moment(item.updatedAt).fromNow();
         let txtDescription: string = item.text
                                     .replace(/{{emitter_name}}/, item.emitter.name)
@@ -115,7 +115,11 @@ export class HeaderComponent implements OnInit {
             notf.bgColor = this.stateColors[item.report.stateId] || 'bg-default';
         }
 
-        this.notifications = [notf].concat(this.notifications);
+        if (isSocket) {
+            this.notifications = [notf].concat(this.notifications);
+        } else {
+            this.notifications.push(notf);
+        }
     }
 
     private startToListenRouter(router: Router) {
