@@ -372,10 +372,15 @@ section {
 
 .folder_container{
 	padding-bottom: 3%;
+	position: relative;
 
 	.operation-cta{
-		display: inline-block;
-		width: 60%;
+		bottom: 0;
+		margin: auto;
+		position: absolute;
+		right: 4%;
+		top: 0;
+
 		ul{
 			display: flex;
 			align-items: flex-end;
@@ -713,7 +718,7 @@ section {
 .crown_btn{
 	span{
 		display: flex;
-		justify-content: flex-end;
+		justify-content: center;
 		align-items: center;
 		width: 10em;
 		background: #ffff;
@@ -727,7 +732,7 @@ section {
 		text-decoration: none !important;
 	}
 	img{
-		width: 14%;
+		width: 12%;
 		padding-right: 0.5em;
 	}
 }

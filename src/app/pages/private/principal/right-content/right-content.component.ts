@@ -593,7 +593,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public openHighlightDialog() {
-        this.dialog.open(HighlightDialogComponent, {width: '60vw'});
+        this.dialog.open(HighlightDialogComponent, {width: '760px', height: '800px'});
     }
 
     public canHighlightReport(): boolean {
