@@ -1,0 +1,262 @@
+@import '../../../../../assets/sass/_mixins'; 
+
+ .galerie-content {
+ 	box-sizing: border-box;
+ 	height: 100%;
+ 	padding: 22px 0 0 0;
+ 	position: relative;
+
+	.title {
+		color: #A5ABB1;
+		font-size: 0.875em;
+		margin-left: 22px;
+	}
+
+	&--list {
+
+		margin-top: 45px;
+		border-top: 1px solid #E7EAF1;
+		position: relative;
+
+		label  {
+			font-size: 0.750em;
+			color: #0080FF;
+			position: absolute;
+			left: 45px;
+			top: -28px;
+			line-height: 2.2em;
+			border-bottom: 2px solid #0080FF;
+			font-weight: bolder;			
+		}
+
+		ul {
+			@include display-flex;
+			color: #A5ABB1;
+			font-size: 0.625em;
+			padding: 30px 12px 30px 22px;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			height: 290px;
+			align-content: baseline;
+			overflow: scroll;
+
+			.img-frame {
+				@include border-radius(5px);
+				border: 1px solid #E7EAF1;
+				height: 80px;
+				overflow: hidden;;
+				width: 130px;
+			}
+
+			img {
+				height: auto;
+				width: 100%;
+			}
+
+			p {
+				line-height: 2.2em;
+			}
+
+			li {
+				margin: 20px 11px 0 0;
+				text-align: center;
+
+				&.selected {
+					.img-frame {
+						border: 1px solid #0080FF;
+					}
+
+					p {
+						color: #0080FF;
+					}
+				}
+			}
+		}
+
+	}
+
+	.box-buttons {
+		@include display-flex;
+		align-items: center;
+		border-top: 1px solid #E7EAF1;
+		bottom: 0px;
+		box-sizing: border-box;
+		height: 50px;
+		padding:0 16px;
+		position: absolute;
+		width: 100%;
+		z-index: 100;
+
+		.right-box {
+			position: absolute;
+			right: 16px;
+		}
+
+	}
+
+	.form-actions {
+		@include display-flex();
+
+		position: absolute;
+		top: -30px;
+		right: 0;
+
+		.search {
+			@include border-radius(0px);
+			color: #A5ABB1;
+			height: 26px;
+			font-size: 1em;
+			font-style: italic;
+			width: 182px;
+
+			&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+
+			&::-moz-placeholder { /* Firefox 19+ */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+			&:-ms-input-placeholder { /* IE 10+ */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+			&:-moz-placeholder { /* Firefox 18- */
+				color: #A5ABB1;
+				font-size: 0.750em;
+				font-style: italic;
+			}
+
+		}
+	}
+
+	button {
+		&.simple {
+			display: block;
+			border: none;
+			background: transparent;
+			color: #616161;
+			cursor: pointer;
+			font-size: 0.65em;
+			font-weight: 500;
+			letter-spacing: -0.8px;
+			width: 100%;
+		}
+	}
+
+	.message {
+		bottom: 40px;
+		color: #616161;
+		left: 40px;
+		font-size: 0.75em;
+		font-style: italic;
+		margin-left: 20px; 
+
+		&:before {
+			color: #19D600;
+		}
+	} 
+}
+
+.modal-close-cta {
+	position: absolute;
+	right: 10px;
+	top: 15px;
+	color: #616161;
+	font-style: italic;
+	font-size: 12px;
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	cursor: pointer;
+
+	span {
+		font-size: 16px;
+		font-style: normal;
+		font-weight: bold;
+		padding-left: 10px;
+	}
+}
+
+form {
+	.inputfile {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.inputfile + label {
+		font-size: 0.750em;
+		font-weight: 700;
+		color: white;
+		background-color: #616161;
+		display: inline-block;
+		width: 108px;
+		text-align: center;
+		padding: 7px;
+		border-radius: 3px;
+	}
+	.inputfile:focus + label,
+	.inputfile + label:hover {
+	    background-color: #0080FF;
+	}
+
+	.inputfile + label {
+		cursor: pointer;
+	}	
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+	font-size: 0.750em;
+	font-weight: 700;
+	color: white;
+	background-color: #A5ABB1;
+	display: inline-block;
+	width: 108px;
+	text-align: center;
+	padding: 7px;
+	border-radius: 3px;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #0080FF;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.form-button {
+	@include border-radius(3px);
+	border: 1px solid #0080FF; 
+	box-shadow: none;
+	color: #0080FF;
+	cursor: pointer;
+	font-size: 0.75em;
+	height: 26px;
+	margin-left: 16px;
+	width: 95px;
+
+	&.plus {
+		background: #0080FF;
+		color: #ffffff;
+	}
+}

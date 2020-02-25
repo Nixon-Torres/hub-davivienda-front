@@ -1,0 +1,24 @@
+<form [formGroup]="userForm" >
+	<div class="top">
+		<div class="column--small">
+			<img class="photo" src="{{storageBase}}{{user.photo ? user.photo : 'user-default.png' }}">
+			<button type="" class="simple icong-camera" (click)="openDialog()">Subir foto</button>
+		</div>
+		<div class="column">
+			<input formControlName="name" class="bolder" type="text" value="{{user.name}}">
+			<input formControlName="charge" class="regular" type="text" value="{{user.charge}}">
+			<input formControlName="email" class="regular" type="text" value="{{user.email}}" disabled="disabled">		
+		</div>
+		<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
+	</div>	
+	<div class="content" [ngClass]="{hide: isHide()}">
+		<div class="description">
+			<textarea formControlName="leyend">{{user.leyend}}</textarea>
+		</div>
+		<div class="box">
+			<button type="button" class="form-button mat-button mat-raised-button" (click)="onSave()">Guardar</button>
+			<button type="button" class="form-button mat-button mat-button-base" (click)="onCancel()">Cancelar</button>
+		</div>
+		<p class="icon icon-check message" *ngIf="save">Usuario actualizado</p>
+	</div>
+</form>

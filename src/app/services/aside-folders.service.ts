@@ -13,13 +13,18 @@ export class AsideFoldersService {
     folders: [],
     states: []
   }
+  private sharedFolder: any = {
+    id: 'shared',
+    name: 'Carpeta compartida',
+    count: 0
+  }
 
   public listenFolders: Subject<any>;
   public $listenFolders: Observable<any>;
-  public foldersSubs;
+  public foldersSubs: any;
   public listenStates: Subject<any>;
   public $listenStates: Observable<any>;
-  public statesSubs;
+  public statesSubs: any;
   public newActiveFolder: Subject<any>;
   public $listenActiveFolder: Observable<any>;
 
@@ -41,18 +46,38 @@ export class AsideFoldersService {
   public loadFolders() {
     var query = new loopback();
     query.filter.include.push({
-      relation: "reports",
-        scope: {
-          where: { trash: false, ownerId:  this.auth.getUserData('id') },
-          type: "count"
-        }
+      relation: 'reports',
+      scope: {
+        where: {
+          trash: false,
+          ownerId:  this.auth.getUserData('id')
+        },
+        fields: ['id']
+      }
     });
+    query.filter.where = {
+      id: { nlike: '5e068fc5913f2a6087d4f562' }
+    };
     this.http.get({
       path: 'folders',
       data: query.filter,
       encode: true
-    }).subscribe((response) => {
-      this.list.folders = this.updateFolders(response.body);
+    }).subscribe((response: any) => {
+      this.loadFolderShared(response.body);
+    });
+  }
+
+  public loadFolderShared(folders: Array<any>) {
+    this.http.get({
+      path: `users/${this.auth.getUserData('id')}/reportsa/count`,
+    }).subscribe((response: any) => {
+      this.list.folders = [];
+      for (let folder of folders) {
+        folder['count'] = folder.reports.length;
+      }
+      this.sharedFolder.count = response.body.count;
+      this.list.folders.push(this.sharedFolder);
+      this.list.folders = this.updateFolders(this.list.folders.concat(folders));
     });
   }
 
