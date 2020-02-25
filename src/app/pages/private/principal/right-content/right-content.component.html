@@ -50,8 +50,8 @@
 								</mat-select>
 							</mat-form-field>
 							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
-								<ul class="">
-									<li><a (click)="restoreReports()"><i class="material-icons">restore_page</i>Recuperar</a></li>
+								<ul class="delete_icons">
+									<li><i class="material-icons">replay</i><a (click)="restoreReports()">Recuperar</a></li>
 									<li><a class="icon icon-trash-alt" (click)="deeplyDeleteReports()">Eliminar</a></li>
 									<li><a class="icon icon-trash-alt active" (click)="deleteAllReports()">Eliminar todo</a></li>
 								</ul>
@@ -73,8 +73,9 @@
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span report_name">{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
-											<h2 class="report--title">{{report.name}}</h2>
+											
 										</mat-checkbox>
+										<h2 class="report--title">{{report.name}}</h2>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
 										<span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">

@@ -84,7 +84,6 @@ export class CommentBoxComponent implements OnInit {
             'data': this.comment
         }).subscribe(
             (response) => {
-                console.log("respuesta: ", response);
                 if (response.ok) {
                     var comment = document.getElementById(idComment);
                     comment.className += " deleted";

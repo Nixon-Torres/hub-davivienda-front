@@ -1,13 +1,13 @@
-import { NgModule, Component, OnInit, AfterViewInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit, AfterViewInit, Inject} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 import * as qs from 'qs';
 
-import { HttpService } from '../../../../services/http.service';
-import { AuthService } from '../../../../services/auth.service';
-import { loopback } from '../../../../models/common/loopback.model';
+import {HttpService} from '../../../../services/http.service';
+import {AuthService} from '../../../../services/auth.service';
+import {loopback} from '../../../../models/common/loopback.model';
 
 @Component({
     selector: 'app-create-report-dialog',
@@ -23,10 +23,14 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private router: Router,
         @Inject(MAT_DIALOG_DATA) public data: any
-    ) { }
+    ) {
+        this.user = this.auth.getUserData();
+    }
 
     public authors = [];
     public selectedAuthor: any = '';
+    public user: any = {};
+    public originalUsers = [];
 
     public list: any = {
         sections: [],
@@ -52,8 +56,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.createReportForm.patchValue({
-            'folderId': this.data.folderId,
-            'stateId': this.data.stateId
+            folderId: this.data.folderId,
+            stateId: this.data.stateId
         });
         this.loadReports();
     }
@@ -66,7 +70,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         query.filter.limit = 6;
         query.filter.order = 'id DESC';
         this.http.get({
-            'path': `reports?${qs.stringify(query, { skipNulls: true })}`
+            'path': `reports?${qs.stringify(query, {skipNulls: true})}`
         }).subscribe((response: any) => {
             this.list.reports = response.body;
         });
@@ -96,8 +100,22 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.http.get({
             'path': 'users/list'
         }).subscribe((response) => {
-            this.list.users = response.body;
+            this.originalUsers = response.body as unknown as any[];
+            var users = this.originalUsers;
+
+            users = users.filter((e) => this.isAuthorAddedAlready(e));
+            this.list.users = users;
         });
+    }
+
+    private isAuthorAddedAlready(user: any)  {
+        const isnotcurrentuser = (user.id !== this.user.id);
+        var authors = this.authors ? this.authors : [];
+        var matches = (authors.find((j) => j.id === user.id));
+        const isnotaddedalready = matches ? (matches.length !== 0) : false;
+        const rsp = isnotcurrentuser && !isnotaddedalready;
+
+        return rsp;
     }
 
     private loadTemplates() {
@@ -110,7 +128,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     public onUpdateTypes($event, index) {
         this.list.typeSections = this.list.sections[index].types;
-        this.createReportForm.patchValue({'sectionTypeKey': null });
+        this.createReportForm.patchValue({'sectionTypeKey': null});
     }
 
     public onAddAuthor() {
@@ -118,13 +136,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             this.list.authors.push(this.selectedAuthor);
             this.list.authorsId.push(this.selectedAuthor.id);
             this.createReportForm.patchValue({'authorsId': this.list.authorsId});
+
+            this.list.users = this.originalUsers.filter((e) => this.isAuthorAddedAlready(e));
+            this.selectedAuthor = null;
         }
     }
 
     public onDeleteAuthor(pos) {
-        if (this.selectedAuthor)
-            this.list.authors.splice(pos, 1);
-
+        this.list.authors.splice(pos, 1);
+        this.list.users = this.originalUsers.filter((e) => this.isAuthorAddedAlready(e));
     }
 
     public onOptionsSelected(event) {
@@ -132,7 +152,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public goToBoard() {
-        let autorsId = JSON.stringify(encodeURI(this.createReportForm.value.authorsId));
         let path = 'app/board';
         path += `/${this.createReportForm.value.stateId}`;
         path += `/${this.createReportForm.value.sectionId}`;
@@ -140,7 +159,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         path += `/${(this.createReportForm.value.folderId)}`;
         path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
         path += `/${this.createReportForm.value.reportId}`;
-        path += `/${autorsId}`;
+        path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)) : false}`;
         this.router.navigate([path]);
     }
 
