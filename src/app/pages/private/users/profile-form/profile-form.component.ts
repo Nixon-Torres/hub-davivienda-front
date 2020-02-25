@@ -14,7 +14,7 @@ import { environment } from '../../../../../environments/environment';
 })
 export class ProfileFormComponent implements OnInit {
 
-	private user: any = [];
+	public user: any = [];
 	private userCopy: any = [];
 	private imageProfile: any;
 	public profileForm: FormGroup;
