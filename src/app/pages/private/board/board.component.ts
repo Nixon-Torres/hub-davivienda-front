@@ -15,8 +15,8 @@ import * as moment from 'moment';
 import * as qs from 'qs';
 
 import { Report } from './board.model';
-import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
 
 declare var grapesjs: any;
 
@@ -89,6 +89,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
                 this.report.id = params.get("id");
                 this.loadReport(this.report.id);
+                this.notfAsReaded();
 
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -577,5 +578,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     focusOnReportName() {
         document.getElementById("reportName").focus();
+    }
+
+    public notfAsReaded() {
+        // console.log("id: ", this.report.id);
+
+        // this.http.get({
+        //     'path': `reports/${this.report.id}/notifications`
+        // }).subscribe((response: any) => {
+
+        //     console.log("response", response);
+        // });
     }
 }
