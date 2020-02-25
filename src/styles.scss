@@ -275,6 +275,14 @@ $builder-bg: #f5f7fb;
     }
 }
 
+.mobile {
+	iframe {
+		width: 380px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+}
+
 .builder {
 	& > .mat-figure {
         display: block !important;

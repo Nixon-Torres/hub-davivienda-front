@@ -164,6 +164,7 @@ $default-font: "Helvetica Neue", Medium;
             margin: auto;
             max-width: none;
             width: 90% !important;
+            min-height: calc(100vh - (1px + 70px));
         }
 
         .builder {
@@ -318,7 +319,7 @@ $default-font: "Helvetica Neue", Medium;
         float: left;
     }
 
-    .btn {
+    .bttn {
         height: 35px;
         padding: 0 12px;
         font-size: 12px;
@@ -346,7 +347,7 @@ $default-font: "Helvetica Neue", Medium;
         }
     }
 
-    .btn-default {
+    .bttn-default {
         color: #A5ABB1;
         box-shadow: none;
         background-color: white;
@@ -359,7 +360,7 @@ $default-font: "Helvetica Neue", Medium;
         }
     }
 
-    .btn-primary {
+    .bttn-primary {
         color: white;
         box-shadow: none;
         background-color: #0080ff;
