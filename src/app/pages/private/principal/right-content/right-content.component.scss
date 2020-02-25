@@ -309,6 +309,25 @@ section {
 						font-weight: bold;
 					}
 				}
+
+				.icong {
+					background-color: #FFFFFF;
+					border: none;
+					color: #0080FF;
+					cursor: pointer;
+					display: inlineZ;
+					font-size:0.750em;
+
+					&:before {
+						color: #FF9D00;
+						font-size: 1em;
+						margin-right: 5px;
+					}
+
+					&:hover {
+						font-weight: bolder;
+					}
+				}
 			}
 
 			&.active {

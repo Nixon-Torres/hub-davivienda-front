@@ -605,4 +605,9 @@ export class RightContentComponent implements OnInit {
         return reportOnly.length ? true : false;
     }
 
+    public showOptionMenu(state): boolean {
+        return state === '5e068c81d811c55eb40d14d0' ? true : false;
+    } 
+
+
 }

@@ -90,9 +90,7 @@
 												<li><button class="icon icon-copy" (click)="onCloneReport(i)">Duplicar</button></li>
 												<li><button class="icon icon-trash-alt" (click)="onDeleteReport(i)">Eliminar</button></li>
 												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus" (click)="openPreviewDialog(report.id)">Vista previa</button></li>
-												<li class="crown_menu">
-													<button class="icon" (click)="openHighlightDialog(i)"><span><img src="/assets/images/corona.svg" alt="">Destacar</span></button>
-												</li>
+												<li *ngIf="showOptionMenu(report.state.id)"><button class="icong icong-crown" (click)="openHighlightDialog(i)">Destacar</button></li>
 											</ul>
 										</div>
 									</div>
