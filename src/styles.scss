@@ -330,6 +330,43 @@ $builder-bg: #f5f7fb;
 					visibility: hidden;
 				}
 			}
+
+			.gjs-mdl-container {
+				& > .gjs-mdl-dialog {
+					max-width: none;
+					width: 75%;
+
+					.gjs-mdl-title {
+						font-size: 1.2rem;
+					}
+
+					.gjs-import-label {
+						font-size: 0.9rem;
+						margin: 5px 0 10px;
+					}
+
+					.CodeMirror {
+						height: 70vh;
+					}
+
+					.btn {
+						color: #595656;
+						font-size: 1rem;
+						cursor: pointer;
+						margin: 15px 0 5px;
+						padding: 8px 10px;
+						border-radius: 5px;
+						border: 1px solid #d2d2d2;
+						background-color: #ececec;
+
+						&:hover {
+							color: white;
+							border: 1px solid #0368cc;
+							background-color: #0080ff;
+						}
+					}
+				}
+			}
 		}
     }
 }

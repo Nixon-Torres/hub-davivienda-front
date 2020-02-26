@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { Grapes } from "./grapes/grape.config";
+import { CodeMirror } from "./grapes/code-mirror.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 import * as $ from "jquery/dist/jquery";
@@ -687,7 +688,48 @@ export class BoardComponent implements OnInit, AfterViewInit {
     *   Change template content by code
     */
     public importCode() {
-        let actualCode = this.editor.getHtml();
+        let codeMirror = new CodeMirror();
+        let codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
+        let viewerEditor = codeViewer.editor;
+        let modal = this.editor.Modal;
+        let grapesContent = this.editor.getHtml();
+        let container = this.getModalContainer();
+        let txtarea = container.children[1];
+        let btn: HTMLElement = container.children[2] as HTMLElement;
+
+        modal.setTitle("Editor de código");
+        modal.setContent(container);
+        codeViewer.set(codeMirror.getConfig());
+        codeViewer.init(txtarea);
+        codeViewer.setContent(grapesContent);
+        viewerEditor = codeViewer.editor;
+        btn.onclick = () => {
+            this.editor.setComponents(viewerEditor.getValue().trim());
+            modal.close();
+        };
+
+        modal.open();
+        viewerEditor.refresh();
+    }
+
+    private getModalContainer() {
+        let pfx = this.editor.getConfig('stylePrefix');
+        let container = document.createElement('div');
+        let labelEl = document.createElement('div');
+        let txtarea = document.createElement('textarea');
+        let btnImp = document.createElement('button');
+
+        labelEl.className = `${pfx}import-label`;
+        labelEl.innerHTML = "Edite aqui su HTML/CSS y haga click en Importar";
+        btnImp.type = 'button';
+        btnImp.className = `btn`;
+        btnImp.innerHTML = "Importar";
+
+        container.appendChild(labelEl);
+        container.appendChild(txtarea);
+        container.appendChild(btnImp);
+
+        return container;
     }
 
     private getAvailableAuthors(users: Array<any>): Array<any> {
