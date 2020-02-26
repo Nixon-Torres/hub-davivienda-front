@@ -275,7 +275,18 @@ $builder-bg: #f5f7fb;
         position: relative !important;
 
 		#gjs {
-
+			height: calc(100% - 72px) !important;
+			&.pdf-button {
+				.gjs-editor {
+					.gjs-cv-canvas {
+						.gjs-cv-canvas__frames {
+							.gjs-frame {
+								margin-top: 0;
+							}
+						}
+					}
+				}
+			}
 			.gjs-editor {
 
 				.gjs-cv-canvas {
@@ -308,6 +319,7 @@ $builder-bg: #f5f7fb;
 							margin: 54px 0 70px;
 							border: 1px solid #eee;
 							border-radius: 5px !important;
+							
 						}
 					}
 				}
