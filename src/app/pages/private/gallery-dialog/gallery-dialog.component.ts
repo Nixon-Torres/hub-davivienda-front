@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { HttpService } from '../../../../services/http.service';
-import { loopback } from '../../../../models/common/loopback.model';
-import { environment } from '../../../../../environments/environment';
+import { HttpService } from '../../../services/http.service';
+import { loopback } from '../../../models/common/loopback.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-gallery-dialog',

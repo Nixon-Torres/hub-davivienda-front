@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
+import { GalleryDialogComponent } from '../../gallery-dialog/gallery-dialog.component';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpService } from '../../../../services/http.service';
 import { environment } from '../../../../../environments/environment';

@@ -8,6 +8,7 @@ import * as qs from 'qs';
 import {HttpService} from '../../../../services/http.service';
 import {AuthService} from '../../../../services/auth.service';
 import {loopback} from '../../../../models/common/loopback.model';
+import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-create-report-dialog',
@@ -32,14 +33,23 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public user: any = {};
     public originalUsers = [];
 
+    public typeSelected;
+    public newSectionSelected;
+    public newSectionCompanySelected;
+    public newSectionName;
+    private newReportObj = {key: 'add-new-section', value: 'Agregar nuevo tipo de informe'};
+    private newSectionAnalysisObj = {id: 'add-new-company-analysis', name: 'Análisis compañía', types: []};
+    public sectionsList;
+
     public list: any = {
         sections: [],
-        typeSections: [],
+        typeSections: [this.newReportObj],
         authors: this.authors,
         templates: [],
         users: [],
         reports: [],
-        authorsId: []
+        authorsId: [],
+        companies: [{id: 'company1', name: 'Compañia 1'}, {id: 'company2', name: 'Compañia 2'}]
     }
 
     ngOnInit() {
@@ -93,6 +103,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             'path': 'sections'
         }).subscribe((response) => {
             this.list.sections = response.body;
+            this.sectionsList = this.list.sections.map((e) => Object.assign({}, e));
+            this.sectionsList.push(this.newSectionAnalysisObj);
         });
     }
 
@@ -126,8 +138,18 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public typeChanged() {
+        console.log(this.typeSelected);
+    }
+
     public onUpdateTypes($event, index) {
-        this.list.typeSections = this.list.sections[index].types;
+        var types = this.sectionsList[index].types;
+        types = types.reduce((y, x) => {
+            if (!y.find((e) => e.key === x.key)) y.push(x);
+            return y;
+        }, []);
+        types.push(this.newReportObj);
+        this.list.typeSections = types;
         this.createReportForm.patchValue({'sectionTypeKey': null});
     }
 
@@ -163,4 +185,40 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.router.navigate([path]);
     }
 
+    public createNewSection(event) {
+        if (event.keyCode !== 13) {
+            return;
+        }
+
+        event.preventDefault();
+        if (!this.newSectionSelected) {
+            return;
+        }
+
+        if (this.newSectionSelected && this.newSectionSelected === 'add-new-company-analysis' &&
+            !this.newSectionCompanySelected) {
+            return;
+        }
+        if (!this.newSectionName) {
+            return false;
+        }
+
+        console.log('new:', this.newSectionName);
+        const section = this.sectionsList.find(e => e.id === this.newSectionSelected);
+        let values = section.types;
+        values.push({key: this.newSectionName, value: this.newSectionName});
+
+        this.http.patch({
+            path: `sections/${this.newSectionSelected}`,
+            data: {
+                types: values
+            }
+        }).subscribe( (resp) => {
+            this.typeSelected = this.newSectionSelected;
+            this.newSectionSelected = null;
+            this.newSectionName = null;
+            this.newSectionCompanySelected = null;
+            this.loadSections();
+        });
+    }
 }

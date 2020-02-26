@@ -4,7 +4,7 @@ import { UsersComponent } from './users.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LeftBarComponent } from './left-bar/left-bar.component';
 import { RightContentComponent } from './right-content/right-content.component';
-import { GalleryDialogComponent } from './gallery-dialog/gallery-dialog.component';
+import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatDialogModule } from '@angular/material/dialog';
