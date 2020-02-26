@@ -1,16 +1,25 @@
 @import '../../../../../assets/sass/_mixins';
 
-.new-section-block {
-	// margin-top: 20px;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	.select-content--medium {
-		margin-top: 20px;
-		&:first-child {
-			margin-right: 2%;
-		}
-	}
+.new-section-container {
+    width: 80%;
+    margin: 0 auto;
+    .new-section-block {
+        // margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        .select-content--medium {
+            margin-top: 20px;
+            width: 49%;
+            &:first-child {
+                margin-right: 2%;
+            }
+
+            .input-field {
+                width: 100%;
+            }
+        }
+    }
 }
 
 .input-field {
@@ -299,7 +308,7 @@
 		background: #E7EAF1;
 		display: block;
 		height: 1px;
-		margin: 40px 0 40px -5%;	
+		margin: 40px 0 40px -5%;
 		width: 120%;
 	}
 
@@ -377,8 +386,8 @@ button {
 	margin-right: auto;
 	margin-left: auto;
   }
-  
-  
+
+
   // For each breakpoint, define the maximum width of the container in a media query
   @mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
 	@each $breakpoint, $container-max-width in $max-widths {
@@ -387,14 +396,14 @@ button {
 	  }
 	}
   }
-  
+
   @mixin make-row($gutter: $grid-gutter-width) {
 	display: flex;
 	flex-wrap: wrap;
 	margin-right: -$gutter / 2;
 	margin-left: -$gutter / 2;
   }
-  
+
   @mixin make-col-ready($gutter: $grid-gutter-width) {
 	position: relative;
 	// Prevent columns from becoming too narrow when at smaller grid tiers by
@@ -404,7 +413,7 @@ button {
 	padding-right: $gutter / 2;
 	padding-left: $gutter / 2;
   }
-  
+
   @mixin make-col($size, $columns: $grid-columns) {
 	flex: 0 0 percentage($size / $columns);
 	// Add a `max-width` to ensure content within each column does not blow out
@@ -412,9 +421,8 @@ button {
 	// do not appear to require this.
 	max-width: percentage($size / $columns);
   }
-  
+
   @mixin make-col-offset($size, $columns: $grid-columns) {
 	$num: $size / $columns;
 	margin-left: if($num == 0, 0, percentage($num));
   }
-  
