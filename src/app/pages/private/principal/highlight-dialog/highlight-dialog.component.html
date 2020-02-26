@@ -9,62 +9,55 @@
     </div>
 
     <div class="highlight_content">
-        <div class="highlight_picture" (click)="pictureSelect = !pictureSelect" [ngClass]="{'activeColor': pictureSelect}">
-            <p>destacado principal</p>
-        </div>
-        <div class="hr_content" [ngClass]="{'activeColor': pictureSelect}">
-            <hr class="first-hr">
-            <hr class="middle-hr">
-            <hr class="last-hr">
-        </div>
-
-        <div class="double-frame">
-            <div class="highlight_picture first-picture">
-                <p>cuadro 01</p>
-            </div>
-
-            <div class="highlight_picture">
-                <p>cuadro 02</p>
-            </div>
-        </div>
-        
-        <div class="hr-frame">
+        <div (click)="onCheckSection('header')" [ngClass]="{'activeColor': isActive('header')}">
+            <p class="highlight_picture" >destacado principal</p>
             <div class="hr_content">
                 <hr class="first-hr">
                 <hr class="middle-hr">
                 <hr class="last-hr">
             </div>
+        </div>
 
-            <div class="hr_content hr-second">
-                <hr class="first-hr">
-                <hr class="middle-hr">
-                <hr class="last-hr">
+
+        <div class="double-frame">
+            <div class="box" (click)="onCheckSection('one')" [ngClass]="{'activeColor': isActive('one')}">
+               <p class="highlight_picture">cuadro 01</p>
+               <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
+            </div>
+
+            <div class="box" (click)="onCheckSection('two')" [ngClass]="{'activeColor': isActive('two')}">
+                <p class="highlight_picture">cuadro 02</p>
+                <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
             </div>
         </div>
 
         <div class="double-frame">
-            <div class="highlight_picture first-picture">
-                <p>cuadro 03</p>
-            </div>
-    
-            <div class="highlight_picture">
-                <p>cuadro 04</p>
-            </div>
-        </div>
-
-        <div class="hr-frame">
-            <div class="hr_content">
-                <hr class="first-hr">
-                <hr class="middle-hr">
-                <hr class="last-hr">
+            <div class="box" (click)="onCheckSection('three')" [ngClass]="{'activeColor': isActive('three')}">
+               <p class="highlight_picture">cuadro 03</p>
+               <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
             </div>
 
-            <div class="hr_content hr-second">
-                <hr class="first-hr">
-                <hr class="middle-hr">
-                <hr class="last-hr">
+            <div class="box" (click)="onCheckSection('four')" [ngClass]="{'activeColor': isActive('four')}">
+                <p class="highlight_picture">cuadro 04</p>
+                <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
             </div>
-        </div>
+        </div>        
     
     </div>
 

@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -9,7 +10,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 
 export class HighlightDialogComponent implements OnInit {
 
-	pictureSelect: false;
+	public sectionSelect: String = '';
 
 	constructor(
 		public dialogRef: MatDialogRef<HighlightDialogComponent>,
@@ -17,6 +18,14 @@ export class HighlightDialogComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+	}
+
+	onCheckSection(section) {
+		this.sectionSelect = section ; 
+	}
+
+	isActive(section): boolean {
+		return this.sectionSelect === section ? true : false; 
 	}
 
 	onNoClick(input: boolean): void {

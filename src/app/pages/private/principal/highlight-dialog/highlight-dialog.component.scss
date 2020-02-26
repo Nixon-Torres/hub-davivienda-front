@@ -55,7 +55,6 @@
         .highlight_picture{
             padding: 35px;
             border: dashed 4px;
-            width: 77%;
             margin: auto;
             cursor: pointer;
         }
@@ -64,7 +63,6 @@
             hr{
                 margin: auto 0;
                 margin-top: 12px;
-                margin-left: 10px;
                 border-radius: 20px;
                 border: solid 1px #C2CBD1;
             }
@@ -78,19 +76,17 @@
             .last-hr{
                 width: 95%;
             }
-            &.activeColor{
-                hr{
-                    border-color: #0080ff;
-                }
-            }
         }
 
         .double-frame{
             display: flex;
-            margin: 10px;
-            .first-picture{
-                margin-right: 20px;
+            padding: 20px 0 0 0;
+            justify-content: space-between;
+
+            .box {
+                width: 47%;
             }
+
         }
         .hr-frame{
             display: flex;
@@ -148,5 +144,16 @@
     .activeColor{
         border-color: #0080ff;
         color: #0080ff;
+
+        .hr_content {
+            hr {
+                border-color: #0080ff;
+
+                &.first-hr {
+                    border-color: #0080ff;
+                }
+            }
+        }
+
     }
 }
