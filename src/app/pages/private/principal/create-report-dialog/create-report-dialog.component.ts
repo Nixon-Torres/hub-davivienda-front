@@ -39,7 +39,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public newSectionName;
     private newReportObj = {key: 'add-new-section', value: 'Agregar nuevo tipo de informe'};
     private newSectionAnalysisObj = {id: 'add-new-company-analysis', name: 'Análisis compañía', types: []};
-    private sectionsList;
+    public sectionsList;
 
     public list: any = {
         sections: [],
