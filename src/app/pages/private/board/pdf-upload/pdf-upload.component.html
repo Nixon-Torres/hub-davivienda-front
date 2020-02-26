@@ -33,9 +33,9 @@
         </div>
         <!-- Work Text -->
         <div class="info-pdf" *ngIf="fileData">
-          <p>{{fileData.name}}</p>
+          <p>{{fileData.file.name}}</p>
           <div>
-            <p>{{fileData.size}}</p>
+            <p>{{fileData.file.size}}</p>
             <img src="/assets/images/cancel.png" alt="" (click)="deleteFile()">
           </div>
         </div>
