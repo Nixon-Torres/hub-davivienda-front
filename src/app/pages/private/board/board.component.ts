@@ -488,7 +488,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openUploadDialog(): void {
-      let dialogRef = this.dialog.open(PdfUploadComponent);
+      let dialogRef = this.dialog.open(PdfUploadComponent, {
+        data: {
+            reportId: this.report.id
+          }
+      });
       dialogRef.afterClosed().subscribe((response: any) => {
           if (response) {
               this.http.patch({

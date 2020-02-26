@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { HttpService } from '../../../../services/http.service';
 
@@ -15,11 +15,12 @@ export class PdfUploadComponent implements OnInit {
     public spinner: boolean;
     public errorMsg: string;
     public workMsg: string;
-
+    
     constructor(
         public dialogRef: MatDialogRef<PdfUploadComponent>,
         private formBuilder: FormBuilder,
-        private http: HttpService
+        private http: HttpService,
+        @Inject(MAT_DIALOG_DATA) public data: any
     ) { }
 
     ngOnInit() {
@@ -40,7 +41,8 @@ export class PdfUploadComponent implements OnInit {
         const formData = new FormData();
         formData.append('types', encodeURI(JSON.stringify(['pdf'])));
         formData.append('file', this.uploadForm.get('file').value);
-        formData.append('key', 'pdf');
+        formData.append('key', 'pdffile');
+        formData.append('resourceId', this.data.reportId);
         this.spinner = true;
         this.errorMsg = null;
         this.fileData = null;
