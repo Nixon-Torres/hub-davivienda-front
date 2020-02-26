@@ -67,7 +67,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
     };
-    public owner: any; 
+    public owner: any;
     public editorsList: Array<any>;
     public list: any = {
         users: [],
@@ -532,26 +532,26 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     // TODO read by stateId
     public canPublish(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
+        const role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'  &&
+            this.report.ownerId !== this.user.id;
     }
 
     public canApprove(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
+        const role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
-            this.report.state.name !== 'Publicados';
+            this.report.state.name !== 'Publicados' && this.report.ownerId !== this.user.id;
     }
 
     public canSendToRevision(): boolean {
-        var role = this.user.roles.find(e => (e === 'analyst'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
+        return this.report && this.report.state && (this.report.state.name === 'Borradores' ||
             this.report.state.name === 'Revisado con ajustes');
     }
 
     public canReturnToEdit(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
+        const role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
-            this.report.state.name === 'En revisión');
+            this.report.state.name === 'En revisión') && this.report.ownerId !== this.user.id;
     }
 
     public onSendToRevisionAction(): void {
@@ -606,7 +606,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for(let parentNode of element.path) {
             if(parentNode === parent) {
                 return;
-            } else { 
+            } else {
                 return true;
             }
         }
@@ -727,7 +727,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public toggleEditorsList(event) {
         this.flags.editorsList = !this.flags.editorsList;
         this.flags.authorsList = false;
-        this.flags.usersList = false; 
+        this.flags.usersList = false;
         event.stopPropagation();
     }
     public notfAsReaded() {
