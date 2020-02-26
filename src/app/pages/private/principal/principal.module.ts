@@ -30,6 +30,7 @@ import { CreateReportDialogComponent } from './create-report-dialog/create-repor
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HighlightDialogComponent } from './highlight-dialog/highlight-dialog.component';
+import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
 
 const routes: Routes = [
     {
@@ -55,7 +56,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent,GalleryDialogComponent],
     imports: [
         CommonModule,
         materialModules,
@@ -74,7 +75,9 @@ const materialModules: any[] = [
     entryComponents: [
         DialogBoxComponent,
         HighlightDialogComponent,
-        CreateReportDialogComponent
+        CreateReportDialogComponent,
+        GalleryDialogComponent
+
     ]
 })
 export class PrincipalModule { }

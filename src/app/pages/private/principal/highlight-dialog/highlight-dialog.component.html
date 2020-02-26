@@ -62,17 +62,24 @@
     </div>
 
     <div class="highlight_image" *ngIf="pictureSelect">
-        <button>
-            <span class="icon icon-plus-circle"></span>
-            <span class="info"> Agregar imagen al destacado</span>
-        </button>
-        <p>Tamaño máximo de imagen 1MB</p>
+        <div class="controls" *ngIf="!imageSelected">
+            <button (click)="openGallery()">
+                <span class="icon icon-plus-circle"></span>
+                <span class="info"> Agregar imagen al destacado</span>
+            </button>
+            <p>Tamaño máximo de imagen 1MB</p>
+        </div>
+        <div class="list" *ngIf="imageSelected">
+            <img src="{{storageBase}}{{photo}}">
+            <p>{{photo}}</p>
+            <button class="del icon icon-times" (click)="onRemoveImage()"></button>
+        </div>    
     </div>
 
     <div class="highlight_btm">
         <div mat-dialog-actions>
             <button mat-button class="btn dialog_cancel" (click)="onNoClick()">Cancelar</button>
-            <button mat-button class="btn btn-primary">Aceptar</button>
+            <button mat-button class="btn btn-primary" >Aceptar</button>
         </div>
     </div>
 

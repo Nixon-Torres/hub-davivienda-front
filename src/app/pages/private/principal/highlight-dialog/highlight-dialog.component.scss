@@ -101,7 +101,7 @@
 
     .highlight_image{
         text-align: center;
-        padding: 35px;
+        padding: 26px 35px;
         margin-top: 15px;
         background-color: #e7ecf4;
         button{
@@ -123,11 +123,52 @@
             color: #a6a9ad;
             font-weight: 500;
         }
+
+        .list {
+            align-items: center;
+            display: flex;
+            justify-content: flex-start;
+            padding: 0 30px;
+            position: relative;
+
+            img {
+                height: auto;
+                width: 80px;
+            }
+
+            p {
+                margin-left: 20px;
+            }
+        }
+
+        .del {
+            border-radius: 10px;
+            border: 1px solid #ff003b;
+            color: #ff003b;
+            cursor: pointer;
+            height: 16px;
+            position: absolute;
+            width: 16px;
+            background-color: #fff;
+            font-size: 1em;
+            margin: auto;
+            right: 0;
+            top: 0;
+            bottom: 0;
+
+            &:before {
+                position: absolute;
+                top: 3px;
+                left: 4px;
+                font-size: 0.375em;
+            }
+        }
+
     }
     
     .highlight_btm{
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         width: 86%;
         margin: auto;
         border-top: solid 2px rgba(165, 171, 177, 0.158);
