@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
+import { GalleryDialogComponent } from '../../gallery-dialog/gallery-dialog.component';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
 import { UserFormComponent } from '../user-form/user-form.component';
 

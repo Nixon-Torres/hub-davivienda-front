@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { GalleryDialogComponent } from '../gallery-dialog/gallery-dialog.component';
+import { GalleryDialogComponent } from '../../gallery-dialog/gallery-dialog.component';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpService } from '../../../../services/http.service';
 import { environment } from '../../../../../environments/environment';
