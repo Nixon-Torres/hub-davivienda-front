@@ -22,7 +22,7 @@
         <mat-card-content>
             <p>{{ comment.text }}</p>
             <div class="actions">
-                <button mat-stroked-button class="btn-resolve">Resolver</button>
+                <button (click)="resolveComment(comment)" mat-stroked-button class="btn-resolve" *ngIf="!comment.resolved">Resolver</button>
             </div>
         </mat-card-content>
     </mat-card>
