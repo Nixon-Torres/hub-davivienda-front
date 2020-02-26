@@ -3,4 +3,5 @@ export interface Comment {
     userId?: string;
     reportId: string;
     text: string;
+    resolved: boolean;
 }

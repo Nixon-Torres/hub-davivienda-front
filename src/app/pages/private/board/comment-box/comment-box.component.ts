@@ -18,9 +18,10 @@ export class CommentBoxComponent implements OnInit {
 
     public user: any = {};
     public comment: Comment = {
-        'id': null,
-        'reportId': null,
-        'text': ''
+        id: null,
+        reportId: null,
+        text: '',
+        resolved: false
     };
     public list: any = {
         comments: []
@@ -110,5 +111,19 @@ export class CommentBoxComponent implements OnInit {
 
     hideComments() {
         this.propagate.emit();
+    }
+
+    resolveComment(comment: Comment) {
+        this.http.patch({
+            path: `comments/${comment.id}`,
+            data: {
+                resolved: true,
+                resolverId: this.user.id
+            }
+        }).subscribe(
+            () => {
+                comment.resolved = true;
+            }
+        );
     }
 }
