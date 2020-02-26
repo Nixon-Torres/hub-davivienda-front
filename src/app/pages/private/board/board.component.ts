@@ -7,6 +7,7 @@ import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
@@ -83,6 +84,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public isAdding: boolean = false;
     public editorInitiated = false;
     public isOwner: boolean = false;
+    public files: Array<any>;
+    public templateType: string;
     @ViewChild('authorsParent', {static:false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static:false}) editorsParent?: ElementRef;
 
@@ -149,6 +152,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 fields: ['id', 'name']
             }
+        }, {
+            relation: "files",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
+        }, {
+            relation: "template",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
         });
         this.http.get({
             'path': `reports/${idReport}`,
@@ -161,6 +174,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
+            this.files =  response.body.files;
+            this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
                 setTimeout(() => {
                     this.initGrapes();
@@ -485,6 +500,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
+
+    public openUploadDialog(): void {
+      let dialogRef = this.dialog.open(PdfUploadComponent, {
+        data: {
+            reportId: this.report.id,
+            files: this.files
+          }
+      });
+      dialogRef.afterClosed().subscribe((response: any) => {
+            this.loadReport(this.report.id);
+            if (response) {
+                this.http.patch({
+                    path: `reports/${this.report.id}`,
+                    data: {
+                        pdfId: response.id,
+                    }
+                }).subscribe(() => {
+                    
+                });
+            }
+      });
+  }
 
     public discard() {
 

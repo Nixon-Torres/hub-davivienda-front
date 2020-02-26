@@ -1,0 +1,68 @@
+<div id="pdfUpload">
+  <div class="pdf-title">
+    <h2 mat-dialog-title>HTML + PDF</h2>
+    <a class="modal-close-cta" (click)="closeDialog(null)">Cerrar <span class="icon icon-times"></span></a>
+  </div>
+
+  <mat-dialog-content>
+      <div class="message-container">
+        <!-- Error -->
+        <div class="message-box divider" *ngIf="errorMsg">
+          <div class="message-icon">
+            <img class="logo-board" src="/assets/images/warning.svg" alt="Check">
+          </div>
+          <div class="message-title">¡Ha ocurrido un error!</div>
+        </div>
+        <!-- Work -->
+        <div class="message-box divider" *ngIf="fileData">
+          <div class="message-icon">
+            <img class="logo-board" src="/assets/images/check.png" alt="Check">
+          </div>
+          <div class="message-title check">¡Cargado exitosamente!</div>
+        </div>
+        <!-- Spinner -->
+        <div class="pdf-spinner" *ngIf="spinner">
+          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <p>Estamos cargando el archivo</p>
+        </div>
+
+        <div class="message-box">
+          <div class="message-description" *ngIf="errorMsg">{{errorMsg}}</div>
+          <div class="message-description" *ngIf="!errorMsg">{{workMsg}}</div>
+          <div class="message-upload-button">
+        </div>
+        <!-- Work Text -->
+        
+        <div>
+          <div class="info-pdf" *ngIf="fileData || currentFile">
+            <p>{{ !currentFile ? fileData.file.name : currentFile.name}}</p>
+            <div>
+              <p>{{!currentFile ? fileData.file.size : currentFile.size}}</p>
+              <img src="/assets/images/cancel.png" alt="" (click)="deleteFile(currentFile.id)">
+            </div>
+          </div>
+
+        </div>
+
+        <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
+          <div>
+            <input id="iFile" type="file" (change)="onFileSelect($event)" style="display: none;" accept=".pdf">
+            <label class="up-file" for="iFile"><img src="/assets/images/upload.svg" alt=""> {{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo</label>
+          </div>
+           <br>
+          <div class="size-txt">
+            <span>Tamaño máximo hasta 10GB</span>
+          </div>
+        </form>
+        </div>
+      </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <div class="pdf-btn">
+      <button class="mat-raised-button pdf-close" (click)="closeDialog(null)">Cancelar</button>
+      <button class="mat-raised-button mat-primary" (click)="closeDialog(fileData)">Aceptar</button>
+    </div>
+  </mat-dialog-actions>
+
+</div>
