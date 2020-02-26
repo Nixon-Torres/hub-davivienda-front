@@ -593,7 +593,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public openHighlightDialog() {
-        this.dialog.open(HighlightDialogComponent, {width: '760px', height: '800px'});
+        this.dialog.open(HighlightDialogComponent, {width: '760px', height: '900px'});
     }
 
     public canHighlightReport(): boolean {
@@ -606,7 +606,8 @@ export class RightContentComponent implements OnInit {
     }
 
     public showOptionMenu(state): boolean {
-        return state === '5e068c81d811c55eb40d14d0' ? true : false;
+        let found = this.user.roles.findIndex(element => element === 'Admin');
+        return state === '5e068c81d811c55eb40d14d0' && found >= 0 ? true : false;
     } 
 
 
