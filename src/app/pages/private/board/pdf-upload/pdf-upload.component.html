@@ -32,18 +32,22 @@
           <div class="message-upload-button">
         </div>
         <!-- Work Text -->
-        <div class="info-pdf" *ngIf="fileData">
-          <p>{{fileData.file.name}}</p>
-          <div>
-            <p>{{fileData.file.size}}</p>
-            <img src="/assets/images/cancel.png" alt="" (click)="deleteFile()">
+        
+        <div>
+          <div class="info-pdf" *ngIf="fileData || currentFile">
+            <p>{{ !currentFile ? fileData.file.name : currentFile.name}}</p>
+            <div>
+              <p>{{!currentFile ? fileData.file.size : currentFile.size}}</p>
+              <img src="/assets/images/cancel.png" alt="" (click)="deleteFile(currentFile.id)">
+            </div>
           </div>
+
         </div>
 
         <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">
           <div>
             <input id="iFile" type="file" (change)="onFileSelect($event)" style="display: none;" accept=".pdf">
-            <label class="up-file" for="iFile"><img src="/assets/images/upload.svg" alt=""> Subir archivo</label>
+            <label class="up-file" for="iFile"><img src="/assets/images/upload.svg" alt=""> {{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo</label>
           </div>
            <br>
           <div class="size-txt">
@@ -57,7 +61,7 @@
   <mat-dialog-actions>
     <div class="pdf-btn">
       <button class="mat-raised-button pdf-close" (click)="closeDialog(null)">Cancelar</button>
-      <button class="mat-raised-button mat-primary" (click)="closeDialog(fileData)" [disabled]="!fileData">Aceptar</button>
+      <button class="mat-raised-button mat-primary" (click)="closeDialog(fileData)">Aceptar</button>
     </div>
   </mat-dialog-actions>
 
