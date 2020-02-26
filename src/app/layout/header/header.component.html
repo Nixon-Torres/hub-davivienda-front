@@ -14,7 +14,7 @@
 			<span>{{ user.name }}</span>
 		</div>
 		<mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">
-		  	<button mat-menu-item>
+		  	<button mat-menu-item (click)="gotoTo()">
 		  		<!-- <i class="material-icons menu-icons">person</i> -->
 		  		<span>Editar perfiles</span>
 		  	</button>

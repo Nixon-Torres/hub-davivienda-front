@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -39,12 +40,9 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        moment.locale('es'); // Set locale lang for momentJs
         this.getNotifications();
         this.getCountNotifications();
-
-        moment.locale('es'); // Set locale lang for momentJs
-
-       
     }
 
     private getNotifications(): void {
@@ -71,8 +69,8 @@ export class HeaderComponent implements OnInit {
         this.http.get({
             'path': `notifications/count?where=`,
             'data': {
-                    ownerId: this.user.id,
-                    readed: false
+                ownerId: this.user.id,
+                readed: false
             }
         }).subscribe((response: any) => {
             if ("body" in response) {
@@ -83,14 +81,22 @@ export class HeaderComponent implements OnInit {
 
     private startToListenSockets() {
         this.socket.start().subscribe(() => {
+
+            // If listen a new notification for be processed and get qty of notifications unreaded
             this.socket.on("notification").subscribe((response) => {
-                this.processNotification(response);
+                this.processNotification(response, true);
+                this.getCountNotifications();
+            });
+
+            // If listen when a notification was readed, get all notifications again and and their qty
+            this.socket.on("readed").subscribe(() => {
+                this.getNotifications();
                 this.getCountNotifications();
             });
         });
     }
 
-    private processNotification(item: any) {
+    private processNotification(item: any, isSocket: boolean = false) {
         let timeFromNow: string = moment(item.updatedAt).fromNow();
         let txtDescription: string = item.text
                                     .replace(/{{emitter_name}}/, item.emitter.name)
@@ -109,8 +115,11 @@ export class HeaderComponent implements OnInit {
             notf.bgColor = this.stateColors[item.report.stateId] || 'bg-default';
         }
 
-        this.notifications.push(notf);
-        this.notifications.sort((a, b) => a.id < b.id ? 1 : ( a > b) ? -1 : 0);
+        if (isSocket) {
+            this.notifications = [notf].concat(this.notifications);
+        } else {
+            this.notifications.push(notf);
+        }
     }
 
     private startToListenRouter(router: Router) {
@@ -136,7 +145,7 @@ export class HeaderComponent implements OnInit {
     }
 
     openNotf(reportId: number, readed: boolean) {
-        if (!readed) --this.ntfQty;
+        this.getCountNotifications();
         this.notifications.filter((a) => {
             if(a.reportId == reportId) {
                 a.readed = true;
@@ -144,5 +153,10 @@ export class HeaderComponent implements OnInit {
             return true;
         });
         this.router.navigate(['app/board', reportId]);
+    }
+
+    public gotoTo() {
+        this.router.navigate(['app/users']);
+
     }
 }

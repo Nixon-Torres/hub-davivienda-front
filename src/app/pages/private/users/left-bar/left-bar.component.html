@@ -1,0 +1,17 @@
+<div class="content-bar">
+	<div class="options">
+		<p class="options--name icon icon-users">Usuarios</p>
+		<ul class="options--list">
+			<li [ngClass]="{active: isActive(user.id)}" (click)="setActive(user.id)">
+				<a>{{user.name}}</a>
+				<span class="cnt">{{user.roles[0]}}</span>
+			</li>
+		</ul>
+		<ul *ngIf="showGruopsUser" class="options--list variation">	
+			<li  *ngFor="let group of list.groups" [ngClass]="{active: isActive(group.id)}" (click)="setActive(group.id)">
+			    <a >{{group.name}}</a>
+			    <span class="cnt">{{group.users ? group.users.length : 0}}</span>
+			</li>
+		</ul>
+	</div>
+</div>
