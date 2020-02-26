@@ -15,6 +15,8 @@ export class PdfUploadComponent implements OnInit {
     public spinner: boolean;
     public errorMsg: string;
     public workMsg: string;
+    public files : Array<any>;
+    public currentFile : any;
     
     constructor(
         public dialogRef: MatDialogRef<PdfUploadComponent>,
@@ -27,6 +29,8 @@ export class PdfUploadComponent implements OnInit {
         this.uploadForm = this.formBuilder.group({
             file: ['']
         });
+        this.files =  this.data.files.filter(e => e.key === 'pdffile');
+        this.currentFile = this.files && this.files.length > 0 ? this.files[0] : null;
     }
 
     onFileSelect(event: any): void {
@@ -43,6 +47,9 @@ export class PdfUploadComponent implements OnInit {
         formData.append('file', this.uploadForm.get('file').value);
         formData.append('key', 'pdffile');
         formData.append('resourceId', this.data.reportId);
+        if (this.currentFile) {
+            formData.append('id', this.currentFile.id);
+        } 
         this.spinner = true;
         this.errorMsg = null;
         this.fileData = null;
@@ -52,6 +59,7 @@ export class PdfUploadComponent implements OnInit {
         }).subscribe(
             (response: any) => {
                 this.spinner = false;
+                this.files =  this.data.files;
                 if (response.body.name && (response.body.statusCode || response.body.code)) {
                     let err = response.body.name;
                     this.errorMsg = (err == 'ValidationError') ? 'Solo se permite archivos PDFS' : 'Ha superado del tamaño maximo del archivo';
@@ -71,10 +79,11 @@ export class PdfUploadComponent implements OnInit {
     deleteFile(): void {
         this.spinner = true;
         this.http.delete({
-            path: `media/${this.fileData.id}`
+            path: `media/${this.currentFile.id}`
         }).subscribe(() => {
             this.spinner = false;
             this.fileData = null;
+            this.currentFile = null;
             document.querySelector("#iFile")['value'] = '';
         });
     }
