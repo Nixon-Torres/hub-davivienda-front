@@ -1,6 +1,6 @@
 import { Config, Managers } from './grape.model';
 import { Description, Image, Title } from './blocks/block.main';
-import { Dimensions, Extras } from './sectors/sector.main';
+import { Typography } from './sectors/sector.main';
 
 class Grapes {
     public config: Config = {
@@ -13,7 +13,7 @@ class Grapes {
             defaults: [{}]
         },
         blockManager: {},
-        selectorManager: {},
+        traitManager: {},
         styleManager: {}
     };
 
@@ -21,8 +21,8 @@ class Grapes {
     private sectors: any = {};
 
     constructor(selectors: Managers) {
-        this.loadSelector(selectors.selectorManager);
         this.loadBlocks(selectors.blockManager);
+        this.loadTraits(selectors.traitManager);
         this.loadStyles(selectors.styleManager);
 
         this.blocks = {
@@ -31,14 +31,7 @@ class Grapes {
             Title: new Title
         };
         this.sectors = {
-            Dimensions: new Dimensions,
-            Extras: new Extras
-        };
-    }
-
-    private loadSelector(selector: string) {
-        this.config.selectorManager = {
-            appendTo: selector
+            Typography: new Typography
         };
     }
 
@@ -46,6 +39,12 @@ class Grapes {
         this.config.blockManager = {
             appendTo: selector,
             blocks: []
+        };
+    }
+
+    private loadTraits(selector: string) {
+        this.config.traitManager = {
+            appendTo: selector
         };
     }
 

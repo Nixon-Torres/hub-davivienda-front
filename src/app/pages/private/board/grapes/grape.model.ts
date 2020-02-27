@@ -6,12 +6,12 @@ export interface Config {
     storageManager: any,
     panels: any,
     blockManager: any,
-    styleManager: any,
-    selectorManager: any
+    traitManager: any,
+    styleManager: any
 }
 
 export interface Managers {
-    selectorManager: string,
     blockManager: string,
+    traitManager: string,
     styleManager: string
 }

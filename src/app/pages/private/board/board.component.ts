@@ -149,7 +149,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         M.Tabs.init(tabsEl); // Initialize the tabs materialize function
 
         let elems = document.querySelectorAll('.fixed-action-btn');
-        M.FloatingActionButton.init(elems, { direction: 'top' });
+        M.FloatingActionButton.init(elems, { direction: 'top', hoverEnabled: false });
     }
 
     /** Get report form database
@@ -200,8 +200,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     */
     private initGrapes(): void {
         this.grapes = new Grapes({
-            selectorManager: '.styles-container',
             blockManager: '.blocks-container',
+            traitManager: '.traits-container',
             styleManager: '.styles-container'
         });
 
@@ -222,8 +222,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     // Styles sectors that will be displayed
     private activeSectors(): void {
         this.grapes.activeSectors([
-            'Dimensions',
-            'Extras'
+            'Typography'
         ]);
     }
 
