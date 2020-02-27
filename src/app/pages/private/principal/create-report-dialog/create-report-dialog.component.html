@@ -19,8 +19,8 @@
 			<div class="select-content--medium">
 				<ng-select [items]="list.typeSections" bindValue="key" bindLabel="value"
 					placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
-					[clearable]="false" class="custom-select custom-select--create-report" (change)="typeChanged()"
-					[(ngModel)]="typeSelected" [ngModelOptions]="{standalone: true}">
+					[clearable]="false" class="custom-select custom-select--create-report" (change)="typeChanged($event)"
+					formControlName="typeSelected" required>
 				</ng-select>
 			</div>
 
@@ -112,7 +112,7 @@
 		</div>
 		<div mat-dialog-actions class="template_btn">
 			<button mat-button (click)="onNoClick()">Cancelar</button>
-			<button type="submit" class="highligh start_btn" mat-button mat-dialog-close>Empezar Informe <span>&nbsp;</span></button>
+			<button type="submit" class="highligh start_btn" mat-button>Empezar Informe <span>&nbsp;</span></button>
 		</div>
 	</div>
 </form>

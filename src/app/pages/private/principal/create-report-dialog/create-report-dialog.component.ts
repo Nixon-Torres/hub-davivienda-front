@@ -89,14 +89,18 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public initCreteReportForm(): void {
         this.createReportForm = new FormGroup({
             sectionId: new FormControl('', Validators.required),
-            sectionTypeKey: new FormControl('', Validators.required),
+            typeSelected: new FormControl('', Validators.required),
+            templateId: new FormControl('', Validators.required),
+            reportType: new FormControl(false),
+            sectionTypeKey: new FormControl(false),
             stateId: new FormControl(false),
             folderId: new FormControl(false),
-            templateId: new FormControl(false),
             reportId: new FormControl(false),
             authorsId: new FormControl(false)
         });
     }
+
+     get f() { return this.createReportForm.controls; }
 
     private loadSections() {
         this.http.get({
@@ -138,8 +142,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public typeChanged() {
-        console.log(this.typeSelected);
+    public typeChanged(event) {
+        this.typeSelected = event.key;
     }
 
     public onUpdateTypes($event, index) {
@@ -174,15 +178,18 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public goToBoard() {
-        let path = 'app/board';
-        path += `/${this.createReportForm.value.stateId}`;
-        path += `/${this.createReportForm.value.sectionId}`;
-        path += `/${this.createReportForm.value.sectionTypeKey}`;
-        path += `/${(this.createReportForm.value.folderId)}`;
-        path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
-        path += `/${this.createReportForm.value.reportId}`;
-        path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)) : false}`;
-        this.router.navigate([path]);
+        if(this.createReportForm.valid) {
+            let path = 'app/board';
+            path += `/${this.createReportForm.value.stateId}`;
+            path += `/${this.createReportForm.value.sectionId}`;
+            path += `/${this.createReportForm.value.sectionTypeKey}`;
+            path += `/${(this.createReportForm.value.folderId)}`;
+            path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
+            path += `/${this.createReportForm.value.reportId}`;
+            path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)) : false}`;
+            this.router.navigate([path]);
+            this.dialogRef.close();
+        } 
     }
 
     public createNewSection(event) {
