@@ -54,7 +54,7 @@
         }
         .ng-dropdown-panel {
             .ng-dropdown-panel-items {
-                max-height: 130px;
+                max-height: 70px;
                 .ng-option {
                     padding-left: 30px;
                     .ng-option-label {
@@ -65,6 +65,16 @@
                 }
             }
         }
+    }
+    &--create-report {
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                .ng-dropdown-panel-items {
+                    max-height: 130px;
+                }
+            }
+        }
+
     }
     &--no-height {
         &.ng-select-opened {
