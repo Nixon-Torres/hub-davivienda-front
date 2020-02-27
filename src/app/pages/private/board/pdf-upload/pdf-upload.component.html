@@ -38,7 +38,7 @@
             <p>{{ !currentFile ? fileData.file.name : currentFile.name}}</p>
             <div>
               <p>{{!currentFile ? fileData.file.size : currentFile.size}}</p>
-              <img src="/assets/images/cancel.png" alt="" (click)="deleteFile(currentFile.id)">
+              <img src="/assets/images/cancel.png" alt="" (click)="deleteFile()">
             </div>
           </div>
 
