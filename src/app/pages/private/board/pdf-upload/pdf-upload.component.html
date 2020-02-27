@@ -32,13 +32,13 @@
           <div class="message-upload-button">
         </div>
         <!-- Work Text -->
-        
+
         <div>
           <div class="info-pdf" *ngIf="fileData || currentFile">
             <p>{{ !currentFile ? fileData.file.name : currentFile.name}}</p>
             <div>
               <p>{{!currentFile ? fileData.file.size : currentFile.size}}</p>
-              <img src="/assets/images/cancel.png" alt="" (click)="deleteFile(currentFile.id)">
+              <img src="/assets/images/cancel.png" alt="" (click)="deleteFile()">
             </div>
           </div>
 
