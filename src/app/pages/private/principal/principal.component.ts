@@ -36,6 +36,5 @@ export class PrincipalComponent implements OnInit {
 
   changeView(event) {
     this.view = event;
-    console.log(this.view);
   }
 }
