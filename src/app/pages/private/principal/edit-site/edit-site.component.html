@@ -1,1 +1,78 @@
-<p>edit-site works!</p>
+
+<div class="back-btn">
+    <a (click)="cleanFilters()">&#60; Volver </a>
+</div>
+<mat-tab-group>
+    <mat-tab label="Home">
+
+        <div class="tab__wrapper">
+            <div class="tab__header">
+                <p>Elija la sección que desea modificar</p>
+            </div>
+            <div class="tab__container">
+                <article class="outstanding">
+                    <header class="outstanding__header" (click)="showPanel = !showPanel">
+                        <div class="outstanding__texts">
+                            <p class="text--blue">Banner destacado 1</p>
+                            <p class="text--main">Ejemplo nombre informe anterior</p>
+                            <p class="text--second">Smart content</p>
+                        </div>
+                        
+                        <div class="outstanding__modification">
+                            <p class="modification__title">Ultima modificación</p>
+                            <p class="modification__value">4:53pm 21 Agosto</p>
+                            <p class="modification__title">Hecha por:</p>
+                            <p class="modification__value">Andres Villanueva</p>
+                        </div>
+    
+                        <div class="outstanding__edit">
+                            <button><span class="icon icon-edit"></span>editar</button>
+                        </div>
+                    </header>
+                    <section class="outstanding__body" *ngIf="showPanel">
+                        <form action="">
+                            <div class="outstanding__fields">
+                                <div class="form-field form-field--half">
+                                    <label for="outstandingTitle">Titulo destacado</label>
+                                    <input type="text" name="outstandingTitle" id="outstandingTitle">
+                                    <p class="error"></p>
+                                </div>
+                                <div class="form-field form-field--half upload">
+                                    <label class="upload__label" for="outstandingImg"><span class="icon icong-upload"></span>Subir imagen</label>
+                                    <p class="upload__alert">Tamaño máximo hasta 25MB</p>
+                                    <input type="file" id="outstandingImg" name="outstandingImg">
+                                    <p class="error"></p>
+                                </div>
+    
+                                <div class="form-field form-field--complete">
+                                    <label for="outstandingDesc">Descripción</label>
+                                    <textarea name="outstandingDesc" id="outstandingDesc" cols="30" rows="3"></textarea>
+                                    <p class="error"></p>
+                                </div>
+    
+                                <div class="form-field form-field--half">
+                                    <label for="outstandingLink">¿A qué URL debe ir este enlace?</label>
+                                    <input type="text" name="outstandingLink" id="outstandingLink">
+                                    <p class="error"></p>
+                                </div>
+                                <div class="form-field form-field--half">
+                                    <label for="outstandingCta">Texto del botón</label>
+                                    <input type="text" name="outstandingCta" id="outstandingCta">
+                                    <p class="error"></p>
+                                </div>
+                            </div>
+                            <div class="outstanding__buttons">
+                                <button class="btn btn--border">Cancelar</button>
+                                <button class="btn btn--filled">Modificar</button>
+                            </div>
+                        </form>
+                    </section>
+                </article>
+
+            </div>
+
+        </div>
+    </mat-tab>
+    <mat-tab label="Conócenos"></mat-tab>
+</mat-tab-group>
+
