@@ -8,13 +8,14 @@ import {HttpService} from '../../../../services/http.service';
 })
 export class InvestmentStrategiesComponent implements OnInit {
 
-	public areas: any = {
-		outstanding : null,
-		report1 : null,
-		report2 : null,
-		report3 : null,
-		report4 : null
-	}
+	public areas: any = [
+		{label:'outstanding', newReportId:'',oldReportId:''},
+		{label:'report1', newReportId:'',oldReportId:''},
+		{label:'report2', newReportId:'',oldReportId:''},
+		{label:'report3', newReportId:'',oldReportId:''},
+		{label:'report4', newReportId:'',oldReportId:''},
+	];
+
 	public list: any =  {
 		outstandedReport: [],
 		reports: [],
@@ -68,8 +69,13 @@ export class InvestmentStrategiesComponent implements OnInit {
 	}
 
 	public onOptionsSelected(event) {
-		this.areas[this.currentArea] = event.id;
-		console.log(this.areas);
+		let oldReport = this.list.currentReports.find(e => e.strategyArea === this.currentArea);
+		let report = this.areas.find(e => e.label === this.currentArea);
+
+		report.newReportId = event.id;
+
+		if (oldReport && oldReport.id !== event.id)
+			report.oldReportId = oldReport.id;
 	}
 
 	public onCheck(area) {
@@ -77,54 +83,21 @@ export class InvestmentStrategiesComponent implements OnInit {
 	}
 
 	public onSAve() {
-		let report;
-		let newReport;
 
-		// if(this.areas.outstanding != null) {
-		// 	this.updateReport(this.areas.outstanding,'outstanding',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'outstanding');
-		// 	this.updateReport(report.id,'',false);
-		// }
+		this.areas.forEach(function (element) {
+			if (element.newReportId) {
+				console.log(element);
+			}
+		});
 
-		if(this.areas.report1 != null) {
-			report = this.list.currentReports.find(e => e.strategyArea === 'report1');
-			newReport = this.list.reports.find(e => e.id === this.areas.report1);			
-			if (report)
-				this.updateReport(newReport,'report1',true, report.id);
-			else 
-				this.updateReport(newReport,'report1',true, '0');
-		}
-		
-		// if(this.areas.report2 != null) {
-		// 	this.updateReport(this.areas.report2,'report2',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'report2');
-		// 	this.updateReport(report.id,'',false);
-		// }
-		
-		// if(this.areas.report3 != null) {
-		// 	this.updateReport(this.areas.report3,'report3',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'report3');
-		// 	this.updateReport(report.id,'',false);
-		// }
-		
-		// if(this.areas.report4 != null) {
-		// 	this.updateReport(this.areas.report4,'report4',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'report4');
-		// 	this.updateReport(report.id,'',false);
-		// } 
 	}
 
-	public updateReport(report,area,strategy,reportId) {
-		report.strategy = strategy;
-		report.strategyArea = area;
-		// let data = {strategy:strategy, strategyArea:area}
+	public updateReport(id, label, strategy) {
+		let data = {strategy:strategy, strategyArea: label} 
 		this.http.patch({
-			path: 'reports/'+report.id,
-			data: report
+			path: 'reports/'+ id,
+			data: data
 		}).subscribe((response: any) => {
-			if (reportId != '0')
-				this.updateReport(reportId,'',false,'0');
-			//this.list.reports = response.body;
 		}, (error: any) => {
 			console.error(error);
 		});
