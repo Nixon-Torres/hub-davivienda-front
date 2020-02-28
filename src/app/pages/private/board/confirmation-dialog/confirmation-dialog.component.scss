@@ -55,6 +55,16 @@
             }
         }
 
+        .message-alert {
+            border-bottom: 1px solid #EDEDED;
+            border-top: 1px solid #EDEDED;
+            color: #ff003b;
+            font-size: 0.938em;
+            margin: 2vh 0;
+            padding: 15px 65px;
+            line-height: 1.2em;
+        }
+
         .confirmation-img {
             width: 5.05vw;
             height: 5.05vw;

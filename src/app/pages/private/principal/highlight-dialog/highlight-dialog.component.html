@@ -1,0 +1,86 @@
+<div class="highlight_dialog">
+    <div class="highlight_title">
+        <h1>Destacar informe</h1>
+        <a (click)="onNoClick()" class="modal-close-cta">Cerrar <span class="icon icon-times"></span></a>
+    </div>
+
+    <div class="highlight_text">
+        <p>Seleccione la ubicación donde desea destacar su informe a continuación</p>
+    </div>
+
+    <div class="highlight_content">
+        <div (click)="onCheckSection('header')" [ngClass]="{'activeColor': isActive('header')}">
+            <p class="highlight_picture" >destacado principal</p>
+            <div class="hr_content">
+                <hr class="first-hr">
+                <hr class="middle-hr">
+                <hr class="last-hr">
+            </div>
+        </div>
+
+
+        <div class="double-frame">
+            <div class="box" (click)="onCheckSection('area1')" [ngClass]="{'activeColor': isActive('area1')}">
+               <p class="highlight_picture">cuadro 01</p>
+               <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
+            </div>
+
+            <div class="box" (click)="onCheckSection('area2')" [ngClass]="{'activeColor': isActive('area2')}">
+                <p class="highlight_picture">cuadro 02</p>
+                <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
+            </div>
+        </div>
+
+        <div class="double-frame">
+            <div class="box" (click)="onCheckSection('area3')" [ngClass]="{'activeColor': isActive('area3')}">
+               <p class="highlight_picture">cuadro 03</p>
+               <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
+            </div>
+
+            <div class="box" (click)="onCheckSection('area4')" [ngClass]="{'activeColor': isActive('area4')}">
+                <p class="highlight_picture">cuadro 04</p>
+                <div class="hr_content hr-second">
+                    <hr class="first-hr">
+                    <hr class="middle-hr">
+                    <hr class="last-hr">
+                </div>
+            </div>
+        </div>        
+    
+    </div>
+
+    <div class="highlight_image" *ngIf="pictureSelect">
+        <div class="controls" *ngIf="!imageSelected">
+            <button (click)="openGallery()">
+                <span class="icon icon-plus-circle"></span>
+                <span class="info"> Agregar imagen al destacado</span>
+            </button>
+            <p>Tamaño máximo de imagen 1MB</p>
+        </div>
+        <div class="list" *ngIf="imageSelected">
+            <img src="{{storageBase}}{{photo}}">
+            <p>{{photo}}</p>
+            <button class="del icon icon-times" (click)="onRemoveImage()"></button>
+        </div>    
+    </div>
+
+    <div class="highlight_btm">
+        <div mat-dialog-actions>
+            <button mat-button class="btn dialog_cancel" (click)="onNoClick()">Cancelar</button>
+            <button mat-button class="btn btn-primary" (click)="onSave()" >Aceptar</button>
+        </div>
+    </div>
+
+</div>

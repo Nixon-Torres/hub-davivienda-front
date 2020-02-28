@@ -7,6 +7,8 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
+
+import { GalleryDialogModule } from '../gallery-dialog/gallery-dialog.module';
 // Form Controls
 import { MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -29,6 +31,8 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+
+import { HighlightDialogComponent } from './highlight-dialog/highlight-dialog.component';
 import { EditSiteComponent } from './edit-site/edit-site.component';
 import { BannerComponent } from './banner/banner.component';
 
@@ -56,7 +60,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, EditSiteComponent, BannerComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, EditSiteComponent, BannerComponent],
     imports: [
         CommonModule,
         materialModules,
@@ -67,14 +71,17 @@ const materialModules: any[] = [
         ConfirmationDialogModule,
         NgxDaterangepickerMd.forRoot(),
         PreviewDialogModule,
-        NgSelectModule
+        NgSelectModule,
+        GalleryDialogModule
     ],
     exports: [
         materialModules
     ],
     entryComponents: [
         DialogBoxComponent,
-        CreateReportDialogComponent
+        HighlightDialogComponent,
+        CreateReportDialogComponent,
+        HighlightDialogComponent
     ]
 })
 export class PrincipalModule { }

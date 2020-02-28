@@ -13,7 +13,11 @@ export class BannerComponent implements OnInit {
   public formFields: FormGroup;
   public formData: any;
   public outstandingElement: any;
+<<<<<<< HEAD
   public currentImage: any;
+=======
+  public showPanel = false;
+>>>>>>> defbe3e82c05c6c5a458f422d0b450826e5098df
   @Input() outstandingKey: string;
 
   constructor(
@@ -55,7 +59,11 @@ export class BannerComponent implements OnInit {
       key: this.outstandingKey,
       title: this.f.title.value,
       description: this.f.description.value,
-      slug: this.f.link.value,
+      slug: '',
+      params: {
+        cta: this.f.ctaText.value,
+        link: this.f.link.value,
+      }
     };
     if (!this.outstandingElement) {
       this.http.post({

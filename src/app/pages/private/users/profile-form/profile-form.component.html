@@ -1,6 +1,7 @@
 <form [formGroup] = "profileForm">
 	<div class="column--small">
-		<img src="{{storageBase}}{{user.photo ? user.photo : 'profile-default.png'}}">
+        <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
+        <img *ngIf="user.photo" src="{{storageBase}}{{user.photo}}">
 		<button type="button" (click)="openDialog()" class="simple icong-camera">Subir foto</button>
 	</div>
 	<div class="column">
@@ -13,6 +14,6 @@
 		<div class="box">
 			<button type="button" class="form-button mat-button mat-raised-button" (click)=onSave()>Guardar</button>
 			<button type="button" class="form-button mat-button mat-button-base" (click)=onCancel()>Cancelar</button>
-		</div>	
+		</div>
 	</div>
-</form>	
+</form>

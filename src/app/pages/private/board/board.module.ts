@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
+
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
 import { Routes, RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatListModule } from '@angular/material/list';
+import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
@@ -39,8 +44,12 @@ const routes: Routes = [
 ];
 
 const materialModules: any[] = [
-    MatRippleModule,
+    MatCardModule,
+    MatListModule,
+    MatMenuModule,
+    DragDropModule,
     MatButtonModule,
+    MatRippleModule,
     MatToolbarModule,
     MatGridListModule,
     MatExpansionModule,

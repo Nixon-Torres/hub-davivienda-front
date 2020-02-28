@@ -9,6 +9,13 @@ $builder-bg: #f5f7fb;
 $default-font: "Helvetica Neue", Medium;
 
 .grapes-container {
+    @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
+
+    .fixed-action-btn {
+        left: 25px;
+        right: unset;
+        bottom: 30px;
+    }
 
     .container {
         margin: auto;
@@ -108,7 +115,9 @@ $default-font: "Helvetica Neue", Medium;
                 font-weight: normal;
                 display: inline-block;
                 font-size: 12px;
-                font-weight: 500;
+                // font-weight: 500;
+                line-height: 36px !important;
+                font-family: Roboto,"Helvetica Neue",sans-serif !important;
 
                 span.icon {
                     color: #bec5d0;
@@ -128,6 +137,10 @@ $default-font: "Helvetica Neue", Medium;
                     .icon::before {
                         color: lightgrey;
                     }
+                }
+
+                &:focus {
+                    background-color: transparent !important;
                 }
             }
 
@@ -150,10 +163,15 @@ $default-font: "Helvetica Neue", Medium;
     }
 
     #grapesBox {
-        @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
-
         min-height: calc(100vh - (128px + 70px));
         padding: 0 !important;
+
+        &.fullscreen-container {
+            margin: auto;
+            max-width: none;
+            width: 90% !important;
+            min-height: calc(100vh - (1px + 70px));
+        }
 
         .builder {
             height: 100%;
@@ -307,11 +325,13 @@ $default-font: "Helvetica Neue", Medium;
         float: left;
     }
 
-    .btn {
+    .bttn {
         height: 35px;
         padding: 0 12px;
         font-size: 12px;
         font-weight: normal;
+        line-height: 36px !important;
+        font-family: Roboto,"Helvetica Neue",sans-serif !important;
 
         span {
             vertical-align: text-bottom !important;
@@ -335,7 +355,7 @@ $default-font: "Helvetica Neue", Medium;
         }
     }
 
-    .btn-default {
+    .bttn-default {
         color: #A5ABB1;
         box-shadow: none;
         background-color: white;
@@ -346,12 +366,20 @@ $default-font: "Helvetica Neue", Medium;
             border-color: #0080ff;
             background-color: white !important;
         }
+
+        &:focus {
+            background-color: white !important;
+        }
     }
 
-    .btn-primary {
+    .bttn-primary {
         color: white;
         box-shadow: none;
         background-color: #0080ff;
+
+        &:focus {
+            background-color: #0080ff !important;
+        }
     }
     .editors {
         display: inline-block;
@@ -492,4 +520,8 @@ $default-font: "Helvetica Neue", Medium;
             }
         }
     }
+}
+
+.blue-hub {
+    background-color: #0080ff !important;
 }

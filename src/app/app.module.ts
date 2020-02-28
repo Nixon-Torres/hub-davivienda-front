@@ -9,8 +9,11 @@ import { LayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 
 import { MatMenuModule } from '@angular/material/menu';
-import { MatRippleModule } from '@angular/material/core'; 
+import { MatRippleModule } from '@angular/material/core';
 import { MatBadgeModule } from '@angular/material/badge';
+
+import { GalleryDialogModule } from './pages/private/gallery-dialog/gallery-dialog.module';
+
 import localeCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from '@angular/common';
 registerLocaleData(localeCo, 'es-CO');
@@ -28,7 +31,8 @@ registerLocaleData(localeCo, 'es-CO');
     HttpClientModule,
     MatMenuModule,
     MatRippleModule,
-    MatBadgeModule
+    MatBadgeModule,
+    GalleryDialogModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-CO' }],
   bootstrap: [AppComponent]

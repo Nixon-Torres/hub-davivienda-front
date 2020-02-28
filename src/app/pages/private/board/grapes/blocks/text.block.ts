@@ -1,16 +1,14 @@
 import { Block } from './block.model';
 
-export class Image {
+export class Text {
     private block: Block = {
-        id: 'block-image',
-        label: 'Imagen',
+        id: 'block-text',
+        label: 'Texto',
         attributes: {
-            class: "gjs-fonts gjs-f-image"
+            class: "gjs-fonts gjs-f-text"
         },
         content: null,
-        category: null,
-        select: true,
-        activate: true
+        category: null
     }
 
     constructor() {
@@ -19,10 +17,13 @@ export class Image {
 
     private buildContent(): any {
         return {
-            type: 'image'
+            activeOnRender: 1,
+            ​content: "Escriba su texto aqui"​,
+            style: { padding: "10px" },
+            type: 'text'
         };
     }
-
+    
     public get(attr: string): any {
         return this[attr];
     }

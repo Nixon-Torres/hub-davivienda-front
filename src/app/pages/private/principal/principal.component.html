@@ -1,6 +1,6 @@
 <section class="content-wrap report">
-	<div class="top-bar" *ngIf="view.reports"></div>
-	<app-left-bar (valueChange)="setCurrentState($event)" 
+	<div class="top-bar" *ngIf="view?.reports"></div>
+	<app-left-bar (valueChange)="setCurrentState($event)"
 				  (changeView)="changeView($event)"
 				  [currentObj]="cleanObj"></app-left-bar>
 	<app-right-content *ngIf="view.reports"
