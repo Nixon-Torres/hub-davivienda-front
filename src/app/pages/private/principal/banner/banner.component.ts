@@ -53,7 +53,11 @@ export class BannerComponent implements OnInit {
       key: this.outstandingKey,
       title: this.f.title.value,
       description: this.f.description.value,
-      slug: this.f.link.value,
+      slug: '',
+      params: {
+        cta: this.f.ctaText.value,
+        link: this.f.link.value,
+      }
     };
     if (!this.outstandingElement) {
       this.http.post({
