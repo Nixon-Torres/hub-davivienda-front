@@ -99,7 +99,7 @@ body {
 					background-color: #E9EBF0;
 				}
 			}
-			
+
 			%indicator {
 				left: 16px;
 				position: absolute;
@@ -319,7 +319,7 @@ $builder-bg: #f5f7fb;
 							margin: 54px 0 70px;
 							border: 1px solid #eee;
 							border-radius: 5px !important;
-							
+
 						}
 					}
 				}
@@ -900,9 +900,9 @@ margin-top: 2%;
 			color: #a5abb1;
 			padding-right: 30px;
 			width: calc(100% - 30px);
-        } 
         }
-        
+        }
+
     }
 }
 
@@ -919,7 +919,7 @@ mat-expansion-panel {
 	& .mat-action-list{
 		z-index: 10;
 	}
-	
+
 	& .mat-list-base .mat-list-item{
 		height: auto;
 		background-color: #fff;

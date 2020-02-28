@@ -1,18 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { environment } from '../../../../../environments/environment';
 import { Report } from '../../board/board.model';
 import { loopback } from '../../../../models/common/loopback.model';
+import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
+import { HighlightDialogComponent } from '../highlight-dialog/highlight-dialog.component';
 import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
-import { HttpService } from '../../../../services/http.service';
-import { AuthService } from '../../../../services/auth.service';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 import * as moment from 'moment';
-import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
-import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
+import { AuthService } from '../../../../services/auth.service';
+import { HttpService } from '../../../../services/http.service';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 
 @Component({
@@ -54,6 +55,7 @@ export class RightContentComponent implements OnInit {
         pages: []
     }
     public listForm: FormGroup;
+    public remarkable: boolean = false;
 
     @Input()
     set currentObj(value: any) {
@@ -591,6 +593,68 @@ export class RightContentComponent implements OnInit {
         };
 
         this.dialog.open(PreviewDialogComponent, paramsDialog);
+    }
+
+    public openHighlightDialog(id) {
+        let found = this.list.reports.find(element => element.id === id);
+        const dialogRef = this.dialog.open(HighlightDialogComponent, {
+            width: '760px', 
+            height: '900px',
+            data : { 'report' : found}
+        });
+
+        dialogRef.afterClosed().subscribe((result : any) => {
+            if (result.event === 'save' ) {
+                setTimeout(() => {
+                    this.openConfirmation();
+                    this.updateReports();
+                }, 200);
+            }
+
+        });
+    }
+
+    public canHighlightReport(): boolean {
+        if(this.getCheckboxesSelected().length !== 1) return false;
+        if(this.icurrentObj.currentState === '5e068c81d811c55eb40d14d0') return true;
+        const reportOnly = this.list.reports.filter(
+            (a) => a.id == this.getCheckboxesSelected()[0] && a.stateId == '5e068c81d811c55eb40d14d0'
+        );
+        return reportOnly.length ? true : false;
+    }
+
+    public showOptionMenu(state): boolean {
+        let found = this.user.roles.findIndex(element => element === 'Admin');
+        return state === '5e068c81d811c55eb40d14d0' && found >= 0 ? true : false;
+    }
+
+    public isHighlighted(id): boolean {
+        let found = this.list.reports.find(element => element.id === id);
+        return found.stateId === '5e068c81d811c55eb40d14d0' && found.outstanding ? true : false;
+    }
+
+    public openConfirmation(): void {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: 'El informe se ha destacado exitosamente',
+                subtitle: ''
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result : any) => {
+        });
+    }
+
+    public updateReports() {
+
+        this.loadReports(this.ifilter);
+        // let  report = this.list.reports.find(element => element.id === reportId);
+        // if (report) {
+        //     report.outstanding = false;
+        //     report.outstandingKey = '';             
+        // }
+ 
     }
 
 }

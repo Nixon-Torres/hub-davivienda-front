@@ -33,24 +33,24 @@ export class GalleryDialogComponent implements OnInit {
 
 	ngOnInit() {
 		this.imageForm = this.formBuilder.group({
-		    file: ['']
+			file: ['']
 		});
 		this.getGalleryImages();
 		this.searchForm = this.formBuilder.group({
 			search: new FormControl('')
-		});	
+		}); 
 	}
 
 	onNoClick(): boolean {
-	    this.dialogRef.close();
-	    return false; 	
+		this.dialogRef.close();
+		return false;   
 	}
 
 	public onSelectFile(event) {
 		if (event.target.files.length > 0) {
-		    const file = event.target.files[0];
-		    this.imageForm.get('file').setValue(file);
-		    this.onUploadImage();
+			const file = event.target.files[0];
+			this.imageForm.get('file').setValue(file);
+			this.onUploadImage();
 		}
 	}
 
@@ -61,8 +61,8 @@ export class GalleryDialogComponent implements OnInit {
 		query.filter.where['or'].push({ext:'.jpg'},{ext:'.gif'},{ext:'.png'});
 
 		this.http.get({
-		    path: 'media?filter=',
-		    data: query.filter
+			path: 'media?filter=',
+			data: query.filter
 		}).subscribe((response: any) => {
 			if (response.body.name && (response.body.statusCode || response.body.code)) {
 				//console.log('error');
@@ -70,7 +70,7 @@ export class GalleryDialogComponent implements OnInit {
 				this.list.gallery = response.body;
 			}
 		});
-	}	
+	}
 
 	public onUploadImage() {
 		const formData = new FormData();
@@ -79,17 +79,15 @@ export class GalleryDialogComponent implements OnInit {
 		formData.append('key', 'image');
 
 		this.http.post({
-		    path: 'media/upload',
-		    data: formData
+			path: 'media/upload',
+			data: formData
 		}).subscribe((response: any) => {
 			if (response.body.name && (response.body.statusCode || response.body.code)) {
-				console.log(response.body);
 				this.galleryError =  true;
 			}
 			this.galleryError = false;
 			this.list.gallery.unshift(response.body.file);
 		});
-
 	}
 
 	public onSelectImage(id) {
@@ -103,7 +101,7 @@ export class GalleryDialogComponent implements OnInit {
 
 	public onSave(){
 		let found = this.list.gallery.find(element => element.id == this.selectImage);
-		this.dialogRef.close({event:'close',data:found.fileName}); 
+		this.dialogRef.close({event:'close',data:{ 'name':found.fileName, 'id':found.id }}); 
 	}
 
 	public onSearch(event){
