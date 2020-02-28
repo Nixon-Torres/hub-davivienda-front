@@ -6,5 +6,5 @@
 	<app-right-content *ngIf="view.reports"
 					   [currentObj]="currentObj"
 					   (valueChange)="setCurrentState($event)"></app-right-content>
-	<app-edit-site *ngIf="view.editSite"></app-edit-site>
+	<app-edit-site *ngIf="view.editSite" (changeView)="changeView($event)"></app-edit-site>
 </section>
