@@ -13,6 +13,7 @@ export class LeftBarComponent implements OnInit {
     @Output() valueChange = new EventEmitter();
     @Output() folderChange = new EventEmitter();
     @Output() deleteChange = new EventEmitter();
+    @Output() changeView = new EventEmitter();
 
     private currentState: any;
     private currentFolder: any;
@@ -103,4 +104,7 @@ export class LeftBarComponent implements OnInit {
         return this.deletedStateEnabled;
     }
 
+    changeViewFn(view: any) {
+        this.changeView.emit(view);
+    }
 }
