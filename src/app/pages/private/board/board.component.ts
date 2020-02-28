@@ -218,11 +218,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'TwoColumns',
             'ThreeColumns',
             'Text',
-            'Quote',
+            'Ulist',
+            'Olist',
             // 'Link',
             'Image',
             'Video',
-            'Ulist'
+            'Quote',
         ]);
     }
 

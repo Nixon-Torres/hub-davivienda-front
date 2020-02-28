@@ -7,6 +7,7 @@ import {
     Video, 
     Quote, 
     Ulist,
+    Olist,
     OneColumn, 
     TwoColumns, 
     ThreeColumns, 
@@ -45,7 +46,8 @@ class Grapes {
             Image:new Image,
             Video:new Video,
             Quote:new Quote,
-            Ulist:new Ulist
+            Ulist:new Ulist,
+            Olist:new Olist
         };
         this.sectors = {
             Typography: new Typography

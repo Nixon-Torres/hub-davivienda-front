@@ -7,6 +7,7 @@ import { Image } from './image.block';
 import { Video } from './video.block';
 import { Quote } from './quote.block';
 import { Ulist } from './ulist.block';
+import { Olist } from './olist.block';
 
 export {
 	OneColumn,
@@ -17,5 +18,6 @@ export {
     Image,
     Video,
     Quote,
-    Ulist
+    Ulist,
+    Olist
 }
