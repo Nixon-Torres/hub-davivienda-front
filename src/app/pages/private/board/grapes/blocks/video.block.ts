@@ -1,16 +1,15 @@
 import { Block } from './block.model';
 
-export class Image {
+export class Video {
     private block: Block = {
-        id: 'block-image',
-        label: 'Imagen',
+        id: 'block-video',
+        label: 'Video',
         attributes: {
-            class: "gjs-fonts gjs-f-image"
+            class: "fa fa-youtube-play",
         },
         content: null,
         category: null,
         select: true,
-        activate: true
     }
 
     constructor() {
@@ -19,7 +18,8 @@ export class Image {
 
     private buildContent(): any {
         return {
-            type: 'image'
+            type: 'video',
+            provider: 'so' //TODO put Youtube by default
         };
     }
 
