@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -55,6 +55,7 @@ export class RightContentComponent implements OnInit {
         pages: []
     }
     public listForm: FormGroup;
+    public remarkable: boolean = false;
 
     @Input()
     set currentObj(value: any) {
@@ -592,8 +593,22 @@ export class RightContentComponent implements OnInit {
         this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
-    public openHighlightDialog() {
-        this.dialog.open(HighlightDialogComponent, {width: '760px', height: '900px'});
+    public openHighlightDialog(id) {
+        let found = this.list.reports.find(element => element.id === id);
+        const dialogRef = this.dialog.open(HighlightDialogComponent, {
+            width: '760px', 
+            height: '900px',
+            data : { 'report' : found}
+        });
+
+        dialogRef.afterClosed().subscribe((result : any) => {
+            if (result.event === 'save' ) {
+                setTimeout(() => {
+                    this.openConfirmation();
+                }, 200);
+            }
+
+        });
     }
 
     public canHighlightReport(): boolean {
@@ -608,7 +623,24 @@ export class RightContentComponent implements OnInit {
     public showOptionMenu(state): boolean {
         let found = this.user.roles.findIndex(element => element === 'Admin');
         return state === '5e068c81d811c55eb40d14d0' && found >= 0 ? true : false;
-    } 
+    }
 
+    public isHighlighted(id): boolean {
+        let found = this.list.reports.find(element => element.id === id);
+        return found.stateId === '5e068c81d811c55eb40d14d0' && found.outstanding ? true : false;
+    }
+
+    public openConfirmation(): void {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: 'El informe se ha destacado exitosamente',
+                subtitle: ''
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result : any) => {
+        });
+    }
 
 }
