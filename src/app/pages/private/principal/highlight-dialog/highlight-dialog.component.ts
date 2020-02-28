@@ -32,12 +32,33 @@ export class HighlightDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.report = data.report;
-        // this.reportId = this.data.id,
-        // this.reportName = this.data.name
+        if (this.report.outstandingArea) 
+            this.selectedArea(this.report);
     }
 
     ngOnInit() {
         this.getRemarkablesReports();
+    }
+
+    selectedArea(report) {
+        this.sectionSelect = report.outstandingArea;
+        this.getImage(report.id);
+        this.imageSelected = true;
+        this.pictureSelect = true;
+    }
+
+    getImage(id) {
+
+        this.http.get({
+            path: 'media/',
+            data: {where: {resourceId: id}},
+            encode: true
+        }).subscribe((response: any) => {
+            this.photo = response.body[0].fileName;
+            this.file = response.body[0];
+        }, (error: any) => {
+            console.error(error);
+        });
     }
 
     onCheckSection(section) {

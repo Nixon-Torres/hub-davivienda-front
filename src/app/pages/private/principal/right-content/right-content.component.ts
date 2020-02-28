@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
@@ -596,7 +597,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public openHighlightDialog(id) {
-        if (typeof id === 'undefined') {
+        if (id === '0') {
             const selecteds: Array<string> = this.getCheckboxesSelected();
             id = selecteds[0];
         }
