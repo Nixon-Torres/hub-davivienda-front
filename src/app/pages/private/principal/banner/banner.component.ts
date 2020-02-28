@@ -13,6 +13,7 @@ export class BannerComponent implements OnInit {
   public formFields: FormGroup;
   public formData: any;
   public outstandingElement: any;
+  public showPanel = false;
   @Input() outstandingKey: string;
 
   constructor(
