@@ -2,6 +2,7 @@ import {Component, OnInit, AfterViewInit, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {environment} from '../../../../../environments/environment';
 
 import * as qs from 'qs';
 
@@ -17,6 +18,7 @@ import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confi
 })
 export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public createReportForm: FormGroup;
+    public STORAGE_URL = environment.STORAGE_FILES;
 
     constructor(
         public dialogRef: MatDialogRef<CreateReportDialogComponent>,
@@ -182,14 +184,14 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             let path = 'app/board';
             path += `/${this.createReportForm.value.stateId}`;
             path += `/${this.createReportForm.value.sectionId}`;
-            path += `/${this.createReportForm.value.sectionTypeKey}`;
+            path += `/${this.typeSelected}`;
             path += `/${(this.createReportForm.value.folderId)}`;
             path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
             path += `/${this.createReportForm.value.reportId}`;
             path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)) : false}`;
             this.router.navigate([path]);
             this.dialogRef.close();
-        } 
+        }
     }
 
     public createNewSection(event) {

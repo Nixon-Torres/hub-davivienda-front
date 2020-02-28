@@ -1,11 +1,23 @@
 import { Config, Managers } from './grape.model';
-import { Description, Image, Title } from './blocks/block.main';
-import { Dimensions, Extras } from './sectors/sector.main';
+import { Typography } from './sectors/sector.main';
+import { 
+    Text, 
+    Link, 
+    Image, 
+    Video, 
+    Quote, 
+    Ulist,
+    Olist,
+    OneColumn, 
+    TwoColumns, 
+    ThreeColumns, 
+} from './blocks/block.main';
 
 class Grapes {
     public config: Config = {
         width: '100%',
         height: '100%',
+
         container: '#gjs',
         fromElement: true,
         storageManager: false,
@@ -13,7 +25,7 @@ class Grapes {
             defaults: [{}]
         },
         blockManager: {},
-        selectorManager: {},
+        traitManager: {},
         styleManager: {}
     };
 
@@ -21,24 +33,24 @@ class Grapes {
     private sectors: any = {};
 
     constructor(selectors: Managers) {
-        this.loadSelector(selectors.selectorManager);
         this.loadBlocks(selectors.blockManager);
+        this.loadTraits(selectors.traitManager);
         this.loadStyles(selectors.styleManager);
 
         this.blocks = {
-            Description: new Description,
-            Image: new Image,
-            Title: new Title
+            OneColumn: new OneColumn,
+            TwoColumns: new TwoColumns,
+            ThreeColumns: new ThreeColumns,
+            Text: new Text,
+            Link:new Link,
+            Image:new Image,
+            Video:new Video,
+            Quote:new Quote,
+            Ulist:new Ulist,
+            Olist:new Olist
         };
         this.sectors = {
-            Dimensions: new Dimensions,
-            Extras: new Extras
-        };
-    }
-
-    private loadSelector(selector: string) {
-        this.config.selectorManager = {
-            appendTo: selector
+            Typography: new Typography
         };
     }
 
@@ -46,6 +58,12 @@ class Grapes {
         this.config.blockManager = {
             appendTo: selector,
             blocks: []
+        };
+    }
+
+    private loadTraits(selector: string) {
+        this.config.traitManager = {
+            appendTo: selector
         };
     }
 
