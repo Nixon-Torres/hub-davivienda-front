@@ -29,6 +29,7 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { CreateReportDialogComponent } from './create-report-dialog/create-report-dialog.component';
 import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmation-dialog.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EditSiteComponent } from './edit-site/edit-site.component';
 
 const routes: Routes = [
     {
@@ -54,7 +55,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, EditSiteComponent],
     imports: [
         CommonModule,
         materialModules,

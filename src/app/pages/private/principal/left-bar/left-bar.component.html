@@ -1,5 +1,5 @@
 <div class="content-bar">
-    <div class="options">
+    <div class="options" (click)="changeViewFn({reports:true, editSite:false})">
         <p class="options--name icon icon-copy">Mis informes</p>
         <ul class="options--list">
             <li *ngFor="let state of list.states" [className]="state.color" [ngClass]="{active: isItemActive(state.id)}" (click)="setCurrentState(state)">
@@ -25,5 +25,8 @@
     <div class="options delete-section-btn">
         <p class="options--name icon icon-trash-alt variation" [ngClass]="{active: isDeleteActive()}"
            (click)="setDeletedState()">Eliminados</p>
+    </div>
+    <div class="options" (click)="changeViewFn({reports:false, editSite:true})">
+        <p class="options--name icon variation">Editar sitio</p>
     </div>
 </div>

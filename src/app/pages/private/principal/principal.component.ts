@@ -8,6 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class PrincipalComponent implements OnInit {
     currentObj = {};
     cleanObj = true;
+    public view: any = {
+      reports: true,
+      editSite: false
+    }
   constructor() { }
 
   ngOnInit() {
@@ -28,5 +32,10 @@ export class PrincipalComponent implements OnInit {
         deletedFg : value ? value.deleted : false,
         currentStateName: value ? value.stateName : 'Todos Informes'
       };
+  }
+
+  changeView(event) {
+    this.view = event;
+    console.log(this.view);
   }
 }
