@@ -9,8 +9,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 
 import { MatMenuModule } from '@angular/material/menu';
-import { MatRippleModule } from '@angular/material/core'; 
+import { MatRippleModule } from '@angular/material/core';
 import { MatBadgeModule } from '@angular/material/badge';
+import { GalleryDialogModule } from './pages/private/gallery-dialog/gallery-dialog.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     HttpClientModule,
     MatMenuModule,
     MatRippleModule,
-    MatBadgeModule
+    MatBadgeModule,
+    GalleryDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

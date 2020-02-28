@@ -596,14 +596,18 @@ export class RightContentComponent implements OnInit {
     }
 
     public openHighlightDialog(id) {
-        let found = this.list.reports.find(element => element.id === id);
+        if (typeof id === 'undefined') {
+            const selecteds: Array<string> = this.getCheckboxesSelected();
+            id = selecteds[0];
+        }
+        const found = this.list.reports.find(element => element.id === id);
         const dialogRef = this.dialog.open(HighlightDialogComponent, {
-            width: '760px', 
+            width: '760px',
             height: '900px',
-            data : { 'report' : found}
+            data : { 'report' : found }
         });
 
-        dialogRef.afterClosed().subscribe((result : any) => {
+        dialogRef.afterClosed().subscribe((result: any) => {
             if (result.event === 'save' ) {
                 setTimeout(() => {
                     this.openConfirmation();
@@ -647,14 +651,6 @@ export class RightContentComponent implements OnInit {
     }
 
     public updateReports() {
-
         this.loadReports(this.ifilter);
-        // let  report = this.list.reports.find(element => element.id === reportId);
-        // if (report) {
-        //     report.outstanding = false;
-        //     report.outstandingKey = '';             
-        // }
- 
     }
-
 }

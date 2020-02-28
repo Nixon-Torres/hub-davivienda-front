@@ -31,14 +31,14 @@ export class HighlightDialogComponent implements OnInit {
 		public dialogRef: MatDialogRef<HighlightDialogComponent>,
 		private http: HttpService,
 		@Inject(MAT_DIALOG_DATA) public data: any
-	) { 
+	) {
 		this.report = data.report;
 		// this.reportId = this.data.id,
-		// this.reportName = this.data.name  
+		// this.reportName = this.data.name
 	}
 
 	ngOnInit() {
-		this.getRemarkablesReports(); 
+		this.getRemarkablesReports();
 	}
 
 	onCheckSection(section) {
@@ -47,13 +47,12 @@ export class HighlightDialogComponent implements OnInit {
 	}
 
 	isActive(section): boolean {
-		return this.sectionSelect === section ? true : false; 
+		return this.sectionSelect === section ? true : false;
 	}
 
-	onNoClick(input: boolean): void {
+	onNoClick(): void {
 		this.dialogRef.close({event:'cancel'});
 	}
-
 
 	public openGallery(): void {
 		const dialogRef = this.dialog.open(GalleryDialogComponent, {
@@ -67,14 +66,13 @@ export class HighlightDialogComponent implements OnInit {
 				this.photo = result.data.name;
 				this.imageSelected = true;
 				this.idImage = result.data.id;
-				this.file = result.data 
+				this.file = result.data
 			}
 			this.dialogRef.updateSize('760px','900px');
 		});
 
 		this.dialogRef.updateSize('760px','500px');
 	}
-
 
 	public onRemoveImage(): void {
 		this.imageSelected = false;
@@ -102,7 +100,7 @@ export class HighlightDialogComponent implements OnInit {
 			path: 'media/'+ this.idImage,
 			data: this.file
 		}).subscribe((response: any) => {
-			this.dialogRef.close({event:'save'}); 
+			this.dialogRef.close({event:'save'});
 		}, (error: any) => {
 			console.error(error);
 		});
@@ -115,7 +113,7 @@ export class HighlightDialogComponent implements OnInit {
 			data: { where: { outstanding: true}},
 			encode: true
 		}).subscribe((response: any) => {
-			this.remarkableReports = response.body; 
+			this.remarkableReports = response.body;
 		}, (error: any) => {
 			console.error(error);
 		});
@@ -137,7 +135,7 @@ export class HighlightDialogComponent implements OnInit {
 			warning: 'Recientemente alguien ha destacado un informe en este módulo',
 			confirm: 'Si, destacarlo',
 			alert: true,
-			showWarning: true 
+			showWarning: true
 			}
 		});
 
@@ -149,11 +147,10 @@ export class HighlightDialogComponent implements OnInit {
 					report.outstanding = false;
 					this.updateReport(report, false)
 				}
-				this.updateReport(this.report, true);	
+				this.updateReport(this.report, true);
 			}
 		});
 	}
-
 
 	public updateReport(report,updateImage) {
 		this.http.patch({
@@ -164,8 +161,6 @@ export class HighlightDialogComponent implements OnInit {
 		}, (error: any) => {
 			console.error(error);
 		});
-	}	  
-
-
+	}
 
 }

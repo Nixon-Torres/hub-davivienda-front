@@ -58,7 +58,11 @@
 							</div>
 							<div class="operation-cta crown_btn" *ngIf="!icurrentObj.deletedFg">
 								<ul>
-									<li *ngIf="canHighlightReport()"><a (click)="openHighlightDialog(report.id)"><span><img src="/assets/images/corona.svg" alt="">Destacar informe</span></a></li>
+									<li *ngIf="canHighlightReport()">
+                                        <a (click)="openHighlightDialog(null)">
+                                            <span><img src="/assets/images/corona.svg" alt="">Destacar informe</span>
+                                        </a>
+                                    </li>
 								</ul>
 							</div>
 						</div>
@@ -72,13 +76,12 @@
 							</div>
 						</div>
 						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
-							
 							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
 										<span class="report--span report_name" [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
-											
+
 										</mat-checkbox>
 										<h2 class="report--title">{{report.name}}</h2>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
