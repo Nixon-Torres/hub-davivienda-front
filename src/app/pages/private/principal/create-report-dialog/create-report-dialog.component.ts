@@ -182,14 +182,14 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             let path = 'app/board';
             path += `/${this.createReportForm.value.stateId}`;
             path += `/${this.createReportForm.value.sectionId}`;
-            path += `/${this.createReportForm.value.sectionTypeKey}`;
+            path += `/${this.typeSelected}`;
             path += `/${(this.createReportForm.value.folderId)}`;
             path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
             path += `/${this.createReportForm.value.reportId}`;
             path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)) : false}`;
             this.router.navigate([path]);
             this.dialogRef.close();
-        } 
+        }
     }
 
     public createNewSection(event) {
