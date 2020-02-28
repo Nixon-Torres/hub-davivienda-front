@@ -87,14 +87,14 @@ export class HighlightDialogComponent implements OnInit {
 		this.report.outstandingArea = this.sectionSelect;
 
 		if (alert) {
-			this.save();
+			//this.updateReport();
 		}
 		else {
 			this.openConfirmation();
 		}
 	}
 
-	public onUpdateImage() {
+	public onUpdateImage(reportId) {
 		this.file.resourceId = this.report.id;
 		this.file.key = 'outstandingImage';
 
@@ -102,7 +102,7 @@ export class HighlightDialogComponent implements OnInit {
 			path: 'media/'+ this.idImage,
 			data: this.file
 		}).subscribe((response: any) => {
-			this.dialogRef.close({event:'save'});
+			this.dialogRef.close({event:'save', reportId: reportId}); 
 		}, (error: any) => {
 			console.error(error);
 		});
@@ -143,21 +143,29 @@ export class HighlightDialogComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe((result : any) => {
 			if(result) {
-				this.save();
+				let report = this.remarkableReports.find(element => element.outstandingArea == this.sectionSelect);
+				if (report) {
+					report.outstandingArea = '';
+					report.outstanding = false;
+					this.updateReport(report, false,report.id)
+				}
+				this.updateReport(this.report, true,report.id);	
 			}
 		});
 	}
 
-	public save() {
-		this.http.put({
-			path: 'reports/'+ this.reportId,
-			data: this.report
+
+	public updateReport(report,updateImage,reportId) {
+		this.http.patch({
+			path: 'reports/'+ report.id,
+			data: report
 		}).subscribe((response: any) => {
-			this.onUpdateImage();
-			this.dialogRef.close();
+			if (updateImage) this.onUpdateImage(reportId);
 		}, (error: any) => {
 			console.error(error);
-		});	
-	}
+		});
+	}	  
+
+
 
 }
