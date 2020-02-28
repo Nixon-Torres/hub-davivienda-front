@@ -14,7 +14,7 @@ export class Link {
     constructor() {
         this.block.content = {
             "​content": "Link"​,
-            "style": { color: "#d983a6" },
+            "style": { color: "#d983a6", 'font-family': "PT Serif"},
             "type": "link"
         }
     }
