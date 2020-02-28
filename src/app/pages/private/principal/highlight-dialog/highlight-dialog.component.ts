@@ -51,7 +51,7 @@ export class HighlightDialogComponent implements OnInit {
 
         this.http.get({
             path: 'media/',
-            data: {where: {resourceId: id}},
+            data: {where: {resourceId: id, key: 'outstandingImage'}},
             encode: true
         }).subscribe((response: any) => {
             this.photo = response.body[0].fileName;
