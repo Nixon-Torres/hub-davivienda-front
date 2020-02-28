@@ -94,7 +94,7 @@ export class HighlightDialogComponent implements OnInit {
 		}
 	}
 
-	public onUpdateImage(reportId) {
+	public onUpdateImage() {
 		this.file.resourceId = this.report.id;
 		this.file.key = 'outstandingImage';
 
@@ -102,7 +102,7 @@ export class HighlightDialogComponent implements OnInit {
 			path: 'media/'+ this.idImage,
 			data: this.file
 		}).subscribe((response: any) => {
-			this.dialogRef.close({event:'save', reportId: reportId}); 
+			this.dialogRef.close({event:'save'}); 
 		}, (error: any) => {
 			console.error(error);
 		});
@@ -147,20 +147,20 @@ export class HighlightDialogComponent implements OnInit {
 				if (report) {
 					report.outstandingArea = '';
 					report.outstanding = false;
-					this.updateReport(report, false,report.id)
+					this.updateReport(report, false)
 				}
-				this.updateReport(this.report, true,report.id);	
+				this.updateReport(this.report, true);	
 			}
 		});
 	}
 
 
-	public updateReport(report,updateImage,reportId) {
+	public updateReport(report,updateImage) {
 		this.http.patch({
 			path: 'reports/'+ report.id,
 			data: report
 		}).subscribe((response: any) => {
-			if (updateImage) this.onUpdateImage(reportId);
+			if (updateImage) this.onUpdateImage();
 		}, (error: any) => {
 			console.error(error);
 		});
