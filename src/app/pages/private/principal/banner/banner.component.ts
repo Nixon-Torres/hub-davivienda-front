@@ -21,7 +21,6 @@ export class BannerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.outstandingKey);
     this.onGetOutstanding();
     this.createForm();
     this.outstandingForm = this.formBuilder.group({
@@ -43,7 +42,6 @@ export class BannerComponent implements OnInit {
       link: new FormControl('', Validators.required),
       ctaText: new FormControl('', Validators.required)
     });
-    console.log(this.formFields);
   }
 
   get f() { return this.formFields.controls; }
@@ -57,23 +55,19 @@ export class BannerComponent implements OnInit {
       description: this.f.description.value,
       slug: this.f.link.value,
     };
-    console.log('adsadsadadasdad', this.outstandingElement);
     if (!this.outstandingElement) {
       this.http.post({
         path: 'contents',
         data: this.formData
       }).subscribe((resp: any) => {
-        console.log('-----> cont', resp);
         this.onSaveImage(resp.body.id);
         this.onGetOutstanding();
       })
     } else {
-      console.log(this.outstandingElement);
       this.http.patch({
         path: `contents/${this.outstandingElement.id}`,
         data: this.formData
       }).subscribe((resp: any) => {
-        console.log('-----> cont', resp);
         this.onSaveImage(resp.body.id);
         this.onGetOutstanding();
       });
@@ -92,7 +86,6 @@ export class BannerComponent implements OnInit {
       data: filter,
       encode: true
     }).subscribe((resp: any) => {
-      console.log('repst', resp);
       this.outstandingElement = resp.body && resp.body.length ? resp.body[0] : null;
     });
   }
@@ -106,7 +99,6 @@ export class BannerComponent implements OnInit {
       path: 'media/upload',
       data: formData
     }).subscribe((resp: any) => {
-      console.log('------> img', resp);
     });
   }
 
