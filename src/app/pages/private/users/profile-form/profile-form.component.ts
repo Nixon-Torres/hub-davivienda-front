@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -55,9 +56,10 @@ export class ProfileFormComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe((result : any) => {
+			console.log(result);
 			if (result != undefined){
 				this.imageProfile = this.user.photo;
-				this.user.photo = result.data;
+				this.user.photo = result.data.name;
 			}
 				 		
 		});

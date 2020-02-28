@@ -31,6 +31,8 @@ import { ConfirmationDialogModule } from '../board/confirmation-dialog/confirmat
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EditSiteComponent } from './edit-site/edit-site.component';
 import { InvestmentStrategiesComponent } from './investment-strategies/investment-strategies.component';
+import { RelatedReportsComponent } from '../board/related-reports/related-reports.component';
+import { MatListModule } from '@angular/material/list';
 
 const routes: Routes = [
     {
@@ -52,11 +54,12 @@ const materialModules: any[] = [
     MatSliderModule,
     MatSlideToggleModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, EditSiteComponent, InvestmentStrategiesComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, EditSiteComponent, InvestmentStrategiesComponent, RelatedReportsComponent],
     imports: [
         CommonModule,
         materialModules,

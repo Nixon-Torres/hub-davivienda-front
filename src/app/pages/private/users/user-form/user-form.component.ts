@@ -58,7 +58,7 @@ export class UserFormComponent implements OnInit {
 		dialogRef.afterClosed().subscribe((result : any) => {
 			if (result != undefined) {
 				this.imageProfile = this.user.photo;
-				this.user.photo = result.data;			
+				this.user.photo = result.data.name;			
 			}
 		});
 
