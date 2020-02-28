@@ -560,6 +560,8 @@ export class RightContentComponent implements OnInit {
                             }
                         });
                         this.list.reports.splice(pos, 1);
+                        this.folderService.loadFolders();
+                        this.folderService.loadStates();
                     });
                 } else {    // Delete from database
                     this.http.delete({

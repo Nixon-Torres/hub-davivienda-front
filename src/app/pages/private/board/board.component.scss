@@ -462,4 +462,34 @@ $default-font: "Helvetica Neue", Medium;
             margin-top: 10px;
         }
     }
+    #pdf {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 15px 0;
+        .pdf {
+            &__btn {
+                display: flex;
+                align-items: center;
+                background-color: #A5ABB1;
+                border-radius: 4px;
+                font-size: 12px !important;
+                height: 30px;
+                line-height: 30px;
+                border: 0;
+                color: #fff;
+                padding: 0 15px;
+                text-transform: uppercase !important;
+                &:focus {
+                    background-color: #A5ABB1;
+                }
+            }
+            &__max {
+                font-size: 10px;
+                line-height: 12px;
+                color: #616161;
+            }
+        }
+    }
 }

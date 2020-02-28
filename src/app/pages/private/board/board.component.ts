@@ -7,6 +7,7 @@ import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { Grapes } from "./grapes/grape.config";
 
 import * as M from "materialize-css/dist/js/materialize";
@@ -67,7 +68,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
     };
-    public owner: any; 
+    public owner: any;
     public editorsList: Array<any>;
     public list: any = {
         users: [],
@@ -83,6 +84,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public isAdding: boolean = false;
     public editorInitiated = false;
     public isOwner: boolean = false;
+    public files: Array<any>;
+    public templateType: string;
     @ViewChild('authorsParent', {static:false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static:false}) editorsParent?: ElementRef;
 
@@ -149,6 +152,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 fields: ['id', 'name']
             }
+        }, {
+            relation: "files",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
+        }, {
+            relation: "template",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
         });
         this.http.get({
             'path': `reports/${idReport}`,
@@ -161,6 +174,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
+            this.files =  response.body.files;
+            this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
                 setTimeout(() => {
                     this.initGrapes();
@@ -486,6 +501,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
+    public openUploadDialog(): void {
+      let dialogRef = this.dialog.open(PdfUploadComponent, {
+        data: {
+            reportId: this.report.id,
+            files: this.files
+          }
+      });
+      dialogRef.afterClosed().subscribe((response: any) => {
+            this.loadReport(this.report.id);
+            if (response) {
+                this.http.patch({
+                    path: `reports/${this.report.id}`,
+                    data: {
+                        pdfId: response.id,
+                    }
+                }).subscribe(() => {
+                    
+                });
+            }
+      });
+  }
+
     public discard() {
 
         let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -532,26 +569,26 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     // TODO read by stateId
     public canPublish(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
+        const role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'  &&
+            this.report.ownerId !== this.user.id;
     }
 
     public canApprove(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
+        const role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
-            this.report.state.name !== 'Publicados';
+            this.report.state.name !== 'Publicados' && this.report.ownerId !== this.user.id;
     }
 
     public canSendToRevision(): boolean {
-        var role = this.user.roles.find(e => (e === 'analyst'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
+        return this.report && this.report.state && (this.report.state.name === 'Borradores' ||
             this.report.state.name === 'Revisado con ajustes');
     }
 
     public canReturnToEdit(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
+        const role = this.user.roles.find(e => (e === 'Admin'));
         return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
-            this.report.state.name === 'En revisión');
+            this.report.state.name === 'En revisión') && this.report.ownerId !== this.user.id;
     }
 
     public onSendToRevisionAction(): void {
@@ -606,7 +643,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for(let parentNode of element.path) {
             if(parentNode === parent) {
                 return;
-            } else { 
+            } else {
                 return true;
             }
         }
@@ -727,7 +764,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public toggleEditorsList(event) {
         this.flags.editorsList = !this.flags.editorsList;
         this.flags.authorsList = false;
-        this.flags.usersList = false; 
+        this.flags.usersList = false;
         event.stopPropagation();
     }
     public notfAsReaded() {
