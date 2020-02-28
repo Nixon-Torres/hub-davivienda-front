@@ -607,6 +607,7 @@ export class RightContentComponent implements OnInit {
             if (result.event === 'save' ) {
                 setTimeout(() => {
                     this.openConfirmation();
+                    this.updateReports(result.reportId);
                 }, 200);
             }
 
@@ -643,6 +644,15 @@ export class RightContentComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result : any) => {
         });
+    }
+
+    public updateReports(reportId) {
+        let  report = this.list.reports.find(element => element.id === reportId);
+        if (report) {
+            report.outstanding = false;
+            report.outstandingKey = '';             
+        }
+ 
     }
 
 }
