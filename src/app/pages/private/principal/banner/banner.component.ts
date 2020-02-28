@@ -95,7 +95,7 @@ export class BannerComponent implements OnInit {
   }
   onSaveImage(id) {
     const formData = new FormData();
-    formData.append('types', encodeURI(JSON.stringify(['pdf'])));
+    formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
     formData.append('file', this.outstandingForm.get('image').value);
     formData.append('key', 'outstandignimage');
     formData.append('resourceId', id);
