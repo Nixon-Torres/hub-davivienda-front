@@ -80,7 +80,8 @@ const materialModules: any[] = [
     entryComponents: [
         DialogBoxComponent,
         HighlightDialogComponent,
-        CreateReportDialogComponent
+        CreateReportDialogComponent,
+        HighlightDialogComponent
     ]
 })
 export class PrincipalModule { }
