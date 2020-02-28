@@ -607,7 +607,7 @@ export class RightContentComponent implements OnInit {
             if (result.event === 'save' ) {
                 setTimeout(() => {
                     this.openConfirmation();
-                    this.updateReports(result.reportId);
+                    this.updateReports();
                 }, 200);
             }
 
@@ -646,12 +646,14 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    public updateReports(reportId) {
-        let  report = this.list.reports.find(element => element.id === reportId);
-        if (report) {
-            report.outstanding = false;
-            report.outstandingKey = '';             
-        }
+    public updateReports() {
+
+        this.loadReports(this.ifilter);
+        // let  report = this.list.reports.find(element => element.id === reportId);
+        // if (report) {
+        //     report.outstanding = false;
+        //     report.outstandingKey = '';             
+        // }
  
     }
 
