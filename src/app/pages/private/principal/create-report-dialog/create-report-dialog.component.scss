@@ -1,5 +1,57 @@
 @import '../../../../../assets/sass/_mixins';
 
+.new-section-container {
+    width: 80%;
+    margin: 0 auto;
+    .new-section-block {
+        // margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        .select-content--medium {
+            margin-top: 20px;
+            width: 49%;
+            &:first-child {
+                margin-right: 2%;
+            }
+
+            .input-field {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.input-field {
+	width: 20vw;
+	display: inline-block;
+	max-width: 300px;
+
+	input {
+		width: 100%;
+		padding: 0 30px;
+		margin-bottom: 0;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		box-sizing: border-box;
+		font-family: "Helvetica Neue", sans-serif;
+		color: #A5ABB1;
+		font-size: .875em;
+		font-style: italic;
+		line-height: 34px;
+		&::placeholder {
+			color: #A5ABB1;
+			font-size: .875em;
+			font-style: italic;
+		}
+		&:focus {
+			box-shadow: none;
+			border-color: #0080FF;
+			outline: none;
+		}
+	}
+}
+
 .modal-form {
 	@include display-flex;
 	justify-content: flex-start;
@@ -256,14 +308,13 @@
 		background: #E7EAF1;
 		display: block;
 		height: 1px;
-		margin: 40px 0 40px -5%;	
+		margin: 40px 0 40px -5%;
 		width: 120%;
 	}
 
 	.select-content {
 		&--medium {
-			margin: 0 auto;
-			width: 70%;
+			width: 100%;
 		}
 	}
 }
@@ -324,3 +375,54 @@ button {
 		position: absolute;
 	}
 }
+/// Grid system
+//
+// Generate semantic grid columns with these mixins.
+
+@mixin make-container($gutter: $grid-gutter-width) {
+	width: 100%;
+	padding-right: $gutter / 2;
+	padding-left: $gutter / 2;
+	margin-right: auto;
+	margin-left: auto;
+  }
+
+
+  // For each breakpoint, define the maximum width of the container in a media query
+  @mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+	@each $breakpoint, $container-max-width in $max-widths {
+	  @include media-breakpoint-up($breakpoint, $breakpoints) {
+		max-width: $container-max-width;
+	  }
+	}
+  }
+
+  @mixin make-row($gutter: $grid-gutter-width) {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -$gutter / 2;
+	margin-left: -$gutter / 2;
+  }
+
+  @mixin make-col-ready($gutter: $grid-gutter-width) {
+	position: relative;
+	// Prevent columns from becoming too narrow when at smaller grid tiers by
+	// always setting `width: 100%;`. This works because we use `flex` values
+	// later on to override this initial width.
+	width: 100%;
+	padding-right: $gutter / 2;
+	padding-left: $gutter / 2;
+  }
+
+  @mixin make-col($size, $columns: $grid-columns) {
+	flex: 0 0 percentage($size / $columns);
+	// Add a `max-width` to ensure content within each column does not blow out
+	// the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
+	// do not appear to require this.
+	max-width: percentage($size / $columns);
+  }
+
+  @mixin make-col-offset($size, $columns: $grid-columns) {
+	$num: $size / $columns;
+	margin-left: if($num == 0, 0, percentage($num));
+  }

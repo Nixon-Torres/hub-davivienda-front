@@ -130,13 +130,22 @@
 
 			</section>
 		</mat-toolbar-row>
+		
 	</mat-toolbar>
 
 	<mat-grid-list cols="12" id="grapesBox" [ngClass]="isFullscreen ? 'fullscreen-container' : 'container'">
 
 		<!-- EDITOR -->
 		<mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
-			<div id="gjs" [ngClass]="showAsMobile ? 'mobile' : 'desktop'"></div>
+
+			<div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
+				<button class="pdf__btn" (click)="openUploadDialog()">
+					<span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span> 
+				</button>
+				<p class="pdf__max">Tamaño máximo hasta 10GB</p>
+			</div>
+			<div id="gjs" [ngClass]="getEditorClasses()"></div>
+			
 		</mat-grid-tile>
 
 		<!-- COMMENTS -->

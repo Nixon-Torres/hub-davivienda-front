@@ -20,6 +20,15 @@
             }
         }
     } 
+    &.ng-invalid {
+        .ng-select-container {
+            .ng-value-container {
+                .ng-placeholder {
+                    display: block;
+                }
+            }
+        }
+    }
     .ng-arrow-wrapper {
         position: relative;
         .ng-arrow {
@@ -56,6 +65,16 @@
                 }
             }
         }
+    }
+    &--create-report {
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                .ng-dropdown-panel-items {
+                    max-height: 130px;
+                }
+            }
+        }
+
     }
     &--no-height {
         &.ng-select-opened {

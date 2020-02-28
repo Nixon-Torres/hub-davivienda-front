@@ -7,6 +7,7 @@ import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { Grapes } from "./grapes/grape.config";
 import { CodeMirror } from "./grapes/code-mirror.config";
 
@@ -36,8 +37,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public grapes: any;
     public user: any = {};
     public users: any = [];
+    public files: Array<any>;
     public lastupdate: string;
     public maxAuthors: boolean;
+    public templateType: string;
     public editorsList: Array<any>;
     public editorInitiated = false;
     public isOwner: boolean = false;
@@ -171,6 +174,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 fields: ['id', 'name']
             }
+        }, {
+            relation: "files",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
+        }, {
+            relation: "template",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
         });
 
         this.http.get({
@@ -185,6 +198,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
 
+            this.files =  response.body.files;
+            this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
                 setTimeout(() => {
                     this.initGrapes();
@@ -339,30 +354,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     /*==============================================================*\
                                BUTTONS METHODS
     /*==============================================================*/
-
-    // TODO read by stateId
-    public canPublish(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
-    }
-
-    public canApprove(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
-            this.report.state.name !== 'Publicados';
-    }
-
-    public canSendToRevision(): boolean {
-        var role = this.user.roles.find(e => (e === 'analyst'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
-            this.report.state.name === 'Revisado con ajustes');
-    }
-
-    public canReturnToEdit(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
-            this.report.state.name === 'En revisión');
-    }
 
     private setPropertiesReport(): void {
         this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
@@ -567,6 +558,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public openUploadDialog(): void {
+      let dialogRef = this.dialog.open(PdfUploadComponent, {
+        data: {
+            reportId: this.report.id,
+            files: this.files
+          }
+      });
+      dialogRef.afterClosed().subscribe((response: any) => {
+            this.loadReport(this.report.id);
+            if (response) {
+                this.http.patch({
+                    path: `reports/${this.report.id}`,
+                    data: {
+                        pdfId: response.id,
+                    }
+                }).subscribe(() => {
+                    
+                });
+            }
+      });
+  }
+
     public discard() {
 
         let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -604,6 +617,47 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 );
             }
         });
+
+    }
+
+    public getEditorClasses() {
+        var classes = [];
+
+        if (this.templateType === 'pdf' || this.templateType === 'presentation') {
+            classes.push('pdf-button');
+        }
+
+        //{'pdf-button': (templateType === 'pdf' || templateType === 'presentation'), showAsMobile ? 'mobile' : 'desktop'}
+        if (this.showAsMobile) {
+            classes.push('mobile');
+        } else {
+            classes.push('desktop');
+        }
+        return classes;
+    }
+
+    // TODO read by stateId
+    public canPublish(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'  &&
+            this.report.ownerId !== this.user.id;
+    }
+
+    public canApprove(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
+            this.report.state.name !== 'Publicados' && this.report.ownerId !== this.user.id;
+    }
+
+    public canSendToRevision(): boolean {
+        return this.report && this.report.state && (this.report.state.name === 'Borradores' ||
+            this.report.state.name === 'Revisado con ajustes');
+    }
+
+    public canReturnToEdit(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin'));
+        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
+            this.report.state.name === 'En revisión') && this.report.ownerId !== this.user.id;
     }
 
     public showComments() {
@@ -631,7 +685,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         for(let parentNode of element.path) {
             if(parentNode === parent) {
                 return;
-            } else { 
+            } else {
                 return true;
             }
         }
@@ -829,7 +883,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public toggleEditorsList(event) {
         this.flags.editorsList = !this.flags.editorsList;
         this.flags.authorsList = false;
-        this.flags.usersList = false; 
+        this.flags.usersList = false;
         event.stopPropagation();
     }
 
