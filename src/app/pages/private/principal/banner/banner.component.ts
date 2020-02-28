@@ -13,6 +13,7 @@ export class BannerComponent implements OnInit {
   public formFields: FormGroup;
   public formData: any;
   public outstandingElement: any;
+  public currentImage: any;
   @Input() outstandingKey: string;
 
   constructor(
@@ -31,6 +32,7 @@ export class BannerComponent implements OnInit {
   onFileSelect(event: any): void {
     if (event.target.files.length > 0) {
       const image = event.target.files[0];
+      console.log('selected imagen', image);
       this.outstandingForm.get('image').setValue(image);
     }
   }
@@ -86,20 +88,72 @@ export class BannerComponent implements OnInit {
       data: filter,
       encode: true
     }).subscribe((resp: any) => {
-      this.outstandingElement = resp.body && resp.body.length ? resp.body[0] : null;
+      if (resp) {
+        this.outstandingElement = resp.body && resp.body.length ? resp.body[0] : null;
+        console.log('ELEMEEEENTTTTTTTTTTTTTTT', this.outstandingElement);
+        if (this.outstandingElement && this.outstandingElement.id) {
+          this.onGetImages(this.outstandingElement.id);
+          this.onLoadFormFields(this.outstandingElement);
+        }
+      }
     });
   }
+
+  onGetImages(id) {
+    const filter = {
+      where: {
+        resourceId: id,
+      }
+    }
+    this.http.get({
+      path: 'media',
+      data: filter,
+      encode: true
+    }).subscribe((resp: any) => {
+      console.log('img response', resp);
+      if (resp) {
+        this.currentImage = resp.body && resp.body.length ? resp.body[0] : null;
+        console.log('imaaaaaaaaaaaaage', this.currentImage.id);
+      }
+    });
+  }
+
+  public onLoadFormFields(data) {
+    this.formFields.setValue({
+      title: data.title,
+      description: data.description,
+      link: data.link,
+      cta: data.cta
+    });
+  }
+
   onSaveImage(id) {
     const formData = new FormData();
     formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
     formData.append('file', this.outstandingForm.get('image').value);
     formData.append('key', 'outstandignimage');
     formData.append('resourceId', id);
-    this.http.post({
-      path: 'media/upload',
-      data: formData
-    }).subscribe((resp: any) => {
-    });
+    if (!this.currentImage) {
+      this.http.post({
+        path: 'media/upload',
+        data: formData
+      }).subscribe((resp: any) => {
+        if (resp) {
+          console.log(resp);
+        }
+      });
+    } else {
+      console.log('else image', this.currentImage.id);
+      console.log(formData);
+      this.http.patch({
+        path: `media/${this.currentImage.id}`,
+        data: formData
+      }).subscribe((resp: any) => {
+        if (resp) {
+          console.log('resp patch',resp);
+        }
+      });
+    }
   }
 
 }
