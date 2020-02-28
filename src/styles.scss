@@ -409,6 +409,10 @@ $builder-bg: #f5f7fb;
 		.blocks-container {
 			.gjs-block {
 			// TODO block styles
+				&:hover {
+					color: #0080ff;
+					border-color: #9bccfd;
+				}
 
 				&::before {}
 
@@ -416,11 +420,61 @@ $builder-bg: #f5f7fb;
 			}
 		}
 
+		.traits-container {
+			border-bottom: solid 1px #EDEDED;
+
+			.gjs-field {
+				background-color: rgba(0, 0, 0, 0.07) !important;
+
+				& input:focus{
+					border-radius: 2px;
+					background: #FAFAFA;
+					border: 1px solid #0080ff;
+				}
+			}
+		}
+
 		.styles-container {
-			.gjs-sm-title,
-			.gjs-sm-field,
 			.gjs-sm-sector {
-				border: none !important;
+				border-bottom: solid 1px #EDEDED;
+
+				.gjs-sm-title {
+					color: #616161;
+					font-size: 12px;
+					font-weight: bold;
+					padding: 18px;
+					letter-spacing: normal;
+					background-color: white;
+					font-family: "Helvetica";
+					border-bottom: solid 1px #EDEDED;
+
+					&:hover {
+						background: rgba(0,0,0,.04);
+					}
+				}
+
+				.gjs-sm-properties {
+					padding: 20px 10px !important;
+
+					.gjs-sm-label {
+						color: #616161 !important;
+					}
+
+					.gjs-field {
+						background-color: rgba(0, 0, 0, 0.07) !important;
+
+						.gjs-radio-item:hover {
+							background: #FAFAFA;
+						}
+
+						.gjs-radio-item input:checked +
+						.gjs-radio-item-label {
+							background-color: rgb(216, 233, 251);
+							color: #0080ff;
+						}
+					}
+				}
+
 			}
 		}
 
