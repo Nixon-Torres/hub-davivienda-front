@@ -1,0 +1,67 @@
+				<article class="outstanding">
+					<header class="outstanding__header" (click)="showPanel = !showPanel">
+						<div class="outstanding__texts">
+							<p class="text--blue">Informes destacados - <b>Estrategia para invertir</b></p>
+							<!-- <p class="text--main">Ejemplo nombre informe anterior</p> -->
+							<p class="text--small">Actualmente se muestran los siguiente informes:</p>
+							<ul class="list">
+								<li><span class="icong-crown">(Destacado)</span> Lo último sobre alguna cosa</li>
+								<li>Lo último sobre alguna cosa</li>
+								<li>Lo último sobre alguna cosa</li>
+								<li>Lo último sobre alguna cosa</li>
+								<li>Lo último sobre alguna cosa</li>
+							</ul>
+						</div>
+						
+						<div class="outstanding__modification">
+							<p class="modification__title">Ultima modificación</p>
+							<p class="modification__value">4:53pm 21 Agosto</p>
+							<hr class="divider">
+							<p class="modification__title">Hecha por:</p>
+							<p class="modification__value">Andres Villanueva</p>
+						</div>
+	
+						<div class="outstanding__edit">
+							<button><span class="icon icon-edit"></span>editar</button>
+						</div>
+					</header>
+					<section class="outstanding__body" *ngIf="showPanel">
+						<form action="">
+							<div class="outstanding__fields">
+								<div class="form-field form-field--half">
+									<label for="outstandingTitle" class="icong-crown">Informe destacado</label>
+<!-- 									<ng-select [items]="list.outstanding" bindValue="key" bindLabel="value"
+										placeholder="Seleccione Informe destacado" [virtualScroll]="true"
+										[clearable]="false" class="custom-select custom-select--create-report" (change)=""
+										formControlName="typeSelected" required>
+									</ng-select> -->
+								</div>
+								<div class="form-field form-field--half"></div>
+								<div class="form-field form-field--half">
+									<label for="outstandingLink">Informe 1</label>
+									<input type="text" name="outstandingLink" id="outstandingLink">
+									<p class="error"></p>
+								</div>
+								<div class="form-field form-field--half">
+									<label for="outstandingCta">Informe 2</label>
+									<input type="text" name="outstandingCta" id="outstandingCta">
+									<p class="error"></p>
+								</div>
+								<div class="form-field form-field--half">
+									<label for="outstandingLink">Informe 3</label>
+									<input type="text" name="outstandingLink" id="outstandingLink">
+									<p class="error"></p>
+								</div>
+								<div class="form-field form-field--half">
+									<label for="outstandingCta">Informe 4</label>
+									<input type="text" name="outstandingCta" id="outstandingCta">
+									<p class="error"></p>
+								</div>
+							</div>
+							<div class="outstanding__buttons">
+								<button class="btn btn--border">Cancelar</button>
+								<button class="btn btn--filled">Modificar</button>
+							</div>
+						</form>
+					</section>
+				</article>
