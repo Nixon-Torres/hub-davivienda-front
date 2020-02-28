@@ -214,8 +214,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
     // HTML blocks that will be displayed
     private activeBlocks(): void {
         this.grapes.activeBlocks([
-            'Description',
-            'Title'
+            'OneColumn',
+            'TwoColumns',
+            'ThreeColumns',
+            'Text',
+            'Quote',
+            // 'Link',
+            'Image',
+            'Video',
+            'Ulist'
         ]);
     }
 

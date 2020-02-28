@@ -396,10 +396,11 @@ $builder-bg: #f5f7fb;
 
 		.blocks-container {
 			.gjs-block {
-				background-color: #e5e5e5  !important;
-				color: #616161;
-				border: none;
-				font-size: 35px;
+			// TODO block styles
+
+				&::before {}
+
+				.gjs-block-label {}
 			}
 		}
 

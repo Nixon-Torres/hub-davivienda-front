@@ -1,11 +1,22 @@
 import { Config, Managers } from './grape.model';
-import { Description, Image, Title } from './blocks/block.main';
 import { Typography } from './sectors/sector.main';
+import { 
+    Text, 
+    Link, 
+    Image, 
+    Video, 
+    Quote, 
+    Ulist,
+    OneColumn, 
+    TwoColumns, 
+    ThreeColumns, 
+} from './blocks/block.main';
 
 class Grapes {
     public config: Config = {
         width: '100%',
         height: '100%',
+
         container: '#gjs',
         fromElement: true,
         storageManager: false,
@@ -26,9 +37,15 @@ class Grapes {
         this.loadStyles(selectors.styleManager);
 
         this.blocks = {
-            Description: new Description,
-            Image: new Image,
-            Title: new Title
+            OneColumn: new OneColumn,
+            TwoColumns: new TwoColumns,
+            ThreeColumns: new ThreeColumns,
+            Text: new Text,
+            Link:new Link,
+            Image:new Image,
+            Video:new Video,
+            Quote:new Quote,
+            Ulist:new Ulist
         };
         this.sectors = {
             Typography: new Typography
