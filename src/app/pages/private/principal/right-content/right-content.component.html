@@ -56,6 +56,15 @@
 									<li><a class="icon icon-trash-alt active" (click)="deleteAllReports()">Eliminar todo</a></li>
 								</ul>
 							</div>
+							<div class="operation-cta crown_btn" *ngIf="!icurrentObj.deletedFg">
+								<ul>
+									<li *ngIf="canHighlightReport()">
+                                        <a (click)="openHighlightDialog('0')">
+                                            <span><img src="/assets/images/corona.svg" alt="">Destacar informe</span>
+                                        </a>
+                                    </li>
+								</ul>
+							</div>
 						</div>
 						<div class="trash_info" *ngIf="icurrentObj.deletedFg">
 							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán automáticamente.</p>
@@ -67,13 +76,12 @@
 							</div>
 						</div>
 						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
-							
 							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
-										<span class="report--span report_name">{{report.state.name}}</span>
+										<span class="report--span report_name" [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
-											
+
 										</mat-checkbox>
 										<h2 class="report--title">{{report.name}}</h2>
 										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
@@ -85,6 +93,7 @@
 												<li><button class="icon icon-copy" (click)="onCloneReport(i)">Duplicar</button></li>
 												<li><button class="icon icon-trash-alt" (click)="onDeleteReport(i)">Eliminar</button></li>
 												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus" (click)="openPreviewDialog(report.id)">Vista previa</button></li>
+												<li *ngIf="showOptionMenu(report.state.id)"><button class="icong icong-crown" (click)="openHighlightDialog(report.id)">Destacar</button></li>
 											</ul>
 										</div>
 									</div>
@@ -114,13 +123,12 @@
 							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px">
 								<li *ngFor="let report of list.reports; let i = index">
 									<div class="row" [ngClass]="report.state.color">
-										<span class="report--span report_name">{{report.state.name}}</span>
+										<span class="report--span report_name" [ngClass]="{'icong-crown':isHighlighted(report.id)}" >{{report.state.name}}</span>
 										<mat-checkbox [formControlName]="i">
-											<span class="checkt"></span>
-											<h2 class="report--title">{{report.name}}</h2>
 										</mat-checkbox>
-										<span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.user?.name}}</span>
+                                        <h2 class="report--title">{{report.name}}</h2>
+                                        <span class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                        <span class="report--span report_content">{{report.user?.name}}</span>
 										<div class="group-menu">
 											<button class="report--menu icon icon-ellipsis-h"></button>
 											<ul class="report--menu-list">
@@ -128,6 +136,7 @@
 												<li><button class="icon icon-copy" (click)="onCloneReport(i)">Duplicar</button></li>
 												<li><button class="icon icon-trash-alt" (click)="onDeleteReport(i)">Eliminar</button></li>
 												<li><button class="icon icon-search-plus" (click)="openPreviewDialog(report.id)">Vista previa</button></li>
+												<li *ngIf="showOptionMenu(report.state.id)"><button class="icong icong-crown" (click)="openHighlightDialog(report.id)">Destacar</button></li>
 											</ul>
 										</div>
 									</div>

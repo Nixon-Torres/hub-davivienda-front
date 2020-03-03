@@ -19,7 +19,7 @@ export class ProfileFormComponent implements OnInit {
 	private userCopy: any = [];
 	private imageProfile: any;
 	public profileForm: FormGroup;
-	public storageBase: String =  environment.STORAGE_FILES;
+	public storageBase: string =  environment.STORAGE_FILES;
 	public save: boolean = false;
 
 
@@ -61,7 +61,7 @@ export class ProfileFormComponent implements OnInit {
 				this.imageProfile = this.user.photo;
 				this.user.photo = result.data.name;
 			}
-				 		
+
 		});
 	}
 
@@ -99,6 +99,6 @@ export class ProfileFormComponent implements OnInit {
 		this.profileForm.get('charge').setValue(this.user.charge);
 		this.profileForm.get('leyend').setValue(this.user.leyend);
 		this.user.photo = this.imageProfile;
-	}	
+	}
 
 }

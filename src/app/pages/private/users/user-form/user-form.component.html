@@ -1,16 +1,17 @@
 <form [formGroup]="userForm" >
 	<div class="top">
 		<div class="column--small">
-			<img class="photo" src="{{storageBase}}{{user.photo ? user.photo : 'user-default.png' }}">
+            <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
+            <img style="width: 50px" *ngIf="user.photo" src="{{storageBase}}{{user.photo}}">
 			<button type="" class="simple icong-camera" (click)="openDialog()">Subir foto</button>
 		</div>
 		<div class="column">
 			<input formControlName="name" class="bolder" type="text" value="{{user.name}}">
 			<input formControlName="charge" class="regular" type="text" value="{{user.charge}}">
-			<input formControlName="email" class="regular" type="text" value="{{user.email}}" disabled="disabled">		
+			<input formControlName="email" class="regular" type="text" value="{{user.email}}" disabled="disabled">
 		</div>
 		<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
-	</div>	
+	</div>
 	<div class="content" [ngClass]="{hide: isHide()}">
 		<div class="description">
 			<textarea formControlName="leyend">{{user.leyend}}</textarea>

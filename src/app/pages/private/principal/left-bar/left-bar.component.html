@@ -22,6 +22,9 @@
     <div class="options">
         <p class="options--name icon icon-file-upload variation">Multimedia</p>
     </div>
+    <div class="options" (click)="changeViewFn({reports:false, editSite:true})">
+        <p class="options--name icon variation">Editar sitio</p>
+    </div>
     <div class="options delete-section-btn">
         <p class="options--name icon icon-trash-alt variation" [ngClass]="{active: isDeleteActive()}"
            (click)="setDeletedState()">Eliminados</p>
