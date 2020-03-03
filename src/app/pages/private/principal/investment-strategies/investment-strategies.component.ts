@@ -63,9 +63,12 @@ export class InvestmentStrategiesComponent implements OnInit {
 
 	public getReports() {
 		this.http.get({
-			path: 'reports/'
+			path: 'reports/',
+			data: {where: {stateId:'5e068c81d811c55eb40d14d0'}},
+			encode: true
 		}).subscribe((response: any) => {
 			this.list.reports = response.body;
+			console.log(response.body);
 		}, (error: any) => {
 			console.error(error);
 		});
@@ -161,8 +164,8 @@ export class InvestmentStrategiesComponent implements OnInit {
 
 	public saveContent() {
 		let id = '';
-	    if (this.content) 
-	    	id = '/'+this.content.id;
+		if (this.content) 
+			id = '/'+this.content.id;
 		this.http.patch({
 		  path: 'contents'+id,
 		  data: { key : 'strategyKey'}
@@ -187,10 +190,10 @@ export class InvestmentStrategiesComponent implements OnInit {
 
 	public showConfirmation() {
 		this.dialog.open(ConfirmationDialogComponent, {
-		    width: '410px',
-		    data: {
-		        title: 'Se ha publicado exitosamente los ajustes de Estrategia para invertir',
-		    }
+			width: '410px',
+			data: {
+				title: 'Se ha publicado exitosamente los ajustes de Estrategia para invertir',
+			}
 		});
 	} 
 
