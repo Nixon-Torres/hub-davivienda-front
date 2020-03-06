@@ -25,6 +25,7 @@ export class Ulist {
         <style type="text/css">
             .ul-gjs {
                 list-style: revert;
+                font-family: 'PT Serif', serif;
             }
         </style>
         `;

@@ -91,6 +91,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private timer: any = {
         change: null
     };
+    private states: any = {
+        draft: "5e068d1cb81d1c5f29b62977",
+        toReview: "5e068d1cb81d1c5f29b62976",
+        toCorrect: "5e068d1cb81d1c5f29b62975",
+        approved: "5e068d1cb81d1c5f29b62974",
+        published: "5e068c81d811c55eb40d14d0"
+    }
 
     @ViewChild('authorsParent', {static:false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static:false}) editorsParent?: ElementRef;
@@ -167,7 +174,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         query.filter.include.push({
             relation: "state",
             scope: {
-                fields: ['name']
+                fields: ['id', 'name']
             }
         }, {
             relation: "owner",
@@ -229,10 +236,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     // HTML blocks that will be displayed
     private activeBlocks(): void {
         this.grapes.activeBlocks([
+            'Text',
             'OneColumn',
             'TwoColumns',
             'ThreeColumns',
-            'Text',
             'Ulist',
             'Olist',
             // 'Link',
@@ -636,28 +643,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
         return classes;
     }
 
-    // TODO read by stateId
-    public canPublish(): boolean {
-        const role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'  &&
-            this.report.ownerId !== this.user.id;
-    }
-
-    public canApprove(): boolean {
-        const role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
-            this.report.state.name !== 'Publicados' && this.report.ownerId !== this.user.id;
-    }
-
     public canSendToRevision(): boolean {
-        return this.report && this.report.state && (this.report.state.name === 'Borradores' ||
-            this.report.state.name === 'Revisado con ajustes');
+        return this.report.stateId === this.states.draft || this.report.stateId === this.states.toCorrect;
     }
 
     public canReturnToEdit(): boolean {
-        const role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
-            this.report.state.name === 'En revisión') && this.report.ownerId !== this.user.id;
+        return this.report.stateId === this.states.toReview;
+    }
+
+    public canApprove(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        return role && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
+    }
+
+    public canPublish(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        return role && this.report.ownerId !== this.user.id && this.report.stateId === this.states.approved;
     }
 
     public showComments() {

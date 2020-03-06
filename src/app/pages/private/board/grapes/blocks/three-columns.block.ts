@@ -29,6 +29,7 @@ export class ThreeColumns {
             align-items: stretch;
             flex-wrap: nowrap !important;
             padding: 10px;
+            font-family: 'PT Serif', serif;
         }
 
         @media (max-width:768px) {
