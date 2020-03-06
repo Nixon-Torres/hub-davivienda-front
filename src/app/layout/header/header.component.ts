@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpService } from '../../services/http.service';
 import { SocketService } from '../../services/socket.service';
 
+import { environment } from '../../../environments/environment';
 // import { loopback } from '../../models/common/loopback.model';
 import * as moment from 'moment';
 
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
         '5e068d1cb81d1c5f29b62976': 'bg-toReview',
         '5e068d1cb81d1c5f29b62977': 'bg-draft'
     };
+    public STORAGE_URL = environment.STORAGE_FILES;
 
     constructor(
         private router: Router,

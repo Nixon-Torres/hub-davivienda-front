@@ -13,6 +13,7 @@ export class BannerComponent implements OnInit {
   public formFields: FormGroup;
   public formData: any;
   public outstandingElement: any;
+  public currentImage: any;
   public showPanel = false;
   @Input() outstandingKey: string;
 
@@ -29,27 +30,18 @@ export class BannerComponent implements OnInit {
     });
   }
 
-  onFileSelect(event: any): void {
+  public onFileSelect(event: any): void {
     if (event.target.files.length > 0) {
       const image = event.target.files[0];
       this.outstandingForm.get('image').setValue(image);
     }
   }
 
-  createForm() {
-    this.formFields = new FormGroup({
-      title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      link: new FormControl('', Validators.required),
-      ctaText: new FormControl('', Validators.required)
-    });
-  }
-
-  get f() { return this.formFields.controls; }
-
-  onSaveOutstanding(event) {
+  public onSaveOutstanding(event) {
     event.preventDefault();
-
+    let isUpdated: boolean = this.outstandingElement ? true : false;
+    let method: string = isUpdated ? 'patch' : 'post';
+    let path: string = isUpdated ? `contents/${this.outstandingElement.id}` : 'contents';
     this.formData = {
       key: this.outstandingKey,
       title: this.f.title.value,
@@ -60,26 +52,36 @@ export class BannerComponent implements OnInit {
         link: this.f.link.value,
       }
     };
-    if (!this.outstandingElement) {
-      this.http.post({
-        path: 'contents',
-        data: this.formData
-      }).subscribe((resp: any) => {
-        this.onSaveImage(resp.body.id);
-        this.onGetOutstanding();
-      })
-    } else {
-      this.http.patch({
-        path: `contents/${this.outstandingElement.id}`,
-        data: this.formData
-      }).subscribe((resp: any) => {
-        this.onSaveImage(resp.body.id);
-        this.onGetOutstanding();
-      });
-    }
+    this.http[method]({
+      path: path,
+      data: this.formData
+    }).subscribe((resp: any) => {
+      this.onSaveImage(resp.body.id);
+      this.onGetOutstanding();
+    });
   }
 
-  onGetOutstanding() {
+  public get f() { return this.formFields.controls; }
+
+  private createForm() {
+    this.formFields = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      link: new FormControl('', Validators.required),
+      ctaText: new FormControl('', Validators.required)
+    });
+  }
+
+  private onLoadFormFields(data) {
+    this.formFields.setValue({
+      title: data.title,
+      description: data.description,
+      link: data.params.link,
+      ctaText: data.params.cta
+    });
+  }
+
+  private onGetOutstanding() {
     const filter = {
       where: {
         key: this.outstandingKey
@@ -91,20 +93,49 @@ export class BannerComponent implements OnInit {
       data: filter,
       encode: true
     }).subscribe((resp: any) => {
-      this.outstandingElement = resp.body && resp.body.length ? resp.body[0] : null;
+      if (resp) {
+        this.outstandingElement = resp.body && resp.body.length ? resp.body[0] : null;
+        if (this.outstandingElement && this.outstandingElement.id) {
+          this.onGetImages(this.outstandingElement.id);
+          this.onLoadFormFields(this.outstandingElement);
+        }
+      }
     });
   }
-  onSaveImage(id) {
+
+  private onGetImages(id) {
+    const filter = {
+      where: {
+        resourceId: id,
+      }
+    }
+    this.http.get({
+      path: 'media',
+      data: filter,
+      encode: true
+    }).subscribe((resp: any) => {
+      if (resp) {
+        this.currentImage = resp.body && resp.body.length ? resp.body[0] : null;
+      }
+    });
+  }
+
+  private onSaveImage(id) {
     const formData = new FormData();
     formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
     formData.append('file', this.outstandingForm.get('image').value);
     formData.append('key', 'outstandignimage');
     formData.append('resourceId', id);
+    if (this.currentImage) {
+      formData.append('id', this.currentImage.id);
+    }
     this.http.post({
       path: 'media/upload',
       data: formData
     }).subscribe((resp: any) => {
+      if (resp) {
+        console.log(resp);
+      }
     });
   }
-
 }

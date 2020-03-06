@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpService} from '../../../../services/http.service';
+import { HttpService} from '../../../../services/http.service';
+import { loopback} from '../../../../models/common/loopback.model';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-investment-strategies',
@@ -8,29 +11,42 @@ import {HttpService} from '../../../../services/http.service';
 })
 export class InvestmentStrategiesComponent implements OnInit {
 
-	public areas: any = {
-		outstanding : null,
-		report1 : null,
-		report2 : null,
-		report3 : null,
-		report4 : null
-	}
+	public areas: any = [
+		{label:'outstanding', newReportId:'',oldReportId:''},
+		{label:'report1', newReportId:'',oldReportId:''},
+		{label:'report2', newReportId:'',oldReportId:''},
+		{label:'report3', newReportId:'',oldReportId:''},
+		{label:'report4', newReportId:'',oldReportId:''},
+	];
+
 	public list: any =  {
 		outstandedReport: [],
 		reports: [],
-		currentReports: []
+		currentReports: [],
+		reportsCopy: []
 	}
 
 	public currentArea: string = '';
+	public time: string = '';
+	public name: string = '';
+
+	public content: any = [];
+	public header: string;
+	public reportOne: string;
+	public reportTwo: string;
+	public reportThree: string;
+	public reportFour: string;
 
 	constructor(
 		private http: HttpService,
-		) { }
+		public dialog: MatDialog
+	) {}
 
 	ngOnInit() {
 		this.getReports();
 		this.getOutstandingReports();
 		this.getCurrentReports();
+		this.getContent();
 	}
 
 	public getOutstandingReports() {
@@ -47,29 +63,50 @@ export class InvestmentStrategiesComponent implements OnInit {
 
 	public getReports() {
 		this.http.get({
-			path: 'reports/'
+			path: 'reports/',
+			data: {where: {stateId:'5e068c81d811c55eb40d14d0'}},
+			encode: true
 		}).subscribe((response: any) => {
 			this.list.reports = response.body;
+			console.log(response.body);
 		}, (error: any) => {
 			console.error(error);
 		});
 	}
 
 	public getCurrentReports() {
+
+		var query = new loopback();
+		query.filter.where['strategy'] = true;
+		query.filter.order = 'strategyArea ASC';
+
 		this.http.get({
 			path: 'reports/',
-			data: {where: {strategy: true}},
+			data: query.filter,
 			encode: true
 		}).subscribe((response: any) => {
 			this.list.currentReports = response.body;
+			this.selectedReport();
 		}, (error: any) => {
-		console.error(error);
+			console.error(error);
 		});
 	}
 
 	public onOptionsSelected(event) {
-		this.areas[this.currentArea] = event.id;
-		console.log(this.areas);
+
+		let oldReport = this.list.currentReports.find(e => e.strategyArea === this.currentArea);
+		let report = this.areas.find(e => e.label === this.currentArea);
+		let reportIndex = this.list.reports.findIndex(element => element.id == event.id);
+
+		report.newReportId = event.id;
+
+		if (oldReport && oldReport.id !== event.id)
+			report.oldReportId = oldReport.id;
+
+		if (reportIndex >= 0) 
+			this.list.reports.splice(reportIndex,1);
+
+
 	}
 
 	public onCheck(area) {
@@ -77,57 +114,87 @@ export class InvestmentStrategiesComponent implements OnInit {
 	}
 
 	public onSAve() {
-		let report;
-		let newReport;
+		this.areas.forEach((element) => {
 
-		// if(this.areas.outstanding != null) {
-		// 	this.updateReport(this.areas.outstanding,'outstanding',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'outstanding');
-		// 	this.updateReport(report.id,'',false);
-		// }
+			if (element.newReportId) 
+				this.updateReport(element.newReportId,element.label,true);
+			
+			if (element.oldReportId) 
+				this.updateReport(element.oldReportId,'',false);
 
-		if(this.areas.report1 != null) {
-			report = this.list.currentReports.find(e => e.strategyArea === 'report1');
-			newReport = this.list.reports.find(e => e.id === this.areas.report1);			
-			if (report)
-				this.updateReport(newReport,'report1',true, report.id);
-			else 
-				this.updateReport(newReport,'report1',true, '0');
-		}
+		});
+
+		this.saveContent();
 		
-		// if(this.areas.report2 != null) {
-		// 	this.updateReport(this.areas.report2,'report2',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'report2');
-		// 	this.updateReport(report.id,'',false);
-		// }
-		
-		// if(this.areas.report3 != null) {
-		// 	this.updateReport(this.areas.report3,'report3',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'report3');
-		// 	this.updateReport(report.id,'',false);
-		// }
-		
-		// if(this.areas.report4 != null) {
-		// 	this.updateReport(this.areas.report4,'report4',true);
-		// 	report = this.list.currentReports.find(e => e.strategyArea === 'report4');
-		// 	this.updateReport(report.id,'',false);
-		// } 
 	}
 
-	public updateReport(report,area,strategy,reportId) {
-		report.strategy = strategy;
-		report.strategyArea = area;
-		// let data = {strategy:strategy, strategyArea:area}
+	public updateReport(id, label, strategy) {
+		let data = {strategy:strategy, strategyArea: label} 
 		this.http.patch({
-			path: 'reports/'+report.id,
-			data: report
+			path: 'reports/'+ id,
+			data: data
 		}).subscribe((response: any) => {
-			if (reportId != '0')
-				this.updateReport(reportId,'',false,'0');
-			//this.list.reports = response.body;
 		}, (error: any) => {
 			console.error(error);
 		});
 	}
+
+	public getOutstanding(area) {
+		return area === 'outstanding' ? true : false;
+	}
+
+	public selectedReport() {
+		let report;
+
+		this.areas.forEach((element) => {
+			report = this.list.currentReports.find(e => e.strategyArea === element.label);
+			if (report) {
+				switch (element.label) {
+					case 'outstanding': this.header = report.name; break;
+					case 'report1': this.reportOne = report.name; break;
+					case 'report2': this.reportTwo = report.name; break;
+					case 'report3': this.reportThree = report.name; break;
+					case 'report4': this.reportFour = report.name; break;
+				}				
+			}
+			
+		});
+
+	}
+
+	public saveContent() {
+		let id = '';
+		if (this.content) 
+			id = '/'+this.content.id;
+		this.http.patch({
+		  path: 'contents'+id,
+		  data: { key : 'strategyKey'}
+		}).subscribe((response: any) => {
+			this.getContent();
+			this.getCurrentReports();
+			this.showConfirmation();
+		});
+	}
+
+	public getContent() {
+		this.http.get({
+		  path: 'contents',
+		  data: {where: { key: 'strategyKey' }, include: ['lastUpdater']},
+		  encode: true
+		}).subscribe((response) => {
+			this.name = response.body[0].lastUpdater.name;
+			this.time = response.body[0].updatedAt;
+			this.content = response.body[0];
+		});
+	}
+
+	public showConfirmation() {
+		this.dialog.open(ConfirmationDialogComponent, {
+			width: '410px',
+			data: {
+				title: 'Se ha publicado exitosamente los ajustes de Estrategia para invertir',
+			}
+		});
+	} 
 
 }

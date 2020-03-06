@@ -65,7 +65,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, EditSiteComponent, InvestmentStrategiesComponent, RelatedReportsComponent, BannerComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, RelatedReportsComponent],
     imports: [
         CommonModule,
         materialModules,

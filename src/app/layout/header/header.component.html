@@ -3,6 +3,7 @@
 
 		<!-- LOGO -->
 		<img class="logo-principal" src="../assets/images/section/davivienda.svg" alt="Logo Davivienda" *ngIf="onPrincipal">
+
 		<a routerLink="principal" *ngIf="!onPrincipal" matRipple>
 			<img class="logo-board" src="../assets/images/casa-davivienda.svg" alt="Logo Davivienda">
 			<span>Regresar al dashboard</span>
@@ -10,7 +11,8 @@
 
 		<!-- USER MENU -->
 		<div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple>
-			<img src="../assets/images/user/user.png" alt="Usuario">
+            <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
+            <img *ngIf="user.photo" src="{{STORAGE_URL}}{{user.photo}}">
 			<span>{{ user.name }}</span>
 		</div>
 		<mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">
@@ -25,17 +27,17 @@
 		</mat-menu>
 
 		<!-- NOTIFICATIONS -->
-		<button 
+		<button
 			class="h-btn" mat-button matRipple
-			[matMenuTriggerFor]="notifyMenu" 
+			[matMenuTriggerFor]="notifyMenu"
 			(menuOpened)="isOpened($event)">
 			<i class="material-icons notifications_icon" matBadge="{{ntfQty}}" matBadgeSize="medium">notifications</i>
 		</button>
 		<mat-menu #notifyMenu="matMenu">
 			<h1 id="notificationHeader">Notificaciones</h1>
 			<section>
-			  	<button mat-menu-item 
-			  		[ngClass]="{'to-check' : !notification.readed}" 
+			  	<button mat-menu-item
+			  		[ngClass]="{'to-check' : !notification.readed}"
 			  		*ngFor="let notification of notifications"
 			  		(click)="openNotf(notification.reportId, notification.readed)">
 		  			<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
