@@ -163,28 +163,30 @@ export class InvestmentStrategiesComponent implements OnInit {
 	}
 
 	public saveContent() {
-		let id = '';
-		if (this.content) 
-			id = '/'+this.content.id;
-		this.http.patch({
-		  path: 'contents'+id,
-		  data: { key : 'strategyKey'}
+		let id = this.content.length > 0 ?  '/'+this.content.id: '';
+		let verb = this.content.length > 0 ? 'patch': 'post';
+			
+		this.http[verb]({
+			path: 'contents'+id,
+			data: { key : 'strategyKey'}
 		}).subscribe((response: any) => {
 			this.getContent();
 			this.getCurrentReports();
 			this.showConfirmation();
-		});
+		});	
 	}
 
 	public getContent() {
 		this.http.get({
-		  path: 'contents',
-		  data: {where: { key: 'strategyKey' }, include: ['lastUpdater']},
-		  encode: true
+			path: 'contents',
+			data: {where: { key: 'strategyKey' }, include: ['lastUpdater']},
+			encode: true
 		}).subscribe((response) => {
-			this.name = response.body[0].lastUpdater.name;
-			this.time = response.body[0].updatedAt;
-			this.content = response.body[0];
+			if (response.body.length > 0) {
+				this.name = response.body[0].lastUpdater.name;
+				this.time = response.body[0].updatedAt;
+				this.content = response.body[0];
+			}
 		});
 	}
 
