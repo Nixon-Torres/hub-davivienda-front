@@ -122,6 +122,7 @@ export class InvestmentStrategiesComponent implements OnInit {
             if (element.oldReportId) {
                 this.updateReport(element.oldReportId, '', false);
             }
+
         });
 
         this.saveContent();
@@ -139,7 +140,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     }
 
     public getOutstanding(area) {
-        return area === 'outstanding';
+        return area === 'outstanding' ? true : false;
     }
 
     public selectedReport() {
@@ -170,11 +171,10 @@ export class InvestmentStrategiesComponent implements OnInit {
     }
 
     public saveContent() {
-        let id = '';
-        if (this.content) {
-            id = '/' + this.content.id;
-        }
-        this.http.patch({
+        const id = this.content.length > 0 ? '/' + this.content.id : '';
+        const verb = this.content.length > 0 ? 'patch' : 'post';
+
+        this.http[verb]({
             path: 'contents' + id,
             data: {key: 'strategyKey'}
         }).subscribe((response: any) => {
@@ -190,7 +190,7 @@ export class InvestmentStrategiesComponent implements OnInit {
             data: {where: {key: 'strategyKey'}, include: ['lastUpdater']},
             encode: true
         }).subscribe((response) => {
-            if (response && response.body && (response.body as unknown as []).length) {
+            if ((response.body as unknown as []).length > 0) {
                 this.name = response.body[0].lastUpdater.name;
                 this.time = response.body[0].updatedAt;
                 this.content = response.body[0];
