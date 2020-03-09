@@ -14,6 +14,7 @@ import { CodeMirror } from "./grapes/code-mirror.config";
 import * as M from "materialize-css/dist/js/materialize";
 import * as $ from "jquery/dist/jquery";
 import * as moment from 'moment';
+import * as countdown from 'grapesjs-component-countdown/dist/grapesjs-component-countdown.min.js';
 
 import { Report } from './board.model';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
@@ -249,6 +250,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ]);
     }
 
+    // Init the countdown plugin and add block in the editor
+    private activeCountdownBlock() {
+        grapesjs.plugins.add(
+            'gjs-component-countdown', 
+            countdown.default(
+                this.editor,
+                this.grapes.get('countdownConfig')
+            )
+        );
+    }
+
     // Styles sectors that will be displayed
     private activeSectors(): void {
         this.grapes.activeSectors([
@@ -261,6 +273,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.editor = grapesjs.init(
             this.grapes.get('config')
         );
+
+        this.activeCountdownBlock(); //TODO validate rol user for this block
         this.listenEventsEditor();
     }
 

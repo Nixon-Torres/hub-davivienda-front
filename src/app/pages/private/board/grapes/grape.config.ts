@@ -10,14 +10,14 @@ import {
     Olist,
     OneColumn, 
     TwoColumns, 
-    ThreeColumns, 
+    ThreeColumns,
 } from './blocks/block.main';
 
 class Grapes {
     public config: Config = {
         width: '100%',
         height: '100%',
-
+        allowScripts: 1,
         container: '#gjs',
         fromElement: true,
         storageManager: false,
@@ -26,7 +26,20 @@ class Grapes {
         },
         blockManager: {},
         traitManager: {},
-        styleManager: {}
+        styleManager: {},
+        plugins: ['gjs-component-countdown'],
+        pluginsOpts: {
+            'gjs-component-countdown': {}
+        },
+    };
+    public countdownConfig = {
+        endText: 'Finalizado',
+        labelDays: 'Días',
+        labelHours: 'Horas',
+        labelMinutes: 'Minutos',
+        labelSeconds: 'Segundos',
+        dateInputType: 'datetime-local',
+        labelCountdownCategory: { id: "Extra", label: "Extra", open: false },
     };
 
     private blocks: any = {};

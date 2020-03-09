@@ -407,6 +407,25 @@ $builder-bg: #f5f7fb;
 		}
 
 		.blocks-container {
+			overflow: auto;
+			max-height: calc(100vh - (71px + 122px + 52px + 52px));
+
+			scrollbar-width: thin; // Gecko
+			scrollbar-color: #CCC white; // Gecko
+
+			&::-webkit-scrollbar {
+			   	width: 6px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+			    background: #CCC;
+			    border-radius: 4px;
+			}
+
+			&::-webkit-scrollbar-track {
+				background-color: white;
+			}
+
 			.gjs-block {
 			// TODO block styles
 				&:hover {
@@ -418,6 +437,29 @@ $builder-bg: #f5f7fb;
 
 				.gjs-block-label {}
 			}
+
+			.gjs-block-category {
+				&.gjs-open {
+					border-bottom: solid 1px #EDEDED;
+				}
+				
+				.gjs-title {
+					color: #616161;
+					font-size: 12px;
+					font-weight: bold;
+					padding: 18px;
+					letter-spacing: normal;
+					background-color: white;
+					font-family: "Helvetica";
+					border-bottom: solid 1px #EDEDED;
+
+					&:hover {
+						background: rgba(0,0,0,.04);
+					}
+				}
+			}
+
+			.gjs-blocks-c { padding: 5px 5px 10px; }
 		}
 
 		.traits-container {

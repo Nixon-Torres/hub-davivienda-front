@@ -7,7 +7,10 @@ export interface Config {
     panels: any,
     blockManager: any,
     traitManager: any,
-    styleManager: any
+    styleManager: any,
+    plugins?: any,
+    pluginsOpts?: any
+    allowScripts?: number,
 }
 
 export interface Managers {

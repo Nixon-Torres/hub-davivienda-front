@@ -8,7 +8,7 @@ export class Video {
             class: "fa fa-youtube-play",
         },
         content: null,
-        category: null,
+        category: { id: "Media", label: "Media", open: false },
         select: true,
     }
 
