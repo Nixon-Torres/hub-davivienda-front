@@ -34,6 +34,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { HighlightDialogComponent } from './highlight-dialog/highlight-dialog.component';
 import { EditSiteComponent } from './edit-site/edit-site.component';
+
+import { InvestmentStrategiesComponent } from './investment-strategies/investment-strategies.component';
+import { RelatedReportsComponent } from '../board/related-reports/related-reports.component';
+import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 
 const routes: Routes = [
@@ -56,11 +60,12 @@ const materialModules: any[] = [
     MatSliderModule,
     MatSlideToggleModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, EditSiteComponent, BannerComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, RelatedReportsComponent],
     imports: [
         CommonModule,
         materialModules,
