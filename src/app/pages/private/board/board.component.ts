@@ -15,6 +15,9 @@ import * as M from "materialize-css/dist/js/materialize";
 import * as $ from "jquery/dist/jquery";
 import * as moment from 'moment';
 import * as countdown from 'grapesjs-component-countdown/dist/grapesjs-component-countdown.min.js';
+import * as tabs from 'grapesjs-tabs/dist/grapesjs-tabs.min.js';
+import * as slider from 'grapesjs-lory-slider/dist/grapesjs-lory-slider.min.js';
+import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.js';
 
 import { Report } from './board.model';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
@@ -50,6 +53,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public fromReportId: string = null;
     public showAsMobile: boolean = false;
     public isFullscreen: boolean = false;
+    public isAdvancedUser: boolean = false;
     public list: any = {
         users: [],
         authors: []
@@ -112,6 +116,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         private renderer: Renderer2
     ) {
         this.user = this.auth.getUserData();
+        this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
         // this.closeToggleLists();
     }
 
@@ -238,25 +243,50 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private activeBlocks(): void {
         this.grapes.activeBlocks([
             'Text',
+            'Quote',
+            'Ulist',
+            'Olist',
             'OneColumn',
             'TwoColumns',
             'ThreeColumns',
-            'Ulist',
-            'Olist',
             // 'Link',
             'Image',
             'Video',
-            'Quote',
         ]);
     }
 
-    // Init the countdown plugin and add block in the editor
-    private activeCountdownBlock() {
+    /** Init plugins for new advance blocks on editor 
+    *
+    * @return { grapesjs.plugins } Object grapes editor
+    */
+    private activeAdvanceBlocks() {
         grapesjs.plugins.add(
             'gjs-component-countdown', 
             countdown.default(
                 this.editor,
                 this.grapes.get('countdownConfig')
+            )
+        );
+
+        grapesjs.plugins.add(
+            'grapesjs-tabs', 
+            tabs.default(
+                this.editor
+            )
+        );
+
+        grapesjs.plugins.add(
+            'grapesjs-lory-slider', 
+            slider.default(
+                this.editor
+            )
+        );
+
+        grapesjs.plugins.add(
+            'grapesjs-custom-code', 
+            customCode.default(
+                this.editor,
+                this.grapes.get('customCodeConfig')
             )
         );
     }
@@ -274,7 +304,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.grapes.get('config')
         );
 
-        this.activeCountdownBlock(); //TODO validate rol user for this block
+        if (this.isAdvancedUser) this.activeAdvanceBlocks();
         this.listenEventsEditor();
     }
 
@@ -375,6 +405,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
     /*==============================================================*\
                                BUTTONS METHODS
     /*==============================================================*/
+
+    public canSendToRevision(): boolean {
+        return this.report.stateId === this.states.draft || this.report.stateId === this.states.toCorrect;
+    }
+
+    public canReturnToEdit(): boolean {
+        return this.report.stateId === this.states.toReview;
+    }
+
+    public canApprove(): boolean {
+        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
+    }
+
+    public canPublish(): boolean {
+        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.approved;
+    }
 
     private setPropertiesReport(): void {
         this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
@@ -655,24 +701,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
             classes.push('desktop');
         }
         return classes;
-    }
-
-    public canSendToRevision(): boolean {
-        return this.report.stateId === this.states.draft || this.report.stateId === this.states.toCorrect;
-    }
-
-    public canReturnToEdit(): boolean {
-        return this.report.stateId === this.states.toReview;
-    }
-
-    public canApprove(): boolean {
-        const role = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
-        return role && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
-    }
-
-    public canPublish(): boolean {
-        const role = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
-        return role && this.report.ownerId !== this.user.id && this.report.stateId === this.states.approved;
     }
 
     public showComments() {

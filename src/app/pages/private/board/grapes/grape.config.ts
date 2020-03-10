@@ -26,11 +26,7 @@ class Grapes {
         },
         blockManager: {},
         traitManager: {},
-        styleManager: {},
-        plugins: ['gjs-component-countdown'],
-        pluginsOpts: {
-            'gjs-component-countdown': {}
-        },
+        styleManager: {}
     };
     public countdownConfig = {
         endText: 'Finalizado',
@@ -41,6 +37,10 @@ class Grapes {
         dateInputType: 'datetime-local',
         labelCountdownCategory: { id: "Extra", label: "Extra", open: false },
     };
+    public customCodeConfig = {
+        modalTitle: 'Editor HTML y CSS',
+        buttonLabel: 'Guardar'
+    }
 
     private blocks: any = {};
     private sectors: any = {};

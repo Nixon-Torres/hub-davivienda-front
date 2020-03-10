@@ -361,6 +361,7 @@ $builder-bg: #f5f7fb;
 						height: 70vh;
 					}
 
+					.gjs-btn-prim,
 					.btn {
 						color: #595656;
 						font-size: 1rem;
@@ -459,7 +460,13 @@ $builder-bg: #f5f7fb;
 				}
 			}
 
-			.gjs-blocks-c { padding: 5px 5px 10px; }
+			.gjs-blocks-c { 
+				padding: 5px 5px 10px;
+
+				.gjs-block-label svg{
+					height: 64px;
+				}
+			}
 		}
 
 		.traits-container {

@@ -8,7 +8,7 @@ export class Quote {
             class: "fa fa-quote-right"
         },
         content: null,
-        category: null
+        category: { id: "Textos", label: "Textos", open: false },
     }
 
     constructor() {
