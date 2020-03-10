@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
+import { UsersService } from '../../../../services/users.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
     selector: 'app-left-bar',
@@ -13,10 +15,15 @@ export class LeftBarComponent implements OnInit {
     @Output() valueChange = new EventEmitter();
     @Output() folderChange = new EventEmitter();
     @Output() deleteChange = new EventEmitter();
+    @Output() changeView = new EventEmitter();
+
+    private static ROLE: String = 'Admin';
 
     private currentState: any;
     private currentFolder: any;
     private deletedStateEnabled = false;
+    public showMenu: boolean = false;
+    public user: any = {};
 
     public list: any = {
         folders: [],
@@ -35,8 +42,10 @@ export class LeftBarComponent implements OnInit {
 
     constructor(
         public dialog: MatDialog,
-        private foldersService: AsideFoldersService
+        private foldersService: AsideFoldersService,
+        private auth: AuthService,
     ) {
+        this.user = this.auth.getUserData();
     }
 
     openDialog(): void {
@@ -58,6 +67,7 @@ export class LeftBarComponent implements OnInit {
         this.foldersService.$listenActiveFolder.subscribe((folder: string) => {
             this.setCurrentFolder(folder);
         });
+        this.setShowMenu();
     }
 
     private loadFolders() {
@@ -103,4 +113,13 @@ export class LeftBarComponent implements OnInit {
         return this.deletedStateEnabled;
     }
 
+    changeViewFn(view: any) {
+        this.changeView.emit(view);
+    }
+
+    public setShowMenu() {
+        let found = this.user.roles.find(element => element === LeftBarComponent.ROLE);
+        this.showMenu = found === undefined ? false : true ;
+        return this.showMenu;
+    }
 }

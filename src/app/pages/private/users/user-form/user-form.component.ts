@@ -1,15 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { GalleryDialogComponent } from '../../gallery-dialog/gallery-dialog.component';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { HttpService } from '../../../../services/http.service';
-import { environment } from '../../../../../environments/environment';
-
+import {Component, OnInit, Input} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {GalleryDialogComponent} from '../../gallery-dialog/gallery-dialog.component';
+import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
+import {HttpService} from '../../../../services/http.service';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+	selector: 'app-user-form',
+	templateUrl: './user-form.component.html',
+	styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit {
 
@@ -58,11 +57,10 @@ export class UserFormComponent implements OnInit {
 		dialogRef.afterClosed().subscribe((result : any) => {
 			if (result != undefined) {
 				this.imageProfile = this.user.photo;
-				this.user.photo = result.data;			
+				this.user.photo = result.data.name;
 			}
 		});
 
-		console.log(this.imageProfile);
 	}
 
 	public updateData() {
@@ -73,7 +71,7 @@ export class UserFormComponent implements OnInit {
 
 	public onSave() {
 
-		const formData = new FormData();	
+		const formData = new FormData();
 
 		let userData = {
 			'name': this.userForm.get('name').value,
@@ -83,8 +81,8 @@ export class UserFormComponent implements OnInit {
 			'id': this.user.id
 		}
 		this.http.patch({
-		    path: 'users',
-		    data: userData
+			path: 'users',
+			data: userData
 		}).subscribe((response: any) => {
 			if (response.body.name && (response.body.statusCode || response.body.code)) {
 				console.log('error');
@@ -102,7 +100,6 @@ export class UserFormComponent implements OnInit {
 		this.userForm.get('charge').setValue(this.user.charge);
 		this.userForm.get('leyend').setValue(this.user.leyend);
 		this.user.photo = this.imageProfile;
-	}		
-
+	}
 
 }

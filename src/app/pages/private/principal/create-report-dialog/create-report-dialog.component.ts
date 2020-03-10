@@ -2,6 +2,7 @@ import {Component, OnInit, AfterViewInit, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {environment} from '../../../../../environments/environment';
 
 import * as qs from 'qs';
 
@@ -17,6 +18,7 @@ import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confi
 })
 export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public createReportForm: FormGroup;
+    public STORAGE_URL = environment.STORAGE_FILES;
 
     constructor(
         public dialogRef: MatDialogRef<CreateReportDialogComponent>,

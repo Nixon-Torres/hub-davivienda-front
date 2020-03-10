@@ -1,5 +1,4 @@
 <div class="modal-form">
-
     <div class="two-columns">
         <a (click)="closeDialog()" _ngcontent-xaa-c25="" class="modal-close-cta">Cerrar <span _ngcontent-xaa-c25=""
                 class="icon icon-times"></span></a>
@@ -8,7 +7,12 @@
             <span class="icon"
                 [ngClass]="{'icon-check': !data.alert, 'icon-exclamation-triangle': data.alert}"></span>
         </div>
-        <hr class="modal-form__separator">
+
+        <hr class="modal-form__separator" *ngIf="!showWarning">
+
+        <p class="message-alert" *ngIf="showWarning">
+            {{warning}}
+        </p>
 
         <p class="message-section">
             {{title}}
@@ -21,8 +25,8 @@
             <button mat-button class="btn btn-primary" [ngClass]="{'btn-cancel': data.alert, 'btn-primary': !data.alert}"(click)="closeDialog()">
                 {{ !data.alert?'Continuar':'Cancelar'}}
             </button>
-            <button mat-button  *ngIf="data.alert" (click)="closeDialog(true)" class="btn btn-primary">Si,
-                eliminar</button>
+            <!-- <button mat-button  *ngIf="data.alert" (click)="closeDialog(true)" class="btn btn-primary">Si, eliminar</button> -->
+            <button mat-button  *ngIf="data.alert" (click)="closeDialog(true)" class="btn btn-primary">{{confirm}}</button>
         </div>
 
     </div>
