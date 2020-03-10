@@ -289,20 +289,17 @@ $builder-bg: #f5f7fb;
         position: relative !important;
 
 		#gjs {
-			height: calc(100% - 72px) !important;
+			height: 100%;
+
 			&.pdf-button {
-				.gjs-editor {
-					.gjs-cv-canvas {
-						.gjs-cv-canvas__frames {
-							.gjs-frame {
-								margin-top: 0;
-							}
-						}
-					}
+			height: calc(100% - 72px) !important;
+
+				.gjs-editor > .gjs-cv-canvas > .gjs-cv-canvas__frames > .gjs-frame {
+					margin-top: 0;
 				}
 			}
-			.gjs-editor {
 
+			.gjs-editor {
 				.gjs-cv-canvas {
 					top: 0;
 					width: 100%;
@@ -410,6 +407,10 @@ $builder-bg: #f5f7fb;
 		.blocks-container {
 			overflow: auto;
 			max-height: calc(100vh - (71px + 122px + 52px + 52px));
+
+			&.fullscreen {
+				max-height: calc(100vh - (71px + 52px + 52px)) !important;
+			}
 
 			scrollbar-width: thin; // Gecko
 			scrollbar-color: #CCC white; // Gecko
