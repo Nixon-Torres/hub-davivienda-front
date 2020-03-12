@@ -140,14 +140,14 @@
                                         <p class="delete_field" (click)="deleteReports()">Papelera</p>
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+							</mat-form-field>
 
                             <p class="info_move-text filter">Filtrar por:</p>
                             <mat-form-field class="filter" floatLabel="never">
                                 <mat-label class="folder_label">Escoger</mat-label>
                                 <mat-select (selectionChange)="moveReports($event)" class="info_select">
-                                    <mat-option class="info_options">Proceso de revisión</mat-option>
-                                    <mat-option class="info_options">Informes revisados</mat-option>
+                                    <mat-option class="info_options" (click)="reviewedFilter(false)">Proceso de revisión</mat-option>
+                                    <mat-option class="info_options" (click)="reviewedFilter(true)">Informes revisados</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>

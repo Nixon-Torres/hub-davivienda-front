@@ -43,6 +43,7 @@ export class RightContentComponent implements OnInit {
     ifilter: string;
     ifilterdate: any;
     ifilterreviewed: boolean = true;
+    isReviewed: boolean;
 
     public list: any = {
         reports: [],
@@ -127,6 +128,11 @@ export class RightContentComponent implements OnInit {
 
     public tabClick(event: any) {
         this.ifilterreviewed = (event.index === 0 ? true : false);
+        this.reviewedFilter(!this.ifilterreviewed);
+    }
+
+    public reviewedFilter(reviewed) {
+        this.isReviewed = reviewed;
         this.loadReports(this.ifilter);
     }
 
@@ -214,6 +220,7 @@ export class RightContentComponent implements OnInit {
                               query.filter.where['and'].push({ ownerId: this.user.id });
                           } else {
                               query.filter.where['and'].push({ id: { inq: reportsAsReviewer } });
+                              query.filter.where['and'].push({ reviewed: this.isReviewed });
                           }
                         }
 
@@ -237,6 +244,7 @@ export class RightContentComponent implements OnInit {
     }
 
     private getReports(query: any) {
+        console.log(query);
         let path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') ? `users/${this.user.id}/reportsa` : 'reports';
         this.list.reports = [];
         this.http.get({
@@ -247,6 +255,7 @@ export class RightContentComponent implements OnInit {
             this.addCheckboxes(response.body);
             setTimeout(() => {
                 this.list.reports = response.body;
+                console.log(this.list.reports);
             }, 100);
         });
     }
