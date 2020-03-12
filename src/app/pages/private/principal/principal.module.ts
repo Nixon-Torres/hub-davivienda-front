@@ -36,7 +36,6 @@ import { HighlightDialogComponent } from './highlight-dialog/highlight-dialog.co
 import { EditSiteComponent } from './edit-site/edit-site.component';
 
 import { InvestmentStrategiesComponent } from './investment-strategies/investment-strategies.component';
-import { RelatedReportsModule } from '../board/related-reports/related-reports.module';
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 
@@ -77,8 +76,7 @@ const materialModules: any[] = [
         NgxDaterangepickerMd.forRoot(),
         PreviewDialogModule,
         NgSelectModule,
-        GalleryDialogModule,
-        RelatedReportsModule
+        GalleryDialogModule
     ],
     exports: [
         materialModules

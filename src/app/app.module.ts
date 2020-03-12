@@ -13,7 +13,6 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatBadgeModule } from '@angular/material/badge';
 
 import { GalleryDialogModule } from './pages/private/gallery-dialog/gallery-dialog.module';
-import { RelatedReportsModule} from './pages/private/board/related-reports/related-reports.module';
 
 import localeCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from '@angular/common';
@@ -33,8 +32,7 @@ registerLocaleData(localeCo, 'es-CO');
     MatMenuModule,
     MatRippleModule,
     MatBadgeModule,
-    GalleryDialogModule,
-    RelatedReportsModule
+    GalleryDialogModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-CO' }],
   bootstrap: [AppComponent]
