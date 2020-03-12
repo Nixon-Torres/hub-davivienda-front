@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -7,16 +7,18 @@ import { HttpService } from '../../../services/http.service';
 import { AuthService } from '../../../services/auth.service';
 import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { Grapes } from "./grapes/grape.config";
+import { CodeMirror } from "./grapes/code-mirror.config";
 
 import * as M from "materialize-css/dist/js/materialize";
 import * as $ from "jquery/dist/jquery";
 import * as moment from 'moment';
-import * as qs from 'qs';
 
 import { Report } from './board.model';
-import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
+import { UserInterface } from 'src/app/services/auth.service.model';
 
 declare var grapesjs: any;
 
@@ -29,16 +31,33 @@ declare var grapesjs: any;
 })
 
 export class BoardComponent implements OnInit, AfterViewInit {
-    private timer: any = {
-        change: null
-    };
-    private authorsId: Array<string> = [];
-    public users:any = [];
-    public fromReportId: string = null;
-    public user: any = {};
+
+    public owner: any; 
     public editor: any;
     public grapes: any;
+    public user: any = {};
+    public users: any = [];
+    public files: Array<any>;
     public lastupdate: string;
+    public maxAuthors: boolean;
+    public templateType: string;
+    public editorsList: Array<any>;
+    public editorInitiated = false;
+    public isOwner: boolean = false;
+    public isAdding: boolean = false;
+    public isDeleting: boolean = false;
+    public fromReportId: string = null;
+    public showAsMobile: boolean = false;
+    public isFullscreen: boolean = false;
+    public list: any = {
+        users: [],
+        authors: []
+    }
+    public flags: any = {
+        authorsList: false,
+        usersList: false,
+        editorsList: false
+    }
     public grid: any = {
         col: {
             builder: 10,
@@ -64,19 +83,35 @@ export class BoardComponent implements OnInit, AfterViewInit {
         stateId: null,
         folderId: null,
         sectionId: null,
+        ownerId: null,
         users: [],
     };
+    
+    private authorsId: Array<string> = [];
+    private timer: any = {
+        change: null
+    };
+    private states: any = {
+        draft: "5e068d1cb81d1c5f29b62977",
+        toReview: "5e068d1cb81d1c5f29b62976",
+        toCorrect: "5e068d1cb81d1c5f29b62975",
+        approved: "5e068d1cb81d1c5f29b62974",
+        published: "5e068c81d811c55eb40d14d0"
+    }
 
-    public editorInitiated = false;
+    @ViewChild('authorsParent', {static:false}) authorsParent?: ElementRef;
+    @ViewChild('editorsParent', {static:false}) editorsParent?: ElementRef;
 
     constructor(
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private http: HttpService,
-        private auth: AuthService
+        private auth: AuthService,
+        private renderer: Renderer2
     ) {
         this.user = this.auth.getUserData();
+        // this.closeToggleLists();
     }
 
     ngOnInit() {
@@ -89,6 +124,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
                 this.report.id = params.get("id");
                 this.loadReport(this.report.id);
+                this.getEditorsList(this.report.id);
+                this.onLoadAuthors(this.report.id);
+                this.checkNotifications(this.report.id);
 
             } else if (params.get("stateId")) {
                 let folderId = params.get('folderId');
@@ -101,9 +139,27 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.sectionTypeKey = params.get('sectionTypeKey');
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
-                this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)): null;
+                this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
             }
         });
+
+        // When fullscreen mode is closed update isFullscreen flag
+        let _this = this;
+        document.addEventListener("fullscreenchange", function() {
+            if (!document.fullscreenElement) {
+                _this.isFullscreen = false;
+            }
+        });
+    }
+
+    ngAfterViewInit() {
+        if (!this.report.id) this.loadTemplate(this.report.templateId); // If is a new report, load data template
+
+        let tabsEl: Element = document.querySelectorAll('.grapes-container .tabs')[0];
+        M.Tabs.init(tabsEl); // Initialize the tabs materialize function
+
+        let elems = document.querySelectorAll('.fixed-action-btn');
+        M.FloatingActionButton.init(elems, { direction: 'top', hoverEnabled: false });
     }
 
     /** Get report form database
@@ -113,26 +169,27 @@ export class BoardComponent implements OnInit, AfterViewInit {
     */
     private loadReport(idReport: string): void {
 
-        var query = new loopback();
+        let query = new loopback();
 
         query.filter.include.push({
             relation: "state",
             scope: {
-                fields: ['name']
+                fields: ['id', 'name']
             }
-        });
-
-        query.filter.include.push({
-            relation: "events",
+        }, {
+            relation: "owner",
             scope: {
-                include: {
-                    relation: 'owner',
-                    scope: {
-                        fields: ['name']
-                    }
-                },
-                limit: 1,
-                order: "id DESC"
+                fields: ['id', 'name']
+            }
+        }, {
+            relation: "files",
+            scope: {
+                fields: ['id', 'name', 'key']
+            }
+        }, {
+            relation: "template",
+            scope: {
+                fields: ['id', 'name', 'key']
             }
         });
 
@@ -141,12 +198,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
             'data': query.filter,
             'encode': true
         }).subscribe((response: any) => {
-
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
+            this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
+            this.userIsOwner();
 
+            this.files =  response.body.files;
+            this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
                 setTimeout(() => {
                     this.initGrapes();
@@ -156,30 +216,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    /** Set content dynamically for the report last update
-     *
-     * @param { lastupdate } Value for the last update from database
-     * @return { this.lastupdate } Time ago since last update
-     */
-    public setLastUpdate(lastupdate) {
-
-        this.lastupdate = moment(lastupdate).fromNow();
-
-        if (this.timer.lastupdate) clearInterval(this.timer.lastupdate);
-
-        this.timer.lastupdate = setInterval(() => {
-            this.lastupdate = moment(lastupdate).fromNow();
-        }, 30000);
-    }
-
     /** Start to load default data config
     *
     * @return { this.editor } Object grapes editor
     */
     private initGrapes(): void {
         this.grapes = new Grapes({
-            selectorManager: '.styles-container',
             blockManager: '.blocks-container',
+            traitManager: '.traits-container',
             styleManager: '.styles-container'
         });
 
@@ -192,16 +236,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
     // HTML blocks that will be displayed
     private activeBlocks(): void {
         this.grapes.activeBlocks([
-            'Description',
-            'Title'
+            'Text',
+            'OneColumn',
+            'TwoColumns',
+            'ThreeColumns',
+            'Ulist',
+            'Olist',
+            // 'Link',
+            'Image',
+            'Video',
+            'Quote',
         ]);
     }
 
     // Styles sectors that will be displayed
     private activeSectors(): void {
         this.grapes.activeSectors([
-            'Dimensions',
-            'Extras'
+            'Typography'
         ]);
     }
 
@@ -235,6 +286,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private autosetEditorHeight() {
         let iframe = $('.builder iframe');
+        if (!iframe.length) return;
         let tplBody = iframe.contents()[0].body;
         iframe.contents().find("html")[0].style.overflow = "hidden";
         tplBody.style.height = "auto";
@@ -264,9 +316,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
         );
     }
 
-    ngAfterViewInit() {
-        if (!this.report.id) this.loadTemplate(this.report.templateId); // If is a new report, load data template
-        M.Tabs.init(document.querySelectorAll('.grapes-container .tabs')[0]); // Initialize the tabs materialize function
+    /** Set content dynamically for the report last update
+     *
+     * @param { lastupdate } Value for the last update from database
+     * @return { this.lastupdate } Time ago since last update
+     */
+    public setLastUpdate(lastupdate) {
+
+        this.lastupdate = moment(lastupdate).fromNow();
+
+        if (this.timer.lastupdate) clearInterval(this.timer.lastupdate);
+
+        this.timer.lastupdate = setInterval(() => {
+            this.lastupdate = moment(lastupdate).fromNow();
+        }, 30000);
     }
 
     /** Load a template for report if exist template ID else load an empty report
@@ -295,6 +358,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         })
     }
 
+    /*==============================================================*\
+                               BUTTONS METHODS
+    /*==============================================================*/
+
     private setPropertiesReport(): void {
         this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
@@ -305,83 +372,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
-    public sendBacktoReview() {
-        this.report.reviewed = false;
-        this.report.stateId = '5e068d1cb81d1c5f29b62975';
-        this.onSave(false, () =>  {
-            this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
-                data: {
-                    title: 'Tu informe ha sido enviado a revisión con ajustes:',
-                    subtitle: this.report.name
-                }
-            });
-        });
-    }
-
-    public getReviewers(reviewers: Array<object>) {
-        return reviewers.map((reviewer) => {
-            return {reportId: this.report.id, reviewerId: reviewer['id']};
-        });
-    }
-
-    public sendReview(reviewers: Array<object>) {
-        this.http.post({
-            'path': 'reports/reviewers',
-            'data': {
-                reportId: this.report.id,
-                reviewers: this.getReviewers(reviewers)
-            }
-        }).subscribe( (resp) => {
-            if(resp) {
-                this.dialog.open(ConfirmationDialogComponent, {
-                    width: '410px',
-                    data: {
-                        title: 'Tu informe ha sido enviado a revisión:',
-                        subtitle: this.report.name
-                    }
-                });
-            }
-            this.loadReport(this.report.id);
-        })
-    }
-
-    public approve() {
-        this.report.reviewed = true;
-        this.report.stateId = '5e068d1cb81d1c5f29b62974';
-        this.onSave(false, () =>  {
-            this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
-                data: {
-                    title: 'Tu informe ha sido aprobado:',
-                    subtitle: this.report.name
-                }
-            });
-            this.loadReport(this.report.id);
-        });
-    }
-
-    public publish() {
-        this.report.reviewed = true;
-        this.report.stateId = '5e068c81d811c55eb40d14d0';
-        this.onSave(false, () =>  {
-            this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
-                data: {
-                    title: 'Tu informe ha sido publicado:',
-                    subtitle: this.report.name
-                }
-            });
-        });
-    }
-
     /** Save the report on DB
     *
     * @param { autoSave } Flag for autosave
     */
     public onSave(autoSave?: boolean, cb?: any): void {
         let isUpdate: boolean = this.report.id ? true : false;
-        let method: string = isUpdate ? 'put' : 'post';
+        let method: string = isUpdate ? 'patch' : 'post';
         let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
         if (this.timer.change) {
             clearTimeout(this.timer.change);
@@ -422,6 +419,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                             this.router.navigate(['app/board', response.body.id]);
                         }
                     });
+                    this.getEditorsList(this.report.id);
                 } else {
                     if (!this.report.id) {
                         this.router.navigate(['app/board', response.body.id]);
@@ -464,6 +462,131 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
+    public getReviewers(reviewers: Array<object>) {
+        return reviewers.map((reviewer) => {
+            return { reportId: this.report.id, reviewerId: reviewer['id'] };
+        });
+    }
+
+    public sendReview(reviewers: Array<object>) {
+        this.http.post({
+            'path': 'reports/reviewers',
+            'data': {
+                reportId: this.report.id,
+                reviewers: this.getReviewers(reviewers)
+            }
+        }).subscribe( (resp: any) => {
+            if(resp) {
+                this.dialog.open(ConfirmationDialogComponent, {
+                    width: '410px',
+                    data: {
+                        title: 'Tu informe ha sido enviado a revisión:',
+                        subtitle: this.report.name
+                    }
+                });
+            }
+            this.report.state = resp.body.report.state;
+            this.report.stateId = resp.body.report.stateId;
+        })
+    }
+
+    public onSendToRevisionAction(): void {
+        this.http.get({
+            'path': 'users',
+            'data': {
+                'where': {
+                    'roles': 'Admin'
+                }
+            },
+            'encode': true
+        }).subscribe((resp) => {
+            this.users = resp.body;
+            let dialogRef = this.dialog.open(RevisionModalComponent, {
+                width: '450px',
+                data: {
+                    title: '¿Quien quiere que revise su informe?',
+                    users: this.users
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this.sendReview(result);
+                }
+            });
+        });
+    }
+
+    public returnToEdit(): void {
+        this.http.patch({
+            'path': `reports/${this.report.id}`,
+            'data': {
+                reviewed: false,
+                stateId: '5e068d1cb81d1c5f29b62975'
+            }
+        }).subscribe((response: any) => {
+            this.report.stateId = response.body.stateId;
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: 'Tu informe ha sido enviado a revisión con ajustes:',
+                    subtitle: this.report.name
+                }
+            });
+        });
+    }
+
+    public approve() {
+        this.report.reviewed = true;
+        this.report.stateId = '5e068d1cb81d1c5f29b62974';
+        this.onSave(false, () => {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: 'Tu informe ha sido aprobado:',
+                    subtitle: this.report.name
+                }
+            });
+            this.loadReport(this.report.id);
+        });
+    }
+
+    public publish() {
+        this.report.reviewed = true;
+        this.report.stateId = '5e068c81d811c55eb40d14d0';
+        this.onSave(false, () => {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: 'Tu informe ha sido publicado:',
+                    subtitle: this.report.name
+                }
+            });
+        });
+    }
+
+    public openUploadDialog(): void {
+      let dialogRef = this.dialog.open(PdfUploadComponent, {
+        data: {
+            reportId: this.report.id,
+            files: this.files
+          }
+      });
+      dialogRef.afterClosed().subscribe((response: any) => {
+            this.loadReport(this.report.id);
+            if (response) {
+                this.http.patch({
+                    path: `reports/${this.report.id}`,
+                    data: {
+                        pdfId: response.id,
+                    }
+                }).subscribe(() => {
+                    
+                });
+            }
+      });
+  }
+
     public discard() {
 
         let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -504,68 +627,48 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     }
 
-    private goToPrincipalPage(): void {
-        this.router.navigate(['app/principal']);
+    public getEditorClasses() {
+        var classes = [];
+
+        if (this.templateType === 'pdf' || this.templateType === 'presentation') {
+            classes.push('pdf-button');
+        }
+
+        //{'pdf-button': (templateType === 'pdf' || templateType === 'presentation'), showAsMobile ? 'mobile' : 'desktop'}
+        if (this.showAsMobile) {
+            classes.push('mobile');
+        } else {
+            classes.push('desktop');
+        }
+        return classes;
     }
 
-    canPublish(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name === 'Aprobados sin publicar'
+    public canSendToRevision(): boolean {
+        return this.report.stateId === this.states.draft || this.report.stateId === this.states.toCorrect;
     }
 
-    canApprove(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && this.report.state.name !== 'Aprobados sin publicar' &&
-            this.report.state.name !== 'Publicados';
+    public canReturnToEdit(): boolean {
+        return this.report.stateId === this.states.toReview;
     }
 
-    canSendToRevision(): boolean {
-        var role = this.user.roles.find(e => (e === 'analyst'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Borradores' ||
-            this.report.state.name === 'Revisado con ajustes');
+    public canApprove(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        return role && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
     }
 
-    canSendBackToRevision(): boolean {
-        var role = this.user.roles.find(e => (e === 'Admin'));
-        return role && role.length && this.report && this.report.state && (this.report.state.name === 'Aprobados sin publicar' ||
-            this.report.state.name === 'En revisión');
+    public canPublish(): boolean {
+        const role = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        return role && this.report.ownerId !== this.user.id && this.report.stateId === this.states.approved;
     }
 
-    onSendToRevisionAction(): void {
-        this.http.get({
-            'path': 'users',
-            'data': {
-                'where': {
-                    'roles': 'Admin'
-                }
-            },
-            'encode': true
-        }).subscribe( (resp) => {
-            this.users = resp.body;
-            let dialogRef = this.dialog.open(RevisionModalComponent, {
-                width: '450px',
-                data: {
-                    title: '¿Quien quiere que revise su informe?',
-                    users: this.users
-                }
-            });
-
-            dialogRef.afterClosed().subscribe(result => {
-                if(result) {
-                    this.sendReview(result);
-                }
-            });
-        });
-    }
-
-    showComments() {
+    public showComments() {
         this.grid.col.builder = 8;
         this.grid.col.comments = 2;
         this.grid.col.panel = 2;
         document.querySelector('mat-grid-tile.comments').classList.add('show');
     }
 
-    hideComments() {
+    public hideComments() {
         document.querySelector('mat-grid-tile.comments').classList.remove('show');
 
         setTimeout(() => {
@@ -575,7 +678,239 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, 100);
     }
 
-    focusOnReportName() {
+    public focusOnReportName() {
         document.getElementById("reportName").focus();
+    }
+
+    private findParent(element, parent) {
+        for(let parentNode of element.path) {
+            if(parentNode === parent) {
+                return;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    private closeToggleLists() {
+        this.renderer.listen('window', 'click',(e :Event)=> {
+            if(this.findParent(e, this.authorsParent.nativeElement)){
+                this.flags.authorsList = false;
+                this.flags.usersList = false;
+            }
+            if(this.findParent(e, this.editorsParent.nativeElement)) {
+                this.flags.editorsList = false;
+            };
+        });
+    }
+
+    /** Restore BUTTON onClick
+    *   Restore the template
+    */
+    public restoreGrapes() {
+        this.editor.UndoManager.undoAll();
+    }
+
+    /** Undo BUTTON onClick
+    *   Go back to the last modifications
+    */
+    public undoGrapes() {
+        this.editor.UndoManager.undo();
+    }
+
+    /** Redo BUTTON onClick
+    *   Go to the next modification
+    */
+    public redoGrapes() {
+        this.editor.UndoManager.redo();
+    }
+
+    /** Fullscreen BUTTON onClick
+    *   set flag for enter or exit fullscreen mode
+    */
+    public fullscreen() {
+
+        if (this.isFullscreen) {
+            document.exitFullscreen();
+        } else {
+            document.documentElement.requestFullscreen();
+        }
+
+        this.isFullscreen = !this.isFullscreen;
+    }
+
+    /** Responsive BUTTON onClick
+    *   Change device view (desktop and mobile)
+    */
+    public changeDeviceView() {
+        this.showAsMobile = !this.showAsMobile;
+    }
+
+    /** Import code BUTTON onClick
+    *   Change template content by code
+    */
+    public importCode() {
+        let codeMirror = new CodeMirror();
+        let codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
+        let viewerEditor = codeViewer.editor;
+        let modal = this.editor.Modal;
+        let grapesContent = this.editor.getHtml();
+        let container = this.getModalContainer();
+        let txtarea = container.children[1];
+        let btn: HTMLElement = container.children[2] as HTMLElement;
+
+        modal.setTitle("Editor de código");
+        modal.setContent(container);
+        codeViewer.set(codeMirror.getConfig());
+        codeViewer.init(txtarea);
+        codeViewer.setContent(grapesContent);
+        viewerEditor = codeViewer.editor;
+        btn.onclick = () => {
+            this.editor.setComponents(viewerEditor.getValue().trim());
+            modal.close();
+        };
+
+        modal.open();
+        viewerEditor.refresh();
+    }
+
+    private getModalContainer() {
+        let pfx = this.editor.getConfig('stylePrefix');
+        let container = document.createElement('div');
+        let labelEl = document.createElement('div');
+        let txtarea = document.createElement('textarea');
+        let btnImp = document.createElement('button');
+
+        labelEl.className = `${pfx}import-label`;
+        labelEl.innerHTML = "Edite aqui su HTML/CSS y haga click en Importar";
+        btnImp.type = 'button';
+        btnImp.className = `btn`;
+        btnImp.innerHTML = "Importar";
+
+        container.appendChild(labelEl);
+        container.appendChild(txtarea);
+        container.appendChild(btnImp);
+
+        return container;
+    }
+
+    private getAvailableAuthors(users: Array<any>): Array<any> {
+        let currentAuthors = this.list.authors.map((a: any) => a.author.id);
+        return users.filter((a: any) => currentAuthors.indexOf(a.id) == -1 && this.user != a.id && this.report.id != a.id );
+    }
+
+    private onLoadUsers() {
+        this.http.get({
+            'path': 'users/list'
+        }).subscribe((response) => {
+            var users = response.body as unknown as any[];
+            this.list.users = this.getAvailableAuthors(users);
+        });
+    }
+
+    private onLoadAuthors(idReport) {
+        this.http.get({
+            'path': `reportAuthors`,
+            'data': {
+                include: [
+                    {
+                        relation: 'author',
+                        scope: {
+                            fields: ['id', 'name']
+                        }
+                    }
+                ],
+                where: {
+                    reportId: idReport
+                },
+                fields: ['id', 'authorId', 'reportId']
+            },
+            encode: true
+        }).subscribe((response: any) => {
+            if(response) {
+                this.list.authors = response.body;
+                this.maxAuthors = this.list.authors.length >= 4 ? true : false;
+                this.onLoadUsers();
+            }
+        });
+    }
+
+    public onDeleteAuthor(event, authorId) {
+        event.stopPropagation();
+        this.isDeleting = true;
+        this.http.delete({
+            'path': `reportAuthors/${authorId}`,
+        }).subscribe((response: any) => {
+            if(response) {
+                this.onLoadAuthors(this.report.id);
+                this.isDeleting = false;
+            }
+        });
+    }
+
+    public onAddAuthor(author) {
+        this.isAdding = true;
+        if(!this.maxAuthors) {
+            this.http.post({
+                'path': `reportAuthors`,
+                'data': {
+                    reportId: this.report.id,
+                    authorId: author.id
+                },
+                encode: true
+            }).subscribe((response: any) => {
+                if(response) {
+                    this.flags.usersList = false;
+                    this.flags.authorsList = true;
+                    this.onLoadAuthors(this.report.id);
+                    this.isAdding = false;
+                }
+            });
+        }
+    }
+
+    public toggleAuthorsList(event) {
+        this.flags.authorsList = !this.flags.authorsList;
+        this.flags.usersList = false;
+        this.flags.editorsList = false;
+        event.stopPropagation();
+    }
+
+    public toggleUsersList(event) {
+        this.flags.usersList = !this.flags.usersList;
+        event.stopPropagation();
+    }
+
+    public toggleEditorsList(event) {
+        this.flags.editorsList = !this.flags.editorsList;
+        this.flags.authorsList = false;
+        this.flags.usersList = false;
+        event.stopPropagation();
+    }
+
+    public getEditorsList(reportId) {
+        this.http.get({
+            'path': `reports/editors?reportId=${reportId}`,
+        }).subscribe((response: any) => {
+            this.editorsList = response.body.editors;
+        });
+    }
+
+    private userIsOwner() {
+        if(this.report.ownerId === this.user.id) {
+            this.isOwner = true;
+        }
+    }
+
+    public checkNotifications(reportId: string) {
+        let dataFilter = encodeURI(JSON.stringify({reportId: reportId}));
+        this.http.patch({
+            'path': `notifications/read?filter=${dataFilter}`,
+            'data': { "readed": true }
+        }).subscribe();
+    }
+
+    private goToPrincipalPage(): void {
+        this.router.navigate(['app/principal']);
     }
 }

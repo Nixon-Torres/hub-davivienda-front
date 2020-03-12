@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,7 +9,14 @@ import { LayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 
 import { MatMenuModule } from '@angular/material/menu';
-import { MatRippleModule } from '@angular/material/core'; 
+import { MatRippleModule } from '@angular/material/core';
+import { MatBadgeModule } from '@angular/material/badge';
+
+import { GalleryDialogModule } from './pages/private/gallery-dialog/gallery-dialog.module';
+
+import localeCo from '@angular/common/locales/es-CO';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeCo, 'es-CO');
 
 @NgModule({
   declarations: [
@@ -23,9 +30,11 @@ import { MatRippleModule } from '@angular/material/core';
     BrowserAnimationsModule,
     HttpClientModule,
     MatMenuModule,
-    MatRippleModule
+    MatRippleModule,
+    MatBadgeModule,
+    GalleryDialogModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-CO' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

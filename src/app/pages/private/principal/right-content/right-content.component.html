@@ -1,224 +1,260 @@
 <div class="content">
-	<div class="content--top">
-		<span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}</span>
-		<div class="insert_btn">
-			<button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
-					class="icon_insert">&nbsp;</span></button>
-		</div>
-		<div class="info_btn">
-			<button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
-		</div>
-	</div>
+    <div class="content--top">
+        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}</span>
+        <div class="insert_btn">
+            <button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
+                    class="icon_insert">&nbsp;</span></button>
+        </div>
+        <div class="info_btn">
+            <button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
+        </div>
+    </div>
 
-	<div class="top-section-list">
-		<div class="back-btn" *ngIf="isFiltering()">
-			<a (click)="cleanFilters()">&#60; Volver </a>
-		</div>
-		<div class="search-container">
-			<input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)"
-				placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar"
-				(click)="toggleCalendar()"> Por fecha: </i>
-		</div>
-		<div class="overlay" *ngIf="calendarOpen">
-		</div>
-		<div class="date-container calendar-container" *ngIf="calendarOpen">
-			<a _ngcontent-xoo-c17="" class="modal-close-cta" (click)="toggleCalendar()">Cerrar <span
-					_ngcontent-xoo-c17="" class="icon icon-times"></span></a>
-			<h3 class="calendar-container--title">Búsqueda por fecha</h3>
-			<div class="calendar-container--form">
-				<mat-form-field class="input-left">
-					<input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
-				</mat-form-field>
-				<mat-form-field class="">
-					<input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
-				</mat-form-field>
-			</div>
-			<ngx-daterangepicker-material class="box-content" autoApply=true (datesUpdated)="onDateUpdate($event)">
-			</ngx-daterangepicker-material>
-			<button class="mat-button mat-button-base" (click)="toggleCalendar()">Cancelar</button>
-			<button type="button" (click)="filterDateReports()" mat-raised-button>Filtrar Ahora</button>
-		</div>
-	</div>
+    <div class="top-section-list">
+        <div class="back-btn" *ngIf="isFiltering()">
+            <a (click)="cleanFilters()">&#60; Volver </a>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)"
+                placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar"
+                (click)="toggleCalendar()"> Por fecha: </i>
+        </div>
+        <div class="overlay" *ngIf="calendarOpen">
+        </div>
+        <div class="date-container calendar-container" *ngIf="calendarOpen">
+            <a _ngcontent-xoo-c17="" class="modal-close-cta" (click)="toggleCalendar()">Cerrar <span
+                    _ngcontent-xoo-c17="" class="icon icon-times"></span></a>
+            <h3 class="calendar-container--title">Búsqueda por fecha</h3>
+            <div class="calendar-container--form">
+                <mat-form-field class="input-left">
+                    <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
+                </mat-form-field>
+                <mat-form-field class="">
+                    <input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
+                </mat-form-field>
+            </div>
+            <ngx-daterangepicker-material class="box-content" autoApply=true (datesUpdated)="onDateUpdate($event)">
+            </ngx-daterangepicker-material>
+            <button class="mat-button mat-button-base" (click)="toggleCalendar()">Cancelar</button>
+            <button type="button" (click)="filterDateReports()" mat-raised-button>Filtrar Ahora</button>
+        </div>
+    </div>
 
-	<div class="block-wrapper">
-		<section class="tabs">
-			<mat-tab-group (selectedTabChange)="tabClick($event)">
-				<mat-tab label="Mis Informes">
-					<div>
-						<div class="folder_container" *ngIf="getCheckboxesSelected().length">
-							<p class="info_move-text">Mover a:</p>
-							<mat-form-field class="simple" floatLabel="never">
-								<mat-label class="folder_label">Escoger</mat-label>
-								<mat-select (selectionChange)="moveReports($event)" class="info_select">
-									<mat-option class="info_options" *ngFor="let folder of list.folders"
-										[value]="folder.id">{{folder.name}}</mat-option>
-									<mat-option class="info_options" *ngIf="!icurrentObj.deletedFg">
-										<p class="delete_field" (click)="deleteReports()">Papelera</p>
-									</mat-option>
-								</mat-select>
-							</mat-form-field>
-							<div class="operation-cta" *ngIf="icurrentObj.deletedFg">
-								<ul class="delete_icons">
-									<li><i class="material-icons">replay</i><a (click)="restoreReports()">Recuperar</a>
-									</li>
-									<li><a class="icon icon-trash-alt" (click)="deeplyDeleteReports()">Eliminar</a></li>
-									<li><a class="icon icon-trash-alt active" (click)="deleteAllReports()">Eliminar
-											todo</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="trash_info" *ngIf="icurrentObj.deletedFg">
-							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
-								automáticamente.</p>
-						</div>
-						<div *ngIf="!list.reports.length" class="delete_reports">
-							<div *ngIf="icurrentObj.deletedFg">
-								<img src="/assets/images/file-alt.png" alt="">
-								<p>No hay informes en la papelera</p>
-							</div>
-						</div>
-						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
+    <div class="block-wrapper">
+        <section class="tabs">
+            <mat-tab-group (selectedTabChange)="tabClick($event)">
+                <mat-tab label="Mis Informes">
+                    <div>
+                        <div class="folder_container" *ngIf="getCheckboxesSelected().length">
+                            <p class="info_move-text">Mover a:</p>
+                            <mat-form-field class="simple" floatLabel="never">
+                                <mat-label class="folder_label">Escoger</mat-label>
+                                <mat-select (selectionChange)="moveReports($event)" class="info_select">
+                                    <mat-option class="info_options" *ngFor="let folder of list.folders"
+                                        [value]="folder.id">{{folder.name}}</mat-option>
+                                    <mat-option class="info_options" *ngIf="!icurrentObj.deletedFg">
+                                        <p class="delete_field" (click)="deleteReports()">Papelera</p>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="operation-cta" *ngIf="icurrentObj.deletedFg">
+                                <ul class="delete_icons">
+                                    <li><i class="material-icons">replay</i><a (click)="restoreReports()">Recuperar</a>
+                                    </li>
+                                    <li><a class="icon icon-trash-alt" (click)="deeplyDeleteReports()">Eliminar</a></li>
+                                    <li><a class="icon icon-trash-alt active" (click)="deleteAllReports()">Eliminar
+                                            todo</a></li>
+                                </ul>
+                            </div>
+                            <div class="operation-cta crown_btn" *ngIf="!icurrentObj.deletedFg">
+                                <ul>
+                                    <li *ngIf="canHighlightReport()">
+                                        <a (click)="openHighlightDialog('0')">
+                                            <span><img src="/assets/images/corona.svg" alt="">Destacar informe</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="trash_info" *ngIf="icurrentObj.deletedFg">
+                            <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
+                                automáticamente.</p>
+                        </div>
+                        <div *ngIf="!list.reports.length" class="delete_reports">
+                            <div *ngIf="icurrentObj.deletedFg">
+                                <img src="/assets/images/file-alt.png" alt="">
+                                <p>No hay informes en la papelera</p>
+                            </div>
+                        </div>
+                        <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
+                            <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
+                                <li *ngFor="let report of list.reports; let i = index">
+                                    <div class="row" [ngClass]="report.state.color">
+                                        <span class="report--span report_name"
+                                            [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
+                                        <mat-checkbox [formControlName]="i">
 
-							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
-								<li *ngFor="let report of list.reports; let i = index">
-									<div class="row" [ngClass]="report.state.color">
-										<span class="report--span report_name">{{report.state.name}}</span>
-										<mat-checkbox [formControlName]="i">
+                                        </mat-checkbox>
+                                        <h2 class="report--title">{{report.name}}</h2>
+                                        <span
+                                            class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                        <span class="report--span report_content">{{report.user?.name}}</span>
+                                        <div class="group-menu">
+                                            <button class="report--menu icon icon-ellipsis-h"></button>
+                                            <ul class="report--menu-list">
+                                                <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-edit"
+                                                        (click)="gotoPage(report.id)">Editar</button></li>
+                                                <li><button class="icon icon-copy"
+                                                        (click)="onCloneReport(i)">Duplicar</button></li>
+                                                <li><button class="icon icon-trash-alt"
+                                                        (click)="onDeleteReport(i)">Eliminar</button></li>
+                                                <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus"
+                                                        (click)="openPreviewDialog(report.id)">Vista previa</button>
+                                                </li>
+                                                <li *ngIf="showOptionMenu(report.state.id)"><button
+                                                        class="icong icong-crown"
+                                                        (click)="openHighlightDialog(report.id)">Destacar</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </mat-tab>
 
-										</mat-checkbox>
-										<h2 class="report--title">{{report.name}}</h2>
-										<span
-											class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.user?.name}}</span>
-										<div class="group-menu">
-											<button class="report--menu icon icon-ellipsis-h"></button>
-											<ul class="report--menu-list">
-												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-edit"
-														(click)="gotoPage(report.id)">Editar</button></li>
-												<li><button class="icon icon-copy"
-														(click)="onCloneReport(i)">Duplicar</button></li>
-												<li><button class="icon icon-trash-alt"
-														(click)="onDeleteReport(i)">Eliminar</button></li>
-												<li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus"
-														(click)="openPreviewDialog(report.id)">Vista previa</button>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</form>
-					</div>
-				</mat-tab>
+                <mat-tab label="Por revisar">
+                    <div>
+                        <div class="trash_info" *ngIf="icurrentObj.deletedFg">
+                            <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
+                                automáticamente.</p>
+                        </div>
+                        <div class="folder_container" *ngIf="getCheckboxesSelected().length">
+                            <p class="info_move-text">Mover a:</p>
+                            <mat-form-field class="simple" floatLabel="never">
+                                <mat-label class="folder_label">Escoger</mat-label>
+                                <mat-select (selectionChange)="moveReports($event)" class="info_select">
+                                    <mat-option class="info_options" *ngFor="let folder of list.folders"
+                                        [value]="folder.id">{{folder.name}}</mat-option>
+                                    <mat-option class="info_options">
+                                        <p class="delete_field" (click)="deleteReports()">Papelera</p>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
 
-				<mat-tab label="Por revisar">
-					<div>
-						<div class="trash_info" *ngIf="icurrentObj.deletedFg">
-							<p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
-								automáticamente.</p>
-						</div>
-						<div class="folder_container" *ngIf="getCheckboxesSelected().length">
-							<p class="info_move-text">Mover a:</p>
-							<mat-form-field class="simple" floatLabel="never">
-								<mat-label class="folder_label">Escoger</mat-label>
-								<mat-select (selectionChange)="moveReports($event)" class="info_select">
-									<mat-option class="info_options" *ngFor="let folder of list.folders"
-										[value]="folder.id">{{folder.name}}</mat-option>
-									<mat-option class="info_options">
-										<p class="delete_field" (click)="deleteReports()">Papelera</p>
-									</mat-option>
-								</mat-select>
-							</mat-form-field>
+                            <p class="info_move-text filter">Filtrar por:</p>
+                            <mat-form-field class="filter" floatLabel="never">
+                                <mat-label class="folder_label">Escoger</mat-label>
+                                <mat-select (selectionChange)="moveReports($event)" class="info_select">
+                                    <mat-option class="info_options">Proceso de revisión</mat-option>
+                                    <mat-option class="info_options">Informes revisados</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
+                            <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
+                                <li *ngFor="let report of list.reports; let i = index">
+                                    <div class="row" [ngClass]="report.state.color">
+                                        <span class="report--span report_name"
+                                            [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
+                                        <mat-checkbox [formControlName]="i">
+                                            <<<<<<< HEAD <span class="checkt"></span>
 
-							<p class="info_move-text filter">Filtrar por:</p>
-							<mat-form-field class="filter" floatLabel="never">
-								<mat-label class="folder_label">Escoger</mat-label>
-								<mat-select (selectionChange)="moveReports($event)" class="info_select">
-									<mat-option class="info_options">Proceso de revisión</mat-option>
-									<mat-option class="info_options">Informes revisados</mat-option>
-								</mat-select>
-							</mat-form-field>
-						</div>
-						<form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
-							<ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
-								<li *ngFor="let report of list.reports; let i = index">
-									<div class="row" [ngClass]="report.state.color">
-										<span class="report--span report_name">{{report.state.name}}</span>
-										<mat-checkbox [formControlName]="i">
-											<span class="checkt"></span>
+                                        </mat-checkbox>
+                                        <h2 class="report--title">{{report.name}}</h2>
+                                        <span
+                                            class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                        <span class="report--span report_content">{{report.user?.name}}</span>
+                                        <div class="group-menu">
+                                            <button class="report--menu icon icon-ellipsis-h"></button>
+                                            <ul class="report--menu-list">
+                                                <li><button class="icon icon-edit"
+                                                        (click)="gotoPage(report.id)">Editar</button></li>
+                                                <li><button class="icon icon-copy"
+                                                        (click)="onCloneReport(i)">Duplicar</button></li>
+                                                <li><button class="icon icon-trash-alt"
+                                                        (click)="onDeleteReport(i)">Eliminar</button></li>
+                                                <li><button class="icon icon-search-plus"
+                                                        (click)="openPreviewDialog(report.id)">Vista previa</button>
+                                                </li>
+                                                =======
+                                                </mat-checkbox>
+                                                <h2 class="report--title">{{report.name}}</h2>
+                                                <span
+                                                    class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                                <span class="report--span report_content">{{report.user?.name}}</span>
+                                                <div class="group-menu">
+                                                    <button class="report--menu icon icon-ellipsis-h"></button>
+                                                    <ul class="report--menu-list">
+                                                        <li><button class="icon icon-edit"
+                                                                (click)="gotoPage(report.id)">Editar</button></li>
+                                                        <li><button class="icon icon-copy"
+                                                                (click)="onCloneReport(i)">Duplicar</button></li>
+                                                        <li><button class="icon icon-trash-alt"
+                                                                (click)="onDeleteReport(i)">Eliminar</button></li>
+                                                        <li><button class="icon icon-search-plus"
+                                                                (click)="openPreviewDialog(report.id)">Vista
+                                                                previa</button></li>
+                                                        <li *ngIf="showOptionMenu(report.state.id)"><button
+                                                                class="icong icong-crown"
+                                                                (click)="openHighlightDialog(report.id)">Destacar</button>
+                                                        </li>
+                                                        >>>>>>> 0fdcf4dc7d0ced69482e0a3c0b9bcc30c35e6d7c
+                                                    </ul>
+                                                </div>
+                                        </div>
+                                </li>
+                            </ul>
 
-										</mat-checkbox>
-										<h2 class="report--title">{{report.name}}</h2>
-										<span
-											class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-										<span class="report--span report_content">{{report.user?.name}}</span>
-										<div class="group-menu">
-											<button class="report--menu icon icon-ellipsis-h"></button>
-											<ul class="report--menu-list">
-												<li><button class="icon icon-edit"
-														(click)="gotoPage(report.id)">Editar</button></li>
-												<li><button class="icon icon-copy"
-														(click)="onCloneReport(i)">Duplicar</button></li>
-												<li><button class="icon icon-trash-alt"
-														(click)="onDeleteReport(i)">Eliminar</button></li>
-												<li><button class="icon icon-search-plus"
-														(click)="openPreviewDialog(report.id)">Vista previa</button>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</li>
-							</ul>
+                            <!-- revised reports -->
+                            <div class="revised_content">
+                                <ul class="report-list info_content" formArrayName="reports"
+                                    style="margin-bottom: 100px">
+                                    <h1>Informes revisados</h1>
+                                    <li *ngFor="let report of list.reports; let i = index">
+                                        <div class="row" [ngClass]="report.state.color">
+                                            <span class="report--span report_name">{{report.state.name}}</span>
+                                            <mat-checkbox [formControlName]="i">
+                                                <span class="checkt"></span>
 
-							<!-- revised reports -->
-							<div class="revised_content">
-								<ul class="report-list info_content" formArrayName="reports"
-									style="margin-bottom: 100px">
-									<h1>Informes revisados</h1>
-									<li *ngFor="let report of list.reports; let i = index">
-										<div class="row" [ngClass]="report.state.color">
-											<span class="report--span report_name">{{report.state.name}}</span>
-											<mat-checkbox [formControlName]="i">
-												<span class="checkt"></span>
-
-											</mat-checkbox>
-											<h2 class="report--title">{{report.name}}</h2>
-											<span
-												class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-											<span class="report--span report_content">{{report.user?.name}}</span>
-											<div class="group-menu">
-												<button class="report--menu icon icon-ellipsis-h"></button>
-												<ul class="report--menu-list">
-													<li><button class="icon icon-edit"
-															(click)="gotoPage(report.id)">Editar</button></li>
-													<li><button class="icon icon-copy"
-															(click)="onCloneReport(i)">Duplicar</button></li>
-													<li><button class="icon icon-trash-alt"
-															(click)="onDeleteReport(i)">Eliminar</button></li>
-													<li><button class="icon icon-search-plus"
-															(click)="openPreviewDialog(report.id)">Vista previa</button>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</form>
-					</div>
-				</mat-tab>
-			</mat-tab-group>
-		</section>
-		<div class="paginations" *ngIf="pager.pages.length">
-			<a *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])"
-				class="arrow_left">&#x3c;</a>
-			<a class="label paginator_label">Página</a>
-			<a class="paginator_numbers" *ngFor="let item of pager.pages"
-				[ngClass]="{'active': (pager.selected == item.index)}"
-				(click)="loadReports(ifilter, item)">{{item.index}}</a>
-			<a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])"
-				class="arrow_right">&#x3e;</a>
-		</div>
-	</div>
+                                            </mat-checkbox>
+                                            <h2 class="report--title">{{report.name}}</h2>
+                                            <span
+                                                class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                            <span class="report--span report_content">{{report.user?.name}}</span>
+                                            <div class="group-menu">
+                                                <button class="report--menu icon icon-ellipsis-h"></button>
+                                                <ul class="report--menu-list">
+                                                    <li><button class="icon icon-edit"
+                                                            (click)="gotoPage(report.id)">Editar</button></li>
+                                                    <li><button class="icon icon-copy"
+                                                            (click)="onCloneReport(i)">Duplicar</button></li>
+                                                    <li><button class="icon icon-trash-alt"
+                                                            (click)="onDeleteReport(i)">Eliminar</button></li>
+                                                    <li><button class="icon icon-search-plus"
+                                                            (click)="openPreviewDialog(report.id)">Vista previa</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </section>
+        <div class="paginations" *ngIf="pager.pages.length">
+            <a *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])"
+                class="arrow_left">&#x3c;</a>
+            <a class="label paginator_label">Página</a>
+            <a class="paginator_numbers" *ngFor="let item of pager.pages"
+                [ngClass]="{'active': (pager.selected == item.index)}"
+                (click)="loadReports(ifilter, item)">{{item.index}}</a>
+            <a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])"
+                class="arrow_right">&#x3e;</a>
+        </div>
+    </div>
 
 </div>

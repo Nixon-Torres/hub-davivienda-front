@@ -1,7 +1,4 @@
-import { Dimensions } from './dimensions.sector';
-import { Extras } from './extras.sector';
-
+import { Typography } from './typography.sector';
 export {
-    Dimensions,
-    Extras
+    Typography
 }

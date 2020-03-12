@@ -1,0 +1,19 @@
+<form [formGroup] = "profileForm">
+	<div class="column--small">
+        <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
+        <img *ngIf="user.photo" src="{{storageBase}}{{user.photo}}">
+		<button type="button" (click)="openDialog()" class="simple icong-camera">Subir foto</button>
+	</div>
+	<div class="column">
+		<input formControlName="name" class="bolder" type="text" value="{{user.name}}">
+		<input formControlName="charge" class="regular" type="text" value="{{user.charge}}">
+		<input formControlName="email" class="regular" type="text" value="{{user.email}}" disabled="disabled">
+		<textarea formControlName="leyend">{{user.leyend}}
+		</textarea>
+		<p class="icon icon-check message" *ngIf="save">Perfil actualizado</p>
+		<div class="box">
+			<button type="button" class="form-button mat-button mat-raised-button" (click)=onSave()>Guardar</button>
+			<button type="button" class="form-button mat-button mat-button-base" (click)=onCancel()>Cancelar</button>
+		</div>
+	</div>
+</form>

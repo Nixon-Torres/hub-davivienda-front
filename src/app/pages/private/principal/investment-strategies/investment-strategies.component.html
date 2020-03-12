@@ -1,0 +1,73 @@
+				<article class="outstanding">
+					<header class="outstanding__header" (click)="showPanel = !showPanel">
+						<div class="outstanding__texts">
+							<p class="text--blue">Informes destacados - <b>Estrategia para invertir</b></p>
+							<p class="text--small">Actualmente se muestran los siguiente informes:</p>
+							<ul class="list" >
+								<li *ngFor="let report of list.currentReports; let i = index" ><span *ngIf="getOutstanding(report.strategyArea)" [ngClass]="{'icong-crown': getOutstanding(report.strategyArea)}">(Destacado)</span> {{report.name}}</li>
+							</ul>
+						</div>
+						
+						<div class="outstanding__modification">
+							<p class="modification__title">Ultima modificación</p>
+							<p class="modification__value">{{time | date: "hh:mm a dd LLLL"}}</p>
+							<hr class="divider">
+							<p class="modification__title">Hecha por:</p>
+							<p class="modification__value">{{name}}</p>
+						</div>
+	
+						<div class="outstanding__edit">
+							<button><span class="icon icon-edit"></span>editar</button>
+						</div>
+					</header>
+					<section class="outstanding__body" *ngIf="showPanel">
+						<form action="">
+							<div class="outstanding__fields">
+								<div class="form-field form-field--half">
+									<label for="outstandingTitle" class="icong-crown">Informe destacado</label>
+									<ng-select [items]="list.outstandedReport" bindValue="name" bindLabel="name"
+										placeholder="-Seleccione Informe destacado-" 
+										[virtualScroll]="true" dropdownPosition="top" (click)="onCheck('outstanding')" (change)="onOptionsSelected($event)"
+										[clearable]="false" [(ngModel)]="header" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
+									</ng-select>
+								</div>
+								<div class="form-field form-field--half"></div>
+								<div class="form-field form-field--half">
+									<label for="outstandingLink">Informe 1</label>
+									<ng-select [items]="list.reports" bindValue="name" bindLabel="name"
+										placeholder="-Seleccione Informe destacado-" 
+										[virtualScroll]="true" dropdownPosition="top" (click)="onCheck('report1')" (change)="onOptionsSelected($event)"
+										[clearable]="false" [(ngModel)]="reportOne" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
+									</ng-select>								</div>
+								<div class="form-field form-field--half">
+									<label for="outstandingCta">Informe 2</label>
+									<ng-select [items]="list.reports" bindValue="name" bindLabel="name"
+										placeholder="-Seleccione Informe-"  (click)="onCheck('report2')" (change)="onOptionsSelected($event)"
+										[virtualScroll]="true" dropdownPosition="top"
+										[clearable]="false" [(ngModel)]="reportTwo" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
+									</ng-select>
+								</div>
+								<div class="form-field form-field--half">
+									<label for="outstandingLink">Informe 3</label>
+									<ng-select [items]="list.reports" bindValue="name" bindLabel="name"
+										placeholder="-Seleccione Informe-" (click)="onCheck('report3')" (change)="onOptionsSelected($event)"
+										[virtualScroll]="true" dropdownPosition="top"
+										[clearable]="false" [(ngModel)]="reportThree" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
+									</ng-select>
+								</div>
+								<div class="form-field form-field--half">
+									<label for="outstandingCta">Informe 4</label>
+									<ng-select [items]="list.reports" bindValue="name" bindLabel="name"
+										placeholder="-Seleccione Informe-" (click)="onCheck('report4')" (change)="onOptionsSelected($event)" 
+										[virtualScroll]="true" dropdownPosition="top"
+										[clearable]="false" [(ngModel)]="reportFour" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
+									</ng-select>
+								</div>
+							</div>
+							<div class="outstanding__buttons">
+								<button class="btn btn--border" (click)="showPanel = !showPanel">Cancelar</button>
+								<button class="btn btn--filled" (click)="onSAve()">Modificar</button>
+							</div>
+						</form>
+					</section>
+				</article>

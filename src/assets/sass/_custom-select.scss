@@ -20,6 +20,15 @@
             }
         }
     } 
+    &.ng-invalid {
+        .ng-select-container {
+            .ng-value-container {
+                .ng-placeholder {
+                    display: block;
+                }
+            }
+        }
+    }
     .ng-arrow-wrapper {
         position: relative;
         .ng-arrow {
@@ -57,11 +66,76 @@
             }
         }
     }
+    &--create-report {
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                .ng-dropdown-panel-items {
+                    max-height: 130px;
+                }
+            }
+        }
+
+    }
     &--no-height {
         &.ng-select-opened {
             .ng-dropdown-panel {
                 .ng-dropdown-panel-items {
                     max-height: none;
+                }
+            }
+        }
+    }
+    &--authors {
+        .ng-select-container {
+            background-color: #D8DFEB;
+            border-radius: 0em;
+            min-width: 180px;
+            border: 0;
+            .ng-value-container {
+                padding-left: 12px;
+                .ng-placeholder {
+                    color: #A5ABB1;
+                    font-size: 10px;
+                }
+                .ng-input {
+                    top: 0;
+                    padding: 0 12px;
+                    input {
+                        font-size: 10px;
+                        font-weight: 700;
+                        color: #616161;
+                        font-style: normal;
+                    }
+                }
+            }
+        }
+        .ng-arrow-wrapper {
+            display: none;
+        }
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                border: 0;
+                &.ng-select-bottom {
+                    border-radius: 0;
+                }
+                .ng-dropdown-panel-items {
+                    max-height: 70px;
+                    .ng-option {
+                        padding: 0 0 0 13px;
+                        text-align: left;
+                        &-marked {
+                            background-color: #F0F0F0;
+                        }
+                        .ng-option-label {
+                            color: #A5ABB1;
+                            font-size: 0.875em;
+                            font-style: normal;
+                            line-height: 30px;
+                        }
+                    }
+                    &.scroll-host {
+                        @include custom-scroll;
+                    }
                 }
             }
         }

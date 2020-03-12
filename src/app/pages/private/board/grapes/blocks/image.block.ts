@@ -3,8 +3,10 @@ import { Block } from './block.model';
 export class Image {
     private block: Block = {
         id: 'block-image',
-        label: 'Image',
-        attributes: {},
+        label: 'Imagen',
+        attributes: {
+            class: "gjs-fonts gjs-f-image"
+        },
         content: null,
         category: null,
         select: true,

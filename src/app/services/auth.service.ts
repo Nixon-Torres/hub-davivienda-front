@@ -23,6 +23,11 @@ export class AuthService {
         return token ? true : false;
     }
 
+    public getAuthorization(): string {
+        let token = this.get();
+        return token.id;
+    }
+
     public getUserData(attr?: string): any {
         let token = this.get();
         return (token ? (attr ? token.user[attr] : token.user) : {});
@@ -49,6 +54,19 @@ export class AuthService {
                     observer.complete();
                 });
             });
+        });
+    }
+
+    public reloadUser () {
+        let token = this.get();
+        console.log(this.getUserData("id"));
+        this.getCurrentUser(this.getUserData("id"), (err: any, user: UserInterface) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            token.user = user;
+            this.set(token);
         });
     }
 

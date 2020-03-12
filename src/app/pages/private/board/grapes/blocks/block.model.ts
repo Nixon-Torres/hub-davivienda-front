@@ -2,7 +2,7 @@ export interface Block {
     id: string;
     label: string;
     attributes: any;
-    content: string;
+    content: any;
     category: string;
     select?: boolean;
     activate?: boolean;

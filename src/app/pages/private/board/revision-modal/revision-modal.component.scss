@@ -11,6 +11,7 @@
             &__content {
                 display: flex;
                 flex-direction: column;
+                overflow: visible;
             }
             &__title {
                 font-family: 'Helvetica Neue', sans-serif;

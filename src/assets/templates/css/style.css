@@ -7,6 +7,10 @@
 }
 ol, ul {list-style: none;}
 
+.inv-wrapper {
+	display: none;
+}
+
 blockquote, q {quotes: none;}
 a:active, a:hover {outline: 0;}
 body{-webkit-font-smoothing: antialiased;}
