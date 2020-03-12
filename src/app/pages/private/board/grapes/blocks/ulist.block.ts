@@ -8,7 +8,7 @@ export class Ulist {
             class: "fa fa-list-ul"
         },
         content: null,
-        category: null
+        category: { id: "Textos", label: "Textos", open: false }
     }
 
     constructor() {

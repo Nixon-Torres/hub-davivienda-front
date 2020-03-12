@@ -8,7 +8,7 @@ export class Text {
             class: "gjs-fonts gjs-f-text"
         },
         content: null,
-        category: null
+        category: { id: "Textos", label: "Textos", open: false },
     }
 
     constructor() {

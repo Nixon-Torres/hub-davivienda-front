@@ -8,7 +8,7 @@ export class Image {
             class: "gjs-fonts gjs-f-image"
         },
         content: null,
-        category: null,
+        category: { id: "Media", label: "Media", open: false },
         select: true,
         activate: true
     }

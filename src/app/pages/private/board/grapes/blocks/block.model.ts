@@ -3,7 +3,7 @@ export interface Block {
     label: string;
     attributes: any;
     content: any;
-    category: string;
+    category: any;
     select?: boolean;
     activate?: boolean;
 }

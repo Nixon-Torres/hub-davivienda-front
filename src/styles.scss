@@ -289,20 +289,17 @@ $builder-bg: #f5f7fb;
         position: relative !important;
 
 		#gjs {
-			height: calc(100% - 72px) !important;
+			height: 100%;
+
 			&.pdf-button {
-				.gjs-editor {
-					.gjs-cv-canvas {
-						.gjs-cv-canvas__frames {
-							.gjs-frame {
-								margin-top: 0;
-							}
-						}
-					}
+			height: calc(100% - 72px) !important;
+
+				.gjs-editor > .gjs-cv-canvas > .gjs-cv-canvas__frames > .gjs-frame {
+					margin-top: 0;
 				}
 			}
-			.gjs-editor {
 
+			.gjs-editor {
 				.gjs-cv-canvas {
 					top: 0;
 					width: 100%;
@@ -361,6 +358,7 @@ $builder-bg: #f5f7fb;
 						height: 70vh;
 					}
 
+					.gjs-btn-prim,
 					.btn {
 						color: #595656;
 						font-size: 1rem;
@@ -407,6 +405,29 @@ $builder-bg: #f5f7fb;
 		}
 
 		.blocks-container {
+			overflow: auto;
+			max-height: calc(100vh - (71px + 122px + 52px + 52px));
+
+			&.fullscreen {
+				max-height: calc(100vh - (71px + 52px + 52px)) !important;
+			}
+
+			scrollbar-width: thin; // Gecko
+			scrollbar-color: #CCC white; // Gecko
+
+			&::-webkit-scrollbar {
+			   	width: 6px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+			    background: #CCC;
+			    border-radius: 4px;
+			}
+
+			&::-webkit-scrollbar-track {
+				background-color: white;
+			}
+
 			.gjs-block {
 			// TODO block styles
 				&:hover {
@@ -417,6 +438,35 @@ $builder-bg: #f5f7fb;
 				&::before {}
 
 				.gjs-block-label {}
+			}
+
+			.gjs-block-category {
+				&.gjs-open {
+					border-bottom: solid 1px #EDEDED;
+				}
+				
+				.gjs-title {
+					color: #616161;
+					font-size: 12px;
+					font-weight: bold;
+					padding: 18px;
+					letter-spacing: normal;
+					background-color: white;
+					font-family: "Helvetica";
+					border-bottom: solid 1px #EDEDED;
+
+					&:hover {
+						background: rgba(0,0,0,.04);
+					}
+				}
+			}
+
+			.gjs-blocks-c { 
+				padding: 5px 5px 10px;
+
+				.gjs-block-label svg{
+					height: 64px;
+				}
 			}
 		}
 

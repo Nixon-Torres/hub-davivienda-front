@@ -8,7 +8,7 @@ export class Olist {
             class: "fa fa-list-ol"
         },
         content: null,
-        category: null
+        category: { id: "Textos", label: "Textos", open: false }
     }
 
     constructor() {
