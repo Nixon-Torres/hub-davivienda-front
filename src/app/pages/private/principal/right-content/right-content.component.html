@@ -129,11 +129,11 @@
                             <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
                                 automáticamente.</p>
                         </div>
-                        <div class="folder_container" *ngIf="getCheckboxesSelected().length">
+                        <div class="folder_container">
                             <p class="info_move-text">Mover a:</p>
                             <mat-form-field class="simple" floatLabel="never">
                                 <mat-label class="folder_label">Escoger</mat-label>
-                                <mat-select (selectionChange)="moveReports($event)" class="info_select">
+                                <mat-select (selectionChange)="moveReports($event)" class="info_select" [disabled]="getCheckboxesSelected().length === 0">
                                     <mat-option class="info_options" *ngFor="let folder of list.folders"
                                         [value]="folder.id">{{folder.name}}</mat-option>
                                     <mat-option class="info_options">
@@ -185,11 +185,11 @@
                             </ul>
 
                             <!-- revised reports -->
-                            <div class="revised_content">
+                            <div class="revised_content" *ngIf="!isFiltered">
                                 <ul class="report-list info_content" formArrayName="reports"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>
-                                    <li *ngFor="let report of list.reports; let i = index">
+                                    <li *ngFor="let report of list.notReviewed; let i = index">
                                         <div class="row" [ngClass]="report.state.color">
                                             <span class="report--span report_name">{{report.state.name}}</span>
                                             <mat-checkbox [formControlName]="i">
