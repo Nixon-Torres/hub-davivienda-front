@@ -8,7 +8,7 @@ export class Text {
             class: "gjs-fonts gjs-f-text"
         },
         content: null,
-        category: null
+        category: { id: "Textos", label: "Textos", open: false },
     }
 
     constructor() {
@@ -19,11 +19,14 @@ export class Text {
         return {
             activeOnRender: 1,
             ​content: "Escriba su texto aqui"​,
-            style: { padding: "10px" },
+            style: {
+                padding: "10px",
+                'font-family': "PT Serif"
+            },
             type: 'text'
         };
     }
-    
+
     public get(attr: string): any {
         return this[attr];
     }
