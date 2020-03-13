@@ -45,9 +45,11 @@ export class RightContentComponent implements OnInit {
     ifilterreviewed: boolean = true;
     isReviewed: boolean;
     isFiltered: boolean = false;
+    pendingToReview = false;
     public list: any = {
         reports: [],
         folders: [],
+        reviewed: [],
         notReviewed: []
     }
     public pager: any = {
@@ -222,6 +224,7 @@ export class RightContentComponent implements OnInit {
                             this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
                         }
 
+                        let pendingWhere;
                         if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') {
                           query.filter.include.push({ relation: "authors" });
                         } else {
@@ -230,6 +233,7 @@ export class RightContentComponent implements OnInit {
                               query.filter.where['and'].push({ reviewed: iFilterReviewed });
                           }
 
+                          pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
                           if (this.ifilterreviewed) {
                               query.filter.where['and'].push({ ownerId: this.user.id });
                           } else {
@@ -239,6 +243,10 @@ export class RightContentComponent implements OnInit {
                               }
                           }
                         }
+
+                        pendingWhere['and'].push({ id: { inq: reportsAsReviewer } });
+                        pendingWhere['and'].push({ reviewed: false });
+                        this.pendignForReview(pendingWhere);
 
                         if (pager) {
                             query.filter.limit = this.pager.limit;
@@ -271,9 +279,18 @@ export class RightContentComponent implements OnInit {
             setTimeout(() => {
                 this.list.reports = response.body;
                 if (!this.ifilterreviewed) {
-                    this.list.notReviewed = this.getNotReviewed(this.list.reports);
+                    this.list.reviewed = this.getNotReviewed(this.list.reports);
                 }
             }, 100);
+        });
+    }
+
+    public pendignForReview(where: any) {
+        this.http.get({
+            path: 'reports/count?where=',
+            data: where
+        }).subscribe((response: any) => {
+            this.pendingToReview = response.body.count > 0;
         });
     }
 
@@ -334,9 +351,6 @@ export class RightContentComponent implements OnInit {
 
     public readReportsAsReviewer(fn: any): void {
         let result = [];
-        if (this.ifilterreviewed) {
-            return fn([]);
-        }
 
         this.http.get({
             path: `users/${this.user.id}/reportsr`,

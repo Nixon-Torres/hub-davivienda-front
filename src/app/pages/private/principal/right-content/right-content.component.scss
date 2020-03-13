@@ -107,6 +107,19 @@ section {
 				background: purple;
 				color: red;
 			}
+			.pending {
+				position: relative;
+				&:after {
+					content: '';
+					position: absolute;
+					left: -8px;
+					top: -4px;
+					width: 8px;
+					height: 8px;
+					background-color: #FF003B;
+					border-radius: 50%;
+				}
+			}
 		}
 	}
 }
