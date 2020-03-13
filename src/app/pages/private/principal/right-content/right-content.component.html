@@ -146,13 +146,17 @@
 							</mat-form-field>
 
                             <p class="info_move-text filter">Filtrar por:</p>
-                            <mat-form-field class="filter" floatLabel="never">
-                                <mat-label class="folder_label">Escoger</mat-label>
-                                <mat-select (selectionChange)="moveReports($event)" class="info_select">
-                                    <mat-option class="info_options" (click)="reviewedFilter(false)">Proceso de revisión</mat-option>
-                                    <mat-option class="info_options" (click)="reviewedFilter(true)">Informes revisados</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="filter-wrapper">
+                                <ng-select [items]="filterOptions"
+                                        [clearable] = "false"
+                                        [searchable] = "false"
+                                        placeholder="Escoger"
+                                        (change)="reviewedFilter($event)"
+                                        bindLabel="value"
+                                        bindValue="value"
+                                        class="custom-select custom-select--filter">
+                                </ng-select>
+                            </div>
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
@@ -188,7 +192,7 @@
                             </ul>
 
                             <!-- revised reports -->
-                            <div class="revised_content" *ngIf="!isFiltered">
+                            <div class="revised_content" *ngIf="list.reviewed.length && !isFiltered">
                                 <ul class="report-list info_content" formArrayName="reports"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>

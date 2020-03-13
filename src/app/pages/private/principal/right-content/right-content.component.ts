@@ -61,6 +61,7 @@ export class RightContentComponent implements OnInit {
     }
     public listForm: FormGroup;
     public remarkable: boolean = false;
+    public filterOptions: any;
 
     @Input()
     set currentObj(value: any) {
@@ -105,8 +106,18 @@ export class RightContentComponent implements OnInit {
     ngOnInit() {
         this.loadReports();
         this.getFolders();
+        this.setFilterOptions();
     }
 
+    public setFilterOptions() {
+        this.filterOptions = [{
+            value: 'Proceso de revisión',
+            filter: false
+        }, {
+            value: 'Informes revisados',
+            filter: true
+        }];
+    }
 
     private saveReport(clone: any): void {
         this.http.post({
@@ -135,9 +146,9 @@ export class RightContentComponent implements OnInit {
         this.isFiltered = false;
     }
 
-    public reviewedFilter(reviewed) {
+    public reviewedFilter(event) {
         this.isFiltered = true;
-        this.isReviewed = reviewed;
+        this.isReviewed = event.filter;
         this.loadReports(this.ifilter);
     }
 
