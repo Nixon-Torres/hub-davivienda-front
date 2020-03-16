@@ -7,7 +7,7 @@
 // 	margin-top: 20px;
 // 	min-height: 325px;
 
-	form { 
+	form {
 
 		@include display-flex;
 
@@ -41,18 +41,22 @@
 
 			&.regular {
 				font-size: 0.813em;
-			} 
+			}
 		}
 
 		textarea {
+            font-family: "Helvetica Neue", sans-serif;
 			border: none;
-			color: #616161;
+			color: #5C5C5C;
 			background: transparent;
-			font-size: 0.750em;
+			font-size: .750rem;
+            line-height: 0.875rem;
 			min-height: 82px;
 			margin-top: 10px;
 			text-align: left;
 			width: 100%;
+            resize: none;
+
 		}
 
 		.box {
@@ -74,13 +78,13 @@
 
 				&.mat-button-base {
 					background: transparent;
-					color: #A5ABB1;					
+					color: #A5ABB1;
 				}
 
 				&.mat-raised-button {
 					background: #0080FF;
 					color: #FFFFFF;
-				}				
+				}
 			}
 
 			&.simple {
@@ -109,7 +113,7 @@
 			}
 
 		}
-		
+
 	}
 
 //}
