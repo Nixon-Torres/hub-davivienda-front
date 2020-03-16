@@ -2,17 +2,17 @@
 	<div class="content--top">
 		<span class="message">{{nameGroup}}</span>
 	</div>
- 
+
 	<div class="top-section-list">
 		<div class="back-btn">
-			<a>&#60; Volver </a>
+			<a [routerLink]="['/app/principal']" >&#60; Volver </a>
 		</div>
 	</div>
 	<section class="profile" *ngIf="profile">
 		<app-profile-form ></app-profile-form>
-	</section>	
+	</section>
 	<section class="user" *ngIf="!profile">
 		<app-user-form *ngFor="let user of currentUsersGroup" [user]= "user"></app-user-form>
-	</section>	
+	</section>
 </div>
 
