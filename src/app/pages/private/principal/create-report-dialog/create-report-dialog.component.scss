@@ -91,7 +91,6 @@
 		@include display-flex;
 		align-items: center;
 		color: #616161;
-		font-style: 1em;
 		font-weight: bold;
 		line-height: 1.25em;
 
@@ -228,12 +227,14 @@
 			@include display-flex;
 			flex-wrap: wrap;
 			margin-bottom: 38px;
+            justify-content: flex-start;
 		}
 
 		li {
-			margin: 20px 20px 0 0;
+			margin: 20px 0 0 0;
 			position: relative;
 			text-align: center;
+            width: 20%;
 
 			.del {
 				border-radius: 10px;
@@ -290,6 +291,9 @@
 				}
 			}
 		}
+        .user-img {
+            width: 31.45%;
+        }
 
 		.name {
 			font-weight: bolder;
