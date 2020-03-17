@@ -140,4 +140,38 @@
             }
         }
     }
+    &--filter {
+        .ng-select-container {
+            border: 0;
+            border-radius: 0;
+            min-height: 32px;
+            height: 32px;
+            .ng-value-container {
+                padding-left: 10px;
+                .ng-value {
+                    .ng-value-label {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+        .ng-arrow-wrapper {
+            .ng-arrow {
+                border-color: #5d5d5d;
+            }
+        }
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                border: 0;
+                .ng-dropdown-panel-items {
+                    .ng-option {
+                        padding-left: 10px;
+                        .ng-option-label {
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

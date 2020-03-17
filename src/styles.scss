@@ -679,7 +679,10 @@ $builder-bg: #f5f7fb;
 	font-weight: bold;
 	font-size: 14px;
 	position: relative;
-    right: 3%;
+	right: 3%;
+	&.filter{
+		right: 5%;
+	}
 }
 
 
@@ -787,7 +790,6 @@ margin-top: 2%;
 }
 .cdk-overlay-container{
 	.mat-select-panel{
-		min-width: calc(150% + 32px) !important;
 		font-size: 14px !important;
 		margin-top: 20%;
 		margin-left: 8%;

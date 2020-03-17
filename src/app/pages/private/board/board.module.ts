@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
@@ -22,11 +21,10 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
+import { RelatedReportsComponent } from './related-reports/related-reports.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
 import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
-import { RelatedReportsComponent } from './related-reports/related-reports.component';
-
 
 const routes: Routes = [
     {
@@ -57,10 +55,14 @@ const materialModules: any[] = [
     MatDialogModule
 ];
 
-
-
 @NgModule({
-    declarations: [BoardComponent, CommentBoxComponent, RevisionModalComponent, RelatedReportsComponent, PdfUploadComponent],
+    declarations: [
+        BoardComponent, 
+        CommentBoxComponent, 
+        RevisionModalComponent, 
+        RelatedReportsComponent, 
+        PdfUploadComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,
