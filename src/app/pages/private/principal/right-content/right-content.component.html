@@ -192,7 +192,7 @@
                             </ul>
 
                             <!-- revised reports -->
-                            <div class="revised_content" *ngIf="list.reviewed.length && !isFiltered">
+                            <div class="revised_content" *ngIf="list.reviewed?.length && !isFiltered">
                                 <ul class="report-list info_content" formArrayName="reports"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>
