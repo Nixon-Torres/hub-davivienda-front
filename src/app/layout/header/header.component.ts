@@ -114,7 +114,7 @@ export class HeaderComponent implements OnInit {
         };
 
         if (item.type !== "report-comment" && "report" in item && "stateId" in item.report) {
-            notf.bgColor = this.stateColors[item.report.stateId] || 'bg-default';
+            notf.bgColor = this.stateColors[item.reportStateId] || 'bg-default';
         }
 
         if (isSocket) {
