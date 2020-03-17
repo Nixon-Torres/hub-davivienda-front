@@ -23,6 +23,7 @@ import { Report } from './board.model';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
 import { UserInterface } from 'src/app/services/auth.service.model';
+import { environment } from '../../../../environments/environment';
 
 declare var grapesjs: any;
 
@@ -36,7 +37,7 @@ declare var grapesjs: any;
 
 export class BoardComponent implements OnInit, AfterViewInit {
 
-    public owner: any; 
+    public owner: any;
     public editor: any;
     public grapes: any;
     public user: any = {};
@@ -54,6 +55,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile: boolean = false;
     public isFullscreen: boolean = false;
     public isAdvancedUser: boolean = false;
+    public storageBase: String =  environment.STORAGE_FILES;
     public list: any = {
         users: [],
         authors: []
@@ -91,7 +93,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
     };
-    
+
     private authorsId: Array<string> = [];
     private timer: any = {
         change: null
@@ -255,13 +257,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ]);
     }
 
-    /** Init plugins for new advance blocks on editor 
+    /** Init plugins for new advance blocks on editor
     *
     * @return { grapesjs.plugins } Object grapes editor
     */
     private activeAdvanceBlocks() {
         grapesjs.plugins.add(
-            'gjs-component-countdown', 
+            'gjs-component-countdown',
             countdown.default(
                 this.editor,
                 this.grapes.get('countdownConfig')
@@ -269,21 +271,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
         );
 
         grapesjs.plugins.add(
-            'grapesjs-tabs', 
+            'grapesjs-tabs',
             tabs.default(
                 this.editor
             )
         );
 
         grapesjs.plugins.add(
-            'grapesjs-lory-slider', 
+            'grapesjs-lory-slider',
             slider.default(
                 this.editor
             )
         );
 
         grapesjs.plugins.add(
-            'grapesjs-custom-code', 
+            'grapesjs-custom-code',
             customCode.default(
                 this.editor,
                 this.grapes.get('customCodeConfig')
@@ -306,6 +308,26 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         if (this.isAdvancedUser) this.activeAdvanceBlocks();
         this.listenEventsEditor();
+        this.addAssetsEditor();
+    }
+
+    private addAssetsEditor() {
+        let am = this.editor.AssetManager;
+        let query = new loopback();
+
+        query.filter.where = { or: [] };
+        query.filter.where['or'].push({ext:'.jpg'},{ext:'.gif'},{ext:'.png'});
+
+        this.http.get({
+            path: 'media?filter=',
+            data: query.filter
+        }).subscribe((response: any) => {
+            response.body.map(item => {
+                am.add([{
+                    src: `${this.storageBase}${item.fileName}`
+                }]);
+            });
+        });
     }
 
     // Editor events listener
@@ -641,7 +663,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                         pdfId: response.id,
                     }
                 }).subscribe(() => {
-                    
+
                 });
             }
       });

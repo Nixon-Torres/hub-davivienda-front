@@ -8,6 +8,7 @@ export interface Config {
     blockManager: any,
     traitManager: any,
     styleManager: any,
+    assetManager: any,
     plugins?: any,
     pluginsOpts?: any
     allowScripts?: number,
@@ -16,5 +17,6 @@ export interface Config {
 export interface Managers {
     blockManager: string,
     traitManager: string,
-    styleManager: string
+    styleManager: string,
+    assetManager: string
 }

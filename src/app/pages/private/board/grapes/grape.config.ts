@@ -1,15 +1,15 @@
 import { Config, Managers } from './grape.model';
 import { Typography } from './sectors/sector.main';
-import { 
-    Text, 
-    Link, 
-    Image, 
-    Video, 
-    Quote, 
+import {
+    Text,
+    Link,
+    Image,
+    Video,
+    Quote,
     Ulist,
     Olist,
-    OneColumn, 
-    TwoColumns, 
+    OneColumn,
+    TwoColumns,
     ThreeColumns,
 } from './blocks/block.main';
 
@@ -26,7 +26,12 @@ class Grapes {
         },
         blockManager: {},
         traitManager: {},
-        styleManager: {}
+        styleManager: {},
+        assetManager: {
+            modalTitle: 'Agregar imagen',
+            addBtnText: 'Agregar imagen',
+            uploadText: 'Arrastre las imagenes aqui o haga clic para cargar archivos',
+        }
     };
     public countdownConfig = {
         endText: 'Finalizado',
