@@ -36,6 +36,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     public reportTwo: string;
     public reportThree: string;
     public reportFour: string;
+    public showPanel: boolean;
 
     constructor(
         private http: HttpService,
