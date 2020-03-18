@@ -1,28 +1,28 @@
-import { Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 
-import { loopback } from '../../../models/common/loopback.model';
-import { HttpService } from '../../../services/http.service';
-import { AuthService } from '../../../services/auth.service';
-import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
-import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
-import { Grapes } from "./grapes/grape.config";
-import { CodeMirror } from "./grapes/code-mirror.config";
+import {loopback} from '../../../models/common/loopback.model';
+import {HttpService} from '../../../services/http.service';
+import {AuthService} from '../../../services/auth.service';
+import {PreviewDialogComponent} from '../preview-dialog/preview-dialog.component';
+import {ConfirmationDialogComponent} from './confirmation-dialog/confirmation-dialog.component';
+import {PdfUploadComponent} from './pdf-upload/pdf-upload.component';
+import {Grapes} from './grapes/grape.config';
+import {CodeMirror} from './grapes/code-mirror.config';
 
-import * as M from "materialize-css/dist/js/materialize";
-import * as $ from "jquery/dist/jquery";
+import * as M from 'materialize-css/dist/js/materialize';
+import * as $ from 'jquery/dist/jquery';
 import * as moment from 'moment';
 import * as countdown from 'grapesjs-component-countdown/dist/grapesjs-component-countdown.min.js';
 import * as tabs from 'grapesjs-tabs/dist/grapesjs-tabs.min.js';
 import * as slider from 'grapesjs-lory-slider/dist/grapesjs-lory-slider.min.js';
 import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.js';
 
-import { Report } from './board.model';
-import { RevisionModalComponent } from './revision-modal/revision-modal.component';
-import { CreateReportDialogComponent } from '../principal/create-report-dialog/create-report-dialog.component';
-import { UserInterface } from 'src/app/services/auth.service.model';
+import {Report} from './board.model';
+import {RevisionModalComponent} from './revision-modal/revision-modal.component';
+import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
+import {UserInterface} from 'src/app/services/auth.service.model';
 
 declare var grapesjs: any;
 
@@ -36,7 +36,7 @@ declare var grapesjs: any;
 
 export class BoardComponent implements OnInit, AfterViewInit {
 
-    public owner: any; 
+    public owner: any;
     public editor: any;
     public grapes: any;
     public user: any = {};
@@ -57,12 +57,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public list: any = {
         users: [],
         authors: []
-    }
+    };
     public flags: any = {
         authorsList: false,
         usersList: false,
         editorsList: false
-    }
+    };
     public grid: any = {
         col: {
             builder: 10,
@@ -74,7 +74,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             comments: 1,
             panel: 1
         }
-    }
+    };
     public report: Report = {
         id: null,
         name: '',
@@ -91,21 +91,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
     };
-    
+
     private authorsId: Array<string> = [];
     private timer: any = {
         change: null
     };
     private states: any = {
-        draft: "5e068d1cb81d1c5f29b62977",
-        toReview: "5e068d1cb81d1c5f29b62976",
-        toCorrect: "5e068d1cb81d1c5f29b62975",
-        approved: "5e068d1cb81d1c5f29b62974",
-        published: "5e068c81d811c55eb40d14d0"
-    }
+        draft: '5e068d1cb81d1c5f29b62977',
+        toReview: '5e068d1cb81d1c5f29b62976',
+        toCorrect: '5e068d1cb81d1c5f29b62975',
+        approved: '5e068d1cb81d1c5f29b62974',
+        published: '5e068c81d811c55eb40d14d0'
+    };
 
-    @ViewChild('authorsParent', {static:false}) authorsParent?: ElementRef;
-    @ViewChild('editorsParent', {static:false}) editorsParent?: ElementRef;
+    @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
+    @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
 
     constructor(
         public dialog: MatDialog,
@@ -126,15 +126,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.activatedRoute.paramMap.subscribe((params: any) => {
 
             // Load report for edit, but if is a new report load basic data from URI
-            if (params.get("id")) {
+            if (params.get('id')) {
 
-                this.report.id = params.get("id");
+                this.report.id = params.get('id');
                 this.loadReport(this.report.id);
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
                 this.checkNotifications(this.report.id);
 
-            } else if (params.get("stateId")) {
+            } else if (params.get('stateId')) {
                 let folderId = params.get('folderId');
                 let templateId = params.get('templateId');
                 let authorsId = params.get('authorsId');
@@ -151,7 +151,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         // When fullscreen mode is closed update isFullscreen flag
         let _this = this;
-        document.addEventListener("fullscreenchange", function() {
+        document.addEventListener('fullscreenchange', function() {
             if (!document.fullscreenElement) {
                 _this.isFullscreen = false;
             }
@@ -159,41 +159,43 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        if (!this.report.id) this.loadTemplate(this.report.templateId); // If is a new report, load data template
+        if (!this.report.id) {
+            this.loadTemplate(this.report.templateId);
+        } // If is a new report, load data template
 
         let tabsEl: Element = document.querySelectorAll('.grapes-container .tabs')[0];
         M.Tabs.init(tabsEl); // Initialize the tabs materialize function
 
         let elems = document.querySelectorAll('.fixed-action-btn');
-        M.FloatingActionButton.init(elems, { direction: 'top', hoverEnabled: false });
+        M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
     }
 
     /** Get report form database
-    *
-    * @param { idReport } Id for get the report
-    * @return { this.report } Obj with the report data
-    */
+     *
+     * @param { idReport } Id for get the report
+     * @return { this.report } Obj with the report data
+     */
     private loadReport(idReport: string): void {
 
         let query = new loopback();
 
         query.filter.include.push({
-            relation: "state",
+            relation: 'state',
             scope: {
                 fields: ['id', 'name']
             }
         }, {
-            relation: "owner",
+            relation: 'owner',
             scope: {
                 fields: ['id', 'name']
             }
         }, {
-            relation: "files",
+            relation: 'files',
             scope: {
-                fields: ['id', 'name', 'key']
+                fields: ['id', 'name', 'key', 'size']
             }
         }, {
-            relation: "template",
+            relation: 'template',
             scope: {
                 fields: ['id', 'name', 'key']
             }
@@ -211,7 +213,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
 
-            this.files =  response.body.files;
+            this.files = response.body.files;
             this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
                 setTimeout(() => {
@@ -223,9 +225,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /** Start to load default data config
-    *
-    * @return { this.editor } Object grapes editor
-    */
+     *
+     * @return { this.editor } Object grapes editor
+     */
     private initGrapes(): void {
         this.grapes = new Grapes({
             blockManager: '.blocks-container',
@@ -255,13 +257,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ]);
     }
 
-    /** Init plugins for new advance blocks on editor 
-    *
-    * @return { grapesjs.plugins } Object grapes editor
-    */
+    /** Init plugins for new advance blocks on editor
+     *
+     * @return { grapesjs.plugins } Object grapes editor
+     */
     private activeAdvanceBlocks() {
         grapesjs.plugins.add(
-            'gjs-component-countdown', 
+            'gjs-component-countdown',
             countdown.default(
                 this.editor,
                 this.grapes.get('countdownConfig')
@@ -269,21 +271,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
         );
 
         grapesjs.plugins.add(
-            'grapesjs-tabs', 
+            'grapesjs-tabs',
             tabs.default(
                 this.editor
             )
         );
 
         grapesjs.plugins.add(
-            'grapesjs-lory-slider', 
+            'grapesjs-lory-slider',
             slider.default(
                 this.editor
             )
         );
 
         grapesjs.plugins.add(
-            'grapesjs-custom-code', 
+            'grapesjs-custom-code',
             customCode.default(
                 this.editor,
                 this.grapes.get('customCodeConfig')
@@ -304,7 +306,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.grapes.get('config')
         );
 
-        if (this.isAdvancedUser) this.activeAdvanceBlocks();
+        if (this.isAdvancedUser) {
+            this.activeAdvanceBlocks();
+        }
         this.listenEventsEditor();
     }
 
@@ -330,10 +334,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private autosetEditorHeight() {
         let iframe = $('.builder iframe');
-        if (!iframe.length) return;
+        if (!iframe.length) {
+            return;
+        }
         let tplBody = iframe.contents()[0].body;
-        iframe.contents().find("html")[0].style.overflow = "hidden";
-        tplBody.style.height = "auto";
+        iframe.contents().find('html')[0].style.overflow = 'hidden';
+        tplBody.style.height = 'auto';
         let tplBodyHeight = tplBody.offsetHeight;
 
         iframe.css({
@@ -350,10 +356,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /** Set report styles on grapes editor
-    *
-    * @param { content } String with the report HTML
-    * @param { styles } String with the report CSS rules
-    */
+     *
+     * @param { content } String with the report HTML
+     * @param { styles } String with the report CSS rules
+     */
     private addReportContent(content: string, styles: string): void {
         this.editor.getWrapper().append(
             `<style type="text/css">${styles}</style>${content}`
@@ -369,7 +375,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         this.lastupdate = moment(lastupdate).fromNow();
 
-        if (this.timer.lastupdate) clearInterval(this.timer.lastupdate);
+        if (this.timer.lastupdate) {
+            clearInterval(this.timer.lastupdate);
+        }
 
         this.timer.lastupdate = setInterval(() => {
             this.lastupdate = moment(lastupdate).fromNow();
@@ -377,10 +385,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /** Load a template for report if exist template ID else load an empty report
-    *
-    * @param { templateId } Id for load template
-    * @return { this.report } Set the HTML content and CSS for template
-    */
+     *
+     * @param { templateId } Id for load template
+     * @return { this.report } Set the HTML content and CSS for template
+     */
     private loadTemplate(templateId: string): void {
         if (templateId.toString() == 'false' && this.fromReportId.toString() == 'false') {
             this.initGrapes();
@@ -399,7 +407,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }, 0);
         }, (err) => {
             console.log(err);
-        })
+        });
     }
 
     /*==============================================================*\
@@ -433,9 +441,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /** Save the report on DB
-    *
-    * @param { autoSave } Flag for autosave
-    */
+     *
+     * @param { autoSave } Flag for autosave
+     */
     public onSave(autoSave?: boolean, cb?: any): void {
         let isUpdate: boolean = this.report.id ? true : false;
         let method: string = isUpdate ? 'patch' : 'post';
@@ -456,16 +464,19 @@ export class BoardComponent implements OnInit, AfterViewInit {
             (response: any) => {
                 if (method == 'post' && this.authorsId && this.authorsId.length) {
                     let authorsData = this.authorsId.map((a: string) => {
-                        return { 'authorId': a, 'reportId': response.body.id };
+                        return {'authorId': a, 'reportId': response.body.id};
                     });
                     this.http.post({
                         'path': 'reports/authors',
-                        'data': { 'authors': authorsData }
-                    }).subscribe(() => { });
+                        'data': {'authors': authorsData}
+                    }).subscribe(() => {
+                    });
                 }
 
                 if (!autoSave) {
-                    if (cb) return cb();
+                    if (cb) {
+                        return cb();
+                    }
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
@@ -524,7 +535,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public getReviewers(reviewers: Array<object>) {
         return reviewers.map((reviewer) => {
-            return { reportId: this.report.id, reviewerId: reviewer['id'] };
+            return {reportId: this.report.id, reviewerId: reviewer['id']};
         });
     }
 
@@ -535,8 +546,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 reportId: this.report.id,
                 reviewers: this.getReviewers(reviewers)
             }
-        }).subscribe( (resp: any) => {
-            if(resp) {
+        }).subscribe((resp: any) => {
+            if (resp) {
                 this.dialog.open(ConfirmationDialogComponent, {
                     width: '410px',
                     data: {
@@ -547,7 +558,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
             this.report.state = resp.body.report.state;
             this.report.stateId = resp.body.report.stateId;
-        })
+        });
     }
 
     public onSendToRevisionAction(): void {
@@ -626,13 +637,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openUploadDialog(): void {
-      let dialogRef = this.dialog.open(PdfUploadComponent, {
-        data: {
-            reportId: this.report.id,
-            files: this.files
-          }
-      });
-      dialogRef.afterClosed().subscribe((response: any) => {
+        let dialogRef = this.dialog.open(PdfUploadComponent, {
+            width: '470px',
+            data: {
+                reportId: this.report.id,
+                files: this.files
+            }
+        });
+        dialogRef.afterClosed().subscribe((response: any) => {
             this.loadReport(this.report.id);
             if (response) {
                 this.http.patch({
@@ -641,11 +653,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
                         pdfId: response.id,
                     }
                 }).subscribe(() => {
-                    
+
                 });
             }
-      });
-  }
+        });
+    }
 
     public discard() {
 
@@ -721,12 +733,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public focusOnReportName() {
-        document.getElementById("reportName").focus();
+        document.getElementById('reportName').focus();
     }
 
     private findParent(element, parent) {
-        for(let parentNode of element.path) {
-            if(parentNode === parent) {
+        for (let parentNode of element.path) {
+            if (parentNode === parent) {
                 return;
             } else {
                 return true;
@@ -735,41 +747,42 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private closeToggleLists() {
-        this.renderer.listen('window', 'click',(e :Event)=> {
-            if(this.findParent(e, this.authorsParent.nativeElement)){
+        this.renderer.listen('window', 'click', (e: Event) => {
+            if (this.findParent(e, this.authorsParent.nativeElement)) {
                 this.flags.authorsList = false;
                 this.flags.usersList = false;
             }
-            if(this.findParent(e, this.editorsParent.nativeElement)) {
+            if (this.findParent(e, this.editorsParent.nativeElement)) {
                 this.flags.editorsList = false;
-            };
+            }
+            ;
         });
     }
 
     /** Restore BUTTON onClick
-    *   Restore the template
-    */
+     *   Restore the template
+     */
     public restoreGrapes() {
         this.editor.UndoManager.undoAll();
     }
 
     /** Undo BUTTON onClick
-    *   Go back to the last modifications
-    */
+     *   Go back to the last modifications
+     */
     public undoGrapes() {
         this.editor.UndoManager.undo();
     }
 
     /** Redo BUTTON onClick
-    *   Go to the next modification
-    */
+     *   Go to the next modification
+     */
     public redoGrapes() {
         this.editor.UndoManager.redo();
     }
 
     /** Fullscreen BUTTON onClick
-    *   set flag for enter or exit fullscreen mode
-    */
+     *   set flag for enter or exit fullscreen mode
+     */
     public fullscreen() {
 
         if (this.isFullscreen) {
@@ -782,15 +795,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /** Responsive BUTTON onClick
-    *   Change device view (desktop and mobile)
-    */
+     *   Change device view (desktop and mobile)
+     */
     public changeDeviceView() {
         this.showAsMobile = !this.showAsMobile;
     }
 
     /** Import code BUTTON onClick
-    *   Change template content by code
-    */
+     *   Change template content by code
+     */
     public importCode() {
         let codeMirror = new CodeMirror();
         let codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
@@ -801,7 +814,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         let txtarea = container.children[1];
         let btn: HTMLElement = container.children[2] as HTMLElement;
 
-        modal.setTitle("Editor de código");
+        modal.setTitle('Editor de código');
         modal.setContent(container);
         codeViewer.set(codeMirror.getConfig());
         codeViewer.init(txtarea);
@@ -824,10 +837,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         let btnImp = document.createElement('button');
 
         labelEl.className = `${pfx}import-label`;
-        labelEl.innerHTML = "Edite aqui su HTML/CSS y haga click en Importar";
+        labelEl.innerHTML = 'Edite aqui su HTML/CSS y haga click en Importar';
         btnImp.type = 'button';
         btnImp.className = `btn`;
-        btnImp.innerHTML = "Importar";
+        btnImp.innerHTML = 'Importar';
 
         container.appendChild(labelEl);
         container.appendChild(txtarea);
@@ -838,7 +851,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private getAvailableAuthors(users: Array<any>): Array<any> {
         let currentAuthors = this.list.authors.map((a: any) => a.author.id);
-        return users.filter((a: any) => currentAuthors.indexOf(a.id) == -1 && this.user != a.id && this.report.id != a.id );
+        return users.filter((a: any) => currentAuthors.indexOf(a.id) == -1 && this.user != a.id && this.report.id != a.id);
     }
 
     private onLoadUsers() {
@@ -869,7 +882,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
             encode: true
         }).subscribe((response: any) => {
-            if(response) {
+            if (response) {
                 this.list.authors = response.body;
                 this.maxAuthors = this.list.authors.length >= 4 ? true : false;
                 this.onLoadUsers();
@@ -883,7 +896,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.http.delete({
             'path': `reportAuthors/${authorId}`,
         }).subscribe((response: any) => {
-            if(response) {
+            if (response) {
                 this.onLoadAuthors(this.report.id);
                 this.isDeleting = false;
             }
@@ -892,7 +905,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public onAddAuthor(author) {
         this.isAdding = true;
-        if(!this.maxAuthors) {
+        if (!this.maxAuthors) {
             this.http.post({
                 'path': `reportAuthors`,
                 'data': {
@@ -901,7 +914,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 },
                 encode: true
             }).subscribe((response: any) => {
-                if(response) {
+                if (response) {
                     this.flags.usersList = false;
                     this.flags.authorsList = true;
                     this.onLoadAuthors(this.report.id);
@@ -939,7 +952,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private userIsOwner() {
-        if(this.report.ownerId === this.user.id) {
+        if (this.report.ownerId === this.user.id) {
             this.isOwner = true;
         }
     }
@@ -948,7 +961,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         let dataFilter = encodeURI(JSON.stringify({reportId: reportId}));
         this.http.patch({
             'path': `notifications/read?filter=${dataFilter}`,
-            'data': { "readed": true }
+            'data': {'readed': true}
         }).subscribe();
     }
 
