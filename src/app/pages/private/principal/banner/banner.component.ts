@@ -1,6 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {HttpService} from 'src/app/services/http.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-banner',
@@ -20,6 +22,7 @@ export class BannerComponent implements OnInit {
     constructor(
         private http: HttpService,
         private formBuilder: FormBuilder,
+        public dialog: MatDialog
     ) {
     }
 
@@ -57,8 +60,11 @@ export class BannerComponent implements OnInit {
             path: path,
             data: this.formData
         }).subscribe((resp: any) => {
-            this.onSaveImage(resp.body.id);
-            this.onGetOutstanding();
+            if (resp && resp.body) {
+                this.onSaveImage(resp.body.id);
+                this.onGetOutstanding();
+                this.showDialog(resp.body.title);
+            }
         });
     }
 
@@ -97,7 +103,6 @@ export class BannerComponent implements OnInit {
             encode: true
         }).subscribe((resp: any) => {
             if (resp) {
-
                 this.outstandingElement = resp.body && resp.body.length ? resp.body[0] : null;
                 if (this.outstandingElement && this.outstandingElement.id) {
                     this.onGetImages(this.outstandingElement.id);
@@ -137,8 +142,16 @@ export class BannerComponent implements OnInit {
             path: 'media/upload',
             data: formData
         }).subscribe((resp: any) => {
-            if (resp) {
-                console.log(resp);
+            if (resp) {}
+        });
+    }
+
+    private showDialog(title) {
+        this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                title: 'Se ha publicado exitosamente el destacado del informe:',
+                subtitle: title,
             }
         });
     }
