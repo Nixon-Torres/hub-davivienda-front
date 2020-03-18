@@ -100,6 +100,7 @@ export class UserFormComponent implements OnInit {
 		this.userForm.get('charge').setValue(this.user.charge);
 		this.userForm.get('leyend').setValue(this.user.leyend);
 		this.user.photo = this.imageProfile;
+		this.setHide();
 	}
 
 }
