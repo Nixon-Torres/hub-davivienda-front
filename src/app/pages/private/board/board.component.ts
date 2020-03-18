@@ -192,7 +192,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, {
             relation: 'files',
             scope: {
-                fields: ['id', 'name', 'key']
+                fields: ['id', 'name', 'key', 'size']
             }
         }, {
             relation: 'template',
@@ -638,6 +638,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public openUploadDialog(): void {
         let dialogRef = this.dialog.open(PdfUploadComponent, {
+            width: '470px',
             data: {
                 reportId: this.report.id,
                 files: this.files
