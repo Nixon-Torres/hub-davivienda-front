@@ -4,7 +4,7 @@
         <a class="modal-close-cta" (click)="closeDialog(null)">Cerrar <span class="icon icon-times"></span></a>
     </div>
 
-    <mat-dialog-content>
+    <mat-dialog-content class="content">
         <div class="message-container">
             <!-- Error -->
             <div class="message-box divider" *ngIf="errorMsg">
@@ -41,13 +41,11 @@
                 </div>
                 <!-- Work Text -->
 
-                <div>
-                    <div class="info-pdf" *ngIf="fileData || currentFile">
-                        <p>{{ !currentFile ? fileData.file.name : currentFile.name}}</p>
-                        <div>
-                            <p>{{!currentFile ? fileData.file.size : currentFile.size}}</p>
-                            <img src="/assets/images/cancel.png" alt="" (click)="deleteFile()">
-                        </div>
+                <div class="info-pdf" *ngIf="fileData || currentFile">
+                    <p>{{ !currentFile ? fileData.file.name : currentFile.name}}</p>
+                    <div>
+                        <p>{{!currentFile ? fileData.file.size : currentFile.size}}</p>
+                        <img src="/assets/images/cancel.png" alt="" (click)="deleteFile()">
                     </div>
                 </div>
 
@@ -55,11 +53,10 @@
                     <div>
                         <input id="iFile" type="file" (change)="onFileSelect($event)" style="display: none;"
                                accept=".pdf">
-                        <label class="up-file" for="iFile"><img src="/assets/images/upload.svg"
-                                                                alt=""> {{ currentFile ? 'Editar' : 'Subir' }}
+                        <label class="up-file" for="iFile">
+                            <span class="icon icong-upload"></span> {{ currentFile ? 'Editar' : 'Subir' }}
                             archivo</label>
                     </div>
-                    <br>
                     <div class="size-txt">
                         <span>Tamaño máximo hasta 10GB</span>
                     </div>
@@ -68,7 +65,7 @@
         </div>
     </mat-dialog-content>
 
-    <mat-dialog-actions>
+    <mat-dialog-actions class="dialog-actions">
         <div class="pdf-btn">
             <button class="mat-raised-button pdf-close" (click)="closeDialog(null)">Cancelar</button>
             <button class="mat-raised-button mat-primary" (click)="closeDialog(fileData)">Aceptar</button>

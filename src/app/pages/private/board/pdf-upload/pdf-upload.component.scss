@@ -1,13 +1,19 @@
+$sideSpace: 16px;
+
 #pdfUpload {
-    min-width: 420px;
-    padding: 8px 16px;
+    min-width: 470px;
+    padding: 8px 0 40px;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .pdf-title{
         border-bottom: 1px solid rgba(165, 171, 177, .35);
         display: flex;
         justify-content: space-between;
+        width: 92%;
         h2 {
             color: #a5abb1;
             font-size: 14px;
@@ -24,14 +30,24 @@
             }
         }
     }
-
+    .content {
+        margin: 0;
+        padding: 0;
+        max-height: 100%;
+        width: 100%;
+        overflow: visible;
+    }
     .message-container {
+        width: 100%;
         .message-box {
             text-align: center;
-            padding: 32px;
             position: relative;
-
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
             &.divider {
+                padding: 20px 0;
                 &::after {
                     border-bottom: 1px solid rgba(165, 171, 177, 0.35);
                     content: " ";
@@ -43,33 +59,42 @@
                 }
             }
             .message-description{
-                padding-bottom: 20px;
+                padding-bottom: 30px;
+                font-size: .875em;
                 color: #7f7f7f;
             }
 
             .up-file{
-                padding: 10px;
-                background: #a5abb1;
+                font-family: "Roboto", sans-serif;
+                background: #a4abb1;
                 text-transform: uppercase;
-                font-size: .94em;
+                font-size: .750em;
                 color: #ffff;
-                border-radius: 10px;
+                border-radius: 4px;
                 cursor: pointer;
-                img{
-                    width: 3%;
-                    padding: 0 5px;
+                display: flex;
+                height: 32px;
+                align-items: center;
+                justify-content: center;
+                max-width: 156px;
+                padding: 0 15px;
+                box-sizing: border-box;
+                font-weight: bold;
+                .icon{
+                    margin-right: 5px;
                 }
             }
             .size-txt{
-                margin-top: 7px;
+                margin-top: 12px;
                 color: #7f7f7f;
                 font-size: .68em
             }
         }
 
         .message-icon{
+            width: 100%;
             .logo-board{
-                width: 16%;
+                width: 20%;
             }
         }
 
@@ -84,38 +109,49 @@
         }
 
         .info-pdf{
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          font-weight: 500;
-          background: #f5f7fb;
-          padding: 18px;
-          margin-bottom: 6%;
-          p{
-            font-size: .88em;
-            color: #a0a2a3;
-          }
-          div{
+            width: 100%;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            p{
-              font-size: .75em;
-              color: #bdc2c7;
-              padding-right: 20px;
+            font-weight: 500;
+            background: #f5f7fb;
+            height: 36px;
+            margin-bottom: 6%;
+            font-family: "Helvetica Neue", sans-serif;
+            padding: 0 50px;
+            box-sizing: border-box;
+            p {
+                font-size: .750em;
+                color: #6a6a6a;
+                font-style: italic;
+
             }
-          }
+            div {
+                display: flex;
+                align-items: center;
+                p {
+                    font-size: .75em;
+                    color: #bdc2c7;
+                    padding-right: 20px;
+                }
+            }
         }
     }
 
+    .dialog-actions {
+        width: 100%;
+        min-height: 100%;
+        margin-bottom: 0;
+        padding: 0;
+    }
     .pdf-btn{
         text-align: center;
         width: 100%;
-        padding-bottom: 25px;
         button{
-            width: 20%;
+            width: 134px;
         }
         .pdf-close{
-            margin-right: 30px;
+            margin-right: 20px;
             box-shadow: none;
             color: #0b86ff;
             border: solid 1px #0b86ff;
@@ -227,4 +263,3 @@
       transform: rotate(360deg);
     }
   }
-  
