@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { HttpService } from '../../../../services/http.service';
+import {createBrowserLoggingCallback} from '@angular-devkit/build-angular/src/browser';
 
 @Component({
     selector: 'app-pdf-upload',
@@ -15,9 +16,9 @@ export class PdfUploadComponent implements OnInit {
     public spinner: boolean;
     public errorMsg: string;
     public workMsg: string;
-    public files : Array<any>;
-    public currentFile : any;
-    
+    public files: Array<any>;
+    public currentFile: any;
+
     constructor(
         public dialogRef: MatDialogRef<PdfUploadComponent>,
         private formBuilder: FormBuilder,
@@ -49,7 +50,7 @@ export class PdfUploadComponent implements OnInit {
         formData.append('resourceId', this.data.reportId);
         if (this.currentFile) {
             formData.append('id', this.currentFile.id);
-        } 
+        }
         this.spinner = true;
         this.errorMsg = null;
         this.fileData = null;
@@ -61,17 +62,19 @@ export class PdfUploadComponent implements OnInit {
                 this.spinner = false;
                 this.files =  this.data.files;
                 if (response.body.name && (response.body.statusCode || response.body.code)) {
-                    let err = response.body.name;
-                    this.errorMsg = (err == 'ValidationError') ? 'Solo se permite archivos PDFS' : 'Ha superado del tamaño maximo del archivo';
-                    document.querySelector("#iFile")['value'] = '';
+                    const err = response.body.name;
+                    this.errorMsg = (err === 'ValidationError') ? 'Solo se permite archivos PDFS' : 'Ha superado del tamaño maximo del archivo';
+                    document.querySelector('#iFile')['value'] = '';
                     return;
                 }
                 this.fileData = response.body;
+                this.currentFile = this.fileData.file;
+                this.workMsg = this.currentFile ? 'Ha subido el siguiente archivo:' : '';
             },
             () => {
                 this.spinner = false;
                 this.fileData = null;
-                document.querySelector("#iFile")['value'] = '';
+                document.querySelector('#iFile')['value'] = '';
             }
         );
     }
@@ -84,6 +87,7 @@ export class PdfUploadComponent implements OnInit {
             this.spinner = false;
             this.fileData = null;
             this.currentFile = null;
+            this.workMsg = '';
             document.querySelector("#iFile")['value'] = '';
         });
     }
