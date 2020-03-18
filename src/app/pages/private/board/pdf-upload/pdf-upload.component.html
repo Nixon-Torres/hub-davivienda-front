@@ -8,15 +8,15 @@
         <div class="message-container">
             <!-- Error -->
             <div class="message-box divider" *ngIf="errorMsg">
-                <div class="message-icon">
-                    <img class="logo-board" src="/assets/images/warning.svg" alt="Check">
+                <div class="message-icon error">
+                    <span class="icon icon-exclamation"></span>
                 </div>
                 <div class="message-title">¡Ha ocurrido un error!</div>
             </div>
             <!-- Work -->
             <div class="message-box divider" *ngIf="fileData">
-                <div class="message-icon">
-                    <img class="logo-board" src="/assets/images/check.png" alt="Check">
+                <div class="message-icon check">
+                    <span class="icon icon-check"></span>
                 </div>
                 <div class="message-title check">¡Cargado exitosamente!</div>
             </div>
