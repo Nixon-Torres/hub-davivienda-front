@@ -1,11 +1,11 @@
 <div class="content">
     <div class="content--top">
         <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}</span>
-        <div class="insert_btn">
+        <div class="insert_btn" *ngIf="!marketing">
             <button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
                     class="icon_insert">&nbsp;</span></button>
         </div>
-        <div class="info_btn">
+        <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
         </div>
     </div>
@@ -104,14 +104,14 @@
                                             <ul class="report--menu-list">
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-edit"
                                                         (click)="gotoPage(report.id)">Editar</button></li>
-                                                <li><button class="icon icon-copy"
+                                                <li *ngIf="!marketing"><button class="icon icon-copy"
                                                         (click)="onCloneReport(i)">Duplicar</button></li>
-                                                <li><button class="icon icon-trash-alt"
+                                                <li *ngIf="!marketing"><button class="icon icon-trash-alt"
                                                         (click)="onDeleteReport(i)">Eliminar</button></li>
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus"
                                                         (click)="openPreviewDialog(report.id)">Vista previa</button>
                                                 </li>
-                                                <li *ngIf="showOptionMenu(report.state.id)"><button
+                                                <li *ngIf="showOptionMenu(report.state.id) && !marketing"><button
                                                         class="icong icong-crown"
                                                         (click)="openHighlightDialog(report.id)">Destacar</button></li>
                                             </ul>
@@ -123,7 +123,7 @@
                     </div>
                 </mat-tab>
 
-                <mat-tab>
+                <mat-tab *ngIf="!marketing">
 					<ng-template mat-tab-label>
 						<span [ngClass]="{'pending': pendingToReview}">Por revisar</span>
 					</ng-template>

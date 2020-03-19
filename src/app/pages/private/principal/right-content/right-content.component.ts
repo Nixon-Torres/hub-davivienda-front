@@ -62,6 +62,7 @@ export class RightContentComponent implements OnInit {
     public listForm: FormGroup;
     public remarkable: boolean = false;
     public filterOptions: any;
+    public marketing: boolean;
 
     @Input()
     set currentObj(value: any) {
@@ -83,6 +84,7 @@ export class RightContentComponent implements OnInit {
             'reports': new FormArray([])
         });
         this.user = this.auth.getUserData();
+        this.marketing = this.auth.isMarketing();
     }
 
     toggleCalendar() {
@@ -218,6 +220,8 @@ export class RightContentComponent implements OnInit {
             let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
             query.filter.where['and'].push({ updatedAt: { between: [start, end] } });
         }
+
+        this.icurrentObj.currentState = '5e068c81d811c55eb40d14d0';
 
         this.getIFilterIds('users', 'userId', (users: Array<any>) => {
             this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
