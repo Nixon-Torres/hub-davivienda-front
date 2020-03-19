@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
         '5e068d1cb81d1c5f29b62977': 'bg-draft'
     };
     public STORAGE_URL = environment.STORAGE_FILES;
+    public marketing: boolean;
 
     constructor(
         private router: Router,
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit {
         this.user = this.auth.getUserData();
         this.startToListenRouter(this.router);
         this.startToListenSockets()
+        this.marketing = this.auth.isMarketing();
     }
 
     ngOnInit() {
