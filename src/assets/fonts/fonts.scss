@@ -222,3 +222,22 @@
 .icon-youtube:before {
 	content: "\e923";
 }
+
+.fas {
+    display: inline-block;
+    line-height: 1;
+}
+
+.fas:before {
+    font-size: 1em;
+    line-height: 1;
+    display: inline-block;
+    width: 1em;
+}
+
+.fa-laptop-code:before {
+    content: url("/assets/images/icons-font-awesome/laptop-code-solid.svg");
+}
+.fa-sign-out-alt:before {
+    content: url("/assets/images/icons-font-awesome/sign-out-alt-solid.svg");
+}
