@@ -1,6 +1,7 @@
 <div class="content">
     <div class="content--top">
-        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}</span>
+        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}
+            ({{pager.totalItems ? pager.totalItems : ' ' }})</span>
         <div class="insert_btn" *ngIf="!marketing">
             <button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
                     class="icon_insert">&nbsp;</span></button>
@@ -11,7 +12,7 @@
     </div>
 
     <div class="top-section-list">
-        <div class="back-btn" *ngIf="isFiltering()">
+        <div class="back-btn" *ngIf="isFiltering() && !marketing">
             <a (click)="cleanFilters()">&#60; Volver </a>
         </div>
         <div class="search-container">
@@ -29,7 +30,7 @@
                 <mat-form-field class="input-left">
                     <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
                 </mat-form-field>
-                <mat-form-field class="">
+                <mat-form-field class=""> *ngIf="!marketing"
                     <input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
                 </mat-form-field>
             </div>
@@ -92,7 +93,7 @@
                                     <div class="row" [ngClass]="report.state.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
-                                        <mat-checkbox [formControlName]="i">
+                                        <mat-checkbox [formControlName]="i" *ngIf="!marketing">
 
                                         </mat-checkbox>
                                         <h2 class="report--title">{{report.name}}</h2>
