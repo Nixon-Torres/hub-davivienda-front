@@ -183,6 +183,31 @@ export class RightContentComponent implements OnInit {
         });
     }
 
+    public getIFilterIdsPromise(endpoint: string, property: string): Promise<any> {
+        return new Promise((res) => {
+            let result: Array<string> = [];
+            if (!this.ifilter) {
+                return res(result);
+            }
+            const query = new loopback();
+            query.filter.where = { name: { like: this.ifilter, options: 'i' } };
+            query.filter.fields = { id: true };
+            this.http.get({
+                path: endpoint,
+                data: query.filter,
+                encode: true
+            }).subscribe((response: any) => {
+                result = response.body.map((a: any) => {
+                    const item: any = {};
+                    item[property] = a.id;
+                    return item;
+                });
+                res(result);
+            });
+        });
+    }
+
+
     public getIFilterIds(endpoint: string, property: string, fn: any): void {
         let result: Array<string> = [];
         if (!this.ifilter) return fn(result);
@@ -223,62 +248,100 @@ export class RightContentComponent implements OnInit {
 
         this.icurrentObj.currentState = '5e068c81d811c55eb40d14d0';
 
-        this.getIFilterIds('users', 'userId', (users: Array<any>) => {
-            this.getIFilterIds('states', 'stateId', (states: Array<any>) => {
-                this.getIFilterIds('sections', 'sectionId', (sections: Array<any>) => {
-                    this.readReportsAsReviewer((reportsAsReviewer: Array<any>) => {
-                        if (this.ifilter) {
-                            let orWhere: Array<any> = [
-                                { name: { like: this.ifilter, options: "i" } }
-                            ].concat(users, states, sections);
-                            query.filter.where['and'].push({ or: orWhere });
-                        } else {
-                            if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder != 'shared') {
-                              query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder });
-                            }
-                            this.icurrentObj.currentState ? query.filter.where['and'].push({ stateId: this.icurrentObj.currentState }) : null;
+        let users, states, sections;
+        this.getRelatedResources().then((res: any) => {
+           users = res.users;
+           states = res.states;
+           sections = res.sections;
+            this.readReportsAsReviewer((reportsAsReviewer: Array<any>) => {
+                if (this.ifilter) {
+                    let orWhere: Array<any> = [
+                        { name: { like: this.ifilter, options: "i" } }
+                    ].concat(users, sections);
+
+                    // Only insert state condition if its not filtering by state already
+                    if (!this.icurrentObj.currentState) {
+                        orWhere = orWhere.concat(states);
+                    }
+                    query.filter.where['and'].push({ or: orWhere });
+                }
+                    if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder !== 'shared') {
+                        query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder });
+                    }
+
+                    if (this.icurrentObj.currentState) {
+                        query.filter.where['and'].push({ stateId: this.icurrentObj.currentState });
+                    }
+
+                let pendingWhere;
+                if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') {
+                    query.filter.include.push({ relation: "authors" });
+                } else {
+                    if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
+                        let iFilterReviewed = false;
+                        query.filter.where['and'].push({ reviewed: iFilterReviewed });
+                    }
+
+                    pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
+
+                    if (this.ifilterreviewed) {
+                        if (!this.marketing) {
+                            query.filter.where['and'].push({ownerId: this.user.id});
                         }
-
-                        let pendingWhere;
-                        if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') {
-                          query.filter.include.push({ relation: "authors" });
-                        } else {
-                          if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
-                              let iFilterReviewed = false;
-                              query.filter.where['and'].push({ reviewed: iFilterReviewed });
-                          }
-
-                          pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
-                          if (this.ifilterreviewed) {
-                              query.filter.where['and'].push({ ownerId: this.user.id });
-                          } else {
-                              query.filter.where['and'].push({ id: { inq: reportsAsReviewer } });
-                              if (this.isFiltered) {
-                                  query.filter.where['and'].push({ reviewed: this.isReviewed });
-                              }
-                          }
+                    } else {
+                        query.filter.where['and'].push({ id: { inq: reportsAsReviewer } });
+                        if (this.isFiltered) {
+                            query.filter.where['and'].push({ reviewed: this.isReviewed });
                         }
+                    }
+                }
 
-                        pendingWhere['and'].push({ id: { inq: reportsAsReviewer } });
-                        pendingWhere['and'].push({ reviewed: false });
-                        this.pendignForReview(pendingWhere);
+                pendingWhere['and'].push({ id: { inq: reportsAsReviewer } });
+                pendingWhere['and'].push({ reviewed: false });
+                this.pendignForReview(pendingWhere);
 
-                        if (pager) {
-                            query.filter.limit = this.pager.limit;
-                            query.filter.skip = pager.skip;
-                            this.pager.selected = pager.index;
-                        } else {
-                            this.loadPager(query.filter.where);
-                            query.filter.limit = this.pager.limit;
-                            query.filter.skip = 0;
-                        }
-                        query.filter.order = "id DESC";
+                if (pager) {
+                    query.filter.limit = this.pager.limit;
+                    query.filter.skip = pager.skip;
+                    this.pager.selected = pager.index;
+                } else {
+                    this.loadPager(query.filter.where);
+                    query.filter.limit = this.pager.limit;
+                    query.filter.skip = 0;
+                }
+                query.filter.order = "id DESC";
 
-                        this.clearCheckboxes(this.listForm.controls.reports as FormArray);
-                        this.getReports(query);
+                this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+                this.getReports(query);
+            });
+        });
+    }
+
+    private getRelatedResources() {
+        return new Promise((res) => {
+            let users;
+            let states;
+            let sections;
+            this.getIFilterIdsPromise('users', 'ownerId')
+                .then((pusers) => {
+                    users = pusers;
+                    return this.getIFilterIdsPromise('sections', 'sectionId');
+                })
+                .then((psections) => {
+                    sections = psections;
+                    if (!this.icurrentObj.currentState) {
+                        return this.getIFilterIdsPromise('states', 'stateId');
+                    }
+                    return [];
+                })
+                .then((pstates) => {
+                    states = pstates;
+                    return res({
+                        users,
+                        states,
+                        sections
                     });
                 });
-            });
         });
     }
 
