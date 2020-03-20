@@ -246,7 +246,9 @@ export class RightContentComponent implements OnInit {
             query.filter.where.and.push({updatedAt: {between: [start, end]}});
         }
 
-        this.icurrentObj.currentState = '5e068c81d811c55eb40d14d0';
+        if (this.marketing) {
+            this.icurrentObj.currentState = '5e068c81d811c55eb40d14d0';
+        }
 
         let users, states, sections;
         this.getRelatedResources().then((res: any) => {
