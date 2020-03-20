@@ -9,13 +9,40 @@
 			<span>Regresar al dashboard</span>
 		</a>
 
+        <!-- NOTIFICATIONS -->
+        <button
+            class="notifications all-right h-btn" mat-button matRipple
+            [matMenuTriggerFor]="notifyMenu"
+            (menuOpened)="isOpened($event)"
+            *ngIf="!marketing">
+            <i class="material-icons notifications_icon" matBadge="{{ntfQty}}" matBadgeSize="medium">notifications</i>
+        </button>
+        <mat-menu #notifyMenu="matMenu">
+            <h1 id="notificationHeader">Notificaciones</h1>
+            <section>
+                <button mat-menu-item
+                        [ngClass]="{'to-check' : !notification.readed}"
+                        *ngFor="let notification of notifications"
+                        (click)="openNotf(notification.reportId, notification.readed)">
+                    <img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
+                    <div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
+                    <h6>{{ notification.subject }}</h6>
+                    <p>{{ notification.text }}</p>
+                    <small>{{ notification.timeAgo }}</small>
+                </button>
+            </section>
+            <footer>
+                <a [routerLink]="['notifications']">Ver todas las notificaciones</a>
+            </footer>
+        </mat-menu>
+
 		<!-- USER MENU -->
-		<div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple>
+		<div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing">
             <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
             <img *ngIf="user.photo" src="{{STORAGE_URL}}{{user.photo}}">
 			<span>{{ user.name }}</span>
 		</div>
-		<mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">
+        <mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">
 		  	<button mat-menu-item (click)="gotoTo()">
 		  		<!-- <i class="material-icons menu-icons">person</i> -->
 		  		<span>Editar perfiles</span>
@@ -26,30 +53,14 @@
 		  	</button>
 		</mat-menu>
 
-		<!-- NOTIFICATIONS -->
-		<button
-			class="h-btn" mat-button matRipple
-			[matMenuTriggerFor]="notifyMenu"
-			(menuOpened)="isOpened($event)">
-			<i class="material-icons notifications_icon" matBadge="{{ntfQty}}" matBadgeSize="medium">notifications</i>
-		</button>
-		<mat-menu #notifyMenu="matMenu">
-			<h1 id="notificationHeader">Notificaciones</h1>
-			<section>
-			  	<button mat-menu-item
-			  		[ngClass]="{'to-check' : !notification.readed}"
-			  		*ngFor="let notification of notifications"
-			  		(click)="openNotf(notification.reportId, notification.readed)">
-		  			<img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
-		  			<div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
-			  		<h6>{{ notification.subject }}</h6>
-			  		<p>{{ notification.text }}</p>
-			  		<small>{{ notification.timeAgo }}</small>
-			  	</button>
-			</section>
-		  	<footer>
-		  		<a [routerLink]="['notifications']">Ver todas las notificaciones</a>
-		  	</footer>
-		</mat-menu>
+        <!-- USER MARKETING MENU -->
+        <div class="user-menu all-right" *ngIf="marketing">
+            <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
+            <img *ngIf="user.photo" src="{{STORAGE_URL}}{{user.photo}}">
+        </div>
+        <button mat-button matRipple class="logout" *ngIf="marketing" (click)="logout()">
+            <span>Cerrar sesión</span>
+            <span class="fas fa-sign-out-alt"></span>
+        </button>
 	</div>
 </header>

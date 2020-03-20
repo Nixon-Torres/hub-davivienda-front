@@ -33,6 +33,11 @@ export class AuthService {
         return (token ? (attr ? token.user[attr] : token.user) : {});
     }
 
+    public isMarketing(): any {
+        let roles = this.getUserData('roles');
+        return roles && roles.find((role) => role === 'marketing' ) ? true : false;
+    }
+
     public login(context: LoginContext): Observable<any> {
         return new Observable((observer) => {
             this.getToken(context, (error: any, token: AccessTokenInterface) => {

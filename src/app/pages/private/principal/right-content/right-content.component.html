@@ -1,17 +1,18 @@
 <div class="content">
     <div class="content--top">
-        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}</span>
-        <div class="insert_btn">
+        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}
+            ({{pager.totalItems ? pager.totalItems : ' ' }})</span>
+        <div class="insert_btn" *ngIf="!marketing">
             <button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
                     class="icon_insert">&nbsp;</span></button>
         </div>
-        <div class="info_btn">
+        <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
         </div>
     </div>
 
     <div class="top-section-list">
-        <div class="back-btn" *ngIf="isFiltering()">
+        <div class="back-btn" *ngIf="isFiltering() && !marketing">
             <a (click)="cleanFilters()">&#60; Volver </a>
         </div>
         <div class="search-container">
@@ -29,7 +30,7 @@
                 <mat-form-field class="input-left">
                     <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
                 </mat-form-field>
-                <mat-form-field class="">
+                <mat-form-field class=""> *ngIf="!marketing"
                     <input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
                 </mat-form-field>
             </div>
@@ -92,7 +93,7 @@
                                     <div class="row" [ngClass]="report.state.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
-                                        <mat-checkbox [formControlName]="i">
+                                        <mat-checkbox [formControlName]="i" *ngIf="!marketing">
 
                                         </mat-checkbox>
                                         <h2 class="report--title">{{report.name}}</h2>
@@ -104,14 +105,14 @@
                                             <ul class="report--menu-list">
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-edit"
                                                         (click)="gotoPage(report.id)">Editar</button></li>
-                                                <li><button class="icon icon-copy"
+                                                <li *ngIf="!marketing"><button class="icon icon-copy"
                                                         (click)="onCloneReport(i)">Duplicar</button></li>
-                                                <li><button class="icon icon-trash-alt"
+                                                <li *ngIf="!marketing"><button class="icon icon-trash-alt"
                                                         (click)="onDeleteReport(i)">Eliminar</button></li>
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus"
                                                         (click)="openPreviewDialog(report.id)">Vista previa</button>
                                                 </li>
-                                                <li *ngIf="showOptionMenu(report.state.id)"><button
+                                                <li *ngIf="showOptionMenu(report.state.id) && !marketing"><button
                                                         class="icong icong-crown"
                                                         (click)="openHighlightDialog(report.id)">Destacar</button></li>
                                             </ul>
@@ -123,7 +124,7 @@
                     </div>
                 </mat-tab>
 
-                <mat-tab>
+                <mat-tab *ngIf="!marketing">
 					<ng-template mat-tab-label>
 						<span [ngClass]="{'pending': pendingToReview}">Por revisar</span>
 					</ng-template>

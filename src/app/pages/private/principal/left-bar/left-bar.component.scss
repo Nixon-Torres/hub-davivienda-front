@@ -59,6 +59,12 @@
              font-weight: 500;
          }
      }
+     &.marketing {
+         padding-bottom: 0 !important;
+         li:last-child {
+             border-bottom: 0;
+         }
+     }
  }
 
 .options {
@@ -85,6 +91,12 @@
 		&.variation {
 			background: #F2F2F2;
 		}
+        &.fas {
+            &:before {
+                margin-right: 7px;
+                font-size: 1.25em;
+            }
+        }
 	}
 
 	&--list {
@@ -199,11 +211,11 @@
 				top: 0;
 				width: 35px;
 			}
-
-
 		}
 	}
-
+    &:last-child {
+        border-bottom: solid 1px #E7EAF1;
+    }
 }
 
 .mat-raised-button {

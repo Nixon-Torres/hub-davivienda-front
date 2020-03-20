@@ -19,7 +19,8 @@ header {
         width: 88%;
         height: 100%;
         max-width: 1440px;
-
+        display: flex;
+        align-items: center;
         img.logo-principal {
             height: 70px;
             margin-left: -15px;
@@ -48,12 +49,7 @@ header {
         }
 
         .h-btn {
-            float: right;
             border-left: solid 1px #EDEDED;
-
-            &:hover {
-                cursor: pointer;
-            }
         }
 
         & > button {
@@ -80,7 +76,6 @@ header {
         }
 
         .user-menu {
-
             img {
                 height: 45px;
                 margin: 12.5px 15px;
@@ -105,10 +100,31 @@ header {
             }
         }
 
-        button {
+        .notifications {
+            outline: none;
             .notifications_icon{
                 color: silver;
             }
         }
+    }
+    .logout {
+        font-size: 0.875rem;
+        font-family: 'Helvetica Neue', sans-serif;
+        color: #616161;
+        display: flex;
+        align-items: center;
+        outline: none;
+        .fas {
+            font-size: 0.938rem;
+            margin-left: 7px;
+        }
+    }
+    .logout, .h-btn {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .all-right {
+        margin-left: auto;
     }
 }
