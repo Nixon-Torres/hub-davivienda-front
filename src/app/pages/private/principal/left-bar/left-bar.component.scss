@@ -2,12 +2,15 @@
 	width: 100%;
 
 	a, p {
-		font-weight: 400 !important;
+		font-weight: 400;
 	}
      .icon, .fas {
          &:before {
              margin-right: 13px;
          }
+     }
+     .options--name {
+         font-weight: 600;
      }
 }
 
@@ -79,8 +82,8 @@
 	font-size: 1em;
 
 	&--name {
-		color: #747474;
-		font-weight: 500;
+		color: #616161;
+		font-weight: 600;
 		height: 60px;
 		line-height: 60px;
 		padding-left: 6%;
