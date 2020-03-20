@@ -24,10 +24,12 @@ export class LeftBarComponent implements OnInit {
     private deletedStateEnabled = false;
     public showMenu: boolean = false;
     public user: any = {};
+    public marketing: boolean;
 
     public list: any = {
         folders: [],
-        states: []
+        states: [],
+        categories: []
     }
 
     @Input()
@@ -46,6 +48,7 @@ export class LeftBarComponent implements OnInit {
         private auth: AuthService,
     ) {
         this.user = this.auth.getUserData();
+        this.marketing = this.auth.isMarketing();
     }
 
     openDialog(): void {
@@ -68,6 +71,36 @@ export class LeftBarComponent implements OnInit {
             this.setCurrentFolder(folder);
         });
         this.setShowMenu();
+        if(this.marketing) {
+            this.loadCategories();
+        }
+    }
+    private loadCategories() {
+        this.list.categories = [{
+            name: 'Actualidad financiera',
+            count: 0,
+        }, {
+            name: 'Informes especializados',
+            count: 0,
+        }, {
+            name: 'Región centroamericana',
+            count: 0,
+        }, {
+            name: 'Experiencia sectorial',
+            count: 0,
+        }, {
+            name: 'Sector empresarial',
+            count: 0,
+        }, {
+            name: '¿Cómo invertir?',
+            count: 0,
+        }, {
+            name: 'Recursos interactivos',
+            count: 0,
+        }, {
+            name: '¿Quiénes somos?',
+            count: 0,
+        }]
     }
 
     private loadFolders() {

@@ -1,4 +1,4 @@
-<div class="content-bar">
+<div class="content-bar" *ngIf="!marketing">
     <div class="options" (click)="changeViewFn({reports:true, editSite:false})">
         <p class="options--name icon icon-copy">Mis informes</p>
         <ul class="options--list">
@@ -33,3 +33,18 @@
         <p class="options--name icon variation">Editar sitio</p>
     </div>
 </div>
+
+<div class="content-bar" *ngIf="marketing">
+    <div class="options">
+        <p class="options--name icon icon-folder variation">Categorías</p>
+    </div>
+    <div class="options">
+        <p class="options--name fas fa-home"><span></span>Home</p>
+        <ul class="options--list options-folder marketing">
+            <li *ngFor="let category of list.categories" [ngClass]="{active: isFolderActive(category.id)}">
+                <a>{{category.name}}</a>
+                <span class="cnt">{{category.count}}</span></li>
+        </ul>
+    </div>
+</div>
+
