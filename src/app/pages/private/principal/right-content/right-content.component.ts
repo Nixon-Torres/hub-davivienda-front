@@ -254,7 +254,10 @@ export class RightContentComponent implements OnInit {
             states = res.states;
             sections = res.sections;
             this.readReportsAsReviewer((reportsAsReviewer: Array<any>) => {
+                // ifilter is used for the input search, if defined the query must include
+                // the related resources found (users, states and sections)
                 if (this.ifilter) {
+                    // First filter is used to search by report name, then it adds the others
                     let orWhere: Array<any> = [
                         {name: {like: this.ifilter, options: 'i'}}
                     ].concat(users, sections);
@@ -265,10 +268,13 @@ export class RightContentComponent implements OnInit {
                     }
                     query.filter.where.and.push({or: orWhere});
                 }
+
+                // Include the folderId filter, only if we are not searching in the shared folder
                 if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder !== 'shared') {
                     query.filter.where.and.push({folderId: this.icurrentObj.currentFolder});
                 }
 
+                // If currentState is set (filtering by state), include it
                 if (this.icurrentObj.currentState) {
                     query.filter.where.and.push({stateId: this.icurrentObj.currentState});
                 }
