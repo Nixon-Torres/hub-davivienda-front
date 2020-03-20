@@ -4,6 +4,11 @@
 	a, p {
 		font-weight: 400 !important;
 	}
+     .icon, .fas {
+         &:before {
+             margin-right: 13px;
+         }
+     }
 }
 
  li.edit-btn-item {
@@ -80,7 +85,8 @@
 		line-height: 60px;
 		padding-left: 6%;
 		text-align: left;
-
+        display: flex;
+        align-items: center;
         &:before  {
             color: #bec5d0;
         }
