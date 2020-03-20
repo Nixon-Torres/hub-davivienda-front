@@ -1,21 +1,20 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {FormGroup, FormArray, FormControl} from '@angular/forms';
+import {Router} from '@angular/router';
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-
-import { environment } from '../../../../../environments/environment';
-import { Report } from '../../board/board.model';
-import { loopback } from '../../../../models/common/loopback.model';
-import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
-import { HighlightDialogComponent } from '../highlight-dialog/highlight-dialog.component';
-import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
-import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import {environment} from '../../../../../environments/environment';
+import {Report} from '../../board/board.model';
+import {loopback} from '../../../../models/common/loopback.model';
+import {PreviewDialogComponent} from '../../preview-dialog/preview-dialog.component';
+import {HighlightDialogComponent} from '../highlight-dialog/highlight-dialog.component';
+import {CreateReportDialogComponent} from '../create-report-dialog/create-report-dialog.component';
+import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 import * as moment from 'moment';
-import { AuthService } from '../../../../services/auth.service';
-import { HttpService } from '../../../../services/http.service';
-import { AsideFoldersService } from 'src/app/services/aside-folders.service';
+import {AuthService} from '../../../../services/auth.service';
+import {HttpService} from '../../../../services/http.service';
+import {AsideFoldersService} from 'src/app/services/aside-folders.service';
 
 @Component({
     selector: 'app-right-content',
@@ -28,12 +27,12 @@ export class RightContentComponent implements OnInit {
 
     readonly DRAFT_KEY: string = environment.DRAFT_KEY;
 
-    public calendarOpen: boolean = false;
+    public calendarOpen = false;
     public startDate: any;
     public endDate: any;
 
     user: any = {};
-    icurrentObj: {
+    icurrentObj: any = {
         currentFolder: null,
         currentState: null,
         deletedFg: false,
@@ -42,25 +41,25 @@ export class RightContentComponent implements OnInit {
 
     ifilter: string;
     ifilterdate: any;
-    ifilterreviewed: boolean = true;
+    ifilterreviewed = true;
     isReviewed: boolean;
-    isFiltered: boolean = false;
+    isFiltered = false;
     pendingToReview = false;
     public list: any = {
         reports: [],
         folders: [],
         reviewed: [],
         notReviewed: []
-    }
+    };
     public pager: any = {
         limit: 10,
         selected: 1,
         totalItems: 0,
         totalPages: 0,
         pages: []
-    }
+    };
     public listForm: FormGroup;
-    public remarkable: boolean = false;
+    public remarkable = false;
     public filterOptions: any;
     public marketing: boolean;
 
@@ -81,7 +80,7 @@ export class RightContentComponent implements OnInit {
         private folderService: AsideFoldersService
     ) {
         this.listForm = new FormGroup({
-            'reports': new FormArray([])
+            reports: new FormArray([])
         });
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
@@ -99,8 +98,8 @@ export class RightContentComponent implements OnInit {
         this.dialog.open(CreateReportDialogComponent, {
             width: '1500px',
             data: {
-                'folderId': (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
-                'stateId': '5e068d1cb81d1c5f29b62977'
+                folderId: (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
+                stateId: '5e068d1cb81d1c5f29b62977'
             }
         });
     }
@@ -123,8 +122,8 @@ export class RightContentComponent implements OnInit {
 
     private saveReport(clone: any): void {
         this.http.post({
-            'path': 'reports',
-            'data': clone
+            path: 'reports',
+            data: clone
         }).subscribe(() => {
             this.loadReports();
             this.folderService.loadStates();
@@ -135,7 +134,7 @@ export class RightContentComponent implements OnInit {
     private getFolders(): void {
         this.folderService.$listenFolders.subscribe((data: any) => {
             this.list.folders = data;
-        })
+        });
     }
 
     public gotoPage(input: string) {
@@ -162,7 +161,7 @@ export class RightContentComponent implements OnInit {
         if (!this.isFiltered) {
             this.list.reports = this.reviewredFilter(reportList, false);
         }
-        return this.reviewredFilter(reportList, true)
+        return this.reviewredFilter(reportList, true);
     }
 
     private loadPager(where: any): void {
@@ -176,8 +175,8 @@ export class RightContentComponent implements OnInit {
             this.pager.pages = [];
             for (let i = 1; i <= this.pager.totalPages; i++) {
                 this.pager.pages.push({
-                    'skip': (i - 1) * this.pager.limit,
-                    'index': i
+                    skip: (i - 1) * this.pager.limit,
+                    index: i
                 });
             }
         });
@@ -190,8 +189,8 @@ export class RightContentComponent implements OnInit {
                 return res(result);
             }
             const query = new loopback();
-            query.filter.where = { name: { like: this.ifilter, options: 'i' } };
-            query.filter.fields = { id: true };
+            query.filter.where = {name: {like: this.ifilter, options: 'i'}};
+            query.filter.fields = {id: true};
             this.http.get({
                 path: endpoint,
                 data: query.filter,
@@ -207,20 +206,21 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-
     public getIFilterIds(endpoint: string, property: string, fn: any): void {
         let result: Array<string> = [];
-        if (!this.ifilter) return fn(result);
-        var query = new loopback();
-        query.filter.where['name'] = { like: this.ifilter, options: "i" };
-        query.filter.fields = { id: true };
+        if (!this.ifilter) {
+            return fn(result);
+        }
+        const query = new loopback();
+        query.filter.where.name = {like: this.ifilter, options: 'i'};
+        query.filter.fields = {id: true};
         this.http.get({
             path: endpoint,
             data: query.filter,
             encode: true
         }).subscribe((response: any) => {
             result = response.body.map((a: any) => {
-                let item: any = {};
+                const item: any = {};
                 item[property] = a.id;
                 return item;
             });
@@ -230,74 +230,74 @@ export class RightContentComponent implements OnInit {
 
     public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
-        var query = new loopback();
-        query.filter.where = { and: [] };
-        query.filter.where['and'].push({ trash: typeof this.icurrentObj.deletedFg !== 'undefined' ? this.icurrentObj.deletedFg : false });
+        const query = new loopback();
+        query.filter.where = {and: []};
+        query.filter.where.and.push({trash: typeof this.icurrentObj.deletedFg !== 'undefined' ? this.icurrentObj.deletedFg : false});
         query.filter.include.push(
-            { relation: "folder" },
-            { relation: "user" },
-            { relation: "state" },
-            { relation: "section" }
+            {relation: 'folder'},
+            {relation: 'user'},
+            {relation: 'state'},
+            {relation: 'section'}
         );
 
         if (this.ifilterdate) {
-            let start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
-            let end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
-            query.filter.where['and'].push({ updatedAt: { between: [start, end] } });
+            const start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
+            const end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
+            query.filter.where.and.push({updatedAt: {between: [start, end]}});
         }
 
         this.icurrentObj.currentState = '5e068c81d811c55eb40d14d0';
 
         let users, states, sections;
         this.getRelatedResources().then((res: any) => {
-           users = res.users;
-           states = res.states;
-           sections = res.sections;
+            users = res.users;
+            states = res.states;
+            sections = res.sections;
             this.readReportsAsReviewer((reportsAsReviewer: Array<any>) => {
                 if (this.ifilter) {
                     let orWhere: Array<any> = [
-                        { name: { like: this.ifilter, options: "i" } }
+                        {name: {like: this.ifilter, options: 'i'}}
                     ].concat(users, sections);
 
                     // Only insert state condition if its not filtering by state already
                     if (!this.icurrentObj.currentState) {
                         orWhere = orWhere.concat(states);
                     }
-                    query.filter.where['and'].push({ or: orWhere });
+                    query.filter.where.and.push({or: orWhere});
                 }
-                    if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder !== 'shared') {
-                        query.filter.where['and'].push({ folderId: this.icurrentObj.currentFolder });
-                    }
+                if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder !== 'shared') {
+                    query.filter.where.and.push({folderId: this.icurrentObj.currentFolder});
+                }
 
-                    if (this.icurrentObj.currentState) {
-                        query.filter.where['and'].push({ stateId: this.icurrentObj.currentState });
-                    }
+                if (this.icurrentObj.currentState) {
+                    query.filter.where.and.push({stateId: this.icurrentObj.currentState});
+                }
 
                 let pendingWhere;
                 if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') {
-                    query.filter.include.push({ relation: "authors" });
+                    query.filter.include.push({relation: 'authors'});
                 } else {
-                    if (this.icurrentObj.currentState == '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
-                        let iFilterReviewed = false;
-                        query.filter.where['and'].push({ reviewed: iFilterReviewed });
+                    if (this.icurrentObj.currentState === '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
+                        const iFilterReviewed = false;
+                        query.filter.where.and.push({reviewed: iFilterReviewed});
                     }
 
                     pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
 
                     if (this.ifilterreviewed) {
                         if (!this.marketing) {
-                            query.filter.where['and'].push({ownerId: this.user.id});
+                            query.filter.where.and.push({ownerId: this.user.id});
                         }
                     } else {
-                        query.filter.where['and'].push({ id: { inq: reportsAsReviewer } });
+                        query.filter.where.and.push({id: {inq: reportsAsReviewer}});
                         if (this.isFiltered) {
-                            query.filter.where['and'].push({ reviewed: this.isReviewed });
+                            query.filter.where.and.push({reviewed: this.isReviewed});
                         }
                     }
                 }
 
-                pendingWhere['and'].push({ id: { inq: reportsAsReviewer } });
-                pendingWhere['and'].push({ reviewed: false });
+                pendingWhere.and.push({id: {inq: reportsAsReviewer}});
+                pendingWhere.and.push({reviewed: false});
                 this.pendignForReview(pendingWhere);
 
                 if (pager) {
@@ -309,7 +309,7 @@ export class RightContentComponent implements OnInit {
                     query.filter.limit = this.pager.limit;
                     query.filter.skip = 0;
                 }
-                query.filter.order = "id DESC";
+                query.filter.order = 'id DESC';
 
                 this.clearCheckboxes(this.listForm.controls.reports as FormArray);
                 this.getReports(query);
@@ -346,10 +346,10 @@ export class RightContentComponent implements OnInit {
     }
 
     private getReports(query: any) {
-        let path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') ? `users/${this.user.id}/reportsa` : 'reports';
+        const path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') ? `users/${this.user.id}/reportsa` : 'reports';
         this.list.reports = [];
         this.http.get({
-            path: path,
+            path,
             data: query.filter,
             encode: true
         }).subscribe((response: any) => {
@@ -373,7 +373,7 @@ export class RightContentComponent implements OnInit {
     }
 
     private addCheckboxes(reports: Array<any>): void {
-        for (let iReport in reports) {
+        for (const iReport in reports) {
             if (reports.hasOwnProperty(iReport)) {
                 const control = new FormControl(false);
                 (this.listForm.controls.reports as FormArray).push(control);
@@ -394,8 +394,8 @@ export class RightContentComponent implements OnInit {
     }
 
     public moveReports(event: any): void {
-        let selecteds: Array<string> = this.getCheckboxesSelected();
-        let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+        const selecteds: Array<string> = this.getCheckboxesSelected();
+        const toUpdate: Array<any> = this.list.reports.filter((a: any) => {
             if (selecteds.indexOf(a.id) !== -1) {
                 a.folderId = event.value;
                 return true;
@@ -404,8 +404,10 @@ export class RightContentComponent implements OnInit {
         });
 
         this.rcPutReport(toUpdate, 0, () => {
-            let folder = this.list.folders.filter((a: any) => a.id == event.value)[0];
-            if (!folder) return;
+            const folder = this.list.folders.filter((a: any) => a.id == event.value)[0];
+            if (!folder) {
+                return;
+            }
             this.valueChange.emit({
                 state: this.icurrentObj.currentState,
                 deleted: this.icurrentObj.deletedFg,
@@ -432,7 +434,7 @@ export class RightContentComponent implements OnInit {
 
         this.http.get({
             path: `users/${this.user.id}/reportsr`,
-            data: { "fields": "id" },
+            data: {fields: 'id'},
             encode: true
         }).subscribe(
             (response: any) => {
@@ -446,8 +448,8 @@ export class RightContentComponent implements OnInit {
     }
 
     public restoreReports(): void {
-        let selecteds: Array<string> = this.getCheckboxesSelected();
-        let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+        const selecteds: Array<string> = this.getCheckboxesSelected();
+        const toUpdate: Array<any> = this.list.reports.filter((a: any) => {
             if (selecteds.indexOf(a.id) !== -1) {
                 a.trash = false;
                 return true;
@@ -463,7 +465,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public deleteReports(): void {
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
                 title: '',
@@ -473,9 +475,11 @@ export class RightContentComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
-            if (!result) return;
-            let selecteds: Array<string> = this.getCheckboxesSelected();
-            let toUpdate: Array<any> = this.list.reports.filter((a: any) => {
+            if (!result) {
+                return;
+            }
+            const selecteds: Array<string> = this.getCheckboxesSelected();
+            const toUpdate: Array<any> = this.list.reports.filter((a: any) => {
                 if (selecteds.indexOf(a.id) !== -1) {
                     a.trash = true;
                     return true;
@@ -492,7 +496,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public deleteAllReports(): void {
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
                 title: '',
@@ -502,7 +506,9 @@ export class RightContentComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
-            if (!result) return;
+            if (!result) {
+                return;
+            }
             this.http.get({
                 path: 'reports/',
                 data: {
@@ -514,8 +520,10 @@ export class RightContentComponent implements OnInit {
                 },
                 encode: true
             }).subscribe((response: any) => {
-                if (!response || !response.body || !response.body.length) return;
-                let toDelete = response.body.map((a: any) => a.id);
+                if (!response || !response.body || !response.body.length) {
+                    return;
+                }
+                const toDelete = response.body.map((a: any) => a.id);
                 this.rcDeeplyDeleteReport(toDelete, 0, () => {
                     this.loadReports(this.ifilter);
                 });
@@ -526,7 +534,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public deeplyDeleteReports(): void {
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
                 title: '',
@@ -536,17 +544,21 @@ export class RightContentComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
-            if (!result) return;
-            let reports: Array<string> = this.getCheckboxesSelected();
+            if (!result) {
+                return;
+            }
+            const reports: Array<string> = this.getCheckboxesSelected();
             this.rcDeeplyDeleteReport(reports, 0, () => {
                 this.loadReports(this.ifilter);
             });
         });
-    };
+    }
 
     public rcDeeplyDeleteReport(reports: Array<any>, index: number, fn: any) {
-        if(index == reports.length) return fn();
-        let report = reports[index];
+        if (index == reports.length) {
+            return fn();
+        }
+        const report = reports[index];
         this.http.delete({
             path: `reports/${report}`
         }).subscribe(() => {
@@ -562,23 +574,23 @@ export class RightContentComponent implements OnInit {
             fn();
             return;
         }
-        let report: any = reports[index];
-        let data: Report = {
-            'id': report.id,
-            'name': report.name,
-            'slug': report.slug,
-            'trash': report.trash,
-            'content': report.content,
-            'styles': report.styles,
-            'sectionTypeKey': report.sectionTypeKey,
-            'templateId': report.templateId,
-            'stateId': report.stateId,
-            'sectionId': report.sectionId,
-            'folderId': report.folderId
+        const report: any = reports[index];
+        const data: Report = {
+            id: report.id,
+            name: report.name,
+            slug: report.slug,
+            trash: report.trash,
+            content: report.content,
+            styles: report.styles,
+            sectionTypeKey: report.sectionTypeKey,
+            templateId: report.templateId,
+            stateId: report.stateId,
+            sectionId: report.sectionId,
+            folderId: report.folderId
         };
         this.http.patch({
-            'path': `reports/${data.id}`,
-            'data': data
+            path: `reports/${data.id}`,
+            data
         }).subscribe(
             () => {
                 index++;
@@ -626,11 +638,11 @@ export class RightContentComponent implements OnInit {
     }
 
     public onCloneReport(pos: number) {
-        let clone = Object.assign({}, this.list.reports[pos]);
+        const clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
 
-        let newReport: any = {
+        const newReport: any = {
             name: clone.name,
             slug: clone.slug,
             trash: false,
@@ -649,11 +661,11 @@ export class RightContentComponent implements OnInit {
 
     public onDeleteReport(pos: number) {
 
-        let isOutTrash = (!this.icurrentObj.deletedFg);
-        let dialogTitle = isOutTrash ? '¿Está seguro de enviar el reporte a la papelera?' : '¿Está seguro de eliminar definitivamente el reporte?';
-        let reportId = this.list.reports[pos].id;
-        let reportName = this.list.reports[pos].name;
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        const isOutTrash = (!this.icurrentObj.deletedFg);
+        const dialogTitle = isOutTrash ? '¿Está seguro de enviar el reporte a la papelera?' : '¿Está seguro de eliminar definitivamente el reporte?';
+        const reportId = this.list.reports[pos].id;
+        const reportName = this.list.reports[pos].name;
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
                 title: dialogTitle,
@@ -663,7 +675,7 @@ export class RightContentComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
-            if(result) {
+            if (result) {
                 if (isOutTrash) {    // Move to trash
                     this.http.patch({
                         path: 'reports/' + reportId,
@@ -700,14 +712,14 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-     public openPreviewDialog(idReport: string): void {
-        var paramsDialog = {
+    public openPreviewDialog(idReport: string): void {
+        const paramsDialog = {
             width: '80vw',
             height: '80vh',
             data: {
-                'reportId': idReport,
-                'styles': '',
-                'content': ''
+                reportId: idReport,
+                styles: '',
+                content: ''
             }
         };
 
@@ -723,11 +735,11 @@ export class RightContentComponent implements OnInit {
         const dialogRef = this.dialog.open(HighlightDialogComponent, {
             width: '760px',
             height: '900px',
-            data : { 'report' : found }
+            data: {report: found}
         });
 
         dialogRef.afterClosed().subscribe((result: any) => {
-            if (result.event === 'save' ) {
+            if (result.event === 'save') {
                 setTimeout(() => {
                     this.openConfirmation();
                     this.updateReports();
@@ -738,8 +750,12 @@ export class RightContentComponent implements OnInit {
     }
 
     public canHighlightReport(): boolean {
-        if(this.getCheckboxesSelected().length !== 1) return false;
-        if(this.icurrentObj.currentState === '5e068c81d811c55eb40d14d0') return true;
+        if (this.getCheckboxesSelected().length !== 1) {
+            return false;
+        }
+        if (this.icurrentObj.currentState === '5e068c81d811c55eb40d14d0') {
+            return true;
+        }
         const reportOnly = this.list.reports.filter(
             (a) => a.id == this.getCheckboxesSelected()[0] && a.stateId == '5e068c81d811c55eb40d14d0'
         );
@@ -747,12 +763,12 @@ export class RightContentComponent implements OnInit {
     }
 
     public showOptionMenu(state): boolean {
-        let found = this.user.roles.findIndex(element => element === 'Admin');
+        const found = this.user.roles.findIndex(element => element === 'Admin');
         return state === '5e068c81d811c55eb40d14d0' && found >= 0 ? true : false;
     }
 
     public isHighlighted(id): boolean {
-        let found = this.list.reports.find(element => element.id === id);
+        const found = this.list.reports.find(element => element.id === id);
         return found.stateId === '5e068c81d811c55eb40d14d0' && found.outstanding ? true : false;
     }
 
@@ -765,7 +781,7 @@ export class RightContentComponent implements OnInit {
             }
         });
 
-        dialogRef.afterClosed().subscribe((result : any) => {
+        dialogRef.afterClosed().subscribe((result: any) => {
         });
     }
 
