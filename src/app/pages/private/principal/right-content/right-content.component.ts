@@ -814,4 +814,16 @@ export class RightContentComponent implements OnInit {
     public updateReports() {
         this.loadReports(this.ifilter);
     }
+    public isFilteringByState(): boolean {
+        return this.icurrentObj.currentState;
+    }
+
+    public isShowingReviewedFilter() {
+        return !this.isFilteringByState() ||
+            (this.getCheckboxesSelected().length > 0 && this.isFilteringByState());
+    }
+
+    public isShowingReviewedList() {
+        return this.list.reviewed.length && !this.isFiltered && !this.isFilteringByState();
+    }
 }

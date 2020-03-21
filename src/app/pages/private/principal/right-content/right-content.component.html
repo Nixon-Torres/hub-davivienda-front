@@ -133,7 +133,7 @@
                             <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
                                 automáticamente.</p>
                         </div>
-                        <div class="folder_container" [formGroup]="selects" *ngIf="!icurrentObj.currentState || (getCheckboxesSelected().length > 0 && icurrentObj.currentState)">
+                        <div class="folder_container" [formGroup]="selects" *ngIf="isShowingReviewedFilter()">
                             <p class="info_move-text">Mover a:</p>
                             <mat-form-field class="simple" floatLabel="never">
                                 <mat-label class="folder_label">Escoger</mat-label>
@@ -146,8 +146,8 @@
                                 </mat-select>
 							</mat-form-field>
 
-                            <p class="info_move-text filter" *ngIf="!icurrentObj.currentState">Filtrar por:</p>
-                            <div class="filter-wrapper" *ngIf="!icurrentObj.currentState">
+                            <p class="info_move-text filter" *ngIf="!isFilteringByState()">Filtrar por:</p>
+                            <div class="filter-wrapper" *ngIf="!isFilteringByState()">
                                 <ng-select [items]="filterOptions"
                                         [clearable] = "false"
                                         [searchable] = "false"
@@ -194,12 +194,12 @@
                             </ul>
 
                             <!-- revised reports -->
-                            <div class="revised_content" *ngIf="list.reviewed?.length && !isFiltered && !icurrentObj.currentState">
+                            <div class="revised_content" *ngIf="isShowingReviewedList()">
                                 <ul class="report-list info_content" formArrayName="reports"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>
                                     <li *ngFor="let report of list.reviewed; let i = index">
-                                        <div class="row" [ngClass]="report.state.color">
+                                        <div class="row" [ngClass]="report.state?.color">
                                             <span class="report--span report_name">{{report.state.name}}</span>
                                             <mat-checkbox [formControlName]="i">
                                                 <span class="checkt"></span>
