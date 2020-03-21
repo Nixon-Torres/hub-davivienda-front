@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {FormGroup, FormArray, FormControl} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -62,12 +62,14 @@ export class RightContentComponent implements OnInit {
     public remarkable = false;
     public filterOptions: any;
     public marketing: boolean;
+    public selects: FormGroup;
 
     @Input()
     set currentObj(value: any) {
         this.icurrentObj = value;
-
         if (this.icurrentObj) {
+            this.resetSelect();
+            this.isFiltered = false;
             this.loadReports(this.ifilter);
         }
     }
@@ -84,6 +86,19 @@ export class RightContentComponent implements OnInit {
         });
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
+        this.selectsFn();
+    }
+
+    public selectsFn() {
+        this.selects = new FormGroup({
+            filterSelect: new FormControl('Escoger'),
+        })
+    }
+
+    public resetSelect() {
+        this.selects.reset({
+            filterSelect: 'Escoger'
+        })
     }
 
     toggleCalendar() {
@@ -145,6 +160,7 @@ export class RightContentComponent implements OnInit {
         this.ifilterreviewed = (event.index === 0 ? true : false);
         this.loadReports(this.ifilter);
         this.isFiltered = false;
+        this.resetSelect();
     }
 
     public reviewedFilter(event) {
@@ -278,6 +294,7 @@ export class RightContentComponent implements OnInit {
 
                 // If currentState is set (filtering by state), include it
                 if (this.icurrentObj.currentState) {
+                    this.resetSelect();
                     query.filter.where.and.push({stateId: this.icurrentObj.currentState});
                 }
 
@@ -364,7 +381,7 @@ export class RightContentComponent implements OnInit {
             this.addCheckboxes(response.body);
             setTimeout(() => {
                 this.list.reports = response.body;
-                if (!this.ifilterreviewed) {
+                if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
                     this.list.reviewed = this.getNotReviewed(this.list.reports);
                 }
             }, 100);
@@ -643,6 +660,7 @@ export class RightContentComponent implements OnInit {
         };
         this.loadReports();
         this.valueChange.emit(null);
+        this.resetSelect();
     }
 
     public onCloneReport(pos: number) {
@@ -795,5 +813,17 @@ export class RightContentComponent implements OnInit {
 
     public updateReports() {
         this.loadReports(this.ifilter);
+    }
+    public isFilteringByState(): boolean {
+        return this.icurrentObj.currentState;
+    }
+
+    public isShowingReviewedFilter() {
+        return !this.isFilteringByState() ||
+            (this.getCheckboxesSelected().length > 0 && this.isFilteringByState());
+    }
+
+    public isShowingReviewedList() {
+        return this.list.reviewed.length && !this.isFiltered && !this.isFilteringByState();
     }
 }

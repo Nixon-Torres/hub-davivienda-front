@@ -1,7 +1,7 @@
 <div class="content">
     <div class="content--top">
         <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}
-            ({{pager.totalItems ? pager.totalItems : ' ' }})</span>
+            ({{pager.totalItems ? pager.totalItems : '0' }})</span>
         <div class="insert_btn" *ngIf="!marketing">
             <button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
                     class="icon_insert">&nbsp;</span></button>
@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="top-section-list">
+    <div class="top-section-list" >
         <div class="back-btn" *ngIf="isFiltering() && !marketing">
             <a (click)="cleanFilters()">&#60; Volver </a>
         </div>
@@ -133,7 +133,7 @@
                             <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
                                 automáticamente.</p>
                         </div>
-                        <div class="folder_container">
+                        <div class="folder_container" [formGroup]="selects" *ngIf="isShowingReviewedFilter()">
                             <p class="info_move-text">Mover a:</p>
                             <mat-form-field class="simple" floatLabel="never">
                                 <mat-label class="folder_label">Escoger</mat-label>
@@ -146,8 +146,8 @@
                                 </mat-select>
 							</mat-form-field>
 
-                            <p class="info_move-text filter">Filtrar por:</p>
-                            <div class="filter-wrapper">
+                            <p class="info_move-text filter" *ngIf="!isFilteringByState()">Filtrar por:</p>
+                            <div class="filter-wrapper" *ngIf="!isFilteringByState()">
                                 <ng-select [items]="filterOptions"
                                         [clearable] = "false"
                                         [searchable] = "false"
@@ -155,7 +155,8 @@
                                         (change)="reviewedFilter($event)"
                                         bindLabel="value"
                                         bindValue="value"
-                                        class="custom-select custom-select--filter">
+                                        class="custom-select custom-select--filter"
+                                        formControlName="filterSelect">
                                 </ng-select>
                             </div>
                         </div>
@@ -193,12 +194,12 @@
                             </ul>
 
                             <!-- revised reports -->
-                            <div class="revised_content" *ngIf="list.reviewed?.length && !isFiltered">
+                            <div class="revised_content" *ngIf="isShowingReviewedList()">
                                 <ul class="report-list info_content" formArrayName="reports"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>
                                     <li *ngFor="let report of list.reviewed; let i = index">
-                                        <div class="row" [ngClass]="report.state.color">
+                                        <div class="row" [ngClass]="report.state?.color">
                                             <span class="report--span report_name">{{report.state.name}}</span>
                                             <mat-checkbox [formControlName]="i">
                                                 <span class="checkt"></span>
