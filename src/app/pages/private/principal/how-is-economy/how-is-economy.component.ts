@@ -5,11 +5,11 @@ import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confi
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-investment-strategies',
-    templateUrl: './investment-strategies.component.html',
-    styleUrls: ['./investment-strategies.component.scss']
+    selector: 'app-how-is-economy',
+    templateUrl: './how-is-economy.component.html',
+    styleUrls: ['./how-is-economy.component.scss']
 })
-export class InvestmentStrategiesComponent implements OnInit {
+export class HowIsEconomyComponent implements OnInit {
 
     public areas: any = [
         {label: 'outstanding', newReportId: '', oldReportId: ''},
@@ -25,6 +25,8 @@ export class InvestmentStrategiesComponent implements OnInit {
         currentReports: [],
         reportsCopy: []
     };
+    public report: any;
+    public newReport: any;
 
     public currentArea = '';
     public time = '';
@@ -54,7 +56,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     public getOutstandingReports() {
         this.http.get({
             path: 'reports/',
-            data: {where: {outstanding: true}},
+            data: {where: {howseconomy: true}},
             encode: true
         }).subscribe((response: any) => {
             this.list.outstandedReport = response.body;
@@ -77,8 +79,7 @@ export class InvestmentStrategiesComponent implements OnInit {
 
     public getCurrentReports() {
         const query = new loopback();
-        query.filter.where = {strategy: true};
-        query.filter.order = 'strategyArea ASC';
+        query.filter.where = {howseconomy: true};
 
         this.http.get({
             path: 'reports/',
@@ -86,26 +87,15 @@ export class InvestmentStrategiesComponent implements OnInit {
             encode: true
         }).subscribe((response: any) => {
             this.list.currentReports = response.body;
-            this.selectedReport();
+            this.report = this.list.currentReports && this.list.currentReports.length ? this.list.currentReports[0] : null;
+            this.header = this.report;
         }, (error: any) => {
             console.error(error);
         });
     }
 
     public onOptionsSelected(event) {
-        const oldReport = this.list.currentReports.find(e => e.strategyArea === this.currentArea);
-        const report = this.areas.find(e => e.label === this.currentArea);
-        const reportIndex = this.list.reports.findIndex(element => element.id === event.id);
-
-        report.newReportId = event.id;
-
-        if (oldReport && oldReport.id !== event.id) {
-            report.oldReportId = oldReport.id;
-        }
-
-        if (reportIndex >= 0) {
-            this.list.reports.splice(reportIndex, 1);
-        }
+        this.newReport = event;
     }
 
     public onCheck(area) {
@@ -113,23 +103,18 @@ export class InvestmentStrategiesComponent implements OnInit {
     }
 
     public onSAve() {
-        this.areas.forEach((element) => {
-
-            if (element.newReportId) {
-                this.updateReport(element.newReportId, element.label, true);
+        this.list.currentReports.forEach((report) => {
+            if (report.id !== this.newReport.id) {
+                this.updateReport(report.id, false);
+                this.updateReport(this.newReport.id, true);
             }
-
-            if (element.oldReportId) {
-                this.updateReport(element.oldReportId, '', false);
-            }
-
         });
 
         this.saveContent();
     }
 
-    public updateReport(id, label, strategy) {
-        const data = {strategy, strategyArea: label};
+    public updateReport(id, howseconomy) {
+        const data = {howseconomy};
         this.http.patch({
             path: 'reports/' + id,
             data
@@ -139,44 +124,13 @@ export class InvestmentStrategiesComponent implements OnInit {
         });
     }
 
-    public getOutstanding(area) {
-        return area === 'outstanding' ? true : false;
-    }
-
-    public selectedReport() {
-        let report;
-
-        this.areas.forEach((element) => {
-            report = this.list.currentReports.find(e => e.strategyArea === element.label);
-            if (report) {
-                switch (element.label) {
-                    case 'outstanding':
-                        this.header = report.name;
-                        break;
-                    case 'report1':
-                        this.reportOne = report.name;
-                        break;
-                    case 'report2':
-                        this.reportTwo = report.name;
-                        break;
-                    case 'report3':
-                        this.reportThree = report.name;
-                        break;
-                    case 'report4':
-                        this.reportFour = report.name;
-                        break;
-                }
-            }
-        });
-    }
-
     public saveContent() {
         const id = this.content ? '/' + this.content.id : '';
         const verb = this.content ? 'patch' : 'post';
 
         this.http[verb]({
             path: 'contents' + id,
-            data: {key: 'strategyKey'}
+            data: {key: 'howseconomyKey'}
         }).subscribe((response: any) => {
             this.getContent();
             this.getCurrentReports();
@@ -187,7 +141,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     public getContent() {
         this.http.get({
             path: 'contents',
-            data: {where: {key: 'strategyKey'}, include: ['lastUpdater']},
+            data: {where: {key: 'howseconomyKey'}, include: ['lastUpdater']},
             encode: true
         }).subscribe((response) => {
             if ((response.body as unknown as []).length > 0) {
@@ -203,7 +157,7 @@ export class InvestmentStrategiesComponent implements OnInit {
             width: '410px',
             data: {
                 title: 'Se ha publicado exitosamente los ajustes de',
-                subtitle: 'Estrategia para invertir'
+                subtitle: 'Como va la economía'
             }
         });
     }
