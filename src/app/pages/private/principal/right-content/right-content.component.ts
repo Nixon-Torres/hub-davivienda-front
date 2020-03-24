@@ -826,4 +826,10 @@ export class RightContentComponent implements OnInit {
     public isShowingReviewedList() {
         return this.list.reviewed.length && !this.isFiltered && !this.isFilteringByState();
     }
+
+    public checkElemet(event): void {
+        let action = event.checked ? 'add' : 'remove';
+        let parentElement = event.source._elementRef.nativeElement.parentNode;
+        parentElement.classList[action]('checked');
+    }
 }
