@@ -36,6 +36,7 @@ import { HighlightDialogComponent } from './highlight-dialog/highlight-dialog.co
 import { EditSiteComponent } from './edit-site/edit-site.component';
 
 import { InvestmentStrategiesComponent } from './investment-strategies/investment-strategies.component';
+import { HowIsEconomyComponent } from './how-is-economy/how-is-economy.component';
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 
@@ -64,7 +65,7 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, HowIsEconomyComponent],
     imports: [
         CommonModule,
         materialModules,
