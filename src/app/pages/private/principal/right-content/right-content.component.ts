@@ -63,6 +63,7 @@ export class RightContentComponent implements OnInit {
     public filterOptions: any;
     public marketing: boolean;
     public selects: FormGroup;
+    public tabIndex = 0;
 
     @Input()
     set currentObj(value: any) {
@@ -71,6 +72,9 @@ export class RightContentComponent implements OnInit {
             this.resetSelect();
             this.isFiltered = false;
             this.loadReports(this.ifilter);
+            if(this.icurrentObj.currentFolder) {
+                this.tabIndex = 0;
+            }
         }
     }
 
@@ -161,6 +165,9 @@ export class RightContentComponent implements OnInit {
         this.loadReports(this.ifilter);
         this.isFiltered = false;
         this.resetSelect();
+        if (!this.ifilterreviewed) {
+            this.cleanFilters();
+        }
     }
 
     public reviewedFilter(event) {
@@ -180,10 +187,10 @@ export class RightContentComponent implements OnInit {
         return this.reviewredFilter(reportList, true);
     }
 
-    private loadPager(where: any): void {
+    private loadPager(where: any, path?: any): void {
         this.http.get({
-            path: 'reports/count?where=',
-            data: where
+            path: !path ? 'reports/count?where=' : `users/${this.auth.getUserData('id')}/reportsa/count`,
+            data: !path ? where : ''
         }).subscribe((response: any) => {
             this.pager.totalItems = response.body.count;
             this.pager.totalPages = Math.ceil(this.pager.totalItems / this.pager.limit);
@@ -306,10 +313,11 @@ export class RightContentComponent implements OnInit {
                         const iFilterReviewed = false;
                         query.filter.where.and.push({reviewed: iFilterReviewed});
                     }
-
                     pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
-
                     if (this.ifilterreviewed) {
+                        pendingWhere.and.push({id: {inq: reportsAsReviewer}});
+                        pendingWhere.and.push({reviewed: false});
+                        this.pendignForReview(pendingWhere);
                         if (!this.marketing) {
                             query.filter.where.and.push({ownerId: this.user.id});
                         }
@@ -321,16 +329,12 @@ export class RightContentComponent implements OnInit {
                     }
                 }
 
-                pendingWhere.and.push({id: {inq: reportsAsReviewer}});
-                pendingWhere.and.push({reviewed: false});
-                this.pendignForReview(pendingWhere);
-
                 if (pager) {
                     query.filter.limit = this.pager.limit;
                     query.filter.skip = pager.skip;
                     this.pager.selected = pager.index;
                 } else {
-                    this.loadPager(query.filter.where);
+                    this.loadPager(query.filter.where, this.icurrentObj.currentFolder === 'shared');
                     query.filter.limit = this.pager.limit;
                     query.filter.skip = 0;
                 }
