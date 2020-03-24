@@ -202,7 +202,8 @@ export class InvestmentStrategiesComponent implements OnInit {
         this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'Se ha publicado exitosamente los ajustes de Estrategia para invertir',
+                title: 'Se ha publicado exitosamente los ajustes de',
+                subtitle: 'Estrategia para invertir'
             }
         });
     }

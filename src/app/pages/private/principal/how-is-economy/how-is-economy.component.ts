@@ -156,7 +156,8 @@ export class HowIsEconomyComponent implements OnInit {
         this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'Se ha publicado exitosamente los ajustes de Como va la economía',
+                title: 'Se ha publicado exitosamente los ajustes de',
+                subtitle: 'Como va la economía'
             }
         });
     }
