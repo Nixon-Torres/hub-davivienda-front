@@ -63,6 +63,7 @@ export class RightContentComponent implements OnInit {
     public filterOptions: any;
     public marketing: boolean;
     public selects: FormGroup;
+    public tabIndex = 0;
 
     @Input()
     set currentObj(value: any) {
@@ -71,6 +72,9 @@ export class RightContentComponent implements OnInit {
             this.resetSelect();
             this.isFiltered = false;
             this.loadReports(this.ifilter);
+            if(this.icurrentObj.currentFolder) {
+                this.tabIndex = 0;
+            }
         }
     }
 
@@ -161,6 +165,9 @@ export class RightContentComponent implements OnInit {
         this.loadReports(this.ifilter);
         this.isFiltered = false;
         this.resetSelect();
+        if (!this.ifilterreviewed) {
+            this.cleanFilters();
+        }
     }
 
     public reviewedFilter(event) {
