@@ -150,7 +150,7 @@ export class BannerComponent implements OnInit {
         this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'Se ha publicado exitosamente el destacado del informe:',
+                title: 'Se ha publicado exitosamente el destacado del informe',
                 subtitle: title,
             }
         });

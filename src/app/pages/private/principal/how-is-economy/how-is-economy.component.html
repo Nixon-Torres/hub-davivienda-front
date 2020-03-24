@@ -1,0 +1,43 @@
+				<article class="outstanding">
+					<header class="outstanding__header" (click)="showPanel = !showPanel">
+						<div class="outstanding__texts">
+							<p class="text--blue">Informe destacado - <b>Como va la econom&iacute;a</b></p>
+							<ul class="list" >
+								<li><span [ngClass]="{'icong-crown': true}">(Destacado)</span>
+                                    <span class="title">{{report?.name}}</span>
+                                    <p class="content">{{report?.smartContent}}</p>
+                                </li>
+							</ul>
+						</div>
+
+						<div class="outstanding__modification">
+							<p class="modification__title">Ultima modificación</p>
+							<p class="modification__value">{{time | date: "hh:mm a dd LLLL"}}</p>
+							<hr class="divider">
+							<p class="modification__title">Hecha por:</p>
+							<p class="modification__value">{{name}}</p>
+						</div>
+
+						<div class="outstanding__edit">
+							<button><span class="icon icon-edit"></span>editar</button>
+						</div>
+					</header>
+					<section class="outstanding__body" *ngIf="showPanel">
+						<form action="">
+							<div class="outstanding__fields">
+								<div class="form-field form-field--half">
+									<label for="outstandingTitle" class="icong-crown">Informe destacado</label>
+									<ng-select [items]="list.reports" bindValue="name" bindLabel="name"
+										placeholder="-Seleccione Informe destacado-"
+										[virtualScroll]="true" dropdownPosition="top" (click)="onCheck('outstanding')" (change)="onOptionsSelected($event)"
+										[clearable]="false" [(ngModel)]="header" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
+									</ng-select>
+								</div>
+							</div>
+							<div class="outstanding__buttons">
+								<button class="btn btn--border" (click)="showPanel = !showPanel">Cancelar</button>
+								<button class="btn btn--filled" (click)="onSAve()">Modificar</button>
+							</div>
+						</form>
+					</section>
+				</article>

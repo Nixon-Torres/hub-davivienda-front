@@ -43,7 +43,7 @@
 
     <div class="block-wrapper">
         <section class="tabs">
-            <mat-tab-group (selectedTabChange)="tabClick($event)">
+            <mat-tab-group (selectedTabChange)="tabClick($event)" [(selectedIndex)]="tabIndex">
                 <mat-tab label="Mis Informes">
                     <div>
                         <div class="folder_container" *ngIf="getCheckboxesSelected().length">
