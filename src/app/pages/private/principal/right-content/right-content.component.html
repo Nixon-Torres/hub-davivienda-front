@@ -77,6 +77,9 @@
                                 </ul>
                             </div>
                         </div>
+                        <div class="selected-count" *ngIf="getCheckboxesSelected().length">
+                            <p>{{getCheckboxesSelected().length}} de {{list.reports?.length}} Seleccionados</p>
+                        </div>
                         <div class="trash_info" *ngIf="icurrentObj.deletedFg">
                             <p>Los informes que lleven <b>más de 30 días</b> en la papelera se eliminarán
                                 automáticamente.</p>
@@ -93,7 +96,7 @@
                                     <div class="row" [ngClass]="report.state.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
-                                        <mat-checkbox [formControlName]="i" *ngIf="!marketing">
+                                        <mat-checkbox [formControlName]="i" *ngIf="!marketing" (change)="checkElemet($event)">
 
                                         </mat-checkbox>
                                         <h2 class="report--title">{{report.name}}</h2>
@@ -160,6 +163,9 @@
                                 </ng-select>
                             </div>
                         </div>
+                        <div class="selected-count" *ngIf="getCheckboxesSelected().length">
+                            <p>{{getCheckboxesSelected().length}} de {{list.reports?.length + list.reviewed?.length}} Seleccionados</p>
+                        </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index">
@@ -195,7 +201,7 @@
 
                             <!-- revised reports -->
                             <div class="revised_content" *ngIf="isShowingReviewedList()">
-                                <ul class="report-list info_content" formArrayName="reports"
+                                <ul class="report-list info_content" formArrayName="reviewed"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>
                                     <li *ngFor="let report of list.reviewed; let i = index">
