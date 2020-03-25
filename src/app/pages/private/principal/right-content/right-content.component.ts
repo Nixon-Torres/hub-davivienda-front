@@ -342,6 +342,7 @@ export class RightContentComponent implements OnInit {
                 query.filter.order = 'id DESC';
 
                 this.clearCheckboxes(this.listForm.controls.reports as FormArray);
+                this.clearCheckboxes(this.listForm.controls.reviewed as FormArray);
                 this.getReports(query);
             });
         });
