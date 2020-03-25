@@ -82,7 +82,8 @@ export class RightContentComponent implements OnInit {
         private folderService: AsideFoldersService
     ) {
         this.listForm = new FormGroup({
-            reports: new FormArray([])
+            reports: new FormArray([]),
+            reviewed: new FormArray([])
         });
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
@@ -92,7 +93,7 @@ export class RightContentComponent implements OnInit {
     public selectsFn() {
         this.selects = new FormGroup({
             filterSelect: new FormControl('Escoger'),
-        })
+        });
     }
 
     public resetSelect() {
@@ -371,7 +372,8 @@ export class RightContentComponent implements OnInit {
     }
 
     private getReports(query: any) {
-        const path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder == 'shared') ? `users/${this.user.id}/reportsa` : 'reports';
+        const path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') ?
+            `users/${this.user.id}/reportsa` : 'reports';
         this.list.reports = [];
         this.http.get({
             path,
@@ -401,7 +403,12 @@ export class RightContentComponent implements OnInit {
         for (const iReport in reports) {
             if (reports.hasOwnProperty(iReport)) {
                 const control = new FormControl(false);
-                (this.listForm.controls.reports as FormArray).push(control);
+
+                if (this.ifilterreviewed || (!this.ifilterreviewed && !reports[iReport].reviewed)) {
+                    (this.listForm.controls.reports as FormArray).push(control);
+                } else {
+                    (this.listForm.controls.reviewed as FormArray).push(control);
+                }
             }
         }
     }
@@ -413,9 +420,15 @@ export class RightContentComponent implements OnInit {
     }
 
     public getCheckboxesSelected(): Array<any> {
-        return this.listForm.value.reports
-            .map((v: any, i: number) => v ? this.list.reports[i].id : null)
+        let rsp = this.listForm.value.reports
+            .map((v: any, i: number) => v ? this.list.reports[i] : null)
             .filter((v: any) => v !== null);
+
+        rsp = rsp.concat(this.listForm.value.reviewed
+            .map((v: any, i: number) => v ? this.list.reviewed[i] : null)
+            .filter((v: any) => v !== null));
+
+        return rsp.map(e => e.id);
     }
 
     public moveReports(event: any): void {
