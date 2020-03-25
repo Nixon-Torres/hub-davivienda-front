@@ -23,6 +23,7 @@ import {Report} from './board.model';
 import {RevisionModalComponent} from './revision-modal/revision-modal.component';
 import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 import {UserInterface} from 'src/app/services/auth.service.model';
+import {CreationModalComponent} from './creation-modal/creation-modal.component';
 
 declare var grapesjs: any;
 
@@ -103,6 +104,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         approved: '5e068d1cb81d1c5f29b62974',
         published: '5e068c81d811c55eb40d14d0'
     };
+    private templates: any = {
+        html: '5e20ce2518175909bda0e824',
+        pdf: '5e20ced618175909bda0e825',
+        presentation: '5e20cf6f18175909bda0e826',
+        twoColumns:'5e20dc5018175909bda0e827'
+    };
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -146,6 +153,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
+                console.log('user', this.user);
+                if(!this.user.reportCreationWizardHidden) {
+                    this.openCreateModal(templateId, this.user.id);
+                }
             }
         });
 
@@ -168,6 +179,32 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         let elems = document.querySelectorAll('.fixed-action-btn');
         M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
+    }
+
+    private shouldHaveFileMessage(templateId: string): boolean {
+        let fileMessage: boolean;
+        if(templateId===this.templates.html || templateId===this.templates.twoColumns) {
+            fileMessage = false;
+        } else if(templateId===this.templates.pdf || templateId===this.templates.presentation) {
+            fileMessage = true;
+        }
+        return fileMessage
+    }
+
+    private openCreateModal(templateId: string, ownerId: string): void {
+        let text: string;
+        text = 'A continuación deberá hacer una descripción de su informe que contenga un máximo de 2000 caracteres';
+        text += this.shouldHaveFileMessage(templateId) ? ' y deberá cargar su archivo al final.' : '.';
+
+        this.dialog.open(CreationModalComponent, {
+            width: '470px',
+            data: {
+                title: '¡Antes de empezar!',
+                text: text,
+                templateId: templateId,
+                userId: ownerId
+            }
+        });
     }
 
     /** Get report form database
