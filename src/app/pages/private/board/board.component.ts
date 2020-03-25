@@ -153,7 +153,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
-                console.log('user', this.user);
                 if(!this.user.reportCreationWizardHidden) {
                     this.openCreateModal(templateId, this.user.id);
                 }

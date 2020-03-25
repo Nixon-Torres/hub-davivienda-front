@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HttpService} from '../../../../services/http.service';
 import {AuthService} from '../../../../services/auth.service';
-import {CookieStorage} from '../../../../services/storage/cookie.storage';
 
 @Component({
     selector: 'app-creation-modal',
