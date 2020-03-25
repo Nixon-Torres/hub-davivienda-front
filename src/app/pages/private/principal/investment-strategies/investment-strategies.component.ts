@@ -30,7 +30,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     public time = '';
     public name = '';
 
-    public content: any = [];
+    public content: any = null;
     public header: string;
     public reportOne: string;
     public reportTwo: string;
