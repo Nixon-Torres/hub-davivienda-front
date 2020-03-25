@@ -163,6 +163,9 @@
                                 </ng-select>
                             </div>
                         </div>
+                        <div class="selected-count" *ngIf="getCheckboxesSelected().length">
+                            <p>{{getCheckboxesSelected().length}} de {{list.reports?.length + list.reviewed?.length}} Seleccionados</p>
+                        </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index">
