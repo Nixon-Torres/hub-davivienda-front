@@ -25,18 +25,18 @@ export class CreationModalComponent implements OnInit {
         this.getTemplateName();
     }
 
-    private getTemplateName () {
+    private getTemplateName() {
         this.http.get({
             path: `templates/${this.data.templateId}`
-        }).subscribe((template:any) => {
+        }).subscribe((template: any) => {
             if(template) {
                 this.templateName = template.body.name;
             }
-        })
+        });
     }
 
-    private rememberDontShow() {
-        let reportCreationWizard = this.dontShow ? this.dontShow : false;
+    rememberDontShow() {
+        const reportCreationWizard = this.dontShow ? this.dontShow : false;
         this.http.patch({
             path: 'users',
             data: {
@@ -44,7 +44,7 @@ export class CreationModalComponent implements OnInit {
                 id: this.data.userId
             }
         }).subscribe((resp: any) => {
-            if(resp) {
+            if (resp) {
                 this.auth.setUserData('reportCreationWizardHidden', reportCreationWizard);
             }
         });
