@@ -149,14 +149,14 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public onUpdateTypes($event, index) {
-        var types = this.sectionsList[index].types;
+        let types = this.sectionsList[index].types || [];
         types = types.reduce((y, x) => {
-            if (!y.find((e) => e.key === x.key)) y.push(x);
+            if (!y.find((e) => e.key === x.key)) { y.push(x); }
             return y;
         }, []);
         types.push(this.newReportObj);
         this.list.typeSections = types;
-        this.createReportForm.patchValue({'sectionTypeKey': null});
+        this.createReportForm.patchValue({sectionTypeKey: null});
     }
 
     public onAddAuthor() {
