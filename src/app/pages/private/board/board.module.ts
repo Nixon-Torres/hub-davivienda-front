@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { Routes, RouterModule } from '@angular/router';
@@ -25,6 +26,7 @@ import { RelatedReportsComponent } from './related-reports/related-reports.compo
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
 import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
+import { CreationModalComponent } from './creation-modal/creation-modal.component';
 
 const routes: Routes = [
     {
@@ -52,16 +54,18 @@ const materialModules: any[] = [
     MatGridListModule,
     MatExpansionModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCheckboxModule
 ];
 
 @NgModule({
     declarations: [
-        BoardComponent, 
-        CommentBoxComponent, 
-        RevisionModalComponent, 
-        RelatedReportsComponent, 
-        PdfUploadComponent
+        BoardComponent,
+        CommentBoxComponent,
+        RevisionModalComponent,
+        RelatedReportsComponent,
+        PdfUploadComponent,
+        CreationModalComponent
     ],
     imports: [
         CommonModule,
@@ -81,6 +85,7 @@ const materialModules: any[] = [
     ],
     entryComponents: [
         RevisionModalComponent,
+        CreationModalComponent,
         PdfUploadComponent
     ]
 })

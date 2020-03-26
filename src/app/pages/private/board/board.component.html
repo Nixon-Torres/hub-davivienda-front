@@ -60,13 +60,13 @@
 				<button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="publish()">
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="publishConfirmation()">
                     <span class="icon icon-check"></span>Publicar
                 </button>
 				<button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()">
 					<img src="/assets/images/comment-plus.png">Añadir comentario
 				</button>
-				<button mat-flat-button class="bttn bttn-primary" (click)="onSave()">
+				<button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()">
 					<span class="icon icon-save"></span>Guardar
 				</button>
 				<small>Autoguardado {{lastupdate}}</small>
@@ -84,11 +84,11 @@
 				<button mat-button (click)="focusOnReportName()">
 					<span class="icon icon-edit"></span>Editar nombre
 				</button>
-				<button mat-button (click)="onSave(true)" [disabled]="!report.name">
+				<button mat-button (click)="validateMarketingOnSave(true)" [disabled]="!report.name">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 
-				<div class="authors" 
+				<div class="authors"
 				[ngClass]="{'authors--list-authors': flags.authorsList, 'authors--list-users': flags.usersList}" #authorsParent>
 
 					<button mat-button [disabled]="!report.name" (click)="toggleAuthorsList($event)">
@@ -113,12 +113,12 @@
 						<li class="authors__add" *ngIf="!maxAuthors && isOwner" (click)="toggleUsersList($event)">Añadir autor</li>
 					</ul>
 				</div>
-				
+
 				<div class="divider" *ngIf="report.id"></div>
 
 				<!-- TODO refactor to material components -->
 				<article class="editors" *ngIf="report.id" #editorsParent>
-					<span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}... 
+					<span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}...
 						<span class="editors__count" *ngIf="editorsList?.length > 1">+ {{ editorsList ? editorsList?.length - 1 : 0}}</span>
 						<i class="fa " [ngClass]="{'fa-chevron-up': flags.editorsList, 'fa-chevron-down': !flags.editorsList}" aria-hidden="true"></i>
 					</span>
@@ -130,7 +130,7 @@
 
 			</section>
 		</mat-toolbar-row>
-		
+
 	</mat-toolbar>
 
 	<mat-grid-list cols="12" id="grapesBox" [ngClass]="isFullscreen ? 'fullscreen-container' : 'container'">
@@ -140,12 +140,12 @@
 
 			<div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
 				<button class="pdf__btn" (click)="openUploadDialog()">
-					<span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span> 
+					<span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
 				</button>
 				<p class="pdf__max">Tamaño máximo hasta 10GB</p>
 			</div>
 			<div id="gjs" [ngClass]="getEditorClasses()"></div>
-			
+
 		</mat-grid-tile>
 
 		<!-- COMMENTS -->
@@ -206,7 +206,7 @@
 								<mat-panel-title>
 									<span class="icon icon-chart-pie"></span>
 									<span>Seo</span>
-								</mat-panel-title> 
+								</mat-panel-title>
 							</mat-expansion-panel-header>
 
 							<p>This is the primary content of the panel.</p>

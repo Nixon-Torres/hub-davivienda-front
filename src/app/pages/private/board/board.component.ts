@@ -23,6 +23,7 @@ import {Report} from './board.model';
 import {RevisionModalComponent} from './revision-modal/revision-modal.component';
 import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
 import {UserInterface} from 'src/app/services/auth.service.model';
+import {CreationModalComponent} from './creation-modal/creation-modal.component';
 
 declare var grapesjs: any;
 
@@ -103,6 +104,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         approved: '5e068d1cb81d1c5f29b62974',
         published: '5e068c81d811c55eb40d14d0'
     };
+    private templates: any = {
+        html: '5e20ce2518175909bda0e824',
+        pdf: '5e20ced618175909bda0e825',
+        presentation: '5e20cf6f18175909bda0e826',
+        twoColumns:'5e20dc5018175909bda0e827'
+    };
+    public isMarketing: boolean;
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -117,6 +125,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     ) {
         this.user = this.auth.getUserData();
         this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        this.isMarketing = this.auth.isMarketing();
         // this.closeToggleLists();
     }
 
@@ -146,6 +155,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
+                if(!this.user.reportCreationWizardHidden) {
+                    this.openCreateModal(templateId, this.user.id);
+                }
             }
         });
 
@@ -168,6 +180,32 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         let elems = document.querySelectorAll('.fixed-action-btn');
         M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
+    }
+
+    private shouldHaveFileMessage(templateId: string): boolean {
+        let fileMessage: boolean;
+        if(templateId===this.templates.html || templateId===this.templates.twoColumns) {
+            fileMessage = false;
+        } else if(templateId===this.templates.pdf || templateId===this.templates.presentation) {
+            fileMessage = true;
+        }
+        return fileMessage
+    }
+
+    private openCreateModal(templateId: string, ownerId: string): void {
+        let text: string;
+        text = 'A continuación deberá hacer una descripción de su informe que contenga un máximo de 2000 caracteres';
+        text += this.shouldHaveFileMessage(templateId) ? ' y deberá cargar su archivo al final.' : '.';
+
+        this.dialog.open(CreationModalComponent, {
+            width: '470px',
+            data: {
+                title: '¡Antes de empezar!',
+                text: text,
+                templateId: templateId,
+                userId: ownerId
+            }
+        });
     }
 
     /** Get report form database
@@ -440,6 +478,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
+    public validateMarketingOnSave(autoSave?: boolean) {
+        if(this.isMarketing) {
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                width: "410px",
+                data: {
+                    title: 'Está seguro que desea publicar el informe:',
+                    subtitle: this.report.name,
+                    alert: this.isMarketing,
+                    exclamation: this.isMarketing
+                }
+            });
+
+            dialogRef.afterClosed().subscribe((resp: any) => {
+               if (resp) {
+                   this.onSave(autoSave);
+               }
+            });
+        } else {
+            this.onSave(autoSave);
+        }
+    }
+
     /** Save the report on DB
      *
      * @param { autoSave } Flag for autosave
@@ -480,9 +540,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
-                            title: 'Su informe fue guardado con éxito en',
-                            subtitle: (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
-                        }
+
+                            title: this.isMarketing ? 'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
+                            subtitle: this.isMarketing ? this.report.name : (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
+                        },
                     });
 
                     dgRef.afterClosed().subscribe(() => {
@@ -619,6 +680,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
             });
             this.loadReport(this.report.id);
+        });
+    }
+    public publishConfirmation() {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+           width: '410px',
+           data: {
+               title: 'Está seguro que desea publicar el informe:',
+               subtitle: this.report.name,
+               exclamation: true,
+               alert: true
+           }
+        });
+
+        dialogRef.afterClosed().subscribe((resp: any) => {
+            if(resp)
+                this.publish();
         });
     }
 
