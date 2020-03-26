@@ -480,8 +480,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
-                            title: 'Tu informe ha sido guardado:',
-                            subtitle: this.report.name
+                            title: 'Su informe fue guardado con éxito en',
+                            subtitle: (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
                         }
                     });
 
