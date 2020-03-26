@@ -25,8 +25,6 @@ export class HowIsEconomyComponent implements OnInit {
         currentReports: [],
         reportsCopy: []
     };
-    public report: any;
-    public newReport: any;
 
     public currentArea = '';
     public time = '';
@@ -80,6 +78,7 @@ export class HowIsEconomyComponent implements OnInit {
     public getCurrentReports() {
         const query = new loopback();
         query.filter.where = {howseconomy: true};
+        query.filter.order = 'howseconomyArea ASC';
 
         this.http.get({
             path: 'reports/',
@@ -87,15 +86,26 @@ export class HowIsEconomyComponent implements OnInit {
             encode: true
         }).subscribe((response: any) => {
             this.list.currentReports = response.body;
-            this.report = this.list.currentReports && this.list.currentReports.length ? this.list.currentReports[0] : null;
-            this.header = this.report;
+            this.selectedReport();
         }, (error: any) => {
             console.error(error);
         });
     }
 
     public onOptionsSelected(event) {
-        this.newReport = event;
+        const oldReport = this.list.currentReports.find(e => e.howseconomyArea === this.currentArea);
+        const report = this.areas.find(e => e.label === this.currentArea);
+        const reportIndex = this.list.reports.findIndex(element => element.id === event.id);
+
+        report.newReportId = event.id;
+
+        if (oldReport && oldReport.id !== event.id) {
+            report.oldReportId = oldReport.id;
+        }
+
+        if (reportIndex >= 0) {
+            this.list.reports.splice(reportIndex, 1);
+        }
     }
 
     public onCheck(area) {
@@ -103,24 +113,60 @@ export class HowIsEconomyComponent implements OnInit {
     }
 
     public onSAve() {
-        this.list.currentReports.forEach((report) => {
-            if (report.id !== this.newReport.id) {
-                this.updateReport(report.id, false);
-                this.updateReport(this.newReport.id, true);
+        this.areas.forEach((element) => {
+
+            if (element.newReportId) {
+                this.updateReport(element.newReportId, element.label, true);
             }
+
+            if (element.oldReportId) {
+                this.updateReport(element.oldReportId, '', false);
+            }
+
         });
 
         this.saveContent();
     }
 
-    public updateReport(id, howseconomy) {
-        const data = {howseconomy};
+    public updateReport(id, label, howseconomy) {
+        const data = {howseconomy, howseconomyArea: label};
         this.http.patch({
             path: 'reports/' + id,
             data
         }).subscribe((response: any) => {
         }, (error: any) => {
             console.error(error);
+        });
+    }
+
+    public getOutstanding(area) {
+        return area === 'outstanding';
+    }
+
+    public selectedReport() {
+        let report;
+
+        this.areas.forEach((element) => {
+            report = this.list.currentReports.find(e => e.howseconomyArea === element.label);
+            if (report) {
+                switch (element.label) {
+                    case 'outstanding':
+                        this.header = report.name;
+                        break;
+                    case 'report1':
+                        this.reportOne = report.name;
+                        break;
+                    case 'report2':
+                        this.reportTwo = report.name;
+                        break;
+                    case 'report3':
+                        this.reportThree = report.name;
+                        break;
+                    case 'report4':
+                        this.reportFour = report.name;
+                        break;
+                }
+            }
         });
     }
 
