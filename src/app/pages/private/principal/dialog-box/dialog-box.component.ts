@@ -44,6 +44,7 @@ export class DialogBoxComponent {
             path: path,
             data: this.folder
         }).subscribe((response: any) => {
+            this.folderService.loadFolders();
             if (this.folder.id) {
                 for (let keyFolder in this.folders) {
                     if (this.folders[keyFolder].id == this.folder.id) {
