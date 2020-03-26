@@ -111,6 +111,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         twoColumns:'5e20dc5018175909bda0e827'
     };
     public isMarketing: boolean;
+    public unresolvedComments: any;
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -497,6 +498,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
             });
         } else {
             this.onSave(autoSave);
+        }
+    }
+
+    public validateUnresolvedComments() {
+        if(this.unresolvedComments.state) {
+            let refDialog = this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: `Tienes (${this.unresolvedComments.count}) notificaciones sin resolver`,
+                    subtitle: 'Está seguro que desea publicar el informe',
+                    exclamation: true,
+                    config: {
+                        imageColor: 'red',
+                        title: 'bold',
+                        subtitle: 'normal',
+                        btnText: 'Resolver'
+                    }
+                }
+            });
+            refDialog.afterClosed().subscribe(() => {
+                this.showComments();
+            });
+        } else {
+            this.publishConfirmation();
         }
     }
 
