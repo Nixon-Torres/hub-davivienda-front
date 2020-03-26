@@ -54,7 +54,7 @@ export class HowIsEconomyComponent implements OnInit {
     public getOutstandingReports() {
         this.http.get({
             path: 'reports/',
-            data: {where: {howseconomy: true}},
+            data: {where: {outstanding: true}},
             encode: true
         }).subscribe((response: any) => {
             this.list.outstandedReport = response.body;
