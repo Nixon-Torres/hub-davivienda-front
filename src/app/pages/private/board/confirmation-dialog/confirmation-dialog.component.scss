@@ -36,7 +36,6 @@
             .icon {
                 font-size: 1.667em;
                 font-style: normal;
-                font-weight: bold;
                 padding-left: 10px;
                 &:before {
                     margin-right: 0;
@@ -66,8 +65,8 @@
         }
 
         .confirmation-img {
-            width: 5.05vw;
-            height: 5.05vw;
+            width: 69px;
+            height: 69px;
             border: 1px solid #19D600;
             border-radius: 50%;
             display: flex;
