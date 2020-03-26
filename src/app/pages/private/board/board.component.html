@@ -66,7 +66,7 @@
 				<button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()">
 					<img src="/assets/images/comment-plus.png">Añadir comentario
 				</button>
-				<button mat-flat-button class="bttn bttn-primary" (click)="onSave()">
+				<button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()">
 					<span class="icon icon-save"></span>Guardar
 				</button>
 				<small>Autoguardado {{lastupdate}}</small>
@@ -84,7 +84,7 @@
 				<button mat-button (click)="focusOnReportName()">
 					<span class="icon icon-edit"></span>Editar nombre
 				</button>
-				<button mat-button (click)="onSave(true)" [disabled]="!report.name">
+				<button mat-button (click)="validateMarketingOnSave(true)" [disabled]="!report.name">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 

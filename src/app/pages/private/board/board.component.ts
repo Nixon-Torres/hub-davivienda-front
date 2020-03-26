@@ -110,6 +110,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         presentation: '5e20cf6f18175909bda0e826',
         twoColumns:'5e20dc5018175909bda0e827'
     };
+    public isMarketing: boolean;
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -124,6 +125,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     ) {
         this.user = this.auth.getUserData();
         this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        this.isMarketing = this.auth.isMarketing();
         // this.closeToggleLists();
     }
 
@@ -476,6 +478,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
+    public validateMarketingOnSave(autoSave?: boolean) {
+        if(this.isMarketing) {
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+                width: "410px",
+                data: {
+                    title: 'Está seguro que desea publicar el informe:',
+                    subtitle: this.report.name,
+                    alert: this.isMarketing,
+                    exclamation: this.isMarketing
+                }
+            });
+
+            dialogRef.afterClosed().subscribe((resp: any) => {
+               if (resp) {
+                   this.onSave(autoSave);
+               }
+            });
+        } else {
+            this.onSave(autoSave);
+        }
+    }
+
     /** Save the report on DB
      *
      * @param { autoSave } Flag for autosave
@@ -516,9 +540,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
-                            title: 'Tu informe ha sido guardado:',
-                            subtitle: this.report.name
-                        }
+                            title: this.isMarketing ? 'Se ha publicado exitosamente el informe' : 'Tu informe ha sido guardado:',
+                            subtitle: this.report.name,
+                        },
                     });
 
                     dgRef.afterClosed().subscribe(() => {
