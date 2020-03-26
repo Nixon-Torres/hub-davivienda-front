@@ -621,6 +621,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.loadReport(this.report.id);
         });
     }
+    public publishConfirmation() {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+           width: '410px',
+           data: {
+               title: 'Está seguro que desea publicar el informe:',
+               subtitle: this.report.name,
+               exclamation: true,
+               alert: true
+           }
+        });
+
+        dialogRef.afterClosed().subscribe((resp: any) => {
+            if(resp)
+                this.publish();
+        });
+    }
 
     public publish() {
         this.report.reviewed = true;
