@@ -1,0 +1,20 @@
+<div class="modal--creation">
+    <div class="modal__wrapper">
+        <header class="modal__header">
+            <p class="modal__name">{{templateName}}</p>
+            <a (click)="closeDialog()" _ngcontent-xaa-c25="" class="modal-close-cta">Cerrar
+                <span _ngcontent-xaa-c25="" class="icon icon-times"></span></a>
+        </header>
+        <div class="modal__content" mat-dialog-content>
+            <p class="modal__title">{{ data.title }}</p>
+            <p class="modal__text">{{data.text}}</p>
+            <form (ngSubmit)="rememberDontShow()">
+                <mat-checkbox [(ngModel)]="dontShow" [ngModelOptions]="{standalone: true}">No volver a mostrar este mensaje</mat-checkbox>
+                <div mat-dialog-actions class="footer">
+                    <button type="submit" mat-button mat-dialog-close (click)="closeDialog()" class="btn btn-primary">Continuar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

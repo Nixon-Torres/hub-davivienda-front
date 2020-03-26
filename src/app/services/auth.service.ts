@@ -33,6 +33,15 @@ export class AuthService {
         return (token ? (attr ? token.user[attr] : token.user) : {});
     }
 
+    public setUserData(attr: string, value:boolean): any {
+        let token = this.get();
+        if(!this.getUserData(attr)) {
+            token.user[attr] = value;
+            this.set(token);
+        }
+        return token;
+    }
+
     public isMarketing(): any {
         let roles = this.getUserData('roles');
         return roles && roles.find((role) => role === 'marketing' ) ? true : false;

@@ -1,0 +1,106 @@
+.modal--creation {
+    .modal {
+        &__wrapper {
+            padding: 15px 15px 34px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        &__header {
+            width: 100%;
+            border-bottom: 1px solid #EDEDED;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 11px;
+            margin-bottom: 30px;
+        }
+        &__name {
+            color: #A5ABB1;
+            font-size: .875em;
+            line-height: 1.063em;
+            font-weight: bold;
+        }
+        &-close-cta {
+            color: #616161;
+            font-style: italic;
+            font-size: 0.750em;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            .icon {
+                font-size: 1.667em;
+                font-style: normal;
+                padding-left: 10px;
+                &:before {
+                    margin-right: 0;
+                    font-size: 1em;
+                }
+            }
+        }
+        &__content {
+            overflow: visible;
+            max-height: none;
+            margin: 0;
+        }
+        &__title, &__text {
+            text-align: center;
+        }
+        &__title, &__text, &__name{
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+        &__title {
+            color: #0080FF;
+            font-weight: bold;
+            font-size: 1.250rem;
+            line-height: 1.563rem;
+            margin-bottom: 20px;
+        }
+        &__text {
+            font-size: .875rem;
+            line-height: 1.375rem;
+            color: #616161;
+            margin-bottom: 25px;
+        }
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .mat-checkbox-inner-container{
+            .mat-checkbox-frame, .mat-checkbox-background {
+                border-radius: 0;
+            }
+            .mat-checkbox-label {
+                font-family: 'Helvetica Neue', sans-serif;
+                color: #616161;
+                font-size: .750em;
+                font-style: italic;
+            }
+        }
+    }
+    .footer {
+        padding: 0;
+        margin-bottom: 0;
+        min-height: 0;
+    }
+}
+
+:host {
+    ::ng-deep {
+        .mat-checkbox-inner-container{
+            .mat-checkbox-frame, .mat-checkbox-background {
+                border-radius: 2px;
+            }
+        }
+        .mat-checkbox-label {
+            font-family: 'Helvetica Neue', sans-serif;
+            color: #616161;
+            font-size: .750em;
+            font-style: italic;
+        }
+        .mat-checkbox-layout {
+            margin-bottom: 18px;
+        }
+    }
+}
