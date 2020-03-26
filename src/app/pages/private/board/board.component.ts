@@ -540,8 +540,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     let dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
-                            title: this.isMarketing ? 'Se ha publicado exitosamente el informe' : 'Tu informe ha sido guardado:',
-                            subtitle: this.report.name,
+
+                            title: this.isMarketing ? 'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
+                            subtitle: this.isMarketing ? this.report.name : (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
                         },
                     });
 
