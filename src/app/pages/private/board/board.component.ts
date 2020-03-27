@@ -187,17 +187,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     showSomeoneEditingDialog() {
         if (this.readonly) {
-            this.dialog.open(ConfirmationDialogComponent, {
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
                 width: '488px',
                 data: {
-                    title: 'Hay otro usuario editando este informe',
-                    alert: true,
-                    exclamation: true,
                     config: {
-                        btnText: 'Ir al dashboard',
-                        btnCancelText: 'Continuar modo lectura'
+                        twoButtons: true,
+                        icon: 'icon-exclamation',
+                        iconColor: '#FF003B',
+                        title: 'Hay otro usuario editando este informe',
+                        mainButton: 'Ir al dashboard',
+                        mainButtonStyle: {
+                            width: '200px',
+                        },
+                        secondButton: 'Continuar modo lectura',
+                        secondButtonStyle: {
+                            'border-color': '#0080FF',
+                            color: '#0080FF'
+                        }
                     }
                 }
+            });
+            dialogRef.afterClosed().subscribe(resp => {
+               if (resp) {
+                    this.router.navigate(['app/principal']);
+               }
             });
         }
     }
