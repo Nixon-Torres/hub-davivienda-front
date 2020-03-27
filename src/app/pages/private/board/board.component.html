@@ -134,7 +134,7 @@
 	</mat-toolbar>
 
 	<mat-grid-list cols="12" id="grapesBox" [ngClass]="isFullscreen ? 'fullscreen-container' : 'container'">
-        <div class="readonly-overlay" *ngIf="readonly"></div>
+
 		<!-- EDITOR -->
 		<mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
 
@@ -155,6 +155,7 @@
 
 		<!-- PANEL -->
 		<mat-grid-tile [colspan]="grid.col.panel" [rowspan]="1" class="builder-tabs">
+            <div class="readonly-overlay" *ngIf="readonly"></div>
 
 			<div class="row">
 				<div class="col s12">
