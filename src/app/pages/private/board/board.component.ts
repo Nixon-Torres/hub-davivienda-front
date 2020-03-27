@@ -48,13 +48,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public templateType: string;
     public editorsList: Array<any>;
     public editorInitiated = false;
-    public isOwner: boolean = false;
-    public isAdding: boolean = false;
-    public isDeleting: boolean = false;
+    public isOwner = false;
+    public isAdding = false;
+    public isDeleting = false;
     public fromReportId: string = null;
-    public showAsMobile: boolean = false;
-    public isFullscreen: boolean = false;
-    public isAdvancedUser: boolean = false;
+    public showAsMobile = false;
+    public isFullscreen = false;
+    public isAdvancedUser = false;
     public list: any = {
         users: [],
         authors: []
@@ -111,7 +111,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         twoColumns: '5e20dc5018175909bda0e827'
     };
     public isMarketing: boolean;
-    public readonly = true;
+    public readonly = false;
     public unresolvedComments: any;
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
@@ -147,9 +147,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.checkNotifications(this.report.id);
 
             } else if (params.get('stateId')) {
-                let folderId = params.get('folderId');
-                let templateId = params.get('templateId');
-                let authorsId = params.get('authorsId');
+                const folderId = params.get('folderId');
+                const templateId = params.get('templateId');
+                const authorsId = params.get('authorsId');
 
                 this.fromReportId = params.get('reportId');
                 this.report.stateId = params.get('stateId');
@@ -165,7 +165,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
 
         // When fullscreen mode is closed update isFullscreen flag
-        let _this = this;
+        const _this = this;
         document.addEventListener('fullscreenchange', function() {
             if (!document.fullscreenElement) {
                 _this.isFullscreen = false;
@@ -190,10 +190,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
                 width: '488px',
                 data: {
+                    isAlert: true,
                     config: {
-                        twoButtons: true,
                         icon: 'icon-exclamation',
-                        iconColor: '#FF003B',
                         title: 'Hay otro usuario editando este informe',
                         mainButton: 'Ir al dashboard',
                         mainButtonStyle: {
@@ -201,6 +200,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
                         },
                         secondButton: 'Continuar modo lectura',
                         secondButtonStyle: {
+                            width: '200px',
+                            'border-width': '1px',
                             'border-color': '#0080FF',
                             color: '#0080FF'
                         }
@@ -404,24 +405,24 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private autosetEditorHeight() {
-        let iframe = $('.builder iframe');
+        const iframe = $('.builder iframe');
         if (!iframe.length) {
             return;
         }
-        let tplBody = iframe.contents()[0].body;
+        const tplBody = iframe.contents()[0].body;
         iframe.contents().find('html')[0].style.overflow = 'hidden';
         tplBody.style.height = 'auto';
-        let tplBodyHeight = tplBody.offsetHeight;
+        const tplBodyHeight = tplBody.offsetHeight;
 
         iframe.css({
-            'position': 'relative',
-            'height': tplBodyHeight + 'px'
+            position: 'relative',
+            height: tplBodyHeight + 'px'
         });
 
         // FIXME https://stackoverflow.com/questions/5489946/how-to-wait-for-the-end-of-resize-event-and-only-then-perform-an-action
         tplBody.onresize = () => {
             iframe.css({
-                'height': tplBody.offsetHeight + 'px'
+                height: tplBody.offsetHeight + 'px'
             });
         };
     }
@@ -461,14 +462,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
      * @return { this.report } Set the HTML content and CSS for template
      */
     private loadTemplate(templateId: string): void {
-        if (templateId.toString() == 'false' && this.fromReportId.toString() == 'false') {
+        if (templateId.toString() === 'false' && this.fromReportId.toString() === 'false') {
             this.initGrapes();
             return;
         }
 
-        let path = templateId && templateId !== 'null' ? `templates/${templateId}` : `reports/${this.fromReportId}`;
+        const path = templateId && templateId !== 'null' ? `templates/${templateId}` : `reports/${this.fromReportId}`;
         this.http.get({
-            'path': path
+            path
         }).subscribe((response: any) => {
             this.report.content = response.body.content ? response.body.content : '';
             this.report.styles = response.body.styles ? response.body.styles : '';
@@ -516,10 +517,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
-                    title: 'Está seguro que desea publicar el informe:',
-                    subtitle: this.report.name,
-                    alert: this.isMarketing,
-                    exclamation: this.isMarketing
+                    config: {
+                        twoButtons: true,
+                        icon: 'icon-exclamation',
+                        iconColor: '#FF003B',
+                        title: 'Está seguro que desea publicar el informe:',
+                        subtitle: this.report.name,
+                        mainButton: 'Si, publicar',
+                        secondButton: 'Cancelar'
+                    }
                 }
             });
 
@@ -538,14 +544,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const refDialog = this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
-                    title: `Tienes (${this.unresolvedComments.count}) notificaciones sin resolver`,
-                    subtitle: 'Está seguro que desea publicar el informe',
-                    exclamation: true,
+                    isAlert: true,
                     config: {
-                        imageColor: 'red',
-                        title: 'bold',
-                        subtitle: 'normal',
-                        btnText: 'Resolver'
+                        icon: 'icon-exclamation',
+                        title: `Tienes (${this.unresolvedComments.count}) notificaciones sin resolver`,
+                        titleStyle: {
+                            'font-weight': 'bold'
+                        },
+                        subtitle: 'Está seguro que desea publicar el informe',
+                        subtitleStyle: {
+                            'font-weight': 'normal',
+                        },
+                        mainButton: 'Resolver'
                     }
                 }
             });
@@ -598,10 +608,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     const dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
-                            title: this.isMarketing ?
-                                'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
-                            subtitle: this.isMarketing ? this.report.name :
-                                (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
+                            config: {
+                                title: this.isMarketing ?
+                                    'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
+                                subtitle: this.isMarketing ? this.report.name :
+                                    (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
+                            }
                         },
                     });
 
@@ -661,8 +673,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public sendReview(reviewers: Array<object>) {
         this.http.post({
-            'path': 'reports/reviewers',
-            'data': {
+            path: 'reports/reviewers',
+            data: {
                 reportId: this.report.id,
                 reviewers: this.getReviewers(reviewers)
             }
@@ -671,8 +683,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.dialog.open(ConfirmationDialogComponent, {
                     width: '410px',
                     data: {
-                        title: 'Tu informe ha sido enviado a revisión:',
-                        subtitle: this.report.name
+                        config: {
+                            title: 'Tu informe ha sido enviado a revisión:',
+                            subtitle: this.report.name
+                        }
                     }
                 });
             }
@@ -683,16 +697,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public onSendToRevisionAction(): void {
         this.http.get({
-            'path': 'users',
-            'data': {
-                'where': {
-                    'roles': 'Admin'
+            path: 'users',
+            data: {
+                where: {
+                    roles: 'Admin'
                 }
             },
-            'encode': true
+            encode: true
         }).subscribe((resp) => {
             this.users = resp.body;
-            let dialogRef = this.dialog.open(RevisionModalComponent, {
+            const dialogRef = this.dialog.open(RevisionModalComponent, {
                 width: '450px',
                 data: {
                     title: '¿Quien quiere que revise su informe?',
@@ -710,8 +724,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public returnToEdit(): void {
         this.http.patch({
-            'path': `reports/${this.report.id}`,
-            'data': {
+            path: `reports/${this.report.id}`,
+            data: {
                 reviewed: false,
                 stateId: '5e068d1cb81d1c5f29b62975'
             }
@@ -720,8 +734,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
-                    title: 'Tu informe ha sido enviado a revisión con ajustes:',
-                    subtitle: this.report.name
+                    config: {
+                        title: 'Tu informe ha sido enviado a revisión con ajustes:',
+                        subtitle: this.report.name
+                    }
                 }
             });
         });
@@ -734,8 +750,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
-                    title: 'Tu informe ha sido aprobado:',
-                    subtitle: this.report.name
+                    config: {
+                        title: 'Tu informe ha sido aprobado:',
+                        subtitle: this.report.name
+                    }
                 }
             });
             this.loadReport(this.report.id);
@@ -743,13 +761,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public publishConfirmation() {
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'Está seguro que desea publicar el informe:',
-                subtitle: this.report.name,
-                exclamation: true,
-                alert: true
+                isAlert: true,
+                config: {
+                    icon: 'icon-exclamation',
+                    title: 'Está seguro que desea publicar el informe:',
+                    subtitle: this.report.name,
+                    mainButton: 'Si, publicar'
+                }
             }
         });
 
@@ -767,15 +788,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
-                    title: 'Tu informe ha sido publicado:',
-                    subtitle: this.report.name
+                    config: {
+                        title: 'Tu informe ha sido publicado:',
+                        subtitle: this.report.name
+                    }
                 }
             });
         });
     }
 
     public openUploadDialog(): void {
-        let dialogRef = this.dialog.open(PdfUploadComponent, {
+        const dialogRef = this.dialog.open(PdfUploadComponent, {
             width: '470px',
             data: {
                 reportId: this.report.id,
@@ -798,32 +821,34 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public discard() {
-
-        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: '¿Está seguro de enviar el reporte a la papelera?',
-                subtitle: '',
-                alert: true
+                isAlert: true,
+                config: {
+                    title: '¿Está seguro de enviar el reporte a la papelera?',
+                }
             }
         });
 
         dialogRef.afterClosed().subscribe((result: boolean) => {
             if (result) {
-                let data: object = {
-                    'trash': true
+                const data: object = {
+                    trash: true
                 };
 
                 this.http.patch({
-                    'path': `reports/${this.report.id}`,
-                    'data': data
+                    path: `reports/${this.report.id}`,
+                    data
                 }).subscribe(
                     (response: any) => {
                         this.dialog.open(ConfirmationDialogComponent, {
                             width: '410px',
                             data: {
-                                title: 'Ha sido eliminado exitosamente el informe:',
-                                subtitle: this.report.name
+                                config: {
+                                    title: 'Ha sido eliminado exitosamente el informe:',
+                                    subtitle: this.report.name
+                                }
                             }
                         });
                         this.goToPrincipalPage();
