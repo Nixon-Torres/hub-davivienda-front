@@ -10,8 +10,8 @@ export class ConfirmationDialogComponent {
     public title: string = null;
     public subtitle: string = null;
     public warning: string = null;
-    public confirm: string = 'Si, eliminar';
-    public showWarning: boolean = false;
+    public confirm = 'Si, eliminar';
+    public showWarning = false;
     public config: any;
 
     constructor(
@@ -20,9 +20,13 @@ export class ConfirmationDialogComponent {
     ) {
         this.title = this.data.title;
         this.subtitle = this.data.subtitle;
-        if (this.data.confirm) this.warning = this.data.warning;
-        if (this.data.confirm) this.confirm = this.data.confirm;
-        if (this.data.showWarning) this.showWarning = this.data.showWarning;
+        if (this.data.confirm) {
+            this.warning = this.data.warning;
+            this.confirm = this.data.confirm;
+        }
+        if (this.data.showWarning) {
+            this.showWarning = this.data.showWarning;
+        }
         this.confirm = this.data.exclamation ? 'Si, publicar' : this.confirm;
         this.config = this.data.config;
     }
