@@ -108,9 +108,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         html: '5e20ce2518175909bda0e824',
         pdf: '5e20ced618175909bda0e825',
         presentation: '5e20cf6f18175909bda0e826',
-        twoColumns:'5e20dc5018175909bda0e827'
+        twoColumns: '5e20dc5018175909bda0e827'
     };
     public isMarketing: boolean;
+    public readonly = true;
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -130,6 +131,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.showSomeoneEditingDialog();
         moment.locale('es'); // Set locale lang for momentJs
 
         this.activatedRoute.paramMap.subscribe((params: any) => {
@@ -155,7 +157,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
-                if(!this.user.reportCreationWizardHidden) {
+                if (!this.user.reportCreationWizardHidden) {
                     this.openCreateModal(templateId, this.user.id);
                 }
             }
@@ -182,14 +184,31 @@ export class BoardComponent implements OnInit, AfterViewInit {
         M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
     }
 
+    showSomeoneEditingDialog() {
+        if (this.readonly) {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '488px',
+                data: {
+                    title: 'Hay otro usuario editando este informe',
+                    alert: true,
+                    exclamation: true,
+                    config: {
+                        btnText: 'Ir al dashboard',
+                        btnCancelText: 'Continuar modo lectura'
+                    }
+                }
+            });
+        }
+    }
+
     private shouldHaveFileMessage(templateId: string): boolean {
         let fileMessage: boolean;
-        if(templateId===this.templates.html || templateId===this.templates.twoColumns) {
+        if (templateId === this.templates.html || templateId === this.templates.twoColumns) {
             fileMessage = false;
-        } else if(templateId===this.templates.pdf || templateId===this.templates.presentation) {
+        } else if (templateId === this.templates.pdf || templateId === this.templates.presentation) {
             fileMessage = true;
         }
-        return fileMessage
+        return fileMessage;
     }
 
     private openCreateModal(templateId: string, ownerId: string): void {
@@ -201,8 +220,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             width: '470px',
             data: {
                 title: '¡Antes de empezar!',
-                text: text,
-                templateId: templateId,
+                text,
+                templateId,
                 userId: ownerId
             }
         });
