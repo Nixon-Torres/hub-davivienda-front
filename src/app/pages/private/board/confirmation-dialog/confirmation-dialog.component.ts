@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {ConfigDialog} from './confirmation-dialog.model';
 
 @Component({
     selector: 'app-revision-modal',
@@ -7,28 +8,40 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent {
-    public title: string = null;
-    public subtitle: string = null;
-    public warning: string = null;
-    public confirm: string = 'Si, eliminar';
-    public showWarning: boolean = false;
-    public config: any;
+
+    public config: ConfigDialog;
+    public alert: boolean;
 
     constructor(
         public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-        this.title = this.data.title;
-        this.subtitle = this.data.subtitle;
-        if (this.data.confirm) this.warning = this.data.warning;
-        if (this.data.confirm) this.confirm = this.data.confirm;
-        if (this.data.showWarning) this.showWarning = this.data.showWarning;
-        this.confirm = this.data.exclamation ? 'Si, publicar' : this.confirm;
         this.config = this.data.config;
+        this.alert = this.data.isAlert ? this.data.isAlert : false;
+        this.alertDefaultState();
+    }
+
+    public alertDefaultState() {
+        if (this.alert && this.config) {
+            this.config = {
+                twoButtons: true,
+                icon: this.config.icon ? this.config.icon : 'icon-exclamation-triangle',
+                iconColor: this.config.iconColor ? this.config.iconColor : '#FF003B',
+                isWarning: this.config.isWarning,
+                warningText: this.config.warningText,
+                title: this.config.title,
+                titleStyle: this.config.titleStyle,
+                subtitle: this.config.subtitle,
+                subtitleStyle: this.config.subtitleStyle,
+                mainButton: this.config.mainButton ? this.config.mainButton : 'Continuar',
+                mainButtonStyle: this.config.mainButtonStyle,
+                secondButton: this.config.secondButton ? this.config.secondButton : 'Cancelar',
+                secondButtonStyle: this.config.secondButtonStyle
+            };
+        }
     }
 
     closeDialog(alert?: boolean): void {
         this.dialogRef.close(alert);
     }
-
 }

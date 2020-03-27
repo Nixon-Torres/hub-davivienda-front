@@ -38,16 +38,16 @@ export class DialogBoxComponent {
 
     onSaveFolder(): void {
         if (!this.folder.name.replace(/(\s)/g, '')) return;
-        let path: string = this.folder.id ? `folders/${this.folder.id}` : 'folders';
-        let method: string = this.folder.id ? 'patch' : 'post';
+        const path: string = this.folder.id ? `folders/${this.folder.id}` : 'folders';
+        const method: string = this.folder.id ? 'patch' : 'post';
         this.http[method]({
-            path: path,
+            path,
             data: this.folder
         }).subscribe((response: any) => {
             this.folderService.loadFolders();
             if (this.folder.id) {
-                for (let keyFolder in this.folders) {
-                    if (this.folders[keyFolder].id == this.folder.id) {
+                for (const keyFolder in this.folders) {
+                    if (this.folders[keyFolder].id === this.folder.id) {
                         this.folders[keyFolder] = response.body;
                         break;
                     }
@@ -61,16 +61,18 @@ export class DialogBoxComponent {
     }
 
     onDeleteFolder(folder: any): void {
-        let deleteDialog = this.dialog.open(ConfirmationDialogComponent, {
+        const deleteDialog = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: '¿Está seguro que desea Eliminar la carpeta?',
-                subtitle: folder.name,
-                alert: true
+                isAlert: true,
+                config: {
+                    title: '¿Está seguro que desea Eliminar la carpeta?',
+                    subtitle: folder.name
+                }
             }
         });
         deleteDialog.afterClosed().subscribe( (data: any)  => {
-            if(data) {
+            if (data) {
                 this.http.delete({
                     path: `folders/${folder.id}`
                 }).subscribe(() => {
@@ -86,7 +88,7 @@ export class DialogBoxComponent {
             id: folder.id,
             name: folder.name,
             icon: folder.icon
-        }
+        };
     }
 
     cleanFolder() {
@@ -94,6 +96,6 @@ export class DialogBoxComponent {
             id: null,
             name: '',
             icon: ' '
-        }
+        };
     }
 }

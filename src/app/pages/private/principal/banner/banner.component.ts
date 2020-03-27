@@ -43,9 +43,9 @@ export class BannerComponent implements OnInit {
 
     public onSaveOutstanding(event) {
         event.preventDefault();
-        let isUpdated: boolean = this.outstandingElement ? true : false;
-        let method: string = isUpdated ? 'patch' : 'post';
-        let path: string = isUpdated ? `contents/${this.outstandingElement.id}` : 'contents';
+        const isUpdated: boolean = this.outstandingElement ? true : false;
+        const method: string = isUpdated ? 'patch' : 'post';
+        const path: string = isUpdated ? `contents/${this.outstandingElement.id}` : 'contents';
         this.formData = {
             key: this.outstandingKey,
             title: this.f.title.value,
@@ -57,7 +57,7 @@ export class BannerComponent implements OnInit {
             }
         };
         this.http[method]({
-            path: path,
+            path,
             data: this.formData
         }).subscribe((resp: any) => {
             if (resp && resp.body) {
@@ -150,8 +150,10 @@ export class BannerComponent implements OnInit {
         this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'Se ha publicado exitosamente el destacado del informe',
-                subtitle: title,
+                config: {
+                    title: 'Se ha publicado exitosamente el destacado del informe',
+                    subtitle: title,
+                }
             }
         });
     }

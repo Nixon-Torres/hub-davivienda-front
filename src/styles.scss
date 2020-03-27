@@ -444,7 +444,7 @@ $builder-bg: #f5f7fb;
 				&.gjs-open {
 					border-bottom: solid 1px #EDEDED;
 				}
-				
+
 				.gjs-title {
 					color: #616161;
 					font-size: 12px;
@@ -461,7 +461,7 @@ $builder-bg: #f5f7fb;
 				}
 			}
 
-			.gjs-blocks-c { 
+			.gjs-blocks-c {
 				padding: 5px 5px 10px;
 
 				.gjs-block-label svg{
@@ -1024,10 +1024,12 @@ margin-top: 2%;
 	border-radius: 5px;
 	box-shadow: none;
 	margin: 0 8px;
+    border-style: solid;
+    box-sizing: border-box;
+    border-width: 0;
 	&.btn-primary {
 		color: white;
 		background-color: #0080ff;
-
 		&[disabled] {
 			background: rgb(180,180,180);
 			color: rgb(40,40,40);
