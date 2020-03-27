@@ -32,8 +32,9 @@ export class HighlightDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.report = data.report;
-        if (this.report.outstandingArea) 
+        if (this.report.outstandingArea) {
             this.selectedArea(this.report);
+        }
     }
 
     ngOnInit() {
@@ -82,7 +83,7 @@ export class HighlightDialogComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result: any) => {
-            if (result != undefined) {
+            if (result !== undefined) {
                 this.photo = result.data.name;
                 this.imageSelected = true;
                 this.idImage = result.data.id;
@@ -146,12 +147,13 @@ export class HighlightDialogComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: '¿Esta seguro que desea destacar un nuevo informe?',
-                subtitle: '',
-                warning: 'Recientemente alguien ha destacado un informe en este módulo',
-                confirm: 'Si, destacarlo',
-                alert: true,
-                showWarning: true
+                isAlert: true,
+                config: {
+                    title: '¿Esta seguro que desea destacar un nuevo informe?',
+                    isWarning: true,
+                    warningText: 'Recientemente alguien ha destacado un informe en este módulo',
+                    mainButton: 'Si, destacarlo',
+                }
             }
         });
 
