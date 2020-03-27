@@ -10,6 +10,7 @@ export interface Report {
     stateId: string;
     sectionId: string;
     folderId?: string;
+    companyId?: string;
     templateId?: string;
     reviewed?: boolean;
     ownerId?: string;

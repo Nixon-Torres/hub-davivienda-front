@@ -35,9 +35,11 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public originalUsers = [];
 
     public typeSelected;
+    public typeObjSelected;
     public categorySelected;
     public newSectionSelected;
     public newSubSectionSelected;
+    public companySelected;
     public newSectionName;
     private newReportObj = {id: 'add-new-section', description: 'Agregar nuevo tipo de informe'};
     private newSectionAnalysisObj = {id: 'add-new-company-analysis', name: 'Análisis compañía', types: []};
@@ -45,6 +47,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     public list: any = {
         sections: [],
+        companies: [],
         categories: [],
         reportTypes: [],
         typeSections: [this.newReportObj],
@@ -52,13 +55,13 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         templates: [],
         users: [],
         reports: [],
-        authorsId: [],
-        companies: [{id: 'company1', name: 'Compañia 1'}, {id: 'company2', name: 'Compañia 2'}]
+        authorsId: []
     };
 
     ngOnInit() {
         this.loadSections();
         this.loadCategories();
+        this.loadCompanies();
         this.loadUsers();
         this.loadTemplates();
         this.initCreteReportForm();
@@ -113,7 +116,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.http.get({
             path: 'sections',
             data: {
-                include: 'reportsType'
+                include: [
+                    {
+                        relation: 'reportsType',
+                        scope: {
+                            include: 'mainCategory'
+                        }
+                    }
+                    ],
+                order: 'priority DESC'
             },
             encode: true
         }).subscribe((response) => {
@@ -142,6 +153,17 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             encode: true
         }).subscribe((response) => {
             this.list.categories = response.body;
+        });
+    }
+
+    private loadCompanies() {
+        this.http.get({
+            path: 'companies',
+            data: {
+            },
+            encode: true
+        }).subscribe((response) => {
+            this.list.companies = response.body;
         });
     }
 
@@ -176,6 +198,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public typeChanged(event) {
+        this.typeObjSelected = event;
         this.typeSelected = event.id;
     }
 
@@ -227,6 +250,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             path += `/${this.createReportForm.value.sectionId}`;
             path += `/${this.typeSelected}`;
             path += `/${(this.createReportForm.value.folderId)}`;
+            path += `/${(this.companySelected ? this.companySelected : null)}`;
             path += `/${this.createReportForm.value.templateId ? this.createReportForm.value.templateId : null}`;
             path += `/${this.createReportForm.value.reportId}`;
             path += `/${this.createReportForm.value.authorsId ? encodeURI(JSON.stringify(this.createReportForm.value.authorsId)) : false}`;
@@ -282,6 +306,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
                     }
                 }).subscribe((resp3) => {
                     this.typeSelected = null;
+                    this.typeObjSelected = null;
                     this.newSectionSelected = null;
                     this.newSectionName = null;
                     this.newSubSectionSelected = null;

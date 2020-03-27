@@ -88,6 +88,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         userId: null,
         stateId: null,
         folderId: null,
+        companyId: null,
         sectionId: null,
         ownerId: null,
         users: [],
@@ -148,6 +149,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             } else if (params.get('stateId')) {
                 const folderId = params.get('folderId');
+                const companyId = params.get('companyId');
                 const templateId = params.get('templateId');
                 const authorsId = params.get('authorsId');
 
@@ -156,6 +158,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.report.sectionId = params.get('sectionId');
                 this.report.reportTypeId = params.get('sectionTypeKey');
                 this.report.folderId = folderId ? folderId : null;
+                this.report.companyId = companyId ? companyId : null;
                 this.report.templateId = templateId ? templateId : null;
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
                 if (!this.user.reportCreationWizardHidden) {
@@ -279,6 +282,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             encode: true
         }).subscribe((response: any) => {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
+            response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
             this.owner = response.body.owner;
@@ -509,6 +513,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.content = this.editor.getHtml();
         this.report.content = this.report.content ? this.report.content : ' ';
         this.report.folderId = this.report.folderId === 'false' ? null : this.report.folderId;
+        this.report.companyId = this.report.companyId === 'false' ? null : this.report.companyId;
         this.report.templateId = this.report.templateId === 'false' ? null : this.report.templateId;
     }
 
