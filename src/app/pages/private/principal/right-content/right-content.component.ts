@@ -613,7 +613,7 @@ export class RightContentComponent implements OnInit {
     }
 
     private rcPutReport(reports: Array<any>, index: number, fn: any): void {
-        if (index == reports.length) {
+        if (index === reports.length) {
             fn();
             return;
         }
@@ -625,7 +625,7 @@ export class RightContentComponent implements OnInit {
             trash: report.trash,
             content: report.content,
             styles: report.styles,
-            sectionTypeKey: report.sectionTypeKey,
+            reportTypeId: report.reportTypeId,
             templateId: report.templateId,
             stateId: report.stateId,
             sectionId: report.sectionId,
