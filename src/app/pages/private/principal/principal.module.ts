@@ -39,6 +39,7 @@ import { InvestmentStrategiesComponent } from './investment-strategies/investmen
 import { HowIsEconomyComponent } from './how-is-economy/how-is-economy.component';
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
+import { FaqButtonComponent } from './faq-button/faq-button.component';
 
 const routes: Routes = [
     {
@@ -65,7 +66,19 @@ const materialModules: any[] = [
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, HowIsEconomyComponent],
+    declarations: [
+        PrincipalComponent,
+        LeftBarComponent,
+        RightContentComponent,
+        DialogBoxComponent,
+        CreateReportDialogComponent,
+        HighlightDialogComponent,
+        BannerComponent,
+        EditSiteComponent,
+        InvestmentStrategiesComponent,
+        HowIsEconomyComponent,
+        FaqButtonComponent
+    ],
     imports: [
         CommonModule,
         materialModules,
