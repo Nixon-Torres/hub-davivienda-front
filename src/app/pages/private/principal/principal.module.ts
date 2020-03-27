@@ -40,6 +40,7 @@ import { HowIsEconomyComponent } from './how-is-economy/how-is-economy.component
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 import { FaqButtonComponent } from './faq-button/faq-button.component';
+import { FaqContentComponent } from './faq-content/faq-content.component';
 
 const routes: Routes = [
     {
@@ -77,7 +78,8 @@ const materialModules: any[] = [
         EditSiteComponent,
         InvestmentStrategiesComponent,
         HowIsEconomyComponent,
-        FaqButtonComponent
+        FaqButtonComponent,
+        FaqContentComponent
     ],
     imports: [
         CommonModule,
