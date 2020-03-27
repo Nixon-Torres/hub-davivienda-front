@@ -460,8 +460,10 @@ export class RightContentComponent implements OnInit {
             this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
-                    title: 'Su informe ha sido agregado exitosamente a:',
-                    subtitle: folder.name
+                    config: {
+                        title: 'Su informe ha sido agregado exitosamente a:',
+                        subtitle: folder.name
+                    }
                 }
             });
 
@@ -511,9 +513,10 @@ export class RightContentComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: '',
-                subtitle: '¿Esta seguro que desea eliminar el reporte?',
-                alert: true
+                isAlert: true,
+                config: {
+                    title: '¿Esta seguro que desea eliminar el reporte?'
+                }
             }
         });
 
@@ -542,9 +545,13 @@ export class RightContentComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: '',
-                subtitle: '¿Esta seguro que desea vaciar la papelera?',
-                alert: true
+                isAlert: true,
+                config: {
+                    title: '¿Esta seguro que desea vaciar la papelera?',
+                    titleStyle: {
+                        'font-weight': 'bold'
+                    }
+                }
             }
         });
 
@@ -580,9 +587,13 @@ export class RightContentComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: '',
-                subtitle: '¿Esta seguro que desea eliminar el reporte?',
-                alert: true
+                isAlert: true,
+                config: {
+                    title: '¿Esta seguro que desea eliminar el reporte?',
+                    titleStyle: {
+                        'font-weight': 'bold'
+                    }
+                }
             }
         });
 
@@ -712,9 +723,10 @@ export class RightContentComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: dialogTitle,
-                subtitle: '',
-                alert: true
+                isAlert: true,
+                config: {
+                    title: dialogTitle,
+                }
             }
         });
 
@@ -730,8 +742,10 @@ export class RightContentComponent implements OnInit {
                         this.dialog.open(ConfirmationDialogComponent, {
                             width: '410px',
                             data: {
-                                title: 'Ha sido eliminado exitosamente el informe:',
-                                subtitle: reportName
+                                config: {
+                                    title: 'Ha sido eliminado exitosamente el informe:',
+                                    subtitle: reportName
+                                }
                             }
                         });
                         this.list.reports.splice(pos, 1);
@@ -745,8 +759,10 @@ export class RightContentComponent implements OnInit {
                         this.dialog.open(ConfirmationDialogComponent, {
                             width: '410px',
                             data: {
-                                title: 'Ha sido eliminado exitosamente el informe:',
-                                subtitle: reportName
+                                config: {
+                                    title: 'Ha sido eliminado exitosamente el informe:',
+                                    subtitle: reportName
+                                }
                             }
                         });
                         this.list.reports.splice(pos, 1);
@@ -820,8 +836,9 @@ export class RightContentComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'El informe se ha destacado exitosamente',
-                subtitle: ''
+                config: {
+                    title: 'El informe se ha destacado exitosamente',
+                }
             }
         });
 

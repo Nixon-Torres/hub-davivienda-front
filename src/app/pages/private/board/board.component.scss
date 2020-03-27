@@ -21,6 +21,7 @@ $default-font: "Helvetica Neue", Medium;
         margin: auto;
         max-width: 1440px;
         width: 88% !important;
+        position: relative;
     }
 
     #toolbar {
@@ -206,7 +207,6 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
             overflow: visible;
             padding: 0 !important;
-
             .row {
                 margin: 0;
                 width: 100%;
@@ -274,8 +274,8 @@ $default-font: "Helvetica Neue", Medium;
                         border-radius: unset;
 
                         & > .mat-expansion-panel-header {
-                            height: 50  px !important;
-                            padding: 0px 18px;
+                            height: 50px !important;
+                            padding: 0 18px;
 
                             .mat-expansion-panel-header-title {
 
@@ -289,7 +289,7 @@ $default-font: "Helvetica Neue", Medium;
                                     margin-top: 3px;
                                     font-size: 12px;
                                     font-weight: bold;
-                                    font-family: "Helvetica";
+                                    font-family: "Helvetica Neue", sans-serif;
                                     color: #616161;
                                 }
                             }
@@ -382,13 +382,12 @@ $default-font: "Helvetica Neue", Medium;
         }
     }
     .editors {
-        display: inline-block;
         position: relative;
         height: 100%;
         display: flex;
         align-items: center;
         cursor: pointer;
-        &__placeholder { 
+        &__placeholder {
             @include no-selection;
         }
         &__count {
@@ -430,7 +429,7 @@ $default-font: "Helvetica Neue", Medium;
             text-align: left;
             border: 1px solid #0080FF;
             min-width: 180px;
-            
+
         }
         &__add {
             color: #A5ABB1;
@@ -524,4 +523,12 @@ $default-font: "Helvetica Neue", Medium;
 
 .blue-hub {
     background-color: #0080ff !important;
+}
+
+.readonly-overlay {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
 }
