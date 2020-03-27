@@ -17,7 +17,7 @@
 
 		<div class="new-section-container">
 			<div class="select-content--medium">
-				<ng-select [items]="list.typeSections" bindValue="key" bindLabel="value"
+				<ng-select [items]="list.typeSections" bindValue="id" bindLabel="description"
 					placeholder="Seleccione el tipo de Informe" [virtualScroll]="true"
 					[clearable]="false" class="custom-select custom-select--create-report" (change)="typeChanged($event)"
 					formControlName="typeSelected" required>
@@ -26,18 +26,18 @@
 
 			<div class="new-section-block" *ngIf="typeSelected === 'add-new-section'">
 				<div class="select-content--medium">
-					<ng-select [items]="sectionsList" bindValue="id" bindLabel="name"
+					<ng-select [items]="list.categories" bindValue="id" bindLabel="description"
 						placeholder="Seleccione sección del Informe" [virtualScroll]="true"
-						[clearable]="false" class="custom-select "
+						[clearable]="false" class="custom-select" (change)="categoryChanged($event)"
 						[(ngModel)]="newSectionSelected" [ngModelOptions]="{standalone: true}">
 					</ng-select>
 				</div>
 				<div class="select-content--medium"
-					*ngIf="newSectionSelected === 'add-new-company-analysis'">
-					<ng-select [items]="list.companies" bindValue="id" bindLabel="name"
-						placeholder="Seleccione Compañia" [virtualScroll]="true"
+					*ngIf="categorySelected?.children?.length">
+					<ng-select [items]="categorySelected.children" bindValue="id" bindLabel="description"
+						placeholder="Seleccione subsección del Informe" [virtualScroll]="true"
 						[clearable]="false" class="custom-select "
-						[(ngModel)]="newSectionCompanySelected" [ngModelOptions]="{standalone: true}">
+						[(ngModel)]="newSubSectionSelected" [ngModelOptions]="{standalone: true}">
 					</ng-select>
 				</div>
 				<div class="select-content--medium">

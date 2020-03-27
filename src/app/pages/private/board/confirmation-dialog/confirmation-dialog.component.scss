@@ -86,6 +86,18 @@
                     margin-right: 0;
                 }
             }
+            &--red {
+                border-color: #FF003B;
+                .icon {
+                    color: #FF003B;
+                }
+            }
+            &--green {
+                border-color: #19D600;
+                .icon {
+                    color: #19D600;
+                }
+            }
         }
 
     }

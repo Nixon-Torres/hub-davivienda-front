@@ -12,6 +12,7 @@ export class ConfirmationDialogComponent {
     public warning: string = null;
     public confirm: string = 'Si, eliminar';
     public showWarning: boolean = false;
+    public config: any;
 
     constructor(
         public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
@@ -23,6 +24,7 @@ export class ConfirmationDialogComponent {
         if (this.data.confirm) this.confirm = this.data.confirm;
         if (this.data.showWarning) this.showWarning = this.data.showWarning;
         this.confirm = this.data.exclamation ? 'Si, publicar' : this.confirm;
+        this.config = this.data.config;
     }
 
     closeDialog(alert?: boolean): void {

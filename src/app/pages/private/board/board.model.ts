@@ -5,7 +5,7 @@ export interface Report {
     trash: boolean;
     styles: string;
     content: string;
-    sectionTypeKey: string;
+    reportTypeId: string;
     userId?: string;
     stateId: string;
     sectionId: string;

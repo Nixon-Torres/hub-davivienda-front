@@ -84,7 +84,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         reviewed: true,
         styles: '',
         content: '',
-        sectionTypeKey: null,
+        reportTypeId: null,
         userId: null,
         stateId: null,
         folderId: null,
@@ -112,6 +112,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     };
     public isMarketing: boolean;
     public readonly = true;
+    public unresolvedComments: any;
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -153,7 +154,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.fromReportId = params.get('reportId');
                 this.report.stateId = params.get('stateId');
                 this.report.sectionId = params.get('sectionId');
-                this.report.sectionTypeKey = params.get('sectionTypeKey');
+                this.report.reportTypeId = params.get('sectionTypeKey');
                 this.report.folderId = folderId ? folderId : null;
                 this.report.templateId = templateId ? templateId : null;
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
@@ -519,9 +520,34 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
     }
 
+    public validateUnresolvedComments() {
+        if (this.unresolvedComments.state) {
+            const refDialog = this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    title: `Tienes (${this.unresolvedComments.count}) notificaciones sin resolver`,
+                    subtitle: 'Está seguro que desea publicar el informe',
+                    exclamation: true,
+                    config: {
+                        imageColor: 'red',
+                        title: 'bold',
+                        subtitle: 'normal',
+                        btnText: 'Resolver'
+                    }
+                }
+            });
+            refDialog.afterClosed().subscribe(() => {
+                this.showComments();
+            });
+        } else {
+            this.publishConfirmation();
+        }
+    }
+
     /** Save the report on DB
      *
-     * @param { autoSave } Flag for autosave
+     * @param autoSave Flag for autosave
+     * @param cb Callback
      */
     public onSave(autoSave?: boolean, cb?: any): void {
         let isUpdate: boolean = this.report.id ? true : false;
@@ -537,17 +563,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
         delete data.state;
 
         this.http[method]({
-            'path': path,
-            'data': data
+            path,
+            data
         }).subscribe(
             (response: any) => {
-                if (method == 'post' && this.authorsId && this.authorsId.length) {
+                if (method === 'post' && this.authorsId && this.authorsId.length) {
                     let authorsData = this.authorsId.map((a: string) => {
                         return {'authorId': a, 'reportId': response.body.id};
                     });
                     this.http.post({
-                        'path': 'reports/authors',
-                        'data': {'authors': authorsData}
+                        path: 'reports/authors',
+                        data: { authors: authorsData }
                     }).subscribe(() => {
                     });
                 }
@@ -559,9 +585,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     const dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
-
-                            title: this.isMarketing ? 'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
-                            subtitle: this.isMarketing ? this.report.name : (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
+                            title: this.isMarketing ?
+                                'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
+                            subtitle: this.isMarketing ? this.report.name :
+                                (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
                         },
                     });
 
