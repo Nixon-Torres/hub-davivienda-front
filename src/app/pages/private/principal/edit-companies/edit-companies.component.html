@@ -1,0 +1,54 @@
+<article class="outstanding">
+    <header class="outstanding__header">
+        <div class="outstanding__texts">
+            <p class="text--blue">Opciones de empresas - <b>&Aacute;nalisis de compa&ntilde;&iacute;as</b></p>
+            <p class="text--small">Actualmente se muestran las siguiente empresas:</p>
+            <mat-form-field class="example-chip-list">
+                <mat-chip-list #chipTopList aria-label="Fruit selection">
+                    <mat-chip *ngFor="let company of list.companies" [selectable]="selectable"
+                              [removable]="showPanel" (removed)="removeTop(company)">
+                        {{company.name}}
+                        <mat-icon matChipRemove *ngIf="showPanel">cancel</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
+            </mat-form-field>
+        </div>
+
+        <div class="outstanding__modification">
+            <p class="modification__title">Ultima modificación</p>
+            <p class="modification__value">{{time | date: "hh:mm a dd LLLL"}}</p>
+            <hr class="divider">
+            <p class="modification__title">Hecha por:</p>
+            <p class="modification__value">{{name}}</p>
+        </div>
+
+        <div class="outstanding__edit">
+            <button (click)="showPanel = !showPanel"><span class="icon icon-edit"></span>editar</button>
+        </div>
+    </header>
+    <section class="outstanding__body" *ngIf="showPanel">
+        <form action="">
+            <div class="outstanding__fields">
+                <mat-form-field class="example-chip-list">
+                    <mat-chip-list #chipList aria-label="Fruit selection">
+                        <mat-chip *ngFor="let company of newCompanies" [selectable]="selectable"
+                                  [removable]="removable" (removed)="remove(company)">
+                            {{company.name}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="Nombre de la compañia"
+                               [matChipInputFor]="chipList"
+                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                               [matChipInputAddOnBlur]="addOnBlur"
+                               (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+                </mat-form-field>
+                <small class="add-company-subtitle">Escriba el nombre de la compa&ntilde;&iacute;a y finalice con un enter</small>
+            </div>
+            <div class="outstanding__buttons">
+                <button class="btn btn--border" (click)="showPanel = !showPanel">Cancelar</button>
+                <button class="btn btn--filled" (click)="onSave()">Aceptar</button>
+            </div>
+        </form>
+    </section>
+</article>
