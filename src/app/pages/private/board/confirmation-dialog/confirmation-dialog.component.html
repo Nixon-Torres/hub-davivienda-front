@@ -10,9 +10,9 @@
                   [ngStyle]="{color: config.iconColor}"></span>
         </div>
 
-        <hr class="modal-form__separator" *ngIf="!config.isAlert">
+        <hr class="modal-form__separator" *ngIf="!config.isWarning">
 
-        <p class="message-alert" *ngIf="config.isAlert">
+        <p class="message-alert" *ngIf="config.isWarning">
             {{config.warningText}}
         </p>
 
@@ -28,11 +28,11 @@
                     (click)="closeDialog()"
                     [ngStyle]="config.secondButtonStyle"
                     *ngIf="config.twoButtons">
-                {{config.secondButton}}</button>
+                {{config.secondButton ? config.secondButton : 'Cancelar'}}</button>
             <button mat-button class="btn btn-primary"
                     (click)="closeDialog(true)"
                     [ngStyle]="config.mainButtonStyle">
-                {{config.mainButton}}</button>
+                {{config.mainButton ? config.mainButton : 'Continuar'}}</button>
         </div>
 
     </div>

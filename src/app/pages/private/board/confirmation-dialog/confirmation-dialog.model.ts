@@ -2,7 +2,7 @@ export interface ConfigDialog {
     twoButtons: boolean;
     icon: string;
     iconColor: string;
-    isAlert: boolean;
+    isWarning?: boolean;
     warningText?: string;
     title?: string;
     titleStyle?: object;
