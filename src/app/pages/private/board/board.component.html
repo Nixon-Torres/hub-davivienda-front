@@ -60,7 +60,7 @@
 				<button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="publishConfirmation()">
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="validateUnresolvedComments()">
                     <span class="icon icon-check"></span>Publicar
                 </button>
 				<button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()">
@@ -150,7 +150,7 @@
 
 		<!-- COMMENTS -->
 		<mat-grid-tile [colspan]="grid.col.comments" [rowspan]="1" class="comments">
-			<app-comment-box (propagate)="hideComments()" *ngIf="report.id" [reportId]="report.id"></app-comment-box>
+			<app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report.id" [reportId]="report.id"></app-comment-box>
 		</mat-grid-tile>
 
 		<!-- PANEL -->

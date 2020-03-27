@@ -15,6 +15,7 @@ export class CommentBoxComponent implements OnInit {
 
     @Input('reportId') private reportId: string;
     @Output() propagate = new EventEmitter<string>();
+    @Output() unresolved = new EventEmitter<object>();
 
     public user: any = {};
     public comment: Comment = {
@@ -54,6 +55,7 @@ export class CommentBoxComponent implements OnInit {
         }).subscribe(
             (response) => {
                 this.list.comments = response.body;
+                this.unresolved.emit(this.hasUnresolvedComments(this.list.comments));
             }
         );
     }
@@ -121,9 +123,18 @@ export class CommentBoxComponent implements OnInit {
                 resolverId: this.user.id
             }
         }).subscribe(
-            () => {
+            (resp: any) => {
                 comment.resolved = true;
+                this.loadComments();
             }
         );
+    }
+
+    hasUnresolvedComments(commentsList: any): object {
+        let unresolvedCount = commentsList.filter(comment => comment.resolved === false).length;
+        return {
+            count: unresolvedCount,
+            state: unresolvedCount > 0 ? true : false
+        }
     }
 }
