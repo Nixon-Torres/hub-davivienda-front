@@ -9,7 +9,6 @@ import * as qs from 'qs';
 import {HttpService} from '../../../../services/http.service';
 import {AuthService} from '../../../../services/auth.service';
 import {loopback} from '../../../../models/common/loopback.model';
-import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-create-report-dialog',
@@ -36,15 +35,18 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public originalUsers = [];
 
     public typeSelected;
+    public categorySelected;
     public newSectionSelected;
-    public newSectionCompanySelected;
+    public newSubSectionSelected;
     public newSectionName;
-    private newReportObj = {key: 'add-new-section', value: 'Agregar nuevo tipo de informe'};
+    private newReportObj = {id: 'add-new-section', description: 'Agregar nuevo tipo de informe'};
     private newSectionAnalysisObj = {id: 'add-new-company-analysis', name: 'Análisis compañía', types: []};
     public sectionsList;
 
     public list: any = {
         sections: [],
+        categories: [],
+        reportTypes: [],
         typeSections: [this.newReportObj],
         authors: this.authors,
         templates: [],
@@ -56,6 +58,8 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.loadSections();
+        this.loadCategories();
+        this.loadReportTypes();
         this.loadUsers();
         this.loadTemplates();
         this.initCreteReportForm();
@@ -108,12 +112,49 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private loadSections() {
         this.http.get({
-            path: 'sections'
+            path: 'sections',
+            data: {
+                include: 'reportsType'
+            },
+            encode: true
         }).subscribe((response) => {
             this.list.sections = response.body;
             this.sectionsList = this.list.sections.map((e) => Object.assign({}, e));
             this.sectionsList.push(this.newSectionAnalysisObj);
+
+            if (this.createReportForm.value.sectionId) {
+                const section = this.list.sections.find(e => e.id === this.createReportForm.value.sectionId);
+                if (section) {
+                    this.updateTypeSections(section);
+                }
+            }
         });
+    }
+
+    private loadCategories() {
+        this.http.get({
+            path: 'categories',
+            data: {
+                where: {
+                    parentId: null
+                },
+                include: 'children'
+            },
+            encode: true
+        }).subscribe((response) => {
+            this.list.categories = response.body;
+        });
+    }
+
+    private loadReportTypes() {
+        // this.http.get({
+        //     path: 'reportsType',
+        //     data: {
+        //         include: 'sections'
+        //     }
+        // }).subscribe((response) => {
+        //     this.list.reportTypes = response.body;
+        // });
     }
 
     private loadUsers() {
@@ -147,13 +188,21 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public typeChanged(event) {
-        this.typeSelected = event.key;
+        this.typeSelected = event.id;
+    }
+
+    public categoryChanged(event) {
+        this.categorySelected = event;
     }
 
     public onUpdateTypes($event, index) {
-        let types = this.sectionsList[index].types || [];
+        this.updateTypeSections(this.sectionsList[index]);
+    }
+
+    private updateTypeSections(section: any) {
+        let types = section.reportsType || [];
         types = types.reduce((y, x) => {
-            if (!y.find((e) => e.key === x.key)) {
+            if (!y.find((e) => e.description === x.description)) {
                 y.push(x);
             }
             return y;
@@ -204,34 +253,54 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         }
 
         event.preventDefault();
+
+        if (!this.createReportForm.value.sectionId) {
+            return;
+        }
+
         if (!this.newSectionSelected) {
             return;
         }
 
-        if (this.newSectionSelected && this.newSectionSelected === 'add-new-company-analysis' &&
-            !this.newSectionCompanySelected) {
+        if (this.categorySelected && this.categorySelected.children && this.categorySelected.children.length &&
+            !this.newSubSectionSelected) {
             return;
         }
         if (!this.newSectionName) {
             return false;
         }
 
-        console.log('new:', this.newSectionName);
-        const section = this.sectionsList.find(e => e.id === this.newSectionSelected);
-        const values = section.types;
-        values.push({key: this.newSectionName, value: this.newSectionName});
-
-        this.http.patch({
-            path: `sections/${this.newSectionSelected}`,
+        this.http.post({
+            path: `reportsType/`,
             data: {
-                types: values
+                qty: 0,
+                period: 0,
+                description: this.newSectionName
             }
         }).subscribe((resp) => {
-            this.typeSelected = this.newSectionSelected;
-            this.newSectionSelected = null;
-            this.newSectionName = null;
-            this.newSectionCompanySelected = null;
-            this.loadSections();
+            this.http.post({
+                path: `categoriesReportTypeGlue/`,
+                data: {
+                    mainCategoryId: this.newSectionSelected,
+                    subCategoryId: this.newSubSectionSelected,
+                    reportTypeId: (resp.body as any).id
+                }
+            }).subscribe((resp2) => {
+                this.http.post({
+                    path: `sectionsReportTypeGlue/`,
+                    data: {
+                        sectionId: this.createReportForm.value.sectionId,
+                        reportTypeId: (resp.body as any).id
+                    }
+                }).subscribe((resp3) => {
+                    this.typeSelected = null;
+                    this.newSectionSelected = null;
+                    this.newSectionName = null;
+                    this.newSubSectionSelected = null;
+                    this.categorySelected = null;
+                    this.loadSections();
+                });
+            });
         });
     }
 }
