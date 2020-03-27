@@ -1,41 +1,38 @@
 <div class="modal-form">
     <div class="two-columns">
-        <a (click)="closeDialog()" _ngcontent-xaa-c25="" class="modal-close-cta">Cerrar <span _ngcontent-xaa-c25=""
+        <a (click)="closeDialog()" class="modal-close-cta">Cerrar <span
                 class="icon icon-times"></span></a>
 
         <div class="confirmation-img"
-             [ngClass]="{
-                'alert': data.alert,
-                'exclamation': data.exclamation,
-                'confirmation-img--red': config ? config.imageColor === 'red' : false,
-                'confirmation-img--green': config ? config.imageColor === 'green' : false
-             }">
+             [ngStyle]="{'border-color': config.iconColor}">
             <span class="icon"
-                  [ngClass]="{
-                    'icon-check': !data.alert,
-                    'icon-exclamation-triangle': data.alert && !data.exclamation,
-                    'icon-exclamation': data.exclamation
-                 }"></span>
+                  [ngClass]="config && config.icon ? config.icon : 'icon-check'"
+                  [ngStyle]="{color: config.iconColor}"></span>
         </div>
 
-        <hr class="modal-form__separator" *ngIf="!showWarning">
+        <hr class="modal-form__separator" *ngIf="!config.isAlert">
 
-        <p class="message-alert" *ngIf="showWarning">
-            {{warning}}
+        <p class="message-alert" *ngIf="config.isAlert">
+            {{config.warningText}}
         </p>
 
-        <p class="message-section" [ngStyle]="{'font-weight': config ? config.title : 'normal'}">
-            {{title}}
-            <span class="message-subtitle" [ngStyle]="{'font-weight': config ? config.subtitle : 'bold'}">
-                {{subtitle}}
+        <p class="message-section" [ngStyle]="config.titleStyle">
+            {{config.title}}
+            <span class="message-subtitle" [ngStyle]="config.subtitleStyle" *ngIf="config.subtitle">
+                {{config.subtitle}}
             </span>
         </p>
 
         <div class="footer">
-            <button mat-button class="btn btn-primary" [ngClass]="{'btn-cancel': data.alert, 'btn-primary': !data.alert}"(click)="closeDialog()">
-                {{ !config ? (!data.alert?'Continuar':'Cancelar') : config.btnText}}
-            </button>
-            <button mat-button  *ngIf="data.alert" (click)="closeDialog(true)" class="btn btn-primary">{{confirm}}</button>
+            <button mat-button class="btn btn-cancel"
+                    (click)="closeDialog()"
+                    [ngStyle]="config.secondButtonStyle"
+                    *ngIf="config.twoButtons">
+                {{config.secondButton}}</button>
+            <button mat-button class="btn btn-primary"
+                    (click)="closeDialog(true)"
+                    [ngStyle]="config.mainButtonStyle">
+                {{config.mainButton}}</button>
         </div>
 
     </div>

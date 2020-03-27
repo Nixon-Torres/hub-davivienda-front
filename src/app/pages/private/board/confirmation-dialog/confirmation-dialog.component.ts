@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {ConfigDialog} from './confirmation-dialog.model';
 
 @Component({
     selector: 'app-revision-modal',
@@ -7,32 +8,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent {
-    public title: string = null;
-    public subtitle: string = null;
-    public warning: string = null;
-    public confirm = 'Si, eliminar';
-    public showWarning = false;
-    public config: any;
+
+    public config: ConfigDialog;
 
     constructor(
         public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-        this.title = this.data.title;
-        this.subtitle = this.data.subtitle;
-        if (this.data.confirm) {
-            this.warning = this.data.warning;
-            this.confirm = this.data.confirm;
-        }
-        if (this.data.showWarning) {
-            this.showWarning = this.data.showWarning;
-        }
-        this.confirm = this.data.exclamation ? 'Si, publicar' : this.confirm;
         this.config = this.data.config;
     }
 
     closeDialog(alert?: boolean): void {
         this.dialogRef.close(alert);
     }
-
 }
