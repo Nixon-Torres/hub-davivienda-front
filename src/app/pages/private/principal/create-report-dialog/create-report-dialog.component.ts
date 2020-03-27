@@ -59,7 +59,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.loadSections();
         this.loadCategories();
-        this.loadReportTypes();
         this.loadUsers();
         this.loadTemplates();
         this.initCreteReportForm();
@@ -144,17 +143,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         }).subscribe((response) => {
             this.list.categories = response.body;
         });
-    }
-
-    private loadReportTypes() {
-        // this.http.get({
-        //     path: 'reportsType',
-        //     data: {
-        //         include: 'sections'
-        //     }
-        // }).subscribe((response) => {
-        //     this.list.reportTypes = response.body;
-        // });
     }
 
     private loadUsers() {
