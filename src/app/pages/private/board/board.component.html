@@ -1,7 +1,7 @@
 <section class="grapes-container">
 
 	<div class="fixed-action-btn">
-		<button class="btn-floating btn-large blue-hub">
+		<button class="btn-floating btn-large blue-hub" [disabled]="readonly">
 			<i class="large material-icons">build</i>
 		</button>
 		<ul>
@@ -45,28 +45,28 @@
 			<section class="container">
 				<h6>Informe de negocio</h6>
 
-				<button mat-flat-button class="bttn bttn-default" (click)="discard()">
+				<button mat-flat-button class="bttn bttn-default" (click)="discard()" [disabled]="readonly">
 					<span class="icon icon-trash-alt"></span>Descartar
 				</button>
 				<button mat-flat-button class="bttn bttn-default" [disabled]="!report.id" (click)="openPreviewDialog()">
 					<span class="icon icon-search-plus"></span>Vista Previa
 				</button>
-				<button mat-flat-button class="bttn bttn-default" *ngIf="canSendToRevision()" [disabled]="!report.id" (click)="onSendToRevisionAction()">
+				<button mat-flat-button class="bttn bttn-default" *ngIf="canSendToRevision()" [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
 					<span class="icon icon-clipboard-check"></span>Enviar a revisión
 				</button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canReturnToEdit()" [disabled]="!report.id" (click)="returnToEdit()">
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canReturnToEdit()" [disabled]="!report.id || readonly" (click)="returnToEdit()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
-				<button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()">
+				<button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()" [disabled]="readonly">
 					<span class="icon icon-clipboard-check"></span>Aprobar
 				</button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="validateUnresolvedComments()">
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="validateUnresolvedComments()" [disabled]="readonly">
                     <span class="icon icon-check"></span>Publicar
                 </button>
-				<button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()">
+				<button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()" [disabled]="readonly">
 					<img src="/assets/images/comment-plus.png">Añadir comentario
 				</button>
-				<button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()">
+				<button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()" [disabled]="readonly">
 					<span class="icon icon-save"></span>Guardar
 				</button>
 				<small>Autoguardado {{lastupdate}}</small>
@@ -78,13 +78,13 @@
 				<div class="form-name">
 					<label for="reportName">Nombre informe:</label>
 					<div class="input-field">
-						<input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name">
+						<input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name" [disabled]="readonly">
 					</div>
 				</div>
-				<button mat-button (click)="focusOnReportName()">
+				<button mat-button (click)="focusOnReportName()" [disabled]="readonly">
 					<span class="icon icon-edit"></span>Editar nombre
 				</button>
-				<button mat-button (click)="validateMarketingOnSave(true)" [disabled]="!report.name">
+				<button mat-button (click)="validateMarketingOnSave(true)" [disabled]="!report.name || readonly">
 					<span class="icon icon-save"></span>Guardar nombre
 				</button>
 
@@ -102,15 +102,15 @@
 						</ng-select>
 					</div>
 
-					<ul class="authors__list" #authorsList>
+					<ul class="authors__list" #authorsList *ngIf="!readonly && list.authors.length">
 						<li class="author" *ngIf="!isOwner">
 							<span class="author__name">{{ owner?.name }}</span>
 						</li>
 						<li class="author" *ngFor="let author of list.authors">
 							<span class="author__name">{{ author.author.name }}</span>
-							<button class="author__remove icon icon-times" *ngIf="isOwner" (click)="onDeleteAuthor($event, author.id)" [disabled]="isDeleting"></button>
+							<button class="author__remove icon icon-times" *ngIf="isOwner" (click)="onDeleteAuthor($event, author.id)" [disabled]="isDeleting && readonly"></button>
 						</li>
-						<li class="authors__add" *ngIf="!maxAuthors && isOwner" (click)="toggleUsersList($event)">Añadir autor</li>
+						<li class="authors__add" *ngIf="!maxAuthors && isOwner && !readonly" (click)="toggleUsersList($event)">Añadir autor</li>
 					</ul>
 				</div>
 
@@ -134,7 +134,7 @@
 	</mat-toolbar>
 
 	<mat-grid-list cols="12" id="grapesBox" [ngClass]="isFullscreen ? 'fullscreen-container' : 'container'">
-
+        <div class="readonly-overlay" *ngIf="readonly"></div>
 		<!-- EDITOR -->
 		<mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
 
