@@ -24,6 +24,16 @@
 				</ng-select>
 			</div>
 
+            <div class="select-content--medium company-select-block"
+                 *ngIf="typeObjSelected && typeObjSelected.mainCategory && typeObjSelected.mainCategory.length &&
+                 typeObjSelected.mainCategory[0].code === 'ANLISISDECOMPAAS'">
+                <ng-select [items]="list.companies" bindValue="id" bindLabel="name"
+                           placeholder="Seleccione compañia" [virtualScroll]="true"
+                           [clearable]="false" class="custom-select"
+                           [(ngModel)]="companySelected" [ngModelOptions]="{standalone: true}">
+                </ng-select>
+            </div>
+
 			<div class="new-section-block" *ngIf="typeSelected === 'add-new-section'">
 				<div class="select-content--medium">
 					<ng-select [items]="list.categories" bindValue="id" bindLabel="description"

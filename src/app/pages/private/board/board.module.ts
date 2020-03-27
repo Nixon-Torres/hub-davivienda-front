@@ -38,7 +38,7 @@ const routes: Routes = [
         component: BoardComponent
     },
     {
-        path: ':stateId/:sectionId/:sectionTypeKey/:folderId/:templateId/:reportId/:authorsId',
+        path: ':stateId/:sectionId/:sectionTypeKey/:folderId/:companyId/:templateId/:reportId/:authorsId',
         component: BoardComponent
     }
 ];
