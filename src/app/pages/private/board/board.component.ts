@@ -177,10 +177,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.loadTemplate(this.report.templateId);
         } // If is a new report, load data template
 
-        let tabsEl: Element = document.querySelectorAll('.grapes-container .tabs')[0];
+        const tabsEl: Element = document.querySelectorAll('.grapes-container .tabs')[0];
         M.Tabs.init(tabsEl); // Initialize the tabs materialize function
 
-        let elems = document.querySelectorAll('.fixed-action-btn');
+        const elems = document.querySelectorAll('.fixed-action-btn');
         M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
     }
 
@@ -234,7 +234,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
      */
     private loadReport(idReport: string): void {
 
-        let query = new loopback();
+        const query = new loopback();
 
         query.filter.include.push({
             relation: 'state',
@@ -259,9 +259,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
 
         this.http.get({
-            'path': `reports/${idReport}`,
-            'data': query.filter,
-            'encode': true
+            path: `reports/${idReport}`,
+            data: query.filter,
+            encode: true
         }).subscribe((response: any) => {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
@@ -498,9 +498,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public validateMarketingOnSave(autoSave?: boolean) {
-        if(this.isMarketing) {
+        if (this.isMarketing) {
             const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-                width: "410px",
+                width: '410px',
                 data: {
                     title: 'Está seguro que desea publicar el informe:',
                     subtitle: this.report.name,
@@ -510,9 +510,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             });
 
             dialogRef.afterClosed().subscribe((resp: any) => {
-               if (resp) {
-                   this.onSave(autoSave);
-               }
+                if (resp) {
+                    this.onSave(autoSave);
+                }
             });
         } else {
             this.onSave(autoSave);
@@ -556,7 +556,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     if (cb) {
                         return cb();
                     }
-                    let dgRef = this.dialog.open(ConfirmationDialogComponent, {
+                    const dgRef = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
                         data: {
 
@@ -701,20 +701,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.loadReport(this.report.id);
         });
     }
+
     public publishConfirmation() {
         let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-           width: '410px',
-           data: {
-               title: 'Está seguro que desea publicar el informe:',
-               subtitle: this.report.name,
-               exclamation: true,
-               alert: true
-           }
+            width: '410px',
+            data: {
+                title: 'Está seguro que desea publicar el informe:',
+                subtitle: this.report.name,
+                exclamation: true,
+                alert: true
+            }
         });
 
         dialogRef.afterClosed().subscribe((resp: any) => {
-            if(resp)
+            if (resp) {
                 this.publish();
+            }
         });
     }
 
