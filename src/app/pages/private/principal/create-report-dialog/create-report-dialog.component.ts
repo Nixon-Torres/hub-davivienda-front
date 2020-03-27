@@ -52,7 +52,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         reports: [],
         authorsId: [],
         companies: [{id: 'company1', name: 'Compañia 1'}, {id: 'company2', name: 'Compañia 2'}]
-    }
+    };
 
     ngOnInit() {
         this.loadSections();
@@ -75,14 +75,14 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     private loadReports(): void {
-        var query = new loopback();
-        query.filter.where['ownerId'] = this.auth.getUserData('id');
-        query.filter.where['trash'] = false;
-        query.filter.where['reviewed'] = true;
+        const query = new loopback();
+        query.filter.where.ownerId = this.auth.getUserData('id');
+        query.filter.where.trash = false;
+        query.filter.where.reviewed = true;
         query.filter.limit = 6;
         query.filter.order = 'id DESC';
         this.http.get({
-            'path': `reports?${qs.stringify(query, {skipNulls: true})}`
+            path: `reports?${qs.stringify(query, {skipNulls: true})}`
         }).subscribe((response: any) => {
             this.list.reports = response.body;
         });
@@ -102,11 +102,13 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         });
     }
 
-     get f() { return this.createReportForm.controls; }
+    get f() {
+        return this.createReportForm.controls;
+    }
 
     private loadSections() {
         this.http.get({
-            'path': 'sections'
+            path: 'sections'
         }).subscribe((response) => {
             this.list.sections = response.body;
             this.sectionsList = this.list.sections.map((e) => Object.assign({}, e));
@@ -116,7 +118,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private loadUsers() {
         this.http.get({
-            'path': 'users/list'
+            path: 'users/list'
         }).subscribe((response) => {
             this.originalUsers = response.body as unknown as any[];
             var users = this.originalUsers;
@@ -126,7 +128,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         });
     }
 
-    private isAuthorAddedAlready(user: any)  {
+    private isAuthorAddedAlready(user: any) {
         const isnotcurrentuser = (user.id !== this.user.id);
         var authors = this.authors ? this.authors : [];
         var matches = (authors.find((j) => j.id === user.id));
@@ -138,7 +140,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private loadTemplates() {
         this.http.get({
-            'path': 'templates'
+            path: 'templates'
         }).subscribe((response) => {
             this.list.templates = response.body;
         });
@@ -151,7 +153,9 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public onUpdateTypes($event, index) {
         let types = this.sectionsList[index].types || [];
         types = types.reduce((y, x) => {
-            if (!y.find((e) => e.key === x.key)) { y.push(x); }
+            if (!y.find((e) => e.key === x.key)) {
+                y.push(x);
+            }
             return y;
         }, []);
         types.push(this.newReportObj);
@@ -163,7 +167,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         if (this.selectedAuthor) {
             this.list.authors.push(this.selectedAuthor);
             this.list.authorsId.push(this.selectedAuthor.id);
-            this.createReportForm.patchValue({'authorsId': this.list.authorsId});
+            this.createReportForm.patchValue({authorsId: this.list.authorsId});
 
             this.list.users = this.originalUsers.filter((e) => this.isAuthorAddedAlready(e));
             this.selectedAuthor = null;
@@ -180,7 +184,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public goToBoard() {
-        if(this.createReportForm.valid) {
+        if (this.createReportForm.valid) {
             let path = 'app/board';
             path += `/${this.createReportForm.value.stateId}`;
             path += `/${this.createReportForm.value.sectionId}`;
@@ -214,7 +218,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
         console.log('new:', this.newSectionName);
         const section = this.sectionsList.find(e => e.id === this.newSectionSelected);
-        let values = section.types;
+        const values = section.types;
         values.push({key: this.newSectionName, value: this.newSectionName});
 
         this.http.patch({
@@ -222,7 +226,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             data: {
                 types: values
             }
-        }).subscribe( (resp) => {
+        }).subscribe((resp) => {
             this.typeSelected = this.newSectionSelected;
             this.newSectionSelected = null;
             this.newSectionName = null;
