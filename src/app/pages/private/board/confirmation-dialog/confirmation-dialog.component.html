@@ -29,7 +29,6 @@
             <button mat-button class="btn btn-primary" [ngClass]="{'btn-cancel': data.alert, 'btn-primary': !data.alert}"(click)="closeDialog()">
                 {{ !data.alert?'Continuar':'Cancelar'}}
             </button>
-            <!-- <button mat-button  *ngIf="data.alert" (click)="closeDialog(true)" class="btn btn-primary">Si, eliminar</button> -->
             <button mat-button  *ngIf="data.alert" (click)="closeDialog(true)" class="btn btn-primary">{{confirm}}</button>
         </div>
 
