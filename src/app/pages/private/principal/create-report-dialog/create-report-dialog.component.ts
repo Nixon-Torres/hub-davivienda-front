@@ -289,7 +289,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             return this.onCloneReport(report);
         }
 
-        if (this.createReportForm.valid) {
+        if (this.typeSelected !== 'add-new-section' && this.createReportForm.valid) {
             let path = 'app/board';
             path += `/${this.createReportForm.value.stateId}`;
             path += `/${this.createReportForm.value.sectionId}`;
