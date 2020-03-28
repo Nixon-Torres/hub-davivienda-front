@@ -43,8 +43,13 @@ export class AuthService {
     }
 
     public isMarketing(): any {
-        let roles = this.getUserData('roles');
-        return roles && roles.find((role) => role === 'marketing' ) ? true : false;
+        const roles = this.getUserData('roles');
+        return !!(roles && roles.find((role) => role === 'marketing'));
+    }
+
+    public isBasicUser(): any {
+        const roles = this.getUserData('roles');
+        return !(roles && roles.find((role) => (role === 'Admin' || role === 'medium')));
     }
 
     public login(context: LoginContext): Observable<any> {

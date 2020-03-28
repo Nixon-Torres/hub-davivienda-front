@@ -62,6 +62,7 @@ export class RightContentComponent implements OnInit {
     public remarkable = false;
     public filterOptions: any;
     public marketing: boolean;
+    public isBasicUser: boolean;
     public selects: FormGroup;
     public tabIndex = 0;
 
@@ -91,6 +92,7 @@ export class RightContentComponent implements OnInit {
         });
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
+        this.isBasicUser = this.auth.isBasicUser();
         this.selectsFn();
     }
 
