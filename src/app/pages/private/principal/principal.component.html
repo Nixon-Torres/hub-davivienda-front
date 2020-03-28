@@ -1,5 +1,5 @@
 <section class="content-wrap report">
-	<div class="top-bar" *ngIf="view?.reports"></div>
+	<div class="top-bar" *ngIf="view?.reports || view?.faq"></div>
 	<app-left-bar (valueChange)="setCurrentState($event)"
 				  (changeView)="changeView($event)"
 				  [currentObj]="cleanObj"></app-left-bar>
@@ -7,4 +7,6 @@
 					   [currentObj]="currentObj"
 					   (valueChange)="setCurrentState($event)"></app-right-content>
 	<app-edit-site *ngIf="view.editSite" (changeView)="changeView($event)"></app-edit-site>
+    <app-faq-content *ngIf="view.faq" (changeView)="changeView($event)"></app-faq-content>
+    <app-faq-button (changeView)="changeView($event)" [ngClass]="{'active': view.faq}"></app-faq-button>
 </section>

@@ -1,0 +1,59 @@
+:host {
+    display: block;
+    position: fixed;
+    right: 15px;
+    bottom: 30px;
+    z-index: 999;
+}
+
+:host(.active) {
+    .faq-button {
+        &__text {
+            color: #0b86ff;
+            font-weight: bold;
+        }
+        &__icon {
+            background-color: #0b86ff;
+            .fas {
+                &.fa-question:before {
+                    content: url("/assets/images/icons-font-awesome/question-solid-white.svg");
+                }
+            }
+        }
+    }
+}
+
+.faq-button {
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    &__text {
+        color: #AFB6BF;
+        font-family: 'Helvetica Neue', sans-serif;
+        font-style: italic;
+        font-size: .688rem;
+        line-height: .813rem;
+        margin-right: .625rem;
+    }
+    &__icon {
+        border-style: solid;
+        border-width: 1px;
+        border-color: #D4E0FA;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 17px -10px rgba(0, 0, 0, .4);
+        .fas {
+            font-size: 1rem;
+        }
+    }
+}

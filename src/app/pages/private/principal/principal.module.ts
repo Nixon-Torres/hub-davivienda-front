@@ -10,7 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { GalleryDialogModule } from '../gallery-dialog/gallery-dialog.module';
 // Form Controls
-import {MatIconModule, MatNativeDateModule} from '@angular/material';
+import { MatIconModule, MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,6 +20,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
 // Buttons & Indicators
 import { MatButtonModule } from '@angular/material/button';
@@ -41,6 +42,9 @@ import { HowIsEconomyComponent } from './how-is-economy/how-is-economy.component
 import { EditCompaniesComponent } from './edit-companies/edit-companies.component';
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
+import { FaqButtonComponent } from './faq-button/faq-button.component';
+import { FaqContentComponent } from './faq-content/faq-content.component';
+import { VideoModalModule } from './faq-content/video-modal/video-modal.module';
 
 const routes: Routes = [
     {
@@ -64,12 +68,27 @@ const materialModules: any[] = [
     MatButtonModule,
     MatSelectModule,
     MatListModule,
+    MatExpansionModule,
     MatChipsModule,
     MatIconModule
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, HowIsEconomyComponent, EditCompaniesComponent],
+    declarations: [
+        PrincipalComponent,
+        LeftBarComponent,
+        RightContentComponent,
+        DialogBoxComponent,
+        CreateReportDialogComponent,
+        HighlightDialogComponent,
+        BannerComponent,
+        EditSiteComponent,
+        InvestmentStrategiesComponent,
+        HowIsEconomyComponent,
+        FaqButtonComponent,
+        FaqContentComponent,
+        EditCompaniesComponent
+    ],
     imports: [
         CommonModule,
         materialModules,
@@ -81,7 +100,8 @@ const materialModules: any[] = [
         NgxDaterangepickerMd.forRoot(),
         PreviewDialogModule,
         NgSelectModule,
-        GalleryDialogModule
+        GalleryDialogModule,
+        VideoModalModule
     ],
     exports: [
         materialModules

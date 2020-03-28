@@ -233,6 +233,7 @@
     line-height: 1;
     display: inline-block;
     width: 1em;
+    transform: translateY(3px);
 }
 
 .fa-laptop-code:before {
@@ -243,4 +244,13 @@
 }
 .fa-home:before {
     content: url("/assets/images/icons-font-awesome/home-solid.svg");
+}
+.fa-question:before {
+    content: url("/assets/images/icons-font-awesome/question-solid.svg");
+}
+.fa-play-circle:before {
+    content: url("/assets/images/icons-font-awesome/play-circle-solid.svg");
+}
+.fa-file-download:before {
+    content: url("/assets/images/icons-font-awesome/file-download-solid.svg");
 }

@@ -1,0 +1,10 @@
+<article class="video-modal">
+    <header class="video-modal__header">
+        <p class="video-modal__title">{{data.videoName}}</p>
+        <a (click)="closeDialog()" class="modal-close-cta">Cerrar <span
+            class="icon icon-times"></span></a>
+    </header>
+
+    <iframe width="100%" height="100%" [src]="videoId" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</article>
