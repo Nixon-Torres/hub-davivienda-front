@@ -16,12 +16,12 @@
             {{config.warningText}}
         </p>
 
-        <p class="message-section" [ngStyle]="config.titleStyle">
-            {{config.title}}
+        <div class="message-section" [ngStyle]="config.titleStyle">
+            <div [innerHTML]="config.title"></div>
             <span class="message-subtitle" [ngStyle]="config.subtitleStyle" *ngIf="config.subtitle">
                 {{config.subtitle}}
             </span>
-        </p>
+        </div>
 
         <div class="footer">
             <button mat-button class="btn btn-cancel"

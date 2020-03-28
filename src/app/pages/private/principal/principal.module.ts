@@ -10,7 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { GalleryDialogModule } from '../gallery-dialog/gallery-dialog.module';
 // Form Controls
-import { MatNativeDateModule } from '@angular/material';
+import {MatIconModule, MatNativeDateModule} from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,6 +20,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
 // Buttons & Indicators
 import { MatButtonModule } from '@angular/material/button';
 
@@ -37,6 +38,7 @@ import { EditSiteComponent } from './edit-site/edit-site.component';
 
 import { InvestmentStrategiesComponent } from './investment-strategies/investment-strategies.component';
 import { HowIsEconomyComponent } from './how-is-economy/how-is-economy.component';
+import { EditCompaniesComponent } from './edit-companies/edit-companies.component';
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 
@@ -61,11 +63,13 @@ const materialModules: any[] = [
     MatSlideToggleModule,
     MatButtonModule,
     MatSelectModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule,
+    MatIconModule
 ];
 
 @NgModule({
-    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, HowIsEconomyComponent],
+    declarations: [PrincipalComponent, LeftBarComponent, RightContentComponent, DialogBoxComponent, CreateReportDialogComponent, HighlightDialogComponent, BannerComponent, EditSiteComponent, InvestmentStrategiesComponent, HowIsEconomyComponent, EditCompaniesComponent],
     imports: [
         CommonModule,
         materialModules,

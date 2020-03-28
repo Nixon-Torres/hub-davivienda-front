@@ -5,6 +5,10 @@
     min-height: 21.52vw;
     height: auto;
     border-radius: 5px;
+
+    strong {
+        font-weight: bold;
+    }
 }
 
 .modal-form {
@@ -51,6 +55,10 @@
             .message-subtitle {
                 display: block;
                 font-weight: bold;
+            }
+
+            .strong {
+                font-weight: 700;
             }
         }
 

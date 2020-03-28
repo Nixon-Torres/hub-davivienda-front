@@ -8,7 +8,6 @@ import {ConfigDialog} from './confirmation-dialog.model';
     styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent {
-
     public config: ConfigDialog;
     public alert: boolean;
 
@@ -16,6 +15,8 @@ export class ConfirmationDialogComponent {
         public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
+        // debugger
+        // this.config = Object.assign(defaultConfig, this.data.config);
         this.config = this.data.config;
         this.alert = this.data.isAlert ? this.data.isAlert : false;
         this.alertDefaultState();
