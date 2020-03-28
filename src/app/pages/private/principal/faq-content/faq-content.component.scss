@@ -79,6 +79,11 @@
 
     .accordion {
         box-shadow: 0 0 17px -12px rgba(0, 0, 0, .5);
+        margin-bottom: 10px;
+        display: block;
+        &:last-child {
+            margin-bottom: 0;
+        }
         &__wrapper {
             border-radius: 10px;
             box-shadow: none;
@@ -185,6 +190,10 @@
     display: flex;
     align-items: center;
     padding: 15px 150px 15px 25px;
+    margin-bottom: 10px;
+    &:last-child {
+        margin-bottom: 0;
+    }
     &__texts {
         width: 80%;
     }

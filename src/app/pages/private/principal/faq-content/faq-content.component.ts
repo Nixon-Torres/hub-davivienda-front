@@ -10,7 +10,123 @@ export class FaqContentComponent implements OnInit {
     @Output() changeView: EventEmitter<object>;
     public marketing: boolean;
 
-  constructor(
+    public questions = [
+        {
+            question: '¿Ejemplo de pregunta numero 1?',
+            answer: [
+                {
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                        'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                        'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                        'ratione totam ut voluptatum!',
+                }, {
+                    list: [
+                        {
+                            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                                'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                                'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                                'ratione totam ut voluptatum!',
+                            image: '/assets/images/section/corredores.svg'
+                        }, {
+                            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                                'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                                'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                                'ratione totam ut voluptatum!',
+                            image: '/assets/images/section/corredores.svg'
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            question: '¿Ejemplo de pregunta numero 2?',
+            answer: [
+                {
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                        'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                        'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                        'ratione totam ut voluptatum!',
+                }, {
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                        'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                        'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                        'ratione totam ut voluptatum!',
+                    image: '/assets/images/section/corredores.svg'
+                }
+            ]
+        },
+        {
+            question: '¿Ejemplo de pregunta numero 3?',
+            answer: [
+                {
+                    list: [
+                        {
+                            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                                'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                                'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                                'ratione totam ut voluptatum!',
+                            image: '/assets/images/section/corredores.svg'
+                        }, {
+                            text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                                'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                                'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                                'ratione totam ut voluptatum!',
+                            image: '/assets/images/section/corredores.svg'
+                        }
+                    ]
+                }, {
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis\n' +
+                        'commodi dolor et molestias nisi reprehenderit sequi sunt tenetur\n' +
+                        'voluptatem. Corporis illo laboriosam nobis omnis praesentium quia\n' +
+                        'ratione totam ut voluptatum!',
+                }
+            ]
+        }
+    ];
+    public videos = [
+        {
+            name: 'Nombre del video tutorial 1',
+            description: 'Pequeña descripción del contenido del video (145\n' +
+                'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
+                'aspernatur consectetur dolores',
+            videoId: 'o64suVTh67U',
+        }, {
+            name: 'Nombre del video tutorial 2',
+            description: 'Pequeña descripción del contenido del video (145\n' +
+                'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
+                'aspernatur consectetur dolores',
+            videoId: '535Q2OozWJQ',
+        }, {
+            name: 'Nombre del video tutorial 3',
+            description: 'Pequeña descripción del contenido del video (145\n' +
+                'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
+                'aspernatur consectetur dolores',
+            videoId: 'zEmyTlPkJE8',
+        }
+    ];
+    public pdfs = [
+        {
+            name: 'PDF - Nombre del PDF 1',
+            description: 'Pequeña descripción del contenido del pdf (145\n' +
+                'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
+                'aspernatur consectetur dolores',
+            downloadLink: ''
+        }, {
+            name: 'PDF - Nombre del PDF 2',
+            description: 'Pequeña descripción del contenido del pdf (145\n' +
+                'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
+                'aspernatur consectetur dolores',
+            downloadLink: ''
+        }, {
+            name: 'PDF - Nombre del PDF 3',
+            description: 'Pequeña descripción del contenido del pdf (145\n' +
+                'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
+                'aspernatur consectetur dolores',
+            downloadLink: ''
+        }
+    ];
+
+    constructor(
       private auth: AuthService
   ) {
       this.changeView = new EventEmitter<object>();
@@ -26,6 +142,10 @@ export class FaqContentComponent implements OnInit {
           editSite: false,
           faq: false
       });
+  }
+
+  public openVideoModal(videoId: string): void {
+
   }
 
 }

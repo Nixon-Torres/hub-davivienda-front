@@ -17,59 +17,31 @@
                             <p>Encuentre respuesta rápida a sus inquietudes</p>
                         </header>
                         <div class="tab__container">
-                            <mat-accordion class="accordion">
+                            <mat-accordion class="accordion" *ngFor="let question of questions">
                                 <mat-expansion-panel class="accordion__wrapper">
                                     <mat-expansion-panel-header class="accordion__header" [collapsedHeight]="'64px'">
                                         <mat-panel-title class="accordion__title">
-                                            Self aware panel
+                                            {{question.question}}
                                         </mat-panel-title>
                                     </mat-expansion-panel-header>
                                     <div class="accordion__content">
-                                        <div>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis
-                                                commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
-                                                voluptatem. Corporis illo laboriosam nobis omnis praesentium quia
-                                                ratione totam ut voluptatum!</p>
-                                            <figure>
-                                                <img src="/assets/images/section/corredores.svg" alt="">
-                                            </figure>
-                                        </div>
-                                        <ol>
-                                            <li>
-                                                <div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                        Blanditiis
-                                                        commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
-                                                        voluptatem. Corporis illo laboriosam nobis omnis praesentium
-                                                        quia
-                                                        ratione totam ut voluptatum!</p>
-                                                    <figure>
-                                                        <img src="/assets/images/section/corredores.svg" alt="">
-                                                    </figure>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                        Blanditiis
-                                                        commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
-                                                        voluptatem. Corporis illo laboriosam nobis omnis praesentium
-                                                        quia
-                                                        ratione totam ut voluptatum!</p>
-                                                    <figure>
-                                                        <img src="/assets/images/section/corredores.svg" alt="">
-                                                    </figure>
-                                                </div>
-                                            </li>
-                                        </ol>
-                                        <div>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis
-                                                commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
-                                                voluptatem. Corporis illo laboriosam nobis omnis praesentium quia
-                                                ratione totam ut voluptatum!</p>
-                                            <figure>
-                                                <img src="/assets/images/section/corredores.svg" alt="">
-                                            </figure>
+                                        <div *ngFor="let answer of question.answer">
+                                            <div *ngIf="!answer.list">
+                                                <p>{{answer.text}}</p>
+                                                <figure *ngIf="answer.image">
+                                                    <img [src]="answer.image" alt="">
+                                                </figure>
+                                            </div>
+                                            <ol *ngIf="answer.list">
+                                                <li *ngFor="let item of answer.list">
+                                                    <div>
+                                                        <p>{{item.text}}</p>
+                                                        <figure *ngIf="item.image">
+                                                            <img [src]="item.image" alt="">
+                                                        </figure>
+                                                    </div>
+                                                </li>
+                                            </ol>
                                         </div>
                                     </div>
                                 </mat-expansion-panel>
@@ -83,8 +55,8 @@
                             <p>Encuentre acá videos explicativos</p>
                         </header>
                         <div class="tab__container">
-                            <article class="video">
-                                <button class="video__play">
+                            <article class="video" *ngFor="let video of videos">
+                                <button class="video__play" (click)="openVideoModal(video.videoId)">
                                     <figure class="video__thumbnail">
                                         <img src="" alt="">
                                     </figure>
@@ -92,10 +64,8 @@
                                     <span class="video__duration">1:05</span>
                                 </button>
                                 <div class="video__texts">
-                                    <p class="video__name">Nombre del video tutorial 1</p>
-                                    <p class="video__description">Pequeña descripción del contenido del video (145
-                                        caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
-                                        aspernatur consectetur dolores</p>
+                                    <p class="video__name">{{video.name}}</p>
+                                    <p class="video__description">{{video.description}}</p>
                                 </div>
                             </article>
                         </div>
@@ -107,14 +77,12 @@
                             <p>Descargue documenteción de este sitio</p>
                         </header>
                         <div class="tab__container">
-                            <article class="pdf">
+                            <article class="pdf" *ngFor="let pdf of pdfs">
                                 <div class="pdf__texts">
-                                    <p class="pdf__name">PDF - Nombre del PDF</p>
-                                    <p class="pdf__description">Pequeña descripción del contenido del pdf (145
-                                        caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
-                                        aspernatur consectetur dolores</p>
+                                    <p class="pdf__name">{{pdf.name}}</p>
+                                    <p class="pdf__description">{{pdf.description}}</p>
                                 </div>
-                                <a href="" target="_blank" download="true" class="pdf__download">
+                                <a href="{{pdf.downloadLink}}" target="_blank" download="true" class="pdf__download">
                                     <span class="fas fa-file-download"></span><span>Descargar</span>
                                 </a>
                             </article>
