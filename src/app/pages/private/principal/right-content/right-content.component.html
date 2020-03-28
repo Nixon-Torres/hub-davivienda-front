@@ -127,7 +127,7 @@
                     </div>
                 </mat-tab>
 
-                <mat-tab *ngIf="!marketing">
+                <mat-tab *ngIf="!marketing && !isBasicUser">
 					<ng-template mat-tab-label>
 						<span [ngClass]="{'pending': pendingToReview}">Por revisar</span>
 					</ng-template>

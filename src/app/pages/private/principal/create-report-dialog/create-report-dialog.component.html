@@ -100,7 +100,7 @@
 		<h3 class="title icon icon-user-alt">Plantillas</h3>
 		<p class="intro">Seleccione la plantilla que mejor se acomode a su informe</p>
 		<div class="tabs">
-			<mat-tab-group>
+			<mat-tab-group (selectedIndexChange)="tabChanged($event)">
 				<mat-tab label="Nuevas Plantillas">
 					<div class="group-radio-two">
 						<div class="group-radio-two--option" *ngFor="let template of list.templates">
@@ -124,7 +124,7 @@
 		</div>
 		<div mat-dialog-actions class="template_btn">
 			<button mat-button (click)="onNoClick()">Cancelar</button>
-			<button type="submit" class="highligh start_btn" mat-button>Empezar Informe <span>&nbsp;</span></button>
+			<button type="submit" class="highligh start_btn" mat-button>{{currentTab ? 'Duplicar Informe' : 'Empezar Informe'}}<span>&nbsp;</span></button>
 		</div>
 	</div>
 </form>

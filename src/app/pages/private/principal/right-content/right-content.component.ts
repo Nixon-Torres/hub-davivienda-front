@@ -62,6 +62,7 @@ export class RightContentComponent implements OnInit {
     public remarkable = false;
     public filterOptions: any;
     public marketing: boolean;
+    public isBasicUser: boolean;
     public selects: FormGroup;
     public tabIndex = 0;
 
@@ -91,6 +92,7 @@ export class RightContentComponent implements OnInit {
         });
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
+        this.isBasicUser = this.auth.isBasicUser();
         this.selectsFn();
     }
 
@@ -103,7 +105,7 @@ export class RightContentComponent implements OnInit {
     public resetSelect() {
         this.selects.reset({
             filterSelect: 'Escoger'
-        })
+        });
     }
 
     toggleCalendar() {
@@ -115,12 +117,18 @@ export class RightContentComponent implements OnInit {
     }
 
     openDialog(): void {
-        this.dialog.open(CreateReportDialogComponent, {
+        const createDialogRef = this.dialog.open(CreateReportDialogComponent, {
             width: '1500px',
             data: {
                 folderId: (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
                 stateId: '5e068d1cb81d1c5f29b62977'
             }
+        });
+
+        createDialogRef.afterClosed().subscribe((result: boolean) => {
+            this.loadReports();
+            this.folderService.loadStates();
+            this.folderService.loadFolders();
         });
     }
 
@@ -708,7 +716,9 @@ export class RightContentComponent implements OnInit {
             userId: clone.userId,
             stateId: this.DRAFT_KEY,
             sectionId: clone.sectionId,
-            folderId: clone.folderId
+            folderId: clone.folderId,
+            reportTypeId: clone.reportTypeId,
+            companyId: clone.companyId
         };
 
         this.saveReport(newReport);

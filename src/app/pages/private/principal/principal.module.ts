@@ -10,7 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { GalleryDialogModule } from '../gallery-dialog/gallery-dialog.module';
 // Form Controls
-import { MatNativeDateModule } from '@angular/material';
+import { MatIconModule, MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
 // Buttons & Indicators
 import { MatButtonModule } from '@angular/material/button';
 
@@ -38,6 +39,7 @@ import { EditSiteComponent } from './edit-site/edit-site.component';
 
 import { InvestmentStrategiesComponent } from './investment-strategies/investment-strategies.component';
 import { HowIsEconomyComponent } from './how-is-economy/how-is-economy.component';
+import { EditCompaniesComponent } from './edit-companies/edit-companies.component';
 import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 import { FaqButtonComponent } from './faq-button/faq-button.component';
@@ -66,7 +68,9 @@ const materialModules: any[] = [
     MatButtonModule,
     MatSelectModule,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatChipsModule,
+    MatIconModule
 ];
 
 @NgModule({
@@ -83,6 +87,7 @@ const materialModules: any[] = [
         HowIsEconomyComponent,
         FaqButtonComponent,
         FaqContentComponent,
+        EditCompaniesComponent
     ],
     imports: [
         CommonModule,

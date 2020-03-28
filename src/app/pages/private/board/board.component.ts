@@ -503,7 +503,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public canPublish(): boolean {
-        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.approved;
+        return this.isAdvancedUser && this.report.stateId === this.states.approved;
     }
 
     private setPropertiesReport(): void {

@@ -15,7 +15,7 @@ export class AsideFoldersService {
   }
   private sharedFolder: any = {
     id: 'shared',
-    name: 'Carpeta compartida',
+    name: 'Carpeta Colaborativa',
     count: 0
   }
 
