@@ -18,6 +18,7 @@ import {loopback} from '../../../../models/common/loopback.model';
 export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     public createReportForm: FormGroup;
     public STORAGE_URL = environment.STORAGE_FILES;
+    readonly DRAFT_KEY: string = environment.DRAFT_KEY;
 
     constructor(
         public dialogRef: MatDialogRef<CreateReportDialogComponent>,
@@ -31,6 +32,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     public authors = [];
     public selectedAuthor: any = '';
+    public currentTab = 0;
     public user: any = {};
     public originalUsers = [];
 
@@ -243,7 +245,49 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.selectedAuthor = event;
     }
 
+    public tabChanged(idx) {
+        this.currentTab = idx;
+    }
+
+    public onCloneReport(report: any) {
+        const clone = Object.assign({}, report);
+        clone.name = `Duplicado ${clone.name}`;
+        clone.slug = `duplicado-${clone.slug}`;
+
+        const newReport: any = {
+            name: clone.name,
+            slug: clone.slug,
+            trash: false,
+            content: clone.content,
+            styles: clone.styles,
+            sectionTypeKey: clone.sectionTypeKey,
+            templateId: clone.templateId,
+            userId: clone.userId,
+            stateId: this.DRAFT_KEY,
+            sectionId: clone.sectionId,
+            folderId: clone.folderId
+        };
+
+        this.saveReport(newReport);
+    }
+
+    private saveReport(clone: any): void {
+        this.http.post({
+            path: 'reports',
+            data: clone
+        }).subscribe(() => {
+            this.dialogRef.close();
+        });
+    }
+
     public goToBoard() {
+        // Clone report if its in second tab
+        if (this.currentTab === 1) {
+            const reportId = this.createReportForm.value.reportId;
+            const report = this.list.reports.find(e => e.id === reportId);
+            return this.onCloneReport(report);
+        }
+
         if (this.createReportForm.valid) {
             let path = 'app/board';
             path += `/${this.createReportForm.value.stateId}`;
