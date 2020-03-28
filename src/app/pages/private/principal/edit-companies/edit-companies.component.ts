@@ -80,6 +80,35 @@ export class EditCompaniesComponent implements OnInit {
         }
     }
 
+    public onConfirmSave(): void {
+        if (this.toRemove.length === 0) {
+            return this.onSave();
+        }
+
+        const companiesToRemoveStr = '<div class="strong">' + this.toRemove.map(e => e.name).join('</br>') + '</div>';
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                config: {
+                    title: 'Esta seguro que desea eliminar el contenido<br/>' + companiesToRemoveStr,
+                    twoButtons: true,
+                    icon: 'icon-exclamation',
+                    iconColor: '#FF003B',
+                    mainButton: 'Si, Eliminar',
+                    secondButton: 'Cancelar'
+                }
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                return this.onSave();
+            }
+            this.toRemove = [];
+            this.getCompanies();
+        });
+    }
+
     public onSave(): void {
         let observables = this.toRemove.map((company) => {
             return this.http.delete({
@@ -97,7 +126,7 @@ export class EditCompaniesComponent implements OnInit {
         }));
 
         forkJoin(observables).subscribe((response: any) => {
-            this.showConfirmation(this.newCompanies, this.toRemove);
+            this.showConfirmation(this.newCompanies);
             this.newCompanies = [];
             this.toRemove = [];
             this.getCompanies();
@@ -145,15 +174,24 @@ export class EditCompaniesComponent implements OnInit {
         });
     }
 
-    public showConfirmation(companiesAdded: any, companiesRemoved: any) {
+    public showConfirmation(companiesAdded: any) {
+        if (companiesAdded.length === 0) {
+            return;
+        }
+
         const companiesAddedStr = '<strong>' + companiesAdded.map(e => e.name).join(', ') + '</strong>';
-        const companiesRemovedStr = '<strong>' + companiesRemoved.map(e => e.name).join(', ') + '</strong>';
 
         this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
-                title: 'Las compañías ' + companiesAddedStr + ' se han agregado exitosamente. <br/> Las compañias ' +
-                    companiesRemovedStr + ' han sido eliminadas exitosamente'
+                config: {
+                    title: 'Las compañías ' + companiesAddedStr + ' se han agregado exitosamente.',
+                    twoButtons: true,
+                    icon: 'icon-check',
+                    iconColor: '#19d600',
+                    mainButton: 'Aceptar',
+                    secondButton: 'Cancelar'
+                }
             }
         });
     }
