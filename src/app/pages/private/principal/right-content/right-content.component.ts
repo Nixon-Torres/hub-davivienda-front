@@ -103,7 +103,7 @@ export class RightContentComponent implements OnInit {
     public resetSelect() {
         this.selects.reset({
             filterSelect: 'Escoger'
-        })
+        });
     }
 
     toggleCalendar() {
@@ -115,12 +115,18 @@ export class RightContentComponent implements OnInit {
     }
 
     openDialog(): void {
-        this.dialog.open(CreateReportDialogComponent, {
+        const createDialogRef = this.dialog.open(CreateReportDialogComponent, {
             width: '1500px',
             data: {
                 folderId: (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
                 stateId: '5e068d1cb81d1c5f29b62977'
             }
+        });
+
+        createDialogRef.afterClosed().subscribe((result: boolean) => {
+            this.loadReports();
+            this.folderService.loadStates();
+            this.folderService.loadFolders();
         });
     }
 
