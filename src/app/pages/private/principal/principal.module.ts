@@ -20,6 +20,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 // Buttons & Indicators
 import { MatButtonModule } from '@angular/material/button';
 
@@ -63,7 +64,8 @@ const materialModules: any[] = [
     MatSlideToggleModule,
     MatButtonModule,
     MatSelectModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule
 ];
 
 @NgModule({

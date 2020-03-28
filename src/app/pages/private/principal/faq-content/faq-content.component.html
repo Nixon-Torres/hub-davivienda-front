@@ -11,9 +11,116 @@
         </div>
         <div class="tabs">
             <mat-tab-group>
-                <mat-tab label="Respuestas rápidas"></mat-tab>
-                <mat-tab label="Video tutoriales"></mat-tab>
-                <mat-tab label="Manuales"></mat-tab>
+                <mat-tab label="Respuestas rápidas">
+                    <div class="tab__wrapper">
+                        <header class="tab__header">
+                            <p>Encuentre respuesta rápida a sus inquietudes</p>
+                        </header>
+                        <div class="tab__container">
+                            <mat-accordion class="accordion">
+                                <mat-expansion-panel class="accordion__wrapper">
+                                    <mat-expansion-panel-header class="accordion__header" [collapsedHeight]="'64px'">
+                                        <mat-panel-title class="accordion__title">
+                                            Self aware panel
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div class="accordion__content">
+                                        <div>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis
+                                                commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
+                                                voluptatem. Corporis illo laboriosam nobis omnis praesentium quia
+                                                ratione totam ut voluptatum!</p>
+                                            <figure>
+                                                <img src="/assets/images/section/corredores.svg" alt="">
+                                            </figure>
+                                        </div>
+                                        <ol>
+                                            <li>
+                                                <div>
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                        Blanditiis
+                                                        commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
+                                                        voluptatem. Corporis illo laboriosam nobis omnis praesentium
+                                                        quia
+                                                        ratione totam ut voluptatum!</p>
+                                                    <figure>
+                                                        <img src="/assets/images/section/corredores.svg" alt="">
+                                                    </figure>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                        Blanditiis
+                                                        commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
+                                                        voluptatem. Corporis illo laboriosam nobis omnis praesentium
+                                                        quia
+                                                        ratione totam ut voluptatum!</p>
+                                                    <figure>
+                                                        <img src="/assets/images/section/corredores.svg" alt="">
+                                                    </figure>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                        <div>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis
+                                                commodi dolor et molestias nisi reprehenderit sequi sunt tenetur
+                                                voluptatem. Corporis illo laboriosam nobis omnis praesentium quia
+                                                ratione totam ut voluptatum!</p>
+                                            <figure>
+                                                <img src="/assets/images/section/corredores.svg" alt="">
+                                            </figure>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Video tutoriales">
+                    <div class="tab__wrapper">
+                        <header class="tab__header">
+                            <p>Encuentre acá videos explicativos</p>
+                        </header>
+                        <div class="tab__container">
+                            <article class="video">
+                                <button class="video__play">
+                                    <figure class="video__thumbnail">
+                                        <img src="" alt="">
+                                    </figure>
+                                    <span class="fas fa-play-circle"></span>
+                                    <span class="video__duration">1:05</span>
+                                </button>
+                                <div class="video__texts">
+                                    <p class="video__name">Nombre del video tutorial 1</p>
+                                    <p class="video__description">Pequeña descripción del contenido del video (145
+                                        caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
+                                        aspernatur consectetur dolores</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Manuales">
+                    <div class="tab__wrapper">
+                        <header class="tab__header">
+                            <p>Descargue documenteción de este sitio</p>
+                        </header>
+                        <div class="tab__container">
+                            <article class="pdf">
+                                <div class="pdf__texts">
+                                    <p class="pdf__name">PDF - Nombre del PDF</p>
+                                    <p class="pdf__description">Pequeña descripción del contenido del pdf (145
+                                        caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
+                                        aspernatur consectetur dolores</p>
+                                </div>
+                                <a href="" target="_blank" download="true" class="pdf__download">
+                                    <span class="fas fa-file-download"></span><span>Descargar</span>
+                                </a>
+                            </article>
+                        </div>
+                    </div>
+                </mat-tab>
             </mat-tab-group>
         </div>
     </section>
