@@ -1,1 +1,20 @@
-<p>faq-content works!</p>
+<div class="faq-content">
+    <header class="faq-content__header">
+        <p class="faq-content__title">Preguntas frecuentes</p>
+        <div class="info_btn" *ngIf="!marketing">
+            <button mat-raised-button>Crear Nuevo Informe <span>&nbsp;</span></button>
+        </div>
+    </header>
+    <section class="">
+        <div class="back-btn">
+            <a (click)="onChangeView()">&#60; Volver</a>
+        </div>
+        <div class="tabs">
+            <mat-tab-group>
+                <mat-tab label="Respuestas rápidas"></mat-tab>
+                <mat-tab label="Video tutoriales"></mat-tab>
+                <mat-tab label="Manuales"></mat-tab>
+            </mat-tab-group>
+        </div>
+    </section>
+</div>
