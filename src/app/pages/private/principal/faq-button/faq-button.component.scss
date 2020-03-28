@@ -1,8 +1,9 @@
 :host {
     display: block;
-    position: absolute;
-    right: 0;
-    bottom: 0;
+    position: fixed;
+    right: 15px;
+    bottom: 30px;
+    z-index: 999;
 }
 
 :host(.active) {

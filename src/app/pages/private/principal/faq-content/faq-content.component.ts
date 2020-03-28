@@ -1,10 +1,12 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../../../services/auth.service';
+import {VideoModalComponent} from './video-modal/video-modal.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-faq-content',
-  templateUrl: './faq-content.component.html',
-  styleUrls: ['./faq-content.component.scss']
+    selector: 'app-faq-content',
+    templateUrl: './faq-content.component.html',
+    styleUrls: ['./faq-content.component.scss']
 })
 export class FaqContentComponent implements OnInit {
     @Output() changeView: EventEmitter<object>;
@@ -110,42 +112,48 @@ export class FaqContentComponent implements OnInit {
             description: 'Pequeña descripción del contenido del pdf (145\n' +
                 'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
                 'aspernatur consectetur dolores',
-            downloadLink: ''
+            downloadLink: 'http://www.orimi.com/pdf-test.pdf'
         }, {
             name: 'PDF - Nombre del PDF 2',
             description: 'Pequeña descripción del contenido del pdf (145\n' +
                 'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
                 'aspernatur consectetur dolores',
-            downloadLink: ''
+            downloadLink: 'http://www.orimi.com/pdf-test.pdf'
         }, {
             name: 'PDF - Nombre del PDF 3',
             description: 'Pequeña descripción del contenido del pdf (145\n' +
                 'caracteres) Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores\n' +
                 'aspernatur consectetur dolores',
-            downloadLink: ''
+            downloadLink: 'http://www.orimi.com/pdf-test.pdf'
         }
     ];
 
     constructor(
-      private auth: AuthService
-  ) {
-      this.changeView = new EventEmitter<object>();
-      this.marketing = this.auth.isMarketing();
-  }
+        private auth: AuthService,
+        public dialog: MatDialog,
+    ) {
+        this.changeView = new EventEmitter<object>();
+        this.marketing = this.auth.isMarketing();
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  onChangeView() {
-      this.changeView.emit({
-          reports: true,
-          editSite: false,
-          faq: false
-      });
-  }
+    onChangeView() {
+        this.changeView.emit({
+            reports: true,
+            editSite: false,
+            faq: false
+        });
+    }
 
-  public openVideoModal(videoId: string): void {
-
-  }
-
+    public openVideoModal(videoId: string, videoName: string): void {
+        this.dialog.open(VideoModalComponent, {
+            width: '800px',
+            data: {
+                videoId,
+                videoName
+            }
+        });
+    }
 }

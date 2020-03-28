@@ -56,13 +56,12 @@
                         </header>
                         <div class="tab__container">
                             <article class="video" *ngFor="let video of videos">
-                                <button class="video__play" (click)="openVideoModal(video.videoId)">
-                                    <figure class="video__thumbnail">
-                                        <img src="" alt="">
-                                    </figure>
-                                    <span class="fas fa-play-circle"></span>
-                                    <span class="video__duration">1:05</span>
-                                </button>
+                                <div class="video__thumbnail">
+                                    <img [src]="'//img.youtube.com/vi/'+video.videoId+'/0.jpg'" alt="">
+                                    <button class="video__play" (click)="openVideoModal(video.videoId, video.name)">
+                                        <span class="fas fa-play-circle"></span>
+                                    </button>
+                                </div>
                                 <div class="video__texts">
                                     <p class="video__name">{{video.name}}</p>
                                     <p class="video__description">{{video.description}}</p>

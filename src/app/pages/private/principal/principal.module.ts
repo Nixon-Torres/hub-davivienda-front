@@ -42,6 +42,7 @@ import { MatListModule } from '@angular/material/list';
 import { BannerComponent } from './banner/banner.component';
 import { FaqButtonComponent } from './faq-button/faq-button.component';
 import { FaqContentComponent } from './faq-content/faq-content.component';
+import { VideoModalModule } from './faq-content/video-modal/video-modal.module';
 
 const routes: Routes = [
     {
@@ -81,7 +82,7 @@ const materialModules: any[] = [
         InvestmentStrategiesComponent,
         HowIsEconomyComponent,
         FaqButtonComponent,
-        FaqContentComponent
+        FaqContentComponent,
     ],
     imports: [
         CommonModule,
@@ -94,7 +95,8 @@ const materialModules: any[] = [
         NgxDaterangepickerMd.forRoot(),
         PreviewDialogModule,
         NgSelectModule,
-        GalleryDialogModule
+        GalleryDialogModule,
+        VideoModalModule
     ],
     exports: [
         materialModules
