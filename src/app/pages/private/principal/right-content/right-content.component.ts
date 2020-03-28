@@ -714,7 +714,9 @@ export class RightContentComponent implements OnInit {
             userId: clone.userId,
             stateId: this.DRAFT_KEY,
             sectionId: clone.sectionId,
-            folderId: clone.folderId
+            folderId: clone.folderId,
+            reportTypeId: clone.reportTypeId,
+            companyId: clone.companyId
         };
 
         this.saveReport(newReport);

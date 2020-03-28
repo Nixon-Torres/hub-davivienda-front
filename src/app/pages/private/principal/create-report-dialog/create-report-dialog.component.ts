@@ -260,12 +260,13 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             trash: false,
             content: clone.content,
             styles: clone.styles,
-            sectionTypeKey: clone.sectionTypeKey,
             templateId: clone.templateId,
             userId: clone.userId,
             stateId: this.DRAFT_KEY,
             sectionId: clone.sectionId,
-            folderId: clone.folderId
+            folderId: clone.folderId,
+            reportTypeId: clone.reportTypeId,
+            companyId: clone.companyId
         };
 
         this.saveReport(newReport);
