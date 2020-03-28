@@ -246,7 +246,6 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
     }
 
     public tabChanged(idx) {
-        console.log('idx:', idx);
         this.currentTab = idx;
     }
 
