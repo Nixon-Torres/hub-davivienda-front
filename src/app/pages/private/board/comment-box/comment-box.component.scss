@@ -116,12 +116,14 @@ section {
 
 
 			.comment-close {
-				float: right;
+				position: absolute;
 				padding: 0px;
 				border: none;
 				cursor: pointer;
 				margin-top: 12px;
 				background: transparent;
+				right: 0;
+    			margin-right: 13px;
 
 				span::before {
 					margin: 0px;
@@ -174,8 +176,9 @@ section {
 
 			p {
 				color: #616161;
-				margin-left: 40px;
+				margin-left: 19px;
 				font-size: 0.75rem;
+				max-width: 130px;
 			}
 
 			.actions {
