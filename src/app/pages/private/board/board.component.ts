@@ -21,9 +21,9 @@ import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.
 
 import {Report} from './board.model';
 import {RevisionModalComponent} from './revision-modal/revision-modal.component';
-import {CreateReportDialogComponent} from '../principal/create-report-dialog/create-report-dialog.component';
-import {UserInterface} from 'src/app/services/auth.service.model';
 import {CreationModalComponent} from './creation-modal/creation-modal.component';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material';
 
 declare var grapesjs: any;
 
@@ -92,6 +92,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         sectionId: null,
         ownerId: null,
         users: [],
+        tags: []
+    };
+
+    public tags = {
+        categories: [],
+        tendencies: []
     };
 
     private authorsId: Array<string> = [];
@@ -114,6 +120,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public isMarketing: boolean;
     public readonly = false;
     public unresolvedComments: any;
+    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -288,7 +295,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
-
+            this.onLoadTendenciesTags();
+            this.onLoadCategoriesTags();
             this.files = response.body.files;
             this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
@@ -1113,7 +1121,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public getEditorsList(reportId) {
         this.http.get({
-            'path': `reports/editors?reportId=${reportId}`,
+            path: `reports/editors?reportId=${reportId}`,
         }).subscribe((response: any) => {
             this.editorsList = response.body.editors;
         });
@@ -1126,14 +1134,76 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public checkNotifications(reportId: string) {
-        let dataFilter = encodeURI(JSON.stringify({reportId: reportId}));
+        const dataFilter = encodeURI(JSON.stringify({reportId}));
         this.http.patch({
-            'path': `notifications/read?filter=${dataFilter}`,
-            'data': {'readed': true}
+            path: `notifications/read?filter=${dataFilter}`,
+            data: {readed: true}
         }).subscribe();
     }
 
     private goToPrincipalPage(): void {
         this.router.navigate(['app/principal']);
+    }
+
+    /* Tags */
+
+    public addTag(event: MatChipInputEvent): void {
+        const input = event.input;
+        const value = event.value;
+
+        if (this.tags.tendencies.length < 4) {
+            if ((value || '').trim()) {
+                this.tags.tendencies.push({name: value.trim()});
+            }
+        }
+
+        if (input) {
+            input.value = '';
+        }
+    }
+
+    public removeTag(tag: string): void {
+        const index = this.tags.tendencies.indexOf(tag);
+        if (index >= 0) {
+            this.tags.tendencies.splice(index, 1);
+        }
+    }
+
+    public onSaveTags(): void {
+        this.http.patch({
+            path: `reports/${this.report.id}`,
+            data: {
+                tags: this.tags.tendencies
+            }
+        }).subscribe((resp: any) => {
+            if (resp) {
+                this.showDialogOnSaveTag();
+            }
+        });
+    }
+
+    public onLoadTendenciesTags() {
+        if (this.report.tags && this.report.tags.length) {
+           this.tags.tendencies = this.report.tags;
+        }
+    }
+
+    public onLoadCategoriesTags() {
+        this.tags.categories = [
+            {name: 'tag 1'},
+            {name: 'tag 2'},
+            {name: 'tag 3'}
+        ];
+    }
+
+    public showDialogOnSaveTag(): void {
+        this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                config: {
+                    title: 'Los TAGS fueron agregados correctamente',
+                }
+            }
+        });
     }
 }

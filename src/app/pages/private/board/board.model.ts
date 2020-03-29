@@ -16,4 +16,5 @@ export interface Report {
     ownerId?: string;
     state?: any;
     users?: any;
+    tags?: any;
 }
