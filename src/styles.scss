@@ -706,7 +706,7 @@ $builder-bg: #f5f7fb;
 }
 
 .delete_field{
-	padding-left: 9%;
+	padding-left: 15%;
 	background-image: url("../src/assets/images/trash.png");
 	background-repeat: no-repeat;
     background-position: 0% 50%;
@@ -1110,6 +1110,12 @@ mat-expansion-panel {
 		overflow: hidden;
 
 	}
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+	width: 100%;
+    height: 15px;
+
 }
 
 
