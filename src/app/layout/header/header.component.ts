@@ -7,7 +7,6 @@ import { HttpService } from '../../services/http.service';
 import { SocketService } from '../../services/socket.service';
 
 import { environment } from '../../../environments/environment';
-// import { loopback } from '../../models/common/loopback.model';
 import * as moment from 'moment';
 
 @Component({
@@ -18,8 +17,8 @@ import * as moment from 'moment';
 
 export class HeaderComponent implements OnInit {
     public user: any = {};
-    public ntfQty: number = 0;
-    public onPrincipal: boolean = false;
+    public ntfQty = 0;
+    public onPrincipal = false;
     public notifications: any = [];
     private stateColors: any = {
         '5e068c81d811c55eb40d14d0': 'bg-publish',
@@ -39,7 +38,7 @@ export class HeaderComponent implements OnInit {
     ) {
         this.user = this.auth.getUserData();
         this.startToListenRouter(this.router);
-        this.startToListenSockets()
+        this.startToListenSockets();
         this.marketing = this.auth.isMarketing();
     }
 
@@ -51,33 +50,33 @@ export class HeaderComponent implements OnInit {
 
     private getNotifications(): void {
      this.http.get({
-            'path': `notifications`,
-            'data': {
+            path: `notifications`,
+            data: {
                 order: 'id DESC',
                 include: [
-                    { relation: "emitter", scope: { fields: ['name'] } },
-                    { relation: "report", scope: { fields: ['name', 'stateId'] } }
+                    { relation: 'emitter', scope: { fields: ['name'] } },
+                    { relation: 'report', scope: { fields: ['name', 'stateId'] } }
                 ],
                 where: { ownerId: this.user.id },
                 limit: 10
             },
-            'encode': true
+            encode: true
         }).subscribe((response: any) => {
-            if ("body" in response) {
-                response.body.map( notification => { this.processNotification(notification) });
+            if ('body' in response) {
+                response.body.map( notification => { this.processNotification(notification); });
             }
         });
     }
 
     private getCountNotifications(): void {
         this.http.get({
-            'path': `notifications/count?where=`,
-            'data': {
+            path: `notifications/count?where=`,
+            data: {
                 ownerId: this.user.id,
                 readed: false
             }
         }).subscribe((response: any) => {
-            if ("body" in response) {
+            if ('body' in response) {
                this.ntfQty = response.body.count;
             }
         });
@@ -87,13 +86,13 @@ export class HeaderComponent implements OnInit {
         this.socket.start().subscribe(() => {
 
             // If listen a new notification for be processed and get qty of notifications unreaded
-            this.socket.on("notification").subscribe((response) => {
+            this.socket.on('notification').subscribe((response) => {
                 this.processNotification(response, true);
                 this.getCountNotifications();
             });
 
             // If listen when a notification was readed, get all notifications again and and their qty
-            this.socket.on("readed").subscribe(() => {
+            this.socket.on('readed').subscribe(() => {
                 this.getNotifications();
                 this.getCountNotifications();
             });
@@ -101,11 +100,14 @@ export class HeaderComponent implements OnInit {
     }
 
     private processNotification(item: any, isSocket: boolean = false) {
-        let timeFromNow: string = moment(item.updatedAt).fromNow();
-        let txtDescription: string = item.text
+        if (!item.report || !item.emitter) {
+            return;
+        }
+        const timeFromNow: string = moment(item.updatedAt).fromNow();
+        const txtDescription: string = item.text
                                     .replace(/{{emitter_name}}/, item.emitter.name)
                                     .replace(/{{report_name}}/, item.report.name);
-        let notf: any = {
+        const notf: any = {
             id: item.id,
             type: item.type,
             subject: item.subject,
@@ -115,7 +117,7 @@ export class HeaderComponent implements OnInit {
             reportId: item.reportId
         };
 
-        if (item.type !== "report-comment" && "report" in item && "stateId" in item.report) {
+        if (item.type !== 'report-comment' && 'report' in item && 'stateId' in item.report) {
             notf.bgColor = this.stateColors[item.reportStateId] || 'bg-default';
         }
 
@@ -128,9 +130,9 @@ export class HeaderComponent implements OnInit {
 
     private startToListenRouter(router: Router) {
         router.events.subscribe(event => {
-            if(event instanceof NavigationEnd){
-                let pageName = event.url.split("/")[2];
-                this.onPrincipal = pageName === 'principal' ? true : false;
+            if (event instanceof NavigationEnd) {
+                const pageName = event.url.split('/')[2];
+                this.onPrincipal = pageName === 'principal';
             }
         });
     }
@@ -144,14 +146,14 @@ export class HeaderComponent implements OnInit {
     }
 
     isOpened(evt: any) {
-        let ntContainer = document.getElementById('notificationHeader').parentElement;
+        const ntContainer = document.getElementById('notificationHeader').parentElement;
         ntContainer.classList.add('notifications');
     }
 
     openNotf(reportId: number, readed: boolean) {
         this.getCountNotifications();
         this.notifications.filter((a) => {
-            if(a.reportId == reportId) {
+            if (a.reportId === reportId) {
                 a.readed = true;
             }
             return true;
