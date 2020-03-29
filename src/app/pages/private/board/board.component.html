@@ -197,9 +197,27 @@
 									<span>Tags Categorías</span>
 								</mat-panel-title>
 							</mat-expansion-panel-header>
-
-							<p>This is the primary content of the panel.</p>
-
+                            <div>
+                                <mat-chip-list aria-label="Fish selection">
+                                    <mat-chip *ngFor="let tag of tags.categories">{{tag.name}}</mat-chip>
+                                </mat-chip-list>
+                                <mat-form-field class="example-chip-list">
+                                    <mat-chip-list #tagsList aria-label="Fruit selection">
+                                        <mat-chip *ngFor="let tag of tags.tendencies" [selectable]="true"
+                                                  [removable]="true" (removed)="removeTag(tag)">
+                                            {{tag.name}}
+                                            <mat-icon matChipRemove>close</mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="Escriba cada tag separado por enter"
+                                               [matChipInputFor]="tagsList"
+                                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                               [matChipInputAddOnBlur]="true"
+                                               (matChipInputTokenEnd)="addTag($event)">
+                                    </mat-chip-list>
+                                </mat-form-field>
+                                <p>Separa las etiquetas con comas (ej. prueba1, prueba2)</p>
+                                <button (click)="onSaveTags()">Guardar</button>
+                            </div>
 						</mat-expansion-panel>
 
 						<mat-expansion-panel>

@@ -532,3 +532,37 @@ $default-font: "Helvetica Neue", Medium;
     bottom: 0;
     z-index: 999;
 }
+
+.mat-input-element {
+    caret-color: transparent;
+}
+.mat-chip-input {
+    font-size: 14px;
+    color: #999;
+}
+.mat-chip-list-wrapper {
+    border: 1px solid #eff4f8;
+    padding: 2px;
+}
+.mat-chip {
+    border: 2px solid #eff4f8;
+    background: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 12px;
+    padding-left: 9px;
+    min-height: 23px;
+}
+.mat-standard-chip {
+    border-radius: 5px;
+    color: #999;
+}
+.mat-standard-chip:hover::after {
+    opacity: .035;
+}
+.mat-standard-chip .mat-chip-remove.mat-icon {
+    width: 10px;
+    height: 13px;
+    font-size: 13px;
+    opacity: 0.18;
+}

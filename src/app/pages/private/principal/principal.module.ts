@@ -45,6 +45,8 @@ import { BannerComponent } from './banner/banner.component';
 import { FaqButtonComponent } from './faq-button/faq-button.component';
 import { FaqContentComponent } from './faq-content/faq-content.component';
 import { VideoModalModule } from './faq-content/video-modal/video-modal.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
 
 const routes: Routes = [
     {
@@ -70,7 +72,8 @@ const materialModules: any[] = [
     MatListModule,
     MatExpansionModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule
 ];
 
 @NgModule({
@@ -87,7 +90,8 @@ const materialModules: any[] = [
         HowIsEconomyComponent,
         FaqButtonComponent,
         FaqContentComponent,
-        EditCompaniesComponent
+        EditCompaniesComponent,
+        TagsDialogComponent
     ],
     imports: [
         CommonModule,
@@ -110,7 +114,8 @@ const materialModules: any[] = [
         DialogBoxComponent,
         HighlightDialogComponent,
         CreateReportDialogComponent,
-        HighlightDialogComponent
+        HighlightDialogComponent,
+        TagsDialogComponent
     ]
 })
 export class PrincipalModule { }

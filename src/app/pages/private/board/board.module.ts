@@ -27,6 +27,9 @@ import { RevisionModalComponent } from './revision-modal/revision-modal.componen
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
 import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { CreationModalComponent } from './creation-modal/creation-modal.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const routes: Routes = [
     {
@@ -55,7 +58,10 @@ const materialModules: any[] = [
     MatExpansionModule,
     MatCardModule,
     MatDialogModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule,
+    MatIconModule,
+    MatFormFieldModule
 ];
 
 @NgModule({

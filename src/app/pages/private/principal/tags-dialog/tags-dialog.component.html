@@ -1,0 +1,30 @@
+<div class="tags-dialog">
+    <header class="tags-dialog__header">
+        <p class=""></p>
+        <a (click)="closeDialog()" class="modal-close-cta">Cerrar <span
+            class="icon icon-times"></span></a>
+    </header>
+    <div class="tags-dialog__input">
+        <!--<mat-form-field class="example-chip-list">
+            <mat-chip-list #chipList aria-label="Fruit selection">
+                <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+                          [removable]="removable" (removed)="remove(fruit)">
+                    {{fruit.name}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="New fruit..."
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+        </mat-form-field>-->
+
+    </div>
+    <div class="footer">
+        <button mat-button class="btn btn-cancel"
+                (click)="closeDialog()">Cancelar</button>
+        <button mat-button class="btn btn-primary"
+                (click)="closeDialog()">Continuar</button>
+    </div>
+</div>

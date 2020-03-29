@@ -3,8 +3,13 @@
         <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}
             ({{pager.totalItems ? pager.totalItems : '0' }})</span>
         <div class="insert_btn" *ngIf="!marketing">
-            <button mat-raised-button class="insert_icon"><span class="insert_text">Insertar</span> <span
-                    class="icon_insert">&nbsp;</span></button>
+            <button mat-raised-button class="insert_icon" [matMenuTriggerFor]="insert">
+                <span class="insert_text">Insertar</span><span class="icon_insert">&nbsp;</span>
+            </button>
+            <mat-menu #insert="matMenu">
+                <button mat-menu-item>Palabra al glosario</button>
+                <button mat-menu-item (click)="openTagDialog()">Tags de tendencia</button>
+            </mat-menu>
         </div>
         <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
