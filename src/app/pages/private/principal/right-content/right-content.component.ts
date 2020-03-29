@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import {AuthService} from '../../../../services/auth.service';
 import {HttpService} from '../../../../services/http.service';
 import {AsideFoldersService} from 'src/app/services/aside-folders.service';
+import {TagsDialogComponent} from '../tags-dialog/tags-dialog.component';
 
 @Component({
     selector: 'app-right-content',
@@ -876,5 +877,11 @@ export class RightContentComponent implements OnInit {
         let action = event.checked ? 'add' : 'remove';
         let parentElement = event.source._elementRef.nativeElement.parentNode;
         parentElement.classList[action]('checked');
+    }
+
+    public openTagDialog(): void {
+        this.dialog.open(TagsDialogComponent, {
+            width: '602px',
+        });
     }
 }
