@@ -116,7 +116,14 @@
 					<div class="group-radio-two">
 						<div class="group-radio-two--option" *ngFor="let report of list.reports">
 							<input type="radio" formControlName="reportId" [value]="report.id" [id]="report.id">
-							<label class="main_template" [for]="report.id">{{report.name}}</label>
+							<label class="main_template" [for]="report.id">
+                                <img class="template_img" src="/assets/images/section/{{getThumbnail(report)}}" alt="">
+                                {{report.name}}
+                                <br/>
+                                <span class="date">
+                                    {{report.createdAt  | date:'dd LLLL yyyy' | titlecase}}
+                                </span>
+                            </label>
 						</div>
 					</div>
 				</mat-tab>

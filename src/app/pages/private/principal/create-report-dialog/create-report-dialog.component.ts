@@ -272,6 +272,11 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         this.saveReport(newReport);
     }
 
+    public getThumbnail(report: any) {
+        const tmpl = this.list.templates.find(e => e.id === report.templateId);
+        return tmpl ? tmpl.thumbnail : 'html.png';
+    }
+
     private saveReport(clone: any): void {
         this.http.post({
             path: 'reports',
