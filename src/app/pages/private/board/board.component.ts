@@ -92,7 +92,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         sectionId: null,
         ownerId: null,
         users: [],
-        tags: []
+        tags: [],
+        reportType: null
     };
 
     public tags = {
@@ -120,6 +121,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public isMarketing: boolean;
     public readonly = false;
     public unresolvedComments: any;
+    public tendenciesList: any;
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
@@ -281,6 +283,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 fields: ['id', 'name', 'key']
             }
+        }, {
+            relation: 'reportType',
+            scope: {
+                include: ['mainCategory', 'subCategory']
+            }
         });
 
         this.http.get({
@@ -297,6 +304,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.userIsOwner();
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
+
             this.files = response.body.files;
             this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
@@ -1147,29 +1155,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /* Tags */
 
-    public addTag(event: MatChipInputEvent): void {
-        const input = event.input;
-        const value = event.value;
-
-        if (this.tags.tendencies.length < 4) {
-            if ((value || '').trim()) {
-                this.tags.tendencies.push({name: value.trim()});
-            }
-        }
-
-        if (input) {
-            input.value = '';
-        }
+    public fillTendenciesTags(): Array<string> {
+        return this.tendenciesList.split(',').map(tag => tag.trim());
     }
 
-    public removeTag(tag: string): void {
-        const index = this.tags.tendencies.indexOf(tag);
-        if (index >= 0) {
-            this.tags.tendencies.splice(index, 1);
+    public addCategoryTag(event): void {
+        const tagName = event.target.innerText;
+        this.tags.tendencies = this.fillTendenciesTags();
+        if (!this.tags.tendencies.find(tag => tag === tagName)) {
+            this.tendenciesList += `, ${tagName}`;
         }
     }
 
     public onSaveTags(): void {
+        this.tags.tendencies = this.fillTendenciesTags();
         this.http.patch({
             path: `reports/${this.report.id}`,
             data: {
@@ -1182,18 +1181,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public onLoadTendenciesTags() {
+    public onLoadTendenciesTags(): void {
         if (this.report.tags && this.report.tags.length) {
-           this.tags.tendencies = this.report.tags;
+           this.tendenciesList = this.report.tags.join(', ');
         }
     }
 
-    public onLoadCategoriesTags() {
-        this.tags.categories = [
-            {name: 'tag 1'},
-            {name: 'tag 2'},
-            {name: 'tag 3'}
-        ];
+    public onLoadCategoriesTags(): void {
+        this.tags.categories = this.report.reportType.mainCategory[0].tags;
     }
 
     public showDialogOnSaveTag(): void {

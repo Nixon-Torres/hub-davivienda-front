@@ -176,7 +176,6 @@
         <!-- PANEL -->
         <mat-grid-tile [colspan]="grid.col.panel" [rowspan]="1" class="builder-tabs">
             <div class="readonly-overlay" *ngIf="readonly"></div>
-
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
@@ -217,26 +216,22 @@
                                     <span>Tags Categorías</span>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <div>
-                                <mat-chip-list aria-label="Fish selection">
-                                    <mat-chip *ngFor="let tag of tags.categories">{{tag.name}}</mat-chip>
-                                </mat-chip-list>
-                                <mat-form-field class="example-chip-list">
-                                    <mat-chip-list #tagsList aria-label="Fruit selection">
-                                        <mat-chip *ngFor="let tag of tags.tendencies" [selectable]="true"
-                                                  [removable]="true" (removed)="removeTag(tag)">
-                                            {{tag.name}}
-                                            <mat-icon matChipRemove>close</mat-icon>
-                                        </mat-chip>
-                                        <input
-                                            [matChipInputFor]="tagsList"
-                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                            [matChipInputAddOnBlur]="true"
-                                            (matChipInputTokenEnd)="addTag($event)">
-                                    </mat-chip-list>
-                                </mat-form-field>
-                                <p>Escriba cada tag y pulsa enter</p>
-                                <button (click)="onSaveTags()">Guardar</button>
+                            <div class="panel-body">
+                                <section class="tags">
+                                    <section class="tags--categories">
+                                        <p class="tags__text">Estos son los tags que son tendencia, puedes usarlos dándoles clic.</p>
+                                        <div class="tags__list">
+                                            <button class="tags__item"
+                                                    (click)="addCategoryTag($event)"
+                                                    *ngFor="let tag of tags.categories">{{tag}}</button>
+                                        </div>
+                                    </section>
+                                    <section class="tags--tendencies">
+                                        <textarea [(ngModel)]="tendenciesList" name="list" id="" cols="" rows=""></textarea>
+                                    </section>
+                                </section>
+                                <p class="tags__info">Separa las etiquetas con comas (ej. prueba1, prueba2)</p>
+                                <button class="tags__save" (click)="onSaveTags()">Guardar</button>
                             </div>
                         </mat-expansion-panel>
 
@@ -284,8 +279,6 @@
                     </mat-accordion>
                 </div>
             </div>
-
         </mat-grid-tile>
     </mat-grid-list>
-
 </section>
