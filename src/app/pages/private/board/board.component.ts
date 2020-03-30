@@ -1187,8 +1187,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public onLoadCategoriesTags(): void {
-        this.tags.categories = this.report.reportType.mainCategory[0].tags;
+    public onLoadCategoriesTags(): any {
+        this.tags.categories = this.report.reportTypeId ? this.report.reportType.mainCategory[0].tags : null;
+        return this.tags.categories;
     }
 
     public showDialogOnSaveTag(): void {
