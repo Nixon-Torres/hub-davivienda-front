@@ -17,4 +17,5 @@ export interface Report {
     state?: any;
     users?: any;
     tags?: any;
+    reportType?: any;
 }

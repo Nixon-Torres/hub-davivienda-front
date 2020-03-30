@@ -92,7 +92,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         sectionId: null,
         ownerId: null,
         users: [],
-        tags: []
+        tags: [],
+        reportType: null
     };
 
     public tags = {
@@ -281,6 +282,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 fields: ['id', 'name', 'key']
             }
+        }, {
+            relation: 'reportType',
+            scope: {
+                include: ['mainCategory', 'subCategory']
+            }
         });
 
         this.http.get({
@@ -292,11 +298,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
+            console.log(this.report);
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
+
             this.files = response.body.files;
             this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
@@ -1189,11 +1197,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public onLoadCategoriesTags() {
-        this.tags.categories = [
-            {name: 'tag 1'},
-            {name: 'tag 2'},
-            {name: 'tag 3'}
-        ];
+        this.tags.categories = this.report.reportType.mainCategory[0].tags;
     }
 
     public showDialogOnSaveTag(): void {
