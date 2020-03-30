@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {FormGroup, FormArray, FormControl} from '@angular/forms';
+import {FormGroup, FormArray, FormControl, Form, Validators, FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
 
 import {environment} from '../../../../../environments/environment';
@@ -32,10 +32,17 @@ export class RightContentComponent implements OnInit {
     public startDate: any;
     public endDate: any;
 
+    public category: any;
+    public fullReportList: any;
+    public categoryImageForm: FormGroup;
+    public categoryFormFields: FormGroup;
+    public editingCategory = false;
+
     user: any = {};
     icurrentObj: any = {
         currentFolder: null,
         currentState: null,
+        currentCategory: null,
         deletedFg: false,
         currentStateName: 'Todos Informes'
     };
@@ -73,8 +80,14 @@ export class RightContentComponent implements OnInit {
         if (this.icurrentObj) {
             this.resetSelect();
             this.isFiltered = false;
-            this.loadReports(this.ifilter);
-            if(this.icurrentObj.currentFolder) {
+
+            if (!this.icurrentObj.currentCategory) {
+                this.loadReports(this.ifilter);
+            } else {
+                this.loadCategory();
+            }
+
+            if (this.icurrentObj.currentFolder) {
                 this.tabIndex = 0;
             }
         }
@@ -85,16 +98,97 @@ export class RightContentComponent implements OnInit {
         private router: Router,
         private http: HttpService,
         private auth: AuthService,
-        private folderService: AsideFoldersService
+        private folderService: AsideFoldersService,
+        private formBuilder: FormBuilder
     ) {
         this.listForm = new FormGroup({
             reports: new FormArray([]),
             reviewed: new FormArray([])
         });
+
+        this.categoryFormFields = new FormGroup({
+            fullDescription: new FormControl('', Validators.required),
+            metaTitle: new FormControl(''),
+            metaDescription: new FormControl('')
+        });
+        this.categoryImageForm = this.formBuilder.group({
+            image: [''],
+        });
+
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
         this.isBasicUser = this.auth.isBasicUser();
         this.selectsFn();
+    }
+
+    public onFileSelect(event: any): void {
+        if (event.target.files.length > 0) {
+            const image = event.target.files[0];
+            this.categoryImageForm.get('image').setValue(image);
+        }
+    }
+
+    public onSaveCategory(event) {
+        event.preventDefault();
+        const path = `categories/${this.category.id}`;
+        const f = this.categoryFormFields.controls;
+        const formData = {
+            fullDescription: f.fullDescription.value,
+            metaTitle: f.metaTitle.value,
+            metaDescription: f.metaDescription.value,
+            mainReportId: this.category.mainReportId
+        };
+
+        this.http.patch({
+            path,
+            data: formData
+        }).subscribe((resp: any) => {
+            if (resp && resp.body) {
+
+                const img = this.categoryImageForm.get('image');
+                if (img && img.value !== '') {
+                    return this.onSaveImage();
+                }
+
+                this.showDialogCategory();
+            }
+        });
+    }
+
+    private showDialogCategory() {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                config: {
+                    title: 'La categoría se ha guardado exitosamente',
+                }
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: any) => {
+        });
+    }
+
+    private onSaveImage() {
+        const formData = new FormData();
+        formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
+        formData.append('file', this.categoryImageForm.get('image').value);
+        formData.append('key', 'categoryBanner');
+        formData.append('resourceId', this.category.id);
+        if (this.category && this.category.files) {
+            const img = this.category.files ? this.category.files.find(e => e.key === 'categoryBanner') : null;
+            if (img) {
+                formData.append('id', img.id);
+            }
+        }
+        this.http.post({
+            path: 'media/upload',
+            data: formData
+        }).subscribe((resp: any) => {
+            if (resp) {}
+
+            this.showDialogCategory();
+        });
     }
 
     public selectsFn() {
@@ -261,6 +355,29 @@ export class RightContentComponent implements OnInit {
         });
     }
 
+    private onCategoryOptionsSelected(report: any): void {
+        this.category.mainReportId = report.id;
+    }
+
+    private loadCategory(): void {
+        this.http.get({
+            path: `categories/${this.icurrentObj.currentCategory}`,
+            data: {
+                include: ['childrenMainReportTypes', 'files', 'mainReport']
+            },
+            encode: true
+        }).subscribe((response: any) => {
+            this.category = response.body;
+
+            this.categoryFormFields.setValue({
+                fullDescription: this.category.fullDescription ? this.category.fullDescription : '',
+                metaTitle: this.category.metaTitle ? this.category.metaTitle : '',
+                metaDescription: this.category.metaDescription ? this.category.metaDescription : '',
+            });
+            this.loadReports(this.ifilter);
+        });
+    }
+
     public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         const query = new loopback();
@@ -307,6 +424,14 @@ export class RightContentComponent implements OnInit {
                 // Include the folderId filter, only if we are not searching in the shared folder
                 if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder !== 'shared') {
                     query.filter.where.and.push({folderId: this.icurrentObj.currentFolder});
+                }
+
+                if (this.category) {
+                    query.filter.where.and.push({
+                        reportTypeId: {
+                            inq: this.category.childrenMainReportTypes.map(e => e.id)
+                        }
+                    });
                 }
 
                 // If currentState is set (filtering by state), include it
@@ -385,6 +510,21 @@ export class RightContentComponent implements OnInit {
         });
     }
 
+    private getFullReportList(query) {
+        const path = 'reports';
+        query.filter.fields = ['id', 'name'];
+        delete query.filter.include;
+        delete query.filter.skip;
+        delete query.filter.limit;
+        this.http.get({
+            path,
+            data: query.filter,
+            encode: true
+        }).subscribe((response: any) => {
+            this.fullReportList = response.body;
+        });
+    }
+
     private getReports(query: any) {
         const path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') ?
             `users/${this.user.id}/reportsa` : 'reports';
@@ -399,6 +539,10 @@ export class RightContentComponent implements OnInit {
                 this.list.reports = response.body;
                 if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
                     this.list.reviewed = this.getNotReviewed(this.list.reports);
+                }
+
+                if (this.category) {
+                    this.getFullReportList(query);
                 }
             }, 100);
         });

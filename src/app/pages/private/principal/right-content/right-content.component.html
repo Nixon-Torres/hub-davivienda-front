@@ -1,7 +1,11 @@
 <div class="content">
     <div class="content--top">
-        <span class="message">{{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}
+        <span class="message" *ngIf="!marketing">
+            {{icurrentObj.currentStateName ? icurrentObj.currentStateName : 'Todos Informes'}}
             ({{pager.totalItems ? pager.totalItems : '0' }})</span>
+        <span class="message" *ngIf="marketing">
+            {{category ? category.description : 'Todos Informes'}}
+        </span>
         <div class="insert_btn" *ngIf="!marketing">
             <button mat-raised-button class="insert_icon" [matMenuTriggerFor]="insert">
                 <span class="insert_text">Insertar</span><span class="icon_insert">&nbsp;</span>
@@ -49,8 +53,43 @@
     <div class="block-wrapper">
         <section class="tabs">
             <mat-tab-group (selectedTabChange)="tabClick($event)" [(selectedIndex)]="tabIndex">
-                <mat-tab label="Mis Informes">
+                <mat-tab label="{{marketing ? 'Informes' : 'Mis informes'}}">
                     <div>
+                        <div class="category-container" *ngIf="marketing && category">
+                            <span class="message scmessage">
+                                {{category ? category.description : 'Todos Informes'}}
+                            </span>
+                            <div *ngIf="!editingCategory" class="info">
+                                <p>{{category.fullDescription}}</p>
+                                <button type="button" class="editCategoryBtn form-button mat-button mat-raised-button" (click)="editingCategory = true">Editar</button>
+                            </div>
+                            <form *ngIf="editingCategory" class="category-container__body" [formGroup]="categoryFormFields" (submit)="onSaveCategory($event)">
+                                <textarea [value]="category.fullDescription" formControlName="fullDescription"></textarea>
+                                <div class="left-area">
+                                    <input class="normal" type="text" placeholder="Escribir meta-titulo"  formControlName="metaTitle">
+                                    <textarea class="normal" rows="4" placeholder="Escribir meta-descripciones"  formControlName="metaDescription"></textarea>
+                                    <ng-select [items]="fullReportList" bindValue="name" bindLabel="name"
+                                               placeholder="-Seleccione Informe destacado-"
+                                               [virtualScroll]="true" dropdownPosition="top" (change)="onCategoryOptionsSelected($event)"
+                                               [clearable]="false" class="custom-select custom-select--create-report">
+                                    </ng-select>
+                                </div>
+                                <div class="right-area category-container__fields">
+                                    <div class="form-field form-field--half upload">
+                                        <label class="upload__label" for="outstandingImg">
+                                            <span class="icon icong-upload">
+                                            </span>Subir imagen</label>
+                                        <p class="upload__alert">Tamaño máximo hasta 25MB</p>
+                                        <input id="outstandingImg" name="outstandingImg" type="file" (change)="onFileSelect($event)">
+                                        <p class="error"></p>
+                                    </div>
+                                </div>
+                                <div class="box">
+                                    <button type="button" class="form-button mat-button mat-raised-button" (click)="onSaveCategory($event)">Guardar</button>
+                                    <button type="button" class="form-button mat-button mat-button-base" (click)="editingCategory = false">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
                         <div class="folder_container" *ngIf="getCheckboxesSelected().length">
                             <p class="info_move-text">Mover a:</p>
                             <mat-form-field class="simple" floatLabel="never">

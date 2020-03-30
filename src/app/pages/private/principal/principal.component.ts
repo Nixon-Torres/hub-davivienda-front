@@ -26,7 +26,8 @@ export class PrincipalComponent implements OnInit {
             currentFolder: value ? value.folder : null,
             currentState: value ? value.state : null,
             deletedFg: value ? value.deleted : false,
-            currentStateName: value ? value.stateName : 'Todos Informes'
+            currentStateName: value ? value.stateName : 'Todos Informes',
+            currentCategory: value ? value.category : null
         };
     }
 

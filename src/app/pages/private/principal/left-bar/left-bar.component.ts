@@ -4,6 +4,7 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
+import {HttpService} from '../../../../services/http.service';
 
 @Component({
     selector: 'app-left-bar',
@@ -17,20 +18,23 @@ export class LeftBarComponent implements OnInit {
     @Output() deleteChange = new EventEmitter();
     @Output() changeView = new EventEmitter();
 
-    private static ROLE: String = 'Admin';
+    readonly ROLE = 'Admin';
 
     private currentState: any;
     private currentFolder: any;
+    private currentCategory: any;
     private deletedStateEnabled = false;
-    public showMenu: boolean = false;
+    public showMenu = false;
     public user: any = {};
     public marketing: boolean;
+    public categories: any;
+    public categoriesCount: any;
 
     public list: any = {
         folders: [],
         states: [],
         categories: []
-    }
+    };
 
     @Input()
     set currentObj(value: any) {
@@ -46,6 +50,7 @@ export class LeftBarComponent implements OnInit {
         public dialog: MatDialog,
         private foldersService: AsideFoldersService,
         private auth: AuthService,
+        private http: HttpService
     ) {
         this.user = this.auth.getUserData();
         this.marketing = this.auth.isMarketing();
@@ -59,8 +64,10 @@ export class LeftBarComponent implements OnInit {
             data: this.list.folders.filter((a: any) => a.id !== 'shared')
         });
 
-        dialogRef.afterClosed().subscribe((result : any) => {
-            result ? this.foldersService.loadFolders() : null;
+        dialogRef.afterClosed().subscribe((result: any) => {
+            if (result) {
+                this.foldersService.loadFolders();
+            };
         });
     }
 
@@ -71,36 +78,50 @@ export class LeftBarComponent implements OnInit {
             this.setCurrentFolder(folder);
         });
         this.setShowMenu();
-        if(this.marketing) {
+        if (this.marketing) {
             this.loadCategories();
         }
     }
+
     private loadCategories() {
-        this.list.categories = [{
-            name: 'Actualidad financiera',
-            count: 0,
-        }, {
-            name: 'Informes especializados',
-            count: 0,
-        }, {
-            name: 'Región centroamericana',
-            count: 0,
-        }, {
-            name: 'Experiencia sectorial',
-            count: 0,
-        }, {
-            name: 'Sector empresarial',
-            count: 0,
-        }, {
-            name: '¿Cómo invertir?',
-            count: 0,
-        }, {
-            name: 'Recursos interactivos',
-            count: 0,
-        }, {
-            name: '¿Quiénes somos?',
-            count: 0,
-        }]
+        this.http.get({
+            path: `categories/`,
+            data: {
+                where: {
+                    parentId: {
+                        inq: [null]
+                    }
+                },
+                include: ['childrenMainReportTypes']
+            },
+            encode: true
+        }).subscribe((response: any) => {
+            this.categories = response.body;
+            this.loadCategoriesCount();
+        });
+    }
+
+    private loadCategoriesCount() {
+        this.http.get({
+            path: `categories/counts`,
+            data: {
+                where: {
+                    parentId: {
+                        inq: [null]
+                    }
+                }
+            },
+            encode: true
+        }).subscribe((response: any) => {
+            this.categoriesCount = response.body ? response.body.counts : [];
+            this.categories = this.categories.map(e => {
+                const obj = this.categoriesCount.find(k => k.id === e.id);
+                return {
+                    ...e,
+                    count: obj ? obj.count : 0
+                };
+            });
+        });
     }
 
     private loadFolders() {
@@ -125,13 +146,22 @@ export class LeftBarComponent implements OnInit {
     setCurrentState(state: any) {
         this.deletedStateEnabled = false;
         this.currentState = state;
-        this.valueChange.emit({ state: state.id, deleted: false, folder: this.currentFolder ? this.currentFolder.id : null, stateName: state.name });
+        this.valueChange.emit({ state: state.id, deleted: false, folder: this.currentFolder ?
+                this.currentFolder.id : null, stateName: state.name });
     }
 
     setCurrentFolder(folder: any) {
         this.deletedStateEnabled = false;
         this.currentFolder = folder;
-        this.valueChange.emit({ state: this.currentState ? this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name });
+        this.valueChange.emit({ state: this.currentState ?
+                this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name });
+    }
+
+    setCurrentCategory(category: any) {
+        this.deletedStateEnabled = false;
+        this.currentCategory = category;
+        this.valueChange.emit({ state: null, deleted: false, folder: null,
+            stateName: this.currentCategory.name, category: this.currentCategory.id });
     }
 
     isItemActive(state: string) {
@@ -140,6 +170,10 @@ export class LeftBarComponent implements OnInit {
 
     isFolderActive(folder: string) {
         return this.currentFolder && this.currentFolder.id === folder;
+    }
+
+    isCategoryActive(category: any) {
+        return this.currentCategory && this.currentCategory.id === category.id;
     }
 
     isDeleteActive() {
@@ -151,8 +185,8 @@ export class LeftBarComponent implements OnInit {
     }
 
     public setShowMenu() {
-        let found = this.user.roles.find(element => element === LeftBarComponent.ROLE);
-        this.showMenu = found === undefined ? false : true ;
+        const found = this.user.roles.find(element => element === this.ROLE);
+        this.showMenu = found !== undefined;
         return this.showMenu;
     }
 }

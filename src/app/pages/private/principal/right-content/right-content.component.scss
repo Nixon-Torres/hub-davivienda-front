@@ -3,6 +3,53 @@
 app-right-content.tabs.mat-tab-group.mat-tab-header {
     background: #f5f7fb !important;
 }
+
+.category-container {
+    margin: 10vh 4% 0;
+
+    .scmessage {
+        font-size: 17px !important;
+        font-weight: 500 !important;
+    }
+
+    textarea {
+        font-family: "Helvetica Neue", sans-serif;
+        border: none;
+        color: #5C5C5C;
+        background: transparent;
+        font-size: 0.75rem;
+        line-height: 0.875rem;
+        min-height: 60px;
+        margin-top: 10px;
+        text-align: left;
+        width: 80%;
+        resize: none;
+    }
+
+    .info {
+        width: 70%;
+        p {
+            margin-top: 14px;
+            width: 100%;
+            font-size: 12px;
+            line-height: 18px;
+            color: #5C5C5C;
+        }
+        .editCategoryBtn {
+            box-shadow: none;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875em;
+            height: 40px;
+            width: 134px;
+            margin-top: 10px;
+            background: #0080FF;
+            color: #FFFFFF;
+        }
+    }
+}
+
 .mat-tab-label-container{
 	background: #f5f7fb !important;
 }
@@ -782,5 +829,219 @@ section {
         font-family: 'Helvetica Neue', sans-serif;
         color: #616161;
         font-weight: bold;
+    }
+}
+
+.category-container {
+    .custom-select {
+        margin-top: 8px;
+    }
+
+    &__fields {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        .form-field {
+            margin-bottom: 18px;
+            label:not(.upload__label) {
+                color: #A5ABB1;
+                font-size: 11px;
+                line-height: 13px;
+                display: block;
+                margin-bottom: 6px;
+            }
+            input {
+                height: 30px;
+            }
+            input[type=file] {
+                display: none;
+            }
+            textarea {
+                resize: none;
+            }
+            input[type=text], textarea {
+                border: 1px solid #C2CBD1;
+                width: 100%;
+                color: #757575;
+                font-style: italic;
+                padding: 0 20px;
+            }
+            &--half {
+                width: 48%;
+            }
+            &--complete {
+                width: 100%;
+            }
+            &.upload {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                position: relative;
+                width: 300px;
+                .upload__label {
+                    margin-left: 46px;
+                    width: 300px;
+                    display: inline-block;
+                    background-color: #A5ABB1;
+                    font-size: 12px;
+                    color: #fff;
+                    height: 30px;
+                    border-radius: 5px;
+                    font-weight: 600;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-transform: uppercase;
+                    padding: 0 20px 0 15px;
+                    .icong-upload {
+                        margin-right: 5px;
+                    }
+                }
+                .upload__alert {
+                    color: #A5ABB1;
+                    font-size: 9px;
+                    line-height: 11px;
+                    font-style: italic;
+                    position: absolute;
+                    left: 46px;
+                    top: 25px;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+
+    .left-area, .right-area {
+        width: 50%;
+        float: left;
+    }
+
+    form {
+        display: block;
+        width: 70%;
+
+        .column {
+            width: 70%;
+
+            &--small {
+                margin-right: 20px;
+                width: 80px;
+            }
+        }
+
+        img {
+            height: auto;
+            width: 80px;
+        }
+
+        input.normal, textarea.normal {
+            border: 1px solid #C2CBD1;
+            width: 100%;
+            color: #757575;
+            font-style: italic;
+            background: white !important;
+            padding: 0 20px 0 10px;
+        }
+
+        textarea.normal {
+            padding-top: 8px;
+            font-size: 14px;
+        }
+
+        input.normal {
+            height: 30px;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            color: #616161;
+            display: block;
+            font-weight: 100;
+            width: 100%;
+
+            &.bolder {
+                font-size: 1em;
+                font-weight: 600;
+                margin-top: 16px;
+            }
+
+            &.regular {
+                font-size: 0.813em;
+            }
+        }
+
+        textarea {
+            font-family: "Helvetica Neue", sans-serif;
+            border: none;
+            color: #5C5C5C;
+            background: transparent;
+            font-size: .750rem;
+            line-height: 0.875rem;
+            min-height: 82px;
+            margin-top: 10px;
+            text-align: left;
+            width: 100%;
+            resize: none;
+
+        }
+
+        .box {
+            @include display-flex;
+            flex-direction: row-reverse;
+            margin-top: 36px;
+            width: 100%;
+        }
+
+        button {
+            &.form-button {
+                box-shadow: none;
+                border-radius: 10px;
+                border: none;
+                cursor: pointer;
+                font-size: 0.875em;
+                height: 40px;
+                width: 134px;
+
+                &.mat-button-base {
+                    background: transparent;
+                    color: #A5ABB1;
+                }
+
+                &.mat-raised-button {
+                    background: #0080FF;
+                    color: #FFFFFF;
+                }
+            }
+
+            &.simple {
+                display: block;
+                border: none;
+                background: transparent;
+                color: #616161;
+                cursor: pointer;
+                font-size: 0.500em;
+                font-weight: 500;
+                letter-spacing: -0.8px;
+                width: 100%;
+            }
+        }
+
+        .message {
+            bottom: 40px;
+            color: #616161;
+            left: 40px;
+            font-size: 0.75em;
+            font-style: italic;
+            position: absolute;
+
+            &:before {
+                color: #19D600;
+            }
+
+        }
+
     }
 }

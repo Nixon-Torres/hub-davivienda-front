@@ -11,7 +11,8 @@
     <div class="options">
         <p class="options--name icon icon-folder variation">Mis carpetas</p>
         <ul class="options--list options-folder">
-            <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}" (click)="setCurrentFolder(folder)">
+            <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}"
+                (click)="setCurrentFolder(folder)">
                 <a>{{folder.name}}</a>
                 <span class="cnt">{{folder.count}}</span></li>
             <li class="edit-btn-item">
@@ -38,8 +39,9 @@
     <div class="options">
         <p class="options--name fas fa-home"><span></span>Home</p>
         <ul class="options--list options-folder marketing">
-            <li *ngFor="let category of list.categories" [ngClass]="{active: isFolderActive(category.id)}">
-                <a>{{category.name}}</a>
+            <li *ngFor="let category of categories" [ngClass]="{active: isCategoryActive(category)}"
+                (click)="setCurrentCategory(category)">
+                <a>{{category.description}}</a>
                 <span class="cnt">{{category.count}}</span></li>
         </ul>
     </div>
