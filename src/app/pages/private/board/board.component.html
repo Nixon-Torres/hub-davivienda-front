@@ -1,202 +1,221 @@
 <section class="grapes-container">
 
-	<div class="fixed-action-btn">
-		<button class="btn-floating btn-large blue-hub" [disabled]="readonly">
-			<i class="large material-icons">build</i>
-		</button>
-		<ul>
-			<li>
-				<button class="btn-floating blue-hub" title="Restaurar" (click)="restoreGrapes()">
-					<i class="material-icons">replay</i>
-				</button>
-			</li>
-			<li>
-				<button class="btn-floating blue-hub" title="Devolver" (click)="undoGrapes()">
-					<i class="material-icons">undo</i>
-				</button>
-			</li>
-			<li>
-				<button class="btn-floating blue-hub" title="Avanzar" (click)="redoGrapes()">
-					<i class="material-icons">redo</i>
-				</button>
-			</li>
-			<li>
-				<button class="btn-floating blue-hub" title="Cambiar resolucion" (click)="changeDeviceView()">
-					<i class="material-icons">
-						{{ showAsMobile ? 'desktop_windows' : 'stay_current_portrait' }}
-					</i>
-				</button>
-			</li>
-			<li>
-				<button class="btn-floating blue-hub" title="Fullscreen" (click)="fullscreen()">
-					<i class="material-icons">zoom_out_map</i>
-				</button>
-			</li>
-			<li>
-				<button class="btn-floating blue-hub" title="Ver código" (click)="importCode()">
-					<i class="material-icons">code</i>
-				</button>
-			</li>
-		</ul>
-	</div>
+    <div class="fixed-action-btn">
+        <button class="btn-floating btn-large blue-hub" [disabled]="readonly">
+            <i class="large material-icons">build</i>
+        </button>
+        <ul>
+            <li>
+                <button class="btn-floating blue-hub" title="Restaurar" (click)="restoreGrapes()">
+                    <i class="material-icons">replay</i>
+                </button>
+            </li>
+            <li>
+                <button class="btn-floating blue-hub" title="Devolver" (click)="undoGrapes()">
+                    <i class="material-icons">undo</i>
+                </button>
+            </li>
+            <li>
+                <button class="btn-floating blue-hub" title="Avanzar" (click)="redoGrapes()">
+                    <i class="material-icons">redo</i>
+                </button>
+            </li>
+            <li>
+                <button class="btn-floating blue-hub" title="Cambiar resolucion" (click)="changeDeviceView()">
+                    <i class="material-icons">
+                        {{ showAsMobile ? 'desktop_windows' : 'stay_current_portrait' }}
+                    </i>
+                </button>
+            </li>
+            <li>
+                <button class="btn-floating blue-hub" title="Fullscreen" (click)="fullscreen()">
+                    <i class="material-icons">zoom_out_map</i>
+                </button>
+            </li>
+            <li>
+                <button class="btn-floating blue-hub" title="Ver código" (click)="importCode()">
+                    <i class="material-icons">code</i>
+                </button>
+            </li>
+        </ul>
+    </div>
 
-	<mat-toolbar id="toolbar" *ngIf="!isFullscreen">
-		<mat-toolbar-row id="export">
-			<section class="container">
-				<h6>Informe de negocio</h6>
+    <mat-toolbar id="toolbar" *ngIf="!isFullscreen">
+        <mat-toolbar-row id="export">
+            <section class="container">
+                <h6>Informe de negocio</h6>
 
-				<button mat-flat-button class="bttn bttn-default" (click)="discard()" [disabled]="readonly">
-					<span class="icon icon-trash-alt"></span>Descartar
-				</button>
-				<button mat-flat-button class="bttn bttn-default" [disabled]="!report.id" (click)="openPreviewDialog()">
-					<span class="icon icon-search-plus"></span>Vista Previa
-				</button>
-				<button mat-flat-button class="bttn bttn-default" *ngIf="canSendToRevision()" [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
-					<span class="icon icon-clipboard-check"></span>Enviar a revisión
-				</button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canReturnToEdit()" [disabled]="!report.id || readonly" (click)="returnToEdit()">
+                <button mat-flat-button class="bttn bttn-default" (click)="discard()" [disabled]="readonly">
+                    <span class="icon icon-trash-alt"></span>Descartar
+                </button>
+                <button mat-flat-button class="bttn bttn-default" [disabled]="!report.id" (click)="openPreviewDialog()">
+                    <span class="icon icon-search-plus"></span>Vista Previa
+                </button>
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canSendToRevision()"
+                        [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
+                    <span class="icon icon-clipboard-check"></span>Enviar a revisión
+                </button>
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canReturnToEdit()"
+                        [disabled]="!report.id || readonly" (click)="returnToEdit()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
-				<button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()" [disabled]="readonly">
-					<span class="icon icon-clipboard-check"></span>Aprobar
-				</button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()" (click)="validateUnresolvedComments()" [disabled]="readonly">
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()"
+                        [disabled]="readonly">
+                    <span class="icon icon-clipboard-check"></span>Aprobar
+                </button>
+                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()"
+                        (click)="validateUnresolvedComments()" [disabled]="readonly">
                     <span class="icon icon-check"></span>Publicar
                 </button>
-				<button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()" [disabled]="readonly">
-					<img src="/assets/images/comment-plus.png">Añadir comentario
-				</button>
-				<button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()" [disabled]="readonly">
-					<span class="icon icon-save"></span>Guardar
-				</button>
-				<small>Autoguardado {{lastupdate}}</small>
-			</section>
-		</mat-toolbar-row>
+                <button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()"
+                        [disabled]="readonly">
+                    <img src="/assets/images/comment-plus.png">Añadir comentario
+                </button>
+                <button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()"
+                        [disabled]="readonly">
+                    <span class="icon icon-save"></span>Guardar
+                </button>
+                <small>Autoguardado {{lastupdate}}</small>
+            </section>
+        </mat-toolbar-row>
 
-		<mat-toolbar-row id="actions">
-			<section class="container">
-				<div class="form-name">
-					<label for="reportName">Nombre informe:</label>
-					<div class="input-field">
-						<input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name" [disabled]="readonly">
-					</div>
-				</div>
-				<button mat-button (click)="focusOnReportName()" [disabled]="readonly">
-					<span class="icon icon-edit"></span>Editar nombre
-				</button>
-				<button mat-button (click)="validateMarketingOnSave(true)" [disabled]="!report.name || readonly">
-					<span class="icon icon-save"></span>Guardar nombre
-				</button>
+        <mat-toolbar-row id="actions">
+            <section class="container">
+                <div class="form-name">
+                    <label for="reportName">Nombre informe:</label>
+                    <div class="input-field">
+                        <input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name"
+                               [disabled]="readonly">
+                    </div>
+                </div>
+                <button mat-button (click)="focusOnReportName()" [disabled]="readonly">
+                    <span class="icon icon-edit"></span>Editar nombre
+                </button>
+                <button mat-button (click)="validateMarketingOnSave(true)" [disabled]="!report.name || readonly">
+                    <span class="icon icon-save"></span>Guardar nombre
+                </button>
 
-				<div class="authors"
-				[ngClass]="{'authors--list-authors': flags.authorsList, 'authors--list-users': flags.usersList}" #authorsParent>
+                <div class="authors"
+                     [ngClass]="{'authors--list-authors': flags.authorsList, 'authors--list-users': flags.usersList}"
+                     #authorsParent>
 
-					<button mat-button [disabled]="!report.name" (click)="toggleAuthorsList($event)">
-						<span class="icon icon icon-user-alt"></span>Ver autores
-					</button>
+                    <button mat-button [disabled]="!report.name" (click)="toggleAuthorsList($event)">
+                        <span class="icon icon icon-user-alt"></span>Ver autores
+                    </button>
 
-					<div class="select-authors"	(click)="$event.stopPropagation()" >
-						<ng-select [items]="list.users" bindValue="name" bindLabel="name"
-							placeholder="Escriba nombre para agregar" (change)="onAddAuthor($event)" [virtualScroll]="true"
-							[clearable]="false" [loading]="isAdding" class="custom-select custom-select--authors">
-						</ng-select>
-					</div>
+                    <div class="select-authors" (click)="$event.stopPropagation()">
+                        <ng-select [items]="list.users" bindValue="name" bindLabel="name"
+                                   placeholder="Escriba nombre para agregar" (change)="onAddAuthor($event)"
+                                   [virtualScroll]="true"
+                                   [clearable]="false" [loading]="isAdding"
+                                   class="custom-select custom-select--authors">
+                        </ng-select>
+                    </div>
 
-					<ul class="authors__list" #authorsList *ngIf="!readonly && list.authors.length">
-						<li class="author" *ngIf="!isOwner">
-							<span class="author__name">{{ owner?.name }}</span>
-						</li>
-						<li class="author" *ngFor="let author of list.authors">
-							<span class="author__name">{{ author.author.name }}</span>
-							<button class="author__remove icon icon-times" *ngIf="isOwner" (click)="onDeleteAuthor($event, author.id)" [disabled]="isDeleting && readonly"></button>
-						</li>
-						<li class="authors__add" *ngIf="!maxAuthors && isOwner && !readonly" (click)="toggleUsersList($event)">Añadir autor</li>
-					</ul>
-				</div>
+                    <ul class="authors__list" #authorsList *ngIf="!readonly">
+                        <li class="author" *ngIf="!isOwner">
+                            <span class="author__name">{{ owner?.name }}</span>
+                        </li>
+                        <li class="author" *ngFor="let author of list.authors">
+                            <span class="author__name">{{ author.author.name }}</span>
+                            <button class="author__remove icon icon-times" *ngIf="isOwner"
+                                    (click)="onDeleteAuthor($event, author.id)"
+                                    [disabled]="isDeleting && readonly"></button>
+                        </li>
+                        <li class="authors__add" *ngIf="!maxAuthors && isOwner && !readonly"
+                            (click)="toggleUsersList($event)">Añadir autor
+                        </li>
+                    </ul>
+                </div>
 
-				<div class="divider" *ngIf="report.id"></div>
+                <div class="divider" *ngIf="report.id"></div>
 
-				<!-- TODO refactor to material components -->
-				<article class="editors" *ngIf="report.id" #editorsParent>
-					<span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}...
-						<span class="editors__count" *ngIf="editorsList?.length > 1">+ {{ editorsList ? editorsList?.length - 1 : 0}}</span>
-						<i class="fa " [ngClass]="{'fa-chevron-up': flags.editorsList, 'fa-chevron-down': !flags.editorsList}" aria-hidden="true"></i>
+                <!-- TODO refactor to material components -->
+                <article class="editors" *ngIf="report.id" #editorsParent>
+					<span class="editors__placeholder" id="lastEditors"
+                          (click)="toggleEditorsList($event)">Editado por {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}
+                        ...
+						<span class="editors__count"
+                              *ngIf="editorsList?.length > 1">+ {{ editorsList ? editorsList?.length - 1 : 0}}</span>
+						<i class="fa "
+                           [ngClass]="{'fa-chevron-up': flags.editorsList, 'fa-chevron-down': !flags.editorsList}"
+                           aria-hidden="true"></i>
 					</span>
 
-					<ul class="editors__list" *ngIf="flags.editorsList" >
-						<li class="editors__item" *ngFor="let editor of editorsList">{{ editor.name }}</li>
-					</ul>
-				</article>
+                    <ul class="editors__list" *ngIf="flags.editorsList">
+                        <li class="editors__item" *ngFor="let editor of editorsList">{{ editor.name }}</li>
+                    </ul>
+                </article>
 
-			</section>
-		</mat-toolbar-row>
+            </section>
+        </mat-toolbar-row>
 
-	</mat-toolbar>
+    </mat-toolbar>
 
-	<mat-grid-list cols="12" id="grapesBox" [ngClass]="isFullscreen ? 'fullscreen-container' : 'container'">
+    <mat-grid-list cols="12" id="grapesBox" [ngClass]="isFullscreen ? 'fullscreen-container' : 'container'">
 
-		<!-- EDITOR -->
-		<mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
+        <!-- EDITOR -->
+        <mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
 
-			<div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
-				<button class="pdf__btn" (click)="openUploadDialog()">
-					<span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
-				</button>
-				<p class="pdf__max">Tamaño máximo hasta 10GB</p>
-			</div>
-			<div id="gjs" [ngClass]="getEditorClasses()"></div>
+            <div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
+                <button class="pdf__btn" (click)="openUploadDialog()">
+                    <span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
+                </button>
+                <p class="pdf__max">Tamaño máximo hasta 10GB</p>
+            </div>
+            <div id="gjs" [ngClass]="getEditorClasses()"></div>
 
-		</mat-grid-tile>
+        </mat-grid-tile>
 
-		<!-- COMMENTS -->
-		<mat-grid-tile [colspan]="grid.col.comments" [rowspan]="1" class="comments">
-			<app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report.id" [reportId]="report.id"></app-comment-box>
-		</mat-grid-tile>
+        <!-- COMMENTS -->
+        <mat-grid-tile [colspan]="grid.col.comments" [rowspan]="1" class="comments">
+            <app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report.id"
+                             [reportId]="report.id"></app-comment-box>
+        </mat-grid-tile>
 
-		<!-- PANEL -->
-		<mat-grid-tile [colspan]="grid.col.panel" [rowspan]="1" class="builder-tabs">
+        <!-- PANEL -->
+        <mat-grid-tile [colspan]="grid.col.panel" [rowspan]="1" class="builder-tabs">
             <div class="readonly-overlay" *ngIf="readonly"></div>
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s4">
+                            <a href="#blocks-tab" matRipple>
+                                <i class="material-icons">extension</i>
+                            </a>
+                        </li>
+                        <li class="tab col s4">
+                            <a href="#styles-tab" matRipple>
+                                <i class="material-icons">color_lens</i>
+                            </a>
+                        </li>
+                        <li class="tab col s4">
+                            <a href="#config-tab" class="active" matRipple>
+                                <span class="icon icon-cog"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-			<div class="row">
-				<div class="col s12">
-					<ul class="tabs">
-						<li class="tab col s4">
-							<a href="#blocks-tab" matRipple>
-								<i class="material-icons">extension</i>
-							</a>
-						</li>
-						<li class="tab col s4">
-							<a href="#styles-tab" matRipple>
-								<i class="material-icons">color_lens</i>
-							</a>
-						</li>
-						<li class="tab col s4">
-							<a href="#config-tab" class="active" matRipple>
-								<span class="icon icon-cog"></span>
-							</a>
-						</li>
-					</ul>
-				</div>
-
-				<div id="blocks-tab" class="col s12">
-					<h6>Elementos</h6>
-					<div class="blocks-container {{isFullscreen ? 'fullscreen' : ''}}"></div>
-				</div>
-				<div id="styles-tab" class="col s12">
-					<h6>Estilos</h6>
-					<div class="traits-container"></div>
-					<div class="styles-container"></div>
-				</div>
-				<div id="config-tab" class="col s12 active">
-					<h6>Configuración informe</h6>
-					<mat-accordion class="config-container">
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-								<mat-panel-title>
-									<span class="icon icon-tags"></span>
-									<span>Tags Categorías</span>
-								</mat-panel-title>
-							</mat-expansion-panel-header>
+                <div id="blocks-tab" class="col s12">
+                    <h6>Elementos</h6>
+                    <div class="blocks-container {{isFullscreen ? 'fullscreen' : ''}}"></div>
+                </div>
+                <div id="styles-tab" class="col s12">
+                    <h6>Estilos</h6>
+                    <div class="traits-container"></div>
+                    <div class="styles-container"></div>
+                </div>
+                <div id="config-tab" class="col s12 active">
+                    <h6>Configuración informe</h6>
+                    <mat-accordion class="config-container">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-tags"></span>
+                                    <span>Tags Categorías</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
                             <div class="panel-body">
                                 <section class="tags">
                                     <section class="tags--categories">
@@ -216,52 +235,50 @@
                             </div>
                         </mat-expansion-panel>
 
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-								<mat-panel-title>
-									<span class="icon icon-chart-pie"></span>
-									<span>Seo</span>
-								</mat-panel-title>
-							</mat-expansion-panel-header>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-chart-pie"></span>
+                                    <span>Seo</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
 
-							<p>This is the primary content of the panel.</p>
+                            <p>This is the primary content of the panel.</p>
 
-						</mat-expansion-panel>
+                        </mat-expansion-panel>
 
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-								<mat-panel-title>
-									<span class="icon icon-copy"></span>
-									<span>Informes relacionados</span>
-								</mat-panel-title>
-							</mat-expansion-panel-header>
-							<div class="related">
-								<p>Seleccione entre 1 y 4 informes relacionados con su contenido</p>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-copy"></span>
+                                    <span>Informes relacionados</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="related">
+                                <p>Seleccione entre 1 y 4 informes relacionados con su contenido</p>
 
-								<div class="filter">
-									<app-related-reports [reportId]="report.id"></app-related-reports>
-								</div>
-							</div>
+                                <div class="filter">
+                                    <app-related-reports [reportId]="report.id"></app-related-reports>
+                                </div>
+                            </div>
 
-						</mat-expansion-panel>
+                        </mat-expansion-panel>
 
-						<mat-expansion-panel>
-							<mat-expansion-panel-header>
-								<mat-panel-title>
-									<span class="icon icon-book-open"></span>
-									<span>Glosario</span>
-								</mat-panel-title>
-							</mat-expansion-panel-header>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-book-open"></span>
+                                    <span>Glosario</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
 
-							<p>This is the primary content of the panel.</p>
-							<!-- <app-related-reports></app-related-reports> -->
+                            <p>This is the primary content of the panel.</p>
+                            <!-- <app-related-reports></app-related-reports> -->
 
-						</mat-expansion-panel>
-					</mat-accordion>
-				</div>
-			</div>
-
-		</mat-grid-tile>
-	</mat-grid-list>
-
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
 </section>

@@ -61,7 +61,12 @@ export class BannerComponent implements OnInit {
             data: this.formData
         }).subscribe((resp: any) => {
             if (resp && resp.body) {
-                this.onSaveImage(resp.body.id);
+
+                const img = this.outstandingForm.get('image');
+                if (img && img.value !== '') {
+                    this.onSaveImage(resp.body.id);
+                }
+
                 this.onGetOutstanding();
                 this.showDialog(resp.body.title);
             }

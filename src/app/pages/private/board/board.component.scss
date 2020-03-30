@@ -544,7 +544,7 @@ $default-font: "Helvetica Neue", Medium;
     border: 1px solid #eff4f8;
     padding: 2px;
 }
-.mat-chip {
+.mat-chip, .mat-standard-chip.mat-chip-with-trailing-icon {
     border: 2px solid #eff4f8;
     background: none;
     padding-top: 0px;

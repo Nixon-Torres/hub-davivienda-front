@@ -159,7 +159,7 @@ export class HighlightDialogComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: any) => {
             if (result) {
-                const report = this.remarkableReports.find(element => element.outstandingArea == this.sectionSelect);
+                const report = this.remarkableReports.find(element => element.outstandingArea === this.sectionSelect);
                 if (report) {
                     report.outstandingArea = '';
                     report.outstanding = false;

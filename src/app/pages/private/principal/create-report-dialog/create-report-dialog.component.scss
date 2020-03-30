@@ -200,27 +200,13 @@
 				font-size: 13px;
 				margin-top: 15%;
 				cursor: pointer;
-				&.main_template{
-					&:before {
-						background: #ffffff;
-						// border-radius: 5px;
-						// border: 1px solid #C2CBD1;
-						// content: '\e912';
-						// // content: "\e914";
-						// font-family: "icomoon" !important;
-						// font-size: 7em;
-						// padding: 20px 0 0 0;
-						// margin: 10px 0;
-						// color: #ffffff;
-						border-radius: 5px;
-						border: 1px solid #F0F5FD;
-						content: "\e912";
-						font-family: "icomoon" !important;
-						font-size: 4em;
-						padding: 20px 0;
-						margin: 10px 0;
-						color: #e0e4e8;
-					}
+				&.main_template {
+                    .date {
+                        margin-top: 7px;
+                        font-size: 11px;
+                        color: #616161 !important;
+                        font-weight: normal;
+                    }
 				}
 			}
 		}

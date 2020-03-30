@@ -25,7 +25,7 @@
             <div class="outstanding__fields">
                 <div class="form-field form-field--half">
                     <label for="outstandingTitle" class="icong-crown">Informe destacado</label>
-                    <ng-select [items]="list.outstandedReport" bindValue="name" bindLabel="name"
+                    <ng-select [items]="list.reports" bindValue="name" bindLabel="name"
                                placeholder="-Seleccione Informe destacado-"
                                [virtualScroll]="true" dropdownPosition="top" (click)="onCheck('outstanding')" (change)="onOptionsSelected($event)"
                                [clearable]="false" [(ngModel)]="header" [ngModelOptions]="{standalone: true}" class="custom-select custom-select--create-report">
