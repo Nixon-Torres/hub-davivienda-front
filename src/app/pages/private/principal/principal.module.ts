@@ -47,6 +47,7 @@ import { FaqContentComponent } from './faq-content/faq-content.component';
 import { VideoModalModule } from './faq-content/video-modal/video-modal.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
+import { MultimediaComponent } from './multimedia/multimedia.component';
 
 const routes: Routes = [
     {
@@ -91,7 +92,8 @@ const materialModules: any[] = [
         FaqButtonComponent,
         FaqContentComponent,
         EditCompaniesComponent,
-        TagsDialogComponent
+        TagsDialogComponent,
+        MultimediaComponent
     ],
     imports: [
         CommonModule,
