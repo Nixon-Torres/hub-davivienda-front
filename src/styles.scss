@@ -748,6 +748,11 @@ margin-top: 2%;
 		background: transparent;
 		color: #ff003b;
 		border: solid 2px #ff003b;
+		border-radius: 5px 10px 10px 5px;
+		padding: 0 20px;
+		span{
+			padding-right: 10px;
+		}
 		}
 	}
 }
@@ -1117,7 +1122,30 @@ mat-expansion-panel {
     height: 15px;
 
 }
-
+.mat-menu-panel{
+	/* border-radius: 0;
+	border: solid 1px #FF003B;
+	position: relative;
+    bottom: 2px; */
+}
+.matmenu_insert{
+	width: 10em;
+    height: 3.3em;
+	overflow: hidden;
+	&::after{
+		content: "";
+		border: solid 1px #FF003B;
+		position: absolute;
+		top: 0;
+		padding: 34px 79px;
+	}
+	button.open_insert{
+		height: 33px;
+		position: relative;
+		bottom: 14px;
+		z-index: 9;
+	}
+}
 
 /* =========================================================== *\
     						NOTIFICATIONS
