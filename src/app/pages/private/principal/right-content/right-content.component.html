@@ -10,10 +10,12 @@
             <button mat-raised-button class="insert_icon" [matMenuTriggerFor]="insert">
                 <span class="insert_text">Insertar</span><span class="icon_insert">&nbsp;</span>
             </button>
-            <mat-menu #insert="matMenu">
-                <button mat-menu-item>Palabra al glosario</button>
-                <button mat-menu-item (click)="openTagDialog()">Tags de tendencia</button>
-            </mat-menu>
+            <mat-menu #insert="matMenu" class="insert_menu-btn">
+                <div class="matmenu_insert">
+                    <button mat-menu-item class="open_insert">Palabra al glosario</button>
+                    <button mat-menu-item (click)="openTagDialog()" class="open_insert">Tags de tendencia</button>    
+                </div>
+          </mat-menu>
         </div>
         <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
@@ -67,12 +69,19 @@
                                 <textarea [value]="category.fullDescription" formControlName="fullDescription"></textarea>
                                 <div class="left-area">
                                     <input class="normal" type="text" placeholder="Escribir meta-titulo"  formControlName="metaTitle">
-                                    <textarea class="normal" rows="4" placeholder="Escribir meta-descripciones"  formControlName="metaDescription"></textarea>
-                                    <ng-select [items]="fullReportList" bindValue="name" bindLabel="name"
-                                               placeholder="-Seleccione Informe destacado-"
-                                               [virtualScroll]="true" dropdownPosition="top" (change)="onCategoryOptionsSelected($event)"
-                                               [clearable]="false" class="custom-select custom-select--create-report">
-                                    </ng-select>
+                                    <div class="description_area">
+                                        <div class="area_content">
+                                            <textarea class="normal" rows="4" placeholder="Escribir meta-descripciones"  formControlName="metaDescription"></textarea>
+                                        </div>
+                                        <div class="area_select">
+                                            <ng-select [items]="fullReportList" bindValue="name" bindLabel="name"
+                                            placeholder="-Seleccione Informe destacado-"
+                                            [virtualScroll]="true" dropdownPosition="top" (change)="onCategoryOptionsSelected($event)"
+                                            [clearable]="false" class="custom-select custom-select--create-report">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+ 
                                 </div>
                                 <div class="right-area category-container__fields">
                                     <div class="form-field form-field--half upload">
