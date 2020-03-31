@@ -31,6 +31,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 const routes: Routes = [
     {
         path: '',
@@ -74,6 +76,7 @@ const materialModules: any[] = [
         CreationModalComponent
     ],
     imports: [
+        CKEditorModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,

@@ -157,13 +157,53 @@
         <!-- EDITOR -->
         <mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
 
+            <div class="editorModeSection">
+                <button mat-flat-button class="bttn bttn-default" [ngClass]="{'bttn-primary': !grapeEnabled}"
+                        (click)="enableInlineEditor()">Formulario</button>
+                <button mat-flat-button class="bttn bttn-default html" [ngClass]="{'bttn-primary': grapeEnabled}"
+                        (click)="enableGrapeEditor()">HTML</button>
+            </div>
             <div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
                 <button class="pdf__btn" (click)="openUploadDialog()">
                     <span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
                 </button>
                 <p class="pdf__max">Tamaño máximo hasta 10GB</p>
             </div>
-            <div id="gjs" [ngClass]="getEditorClasses()"></div>
+            <div *ngIf="grapeEnabled" id="gjs" [ngClass]="getEditorClasses()"></div>
+            <div *ngIf="!grapeEnabled" class="native-editor-section">
+
+                <div class="control-wrapper title" (click)="editor1.focus()">
+                    <div class="inline-editor-block" id="editor1" #editor1>
+                    </div>
+                    <span [ngClass]="{'invisible': editor1Data !== ''}"
+                        class="placeholder" unselectable="on">
+                        Escriba aquí el subtitulo con el que empieza su informe</span>
+                </div>
+                <div class="divider"></div>
+                <div class="control-wrapper fast-content" (click)="editor2.focus()">
+                    <div class="inline-editor-block" id="editor2" #editor2>
+                    </div>
+                    <span [ngClass]="{'invisible': editor2Data !== ''}"
+                        class="placeholder" unselectable="on">
+                        Escriba aca texto destacado si es necesario (fast content)</span>
+                </div>
+                <div class="divider"></div>
+                <div class="control-wrapper smart-content" (click)="editor3.focus()">
+                    <div class="inline-editor-block" id="editor3" #editor3>
+                    </div>
+                    <span [ngClass]="{'invisible': editor3Data !== ''}"
+                          class="placeholder" unselectable="on">
+                        SMART CONTENT</span>
+                </div>
+                <div class="divider"></div>
+                <div class="control-wrapper deep-content" (click)="editor4.focus()">
+                    <div class="inline-editor-block" id="editor4" #editor4>
+                    </div>
+                    <span [ngClass]="{'invisible': editor4Data !== ''}"
+                          class="placeholder" unselectable="on">
+                        DEEP CONTENT</span>
+                </div>
+            </div>
 
         </mat-grid-tile>
 

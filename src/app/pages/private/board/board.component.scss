@@ -653,3 +653,165 @@ $default-font: "Helvetica Neue", Medium;
     }
 }
 
+.native-editor-section {
+    width: 80%;
+    max-width: 600px;
+    border: 2px solid #e4eff3;
+    padding-top: 2px;
+    position: relative;
+    background: white;
+    margin: 50px auto -3px;
+
+    .divider {
+        border: 1px solid #e7eaf1;
+        height: 0;
+        width: 100%;
+    }
+
+    .control-wrapper {
+        padding: 15px;
+        position: relative;
+
+        .inline-editor-block {
+            height: 100%;
+        }
+    }
+
+    .control-wrapper.deep-content {
+        background: #dbe1e6;
+    }
+
+    .ck.ck-editor__editable > .ck-placeholder::before {
+        color: #d4dadf;
+        font-size: 20px;
+        display: inline-block;
+    }
+
+    .placeholder {
+        display: none;
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        color: #d4dadf;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+    }
+
+    .invisible {
+        display: none;
+    }
+
+    input:focus, textarea:focus, select:focus, #editor:focus {
+        outline: none;
+
+        &:focus ~ .placeholder,
+        &:valid ~ .placeholder {
+            display: none;
+        }
+    }
+
+    textarea {
+        resize: none;
+        border: 0px;
+        background: white;
+    }
+
+    .title {
+        height: 100px;
+
+        .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
+            font-size: 21px;
+            font-weight: bold;
+            width: 360px;
+            line-height: 24px;
+        }
+    }
+
+    .fast-content {
+        height: 80px;
+
+        .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
+            font-size: 20px;
+            font-weight: bold;
+            width: 360px;
+            line-height: 24px;
+        }
+    }
+
+    .smart-content {
+        height: 200px;
+
+        .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
+            font-size: 25px;
+            font-weight: bold;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+        }
+    }
+
+    @-moz-document url-prefix() {
+        .deep-content {
+            margin-right: -3px;
+        }
+    }
+
+    .deep-content {
+        height: 200px;
+        background: #dbe1e6;
+
+        .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
+            font-size: 25px;
+            font-weight: bold;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            color: #c1ccd0;
+            position: absolute;
+        }
+    }
+}
+
+.native-editor-section {
+    strong {
+        font-weight: bold !important;
+    }
+
+    i {
+        font-style: italic !important;
+    }
+
+    ul {
+        list-style-type: disc !important;
+        list-style-position: inside !important;
+    }
+    ul > li {
+        list-style-type: disc  !important;
+    }
+    ol {
+        list-style-type: decimal;
+        list-style-position: inside;
+    }
+    ul ul, ol ul {
+        list-style-type: circle;
+        list-style-position: inside;
+        margin-left: 15px;
+    }
+    ol ol, ul ol {
+        list-style-type: lower-latin;
+        list-style-position: inside;
+        margin-left: 15px;
+    }
+}
+
+.editorModeSection {
+    text-align: center;
+    margin-top: 20px;
+
+    .html {
+        margin-left: 10px;
+    }
+}

@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -23,20 +23,28 @@ import {Report} from './board.model';
 import {RevisionModalComponent} from './revision-modal/revision-modal.component';
 import {CreationModalComponent} from './creation-modal/creation-modal.component';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material';
+
+// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+// import * as MultirootEditor from '@ckeditor/ckeditor5-build-multiroot/build/ckeditor';
+import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 
 declare var grapesjs: any;
+declare global {
+    interface Window { editor: any; }
+}
+
+window.editor = window.editor || {};
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
     styleUrls: [
         'board.component.scss'
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
-
 export class BoardComponent implements OnInit, AfterViewInit {
-
     public owner: any;
     public editor: any;
     public grapes: any;
@@ -55,6 +63,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile = false;
     public isFullscreen = false;
     public isAdvancedUser = false;
+    public grapeEnabled = false;
     public list: any = {
         users: [],
         authors: []
@@ -127,13 +136,33 @@ export class BoardComponent implements OnInit, AfterViewInit {
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
 
+    @ViewChild('editor1', {static: false}) editor1?: ElementRef;
+    @ViewChild('editor2', {static: false}) editor2?: ElementRef;
+    @ViewChild('editor3', {static: false}) editor3?: ElementRef;
+    @ViewChild('editor4', {static: false}) editor4?: ElementRef;
+
+    /* public Editor = DecoupledEditor;
+
+    public onReady( editor ) {
+        editor.ui.getEditableElement().parentElement.insertBefore(
+            editor.ui.view.toolbar.element,
+            editor.ui.getEditableElement()
+        );
+    } */
+
+    public editor1Data = '';
+    public editor2Data = '';
+    public editor3Data = '';
+    public editor4Data = '';
+
     constructor(
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private http: HttpService,
         private auth: AuthService,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private ref: ElementRef
     ) {
         this.user = this.auth.getUserData();
         this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
@@ -195,6 +224,58 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         const elems = document.querySelectorAll('.fixed-action-btn');
         M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
+
+        this.enableInlineEditor();
+    }
+
+    setDataInInlineEditor() {
+        this.editor1Data = this.report.rtitle ? this.report.rtitle : '';
+        this.editor2Data = this.report.rfastContent ? this.report.rfastContent : '';
+        this.editor3Data = this.report.rSmartContent ? this.report.rSmartContent : '';
+        this.editor4Data = this.report.rDeepContent ? this.report.rDeepContent : '';
+
+        const ids = ['editor1', 'editor2', 'editor3', 'editor4'];
+        ids.forEach((elementId) => {
+            this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
+        });
+    }
+
+    addInlineEditor(elementId: string, placeholder?: string) {
+        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        InlineEditor
+            .create( element, {
+                placeholder
+            })
+            .then( editor => {
+                window.editor = editor;
+
+                editor.model.document.on( 'change:data', () => {
+                    this[elementId + 'Data'] = editor.getData();
+                } );
+            } )
+            .catch( error => {
+                console.error( 'There was a problem initializing the editor.', error );
+            } );
+    }
+
+    enableGrapeEditor() {
+        this.grapeEnabled = true;
+        const _this = this;
+        setTimeout(() => {
+           _this.initGrapes();
+        }, 2000);
+    }
+
+    enableInlineEditor() {
+        this.grapeEnabled = false;
+
+        const _this = this;
+        setTimeout(() => {
+            _this.addInlineEditor('editor1', 'Escriba aquí el subtitulo con el que empieza su informe');
+            _this.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
+            _this.addInlineEditor('editor3', 'SMART CONTENT');
+            _this.addInlineEditor('editor4', 'DEEP CONTENT');
+        }, 500);
     }
 
     showSomeoneEditingDialog() {
@@ -305,6 +386,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
 
+            this.setDataInInlineEditor();
+
             this.files = response.body.files;
             this.templateType = response.body.template.key;
             if (!this.editorInitiated) {
@@ -321,6 +404,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
      * @return { this.editor } Object grapes editor
      */
     private initGrapes(): void {
+        if (!this.grapeEnabled) {
+            return;
+        }
+
         this.grapes = new Grapes({
             blockManager: '.blocks-container',
             traitManager: '.traits-container',
@@ -525,8 +612,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private setPropertiesReport(): void {
         this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
-        this.report.styles = this.editor.getCss();
-        this.report.content = this.editor.getHtml();
+        this.report.styles = this.editor ? this.editor.getCss() : this.report.styles;
+        this.report.content = this.editor ? this.editor.getHtml() : this.report.content;
         this.report.content = this.report.content ? this.report.content : ' ';
         this.report.folderId = this.report.folderId === 'false' ? null : this.report.folderId;
         this.report.companyId = this.report.companyId === 'false' ? null : this.report.companyId;
@@ -588,22 +675,30 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
     }
 
+    setDataFromForm() {
+        this.report.rtitle = this.editor1Data;
+        this.report.rfastContent = this.editor2Data;
+        this.report.rSmartContent = this.editor3Data;
+        this.report.rDeepContent = this.editor4Data;
+    }
+
     /** Save the report on DB
      *
      * @param autoSave Flag for autosave
      * @param cb Callback
      */
     public onSave(autoSave?: boolean, cb?: any): void {
-        let isUpdate: boolean = this.report.id ? true : false;
-        let method: string = isUpdate ? 'patch' : 'post';
-        let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
+        const isUpdate: boolean = !!this.report.id;
+        const method: string = isUpdate ? 'patch' : 'post';
+        const path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
         if (this.timer.change) {
             clearTimeout(this.timer.change);
         }
 
         this.setPropertiesReport();
+        this.setDataFromForm();
 
-        let data = Object.assign({}, this.report);
+        const data = Object.assign({}, this.report);
         delete data.state;
 
         this.http[method]({
@@ -612,8 +707,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe(
             (response: any) => {
                 if (method === 'post' && this.authorsId && this.authorsId.length) {
-                    let authorsData = this.authorsId.map((a: string) => {
-                        return {'authorId': a, 'reportId': response.body.id};
+                    const authorsData = this.authorsId.map((a: string) => {
+                        return {authorId: a, reportId: response.body.id};
                     });
                     this.http.post({
                         path: 'reports/authors',
@@ -663,13 +758,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openPreviewDialog(): void {
-        var paramsDialog = {
+        const paramsDialog = {
             width: '80vw',
             height: '80vh',
             data: {
-                'reportId': this.report.id,
-                'styles': '',
-                'content': ''
+                reportId: this.report.id,
+                styles: '',
+                content: ''
             }
         };
 
@@ -688,7 +783,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public getReviewers(reviewers: Array<object>) {
         return reviewers.map((reviewer) => {
-            return {reportId: this.report.id, reviewerId: reviewer['id']};
+            return {reportId: this.report.id, reviewerId: reviewer.id};
         });
     }
 
@@ -884,13 +979,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public getEditorClasses() {
-        var classes = [];
+        const classes = [];
 
         if (this.templateType === 'pdf' || this.templateType === 'presentation') {
             classes.push('pdf-button');
         }
 
-        //{'pdf-button': (templateType === 'pdf' || templateType === 'presentation'), showAsMobile ? 'mobile' : 'desktop'}
+        // {'pdf-button': (templateType === 'pdf' || templateType === 'presentation'), showAsMobile ? 'mobile' : 'desktop'}
         if (this.showAsMobile) {
             classes.push('mobile');
         } else {
@@ -921,7 +1016,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private findParent(element, parent) {
-        for (let parentNode of element.path) {
+        for (const parentNode of element.path) {
             if (parentNode === parent) {
                 return;
             } else {
@@ -939,7 +1034,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             if (this.findParent(e, this.editorsParent.nativeElement)) {
                 this.flags.editorsList = false;
             }
-            ;
+
         });
     }
 
@@ -989,14 +1084,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
      *   Change template content by code
      */
     public importCode() {
-        let codeMirror = new CodeMirror();
-        let codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
+        const codeMirror = new CodeMirror();
+        const codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
         let viewerEditor = codeViewer.editor;
-        let modal = this.editor.Modal;
-        let grapesContent = this.editor.getHtml();
-        let container = this.getModalContainer();
-        let txtarea = container.children[1];
-        let btn: HTMLElement = container.children[2] as HTMLElement;
+        const modal = this.editor.Modal;
+        const grapesContent = this.editor.getHtml();
+        const container = this.getModalContainer();
+        const txtarea = container.children[1];
+        const btn: HTMLElement = container.children[2] as HTMLElement;
 
         modal.setTitle('Editor de código');
         modal.setContent(container);
@@ -1014,11 +1109,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private getModalContainer() {
-        let pfx = this.editor.getConfig('stylePrefix');
-        let container = document.createElement('div');
-        let labelEl = document.createElement('div');
-        let txtarea = document.createElement('textarea');
-        let btnImp = document.createElement('button');
+        const pfx = this.editor.getConfig('stylePrefix');
+        const container = document.createElement('div');
+        const labelEl = document.createElement('div');
+        const txtarea = document.createElement('textarea');
+        const btnImp = document.createElement('button');
 
         labelEl.className = `${pfx}import-label`;
         labelEl.innerHTML = 'Edite aqui su HTML/CSS y haga click en Importar';
@@ -1034,23 +1129,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private getAvailableAuthors(users: Array<any>): Array<any> {
-        let currentAuthors = this.list.authors.map((a: any) => a.author.id);
+        const currentAuthors = this.list.authors.map((a: any) => a.author.id);
         return users.filter((a: any) => currentAuthors.indexOf(a.id) == -1 && this.user != a.id && this.report.id != a.id);
     }
 
     private onLoadUsers() {
         this.http.get({
-            'path': 'users/list'
+            path: 'users/list'
         }).subscribe((response) => {
-            var users = response.body as unknown as any[];
+            const users = response.body as unknown as any[];
             this.list.users = this.getAvailableAuthors(users);
         });
     }
 
     private onLoadAuthors(idReport) {
         this.http.get({
-            'path': `reportAuthors`,
-            'data': {
+            path: `reportAuthors`,
+            data: {
                 include: [
                     {
                         relation: 'author',
@@ -1078,7 +1173,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         event.stopPropagation();
         this.isDeleting = true;
         this.http.delete({
-            'path': `reportAuthors/${authorId}`,
+            path: `reportAuthors/${authorId}`,
         }).subscribe((response: any) => {
             if (response) {
                 this.onLoadAuthors(this.report.id);
@@ -1091,8 +1186,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.isAdding = true;
         if (!this.maxAuthors) {
             this.http.post({
-                'path': `reportAuthors`,
-                'data': {
+                path: `reportAuthors`,
+                data: {
                     reportId: this.report.id,
                     authorId: author.id
                 },
