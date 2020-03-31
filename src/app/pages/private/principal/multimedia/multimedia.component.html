@@ -1,1 +1,88 @@
-<p>multimedia works!</p>
+<section class="multimedia">
+    <header class="multimedia__header">
+        <p class="multimedia__title">Multimedia</p>
+        <div class="info_btn" *ngIf="!marketing">
+            <button mat-raised-button>Crear Nuevo Informe <span>&nbsp;</span></button>
+        </div>
+    </header>
+    <div class="back-btn">
+        <a (click)="changeViewFn()"><span>&#60;</span> Volver </a>
+    </div>
+    <div>
+        <div class="multimedia__top">
+            <div class="multimedia__filter">
+                <p class="filter__label">Filtrar por: </p>
+                <ng-select [items]="filterOptions"
+                           [clearable]="false"
+                           [searchable]="false"
+                           placeholder="Escoger"
+                           (change)="reviewedFilter($event)"
+                           bindLabel="name"
+                           bindValue="name"
+                           class="custom-select custom-select--filter custom-select--no-height">
+                </ng-select>
+            </div>
+            <div class="insert_btn">
+                <button mat-raised-button class="insert_icon" [matMenuTriggerFor]="upload">
+                    <span class="insert_text">Subir contenido multimedia</span><span class="icon_insert">&nbsp;</span>
+                </button>
+                <mat-menu #upload="matMenu">
+                    <button mat-menu-item *ngFor="let item of filterOptions">
+                        <span class="fas" [ngClass]="item.icon"></span>
+                        <span class="option">Subir {{item.name}}</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+        <div class="list-wrapper">
+            <article class="multimedia-item">
+                <div class="multimedia-item__icon">
+                    <span class="fas fa-podcast"></span>
+                    <span class="icon__title">Podcast</span>
+                </div>
+                <div class="multimedia-item__name">
+                    <p>nombre muy largo de video podcast webinar</p>
+                </div>
+                <div class="multimedia-item__date">
+                    <p>4:53 pm 21 Agosto</p>
+                </div>
+                <div class="multimedia-item__owner">
+                    <p>Andrés Villanueva</p>
+                </div>
+                <div class="group-menu">
+                    <button class="menu icon icon-ellipsis-h"></button>
+                    <ul class="menu-list">
+                        <li><button class="icon icon-edit" >Editar</button></li>
+                        <li><button class="icong icong-crown">Destacar contenido</button></li>
+                        <li><button class="icon icon-search-plus">Vista previa</button></li>
+                        <li><button class="icon icon-trash-alt">Eliminar</button></li>
+                    </ul>
+                </div>
+            </article>
+            <article class="multimedia-item">
+                <div class="multimedia-item__icon">
+                    <span class="fas fa-podcast"></span>
+                    <span class="icon__title">Podcast</span>
+                </div>
+                <div class="multimedia-item__name">
+                    <p>nombre muy largo de video podcast webinar</p>
+                </div>
+                <div class="multimedia-item__date">
+                    <p>4:53 pm 21 Agosto</p>
+                </div>
+                <div class="multimedia-item__owner">
+                    <p>Andrés Villanueva</p>
+                </div>
+                <div class="group-menu">
+                    <button class="menu icon icon-ellipsis-h"></button>
+                    <ul class="menu-list">
+                        <li><button class="icon icon-edit" >Editar</button></li>
+                        <li><button class="icong icong-crown">Destacar contenido</button></li>
+                        <li><button class="icon icon-search-plus">Vista previa</button></li>
+                        <li><button class="icon icon-trash-alt">Eliminar</button></li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
