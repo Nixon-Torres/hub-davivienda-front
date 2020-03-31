@@ -64,8 +64,8 @@
                                 <button type="button" class="editCategoryBtn form-button mat-button mat-raised-button" (click)="editingCategory = true">Editar</button>
                             </div>
                             <form *ngIf="editingCategory" class="category-container__body" [formGroup]="categoryFormFields" (submit)="onSaveCategory($event)">
-                                <textarea [value]="category.fullDescription" formControlName="fullDescription"></textarea>
                                 <div class="left-area">
+                                    <textarea class="normal fulldesc" [value]="category.fullDescription" formControlName="fullDescription"></textarea>
                                     <input class="normal" type="text" placeholder="Escribir meta-titulo"  formControlName="metaTitle">
                                     <textarea class="normal" rows="4" placeholder="Escribir meta-descripciones"  formControlName="metaDescription"></textarea>
                                     <ng-select [items]="fullReportList" bindValue="name" bindLabel="name"
