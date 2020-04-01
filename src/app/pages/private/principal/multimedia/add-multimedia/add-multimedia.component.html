@@ -35,7 +35,6 @@
                     <label for="tags">Tags</label>
                     <div class="tags__wrapper">
                         <input placeholder="Escribe los tags del video"
-                               formControlName="tags"
                                id="tags" class="tags__input"
                                [matChipInputFor]="chipList"
                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -87,7 +86,7 @@
                     </div>
                 </div>
                 <div class="form__item form__item--buttons">
-                    <button type="button">Cancelar</button>
+                    <button type="button" (click)="openDialogCancel()">Cancelar</button>
                     <button type="submit">Subir {{multimediaType.name}}</button>
                 </div>
             </div>

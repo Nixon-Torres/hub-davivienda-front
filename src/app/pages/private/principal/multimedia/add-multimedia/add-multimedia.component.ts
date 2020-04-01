@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpService} from '../../../../../services/http.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {MatDialog} from '@angular/material/dialog';
@@ -20,6 +20,7 @@ export class AddMultimediaComponent implements OnInit {
     public uploadFileForm: FormGroup;
     public tags = [];
     public thumbnailFile: Array<any>;
+    public currentFile: any;
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     constructor(
@@ -33,18 +34,17 @@ export class AddMultimediaComponent implements OnInit {
     ngOnInit() {
         this.onInitForms(this.multimediaObj);
         this.onLoadRelatedReports();
+        this.onLoadCurrentFile();
         this.thumbnailFile = this.multimediaObj;
-        console.log(this.multimediaType);
     }
     private onInitForms(multimediaObj?: any) {
         this.multimediaForm = new FormGroup({
-            title: new FormControl(multimediaObj ? multimediaObj.title : ''),
-            description: new FormControl(multimediaObj ? multimediaObj.description : ''),
-            url: new FormControl(multimediaObj ? multimediaObj.params.url : ''),
-            tags: new FormControl(),
-            firstRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[0] : null),
-            secondRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[1] : null),
-            thirdRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[2] : null)
+            title: new FormControl(multimediaObj ? multimediaObj.title : '', Validators.required),
+            description: new FormControl(multimediaObj ? multimediaObj.description : '', Validators.required),
+            url: new FormControl(multimediaObj ? multimediaObj.params.url : '', Validators.required),
+            firstRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[0] : null, Validators.required),
+            secondRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[1] : null, Validators.required),
+            thirdRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[2] : null, Validators.required)
         });
 
         this.uploadFileForm = this.formBuilder.group({
@@ -69,6 +69,25 @@ export class AddMultimediaComponent implements OnInit {
         });
     }
 
+    public onLoadCurrentFile(): void {
+        if (this.multimediaObj) {
+            this.http.get({
+                path: 'media',
+                data: {
+                    where: {
+                        resourceId: this.multimediaObj.id
+                    }
+                },
+                encode: true
+            }).subscribe((resp: any) => {
+                if (resp) {
+                   this.currentFile = resp.body[0];
+                }
+                console.log('current file', resp);
+            });
+        }
+    }
+
     public loadFile(event: any): void {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
@@ -82,6 +101,9 @@ export class AddMultimediaComponent implements OnInit {
         formData.append('file', this.uploadFileForm.get('thumbnail').value);
         formData.append('key', 'thumbnail');
         formData.append('resourceId', resourceId);
+        if (this.currentFile) {
+            formData.append('id', this.currentFile.id);
+        }
         this.http.post({
             path: 'media/upload',
             data: formData
@@ -90,6 +112,7 @@ export class AddMultimediaComponent implements OnInit {
             const state = this.multimediaObj ? 'actualizado' : 'creado';
             const type = this.multimediaType;
             if (resp) {
+                this.currentFile = resp.body[0];
                 this.dialog.open(ConfirmationDialogComponent, {
                     width: '410px',
                     data: {
@@ -104,33 +127,36 @@ export class AddMultimediaComponent implements OnInit {
     }
 
     public onSaveMultimedia(): void {
+        console.log(this.multimediaForm);
         const method = this.multimediaObj ? 'patch' : 'post';
         const path = this.multimediaObj ? `contents/${this.multimediaObj.id}` : 'contents' ;
         const formControls = this.multimediaForm.controls;
-        console.log(this.multimediaForm);
-        this.http[method]({
-            path,
-            data: {
-                key: 'multimedia',
-                title: formControls.title.value,
-                description: formControls.description.value,
-                params: {
-                    multimediaType: this.multimediaType,
-                    url: formControls.url.value,
-                    tags: this.tags,
-                    relatedReports: [
-                        formControls.firstRelated.value,
-                        formControls.secondRelated.value,
-                        formControls.thirdRelated.value
-                    ]
+        console.log('is valid ', this.multimediaFormIsValid());
+        if (this.multimediaFormIsValid()) {
+            this.http[method]({
+                path,
+                data: {
+                    key: 'multimedia',
+                    title: formControls.title.value,
+                    description: formControls.description.value,
+                    params: {
+                        multimediaType: this.multimediaType,
+                        url: formControls.url.value,
+                        tags: this.tags,
+                        relatedReports: [
+                            formControls.firstRelated.value,
+                            formControls.secondRelated.value,
+                            formControls.thirdRelated.value
+                        ]
+                    }
                 }
-            }
-        }).subscribe((resp: any) => {
-            console.log(resp);
-            if (resp && resp.body) {
-                this.onSaveThumbnail(resp.body.id);
-            }
-        });
+            }).subscribe((resp: any) => {
+                if (resp && resp.body) {
+                    this.onSaveThumbnail(resp.body.id);
+                    this.multimediaObj = resp.body;
+                }
+            });
+        }
 
     }
 
@@ -142,12 +168,10 @@ export class AddMultimediaComponent implements OnInit {
         const input = event.input;
         const value = event.value;
 
-        // Add our fruit
         if ((value || '').trim()) {
             this.tags.push(value.trim());
         }
 
-        // Reset the input value
         if (input) {
             input.value = '';
         }
@@ -161,7 +185,48 @@ export class AddMultimediaComponent implements OnInit {
     }
 
     public updateView(): void {
+        this.resetMultimediaForm();
         this.isAdding.emit(false);
     }
 
+    public multimediaFormIsValid(): boolean {
+        return this.multimediaForm.status !== 'INVALID' &&
+            this.tags.length !== 0 &&
+            this.uploadFileForm.get('thumbnail').value !== '';
+    }
+
+    public openDialogCancel(): void {
+        const dialog = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                isAlert: true,
+                config: {
+                    icon: 'icon-exclamation',
+                    title: 'Está seguro que desea salir sin plublicar',
+                    mainButton: 'Si, quiero salir'
+                }
+            }
+        });
+
+        dialog.afterClosed().subscribe((confirmation: boolean) => {
+           if (confirmation) {
+               this.updateView();
+           }
+        });
+    }
+
+    public resetMultimediaForm(): void {
+        this.multimediaForm.reset({
+            title: '',
+            description: '',
+            url: '',
+            firstRelated: '',
+            secondRelated: '',
+            thirdRelated: '',
+        });
+        this.uploadFileForm.get('thumbnail').setValue('');
+        this.currentFile = null;
+        this.multimediaObj = null;
+        this.tags = [];
+    }
 }

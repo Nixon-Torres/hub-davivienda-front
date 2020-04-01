@@ -79,5 +79,5 @@
     </div>
     <app-add-multimedia *ngIf="isAdding" [multimediaType]="multimediaType"
                         [multimediaObj]="multimediaObj"
-                        (isAdding)="isAdding = $event"></app-add-multimedia>
+                        (isAdding)="changeViewAndRefresh($event)"></app-add-multimedia>
 </section>

@@ -59,6 +59,7 @@ export class MultimediaComponent implements OnInit {
     public openAddMultimedia(item) {
         this.isAdding = true;
         this.multimediaType = item;
+        this.multimediaObj = null;
     }
 
     private onLoadMultimedia(filter?: any): void {
@@ -93,11 +94,10 @@ export class MultimediaComponent implements OnInit {
     }
 
     public onEditMultimedia(multimedia: any): void {
-        console.log('fsdfsdfsdfaqwwwww', multimedia);
         if (multimedia && multimedia.params) {
+            this.openAddMultimedia(this.multimediaType);
             this.multimediaType = multimedia.params.multimediaType;
             this.multimediaObj = multimedia;
-            this.openAddMultimedia(this.multimediaType);
         }
     }
 
@@ -151,6 +151,11 @@ export class MultimediaComponent implements OnInit {
                 videoName: multimediaName,
             }
         });
+    }
+
+    public changeViewAndRefresh(event): void {
+        this.isAdding = event;
+        this.onLoadMultimedia();
     }
 
     public filterMultimedia(event): void {
