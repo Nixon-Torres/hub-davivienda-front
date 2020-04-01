@@ -5,7 +5,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 }
 
 .category-container {
-    margin: 10vh 4% 0;
+    margin: 3vh 4% 0;
 
     .scmessage {
         font-size: 17px !important;
@@ -47,7 +47,20 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
             background: #0080FF;
             color: #FFFFFF;
         }
-    }
+	}
+	
+	.description_area{
+		display: flex;
+		.area_content{
+			textarea{
+				width: 21em;
+			}
+		}
+		.area_select{
+			position: relative;
+			bottom: 2.6em;
+		}
+	}
 }
 
 .mat-tab-label-container{
@@ -650,7 +663,7 @@ section {
 		width: 16%;
 		height: 25px;
 		top: 16%;
-		right: 19%;
+		right: 16%;
 		position: absolute;
 	}
 	.insert_text{
@@ -834,7 +847,11 @@ section {
 
 .category-container {
     .custom-select {
-        margin-top: 8px;
+		margin-top: 8px;
+		&--create-report{
+			width: 108%;
+			margin-left: 1em;
+		}
     }
 
     &__fields {
@@ -842,7 +859,9 @@ section {
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        margin-bottom: 15px;
+		margin: 0;
+		position: relative;
+    	bottom: 8.2em;
         .form-field {
             margin-bottom: 18px;
             label:not(.upload__label) {
@@ -881,6 +900,7 @@ section {
                 position: relative;
                 width: 300px;
                 .upload__label {
+					cursor: pointer;
                     margin-left: 46px;
                     width: 300px;
                     display: inline-block;
@@ -906,7 +926,7 @@ section {
                     font-style: italic;
                     position: absolute;
                     left: 46px;
-                    top: 25px;
+                    top: -20px;
                     transform: translateY(-50%);
                 }
             }
@@ -920,7 +940,7 @@ section {
 
     form {
         display: block;
-        width: 70%;
+        width: 37em;
 
         .column {
             width: 70%;
@@ -951,7 +971,8 @@ section {
         }
 
         input.normal {
-            height: 30px;
+			height: 30px;
+			width: 22em;
         }
 
         input {
@@ -975,24 +996,28 @@ section {
 
         textarea {
             font-family: "Helvetica Neue", sans-serif;
-            border: none;
+			border: none;
+			border: 1px solid #C2CBD1;
             color: #5C5C5C;
-            background: transparent;
+            background: #FFFFFF;
             font-size: .750rem;
             line-height: 0.875rem;
             min-height: 82px;
             margin-top: 10px;
             text-align: left;
-            width: 100%;
+			width: 22em;
+			margin-bottom: 10px;
+    		height: 100px;
             resize: none;
-
+			padding: 8px;
+    		font-size: 14px;
         }
 
         .box {
             @include display-flex;
-            flex-direction: row-reverse;
-            margin-top: 36px;
-            width: 100%;
+            margin-top: 0px;
+			width: 100%;
+			position: relative;
         }
 
         button {
