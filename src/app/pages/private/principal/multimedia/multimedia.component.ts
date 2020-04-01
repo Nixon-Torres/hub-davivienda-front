@@ -4,6 +4,7 @@ import {HttpService} from '../../../../services/http.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 import {VideoModalComponent} from '../faq-content/video-modal/video-modal.component';
+import {OutstandingVideosComponent} from '../outstanding-videos/outstanding-videos.component';
 
 @Component({
     selector: 'app-multimedia',
@@ -81,7 +82,6 @@ export class MultimediaComponent implements OnInit {
                     this.multimediaList = resp.body;
                 }
                 this.addIconClass();
-                console.log(resp.body);
             }
         });
     }
@@ -143,7 +143,6 @@ export class MultimediaComponent implements OnInit {
     public openPreviewDialog(multimedia: any): void {
         const multimediaUrl = multimedia.params.url;
         const multimediaName = multimedia.title;
-        console.log(this.multimediaType);
         this.dialog.open(VideoModalComponent, {
             width: '800px',
             data: {
@@ -158,6 +157,13 @@ export class MultimediaComponent implements OnInit {
         this.onLoadMultimedia();
     }
 
+    public openOutstandingDialog(item): void {
+        this.dialog.open(OutstandingVideosComponent, {
+            width: '602px',
+            data: item
+        });
+    }
+    //TODO refactor filter
     public filterMultimedia(event): void {
 
     }

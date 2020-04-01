@@ -1,1 +1,85 @@
-<p>outstanding-videos works!</p>
+<div class="outstanding-videos">
+    <div class="outstanding-videos__wrapper">
+        <header class="header">
+            <p class="header__title">Destacar contenido multimedia</p>
+            <a (click)="closeDialog()" class="modal-close-cta">Cerrar <span
+                class="icon icon-times"></span></a>
+        </header>
+    </div>
+    <mat-tab-group (selectedTabChange)="setOutstandingHome($event)">
+        <mat-tab label="Home" class="tab">
+            <div class="tab__content">
+                <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
+                <article>
+                    <article class="outstanding"
+                             *ngFor="let area of outstandingAreaList"
+                             (click)="setOutstandingArea('area'+area)">
+                        <section class="outstanding__frame">
+                            <p class="outstanding__text">Video {{area}}</p>
+                        </section>
+                        <section class="outstanding__">
+                            <div class="outstanding__line outstanding__line--thicker"></div>
+                            <div class="outstanding__line"></div>
+                            <div class="outstanding__line outstanding__line--longer"></div>
+                        </section>
+                    </article>
+                </article>
+                <ng-select [items]="multimediaList"
+                           placeholder="-Seleccione Contenido multimedia a destacar-"
+                           bindValue="id"
+                           bindLabel="title" class="custom-select"
+                           (change)="selectOutstanding($event)"
+                           [(ngModel)]="multimedia"
+                ></ng-select>
+                <div>
+                    <button class="">Cancelar</button>
+                    <button class="" (click)="onSave()">Aceptar</button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Interna multimedia" class="tab">
+            <div class="tab__content">
+                <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
+                <article>
+                    <header>
+                        <article class="outstanding" (click)="setOutstandingArea('header')">
+                            <section class="outstanding__frame">
+                                <p class="outstanding__text">Video 1</p>
+                            </section>
+                            <section class="outstanding__">
+                                <div class="outstanding__line outstanding__line--thicker"></div>
+                                <div class="outstanding__line"></div>
+                                <div class="outstanding__line outstanding__line--longer"></div>
+                            </section>
+                        </article>
+                    </header>
+                    <section>
+                        <article class="outstanding"
+                                 *ngFor="let area of outstandingAreaList"
+                                 (click)="setOutstandingArea('area'+area)">
+                            <section class="outstanding__frame">
+                                <p class="outstanding__text">Video {{area + 1}}</p>
+                            </section>
+                            <section class="outstanding__">
+                                <div class="outstanding__line outstanding__line--thicker"></div>
+                                <div class="outstanding__line"></div>
+                                <div class="outstanding__line outstanding__line--longer"></div>
+                            </section>
+                        </article>
+                    </section>
+                </article>
+                <ng-select [items]="multimediaList"
+                           placeholder="-Seleccione Contenido multimedia a destacar-"
+                           bindValue="id"
+                           bindLabel="title" class="custom-select"
+                           (change)="selectOutstanding($event)"
+                           [(ngModel)]="multimediaNoHome"
+                ></ng-select>
+                <div>
+                    <button class="">Cancelar</button>
+                    <button class="" (click)="onSave()">Aceptar</button>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -49,7 +49,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
 import { MultimediaComponent } from './multimedia/multimedia.component';
 import { AddMultimediaComponent } from './multimedia/add-multimedia/add-multimedia.component';
-import { OutstandingVideosComponent } from './outstanding-videos/outstanding-videos.component';
+import {OutstandingVideosModule} from './outstanding-videos/outstanding-videos.module';
 
 const routes: Routes = [
     {
@@ -97,7 +97,6 @@ const materialModules: any[] = [
         TagsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
-        OutstandingVideosComponent
     ],
     imports: [
         CommonModule,
@@ -111,7 +110,8 @@ const materialModules: any[] = [
         PreviewDialogModule,
         NgSelectModule,
         GalleryDialogModule,
-        VideoModalModule
+        VideoModalModule,
+        OutstandingVideosModule
     ],
     exports: [
         materialModules
@@ -121,7 +121,7 @@ const materialModules: any[] = [
         HighlightDialogComponent,
         CreateReportDialogComponent,
         HighlightDialogComponent,
-        TagsDialogComponent
+        TagsDialogComponent,
     ]
 })
 export class PrincipalModule { }

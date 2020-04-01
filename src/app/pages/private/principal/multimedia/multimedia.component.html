@@ -58,7 +58,7 @@
                             <button class="icon icon-edit" (click)="onEditMultimedia(item)">Editar</button>
                         </li>
                         <li>
-                            <button class="icong icong-crown">Destacar contenido</button>
+                            <button class="icong icong-crown" (click)="openOutstandingDialog(item)">Destacar contenido</button>
                         </li>
                         <li *ngIf="item.params?.multimediaType.name === 'Video' || item.params?.multimediaType.name === 'Podcast' ">
 
