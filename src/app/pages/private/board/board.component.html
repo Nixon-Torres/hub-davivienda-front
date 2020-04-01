@@ -205,6 +205,79 @@
                 </div>
             </div>
 
+            <div *ngIf="!grapeEnabled" class="inline-editor-additional-sections">
+                <div class="native-editor-section new-block" *ngFor="let block of blocks">
+                    <div class="control-wrapper onecolumn-content" *ngIf="block.type === 'onecolumn'">
+                        <div class="remove-section" (click)="removeEditorSection(block)">
+                            <i class="material-icons">delete</i>
+                            Eliminar
+                        </div>
+                        <div class="inline-editor-block" [id]="block.id">
+                        </div>
+                    </div>
+                    <div class="control-wrapper twocolumns-content"
+                         [ngClass]="{'twocolumnsb-content': block.type === 'twocolumnsb'}"
+                         *ngIf="block.type !== 'onecolumn'">
+                        <div class="remove-section" (click)="removeEditorSection(block)">
+                            <i class="material-icons">delete</i>
+                            Eliminar
+                        </div>
+                        <div class="text-block">
+                            <input class="source" type="text" placeholder="Escriba titulo">
+                            <div class="divider"></div>
+                            <div class="inline-editor-block" [id]="block.id">
+                            </div>
+                        </div>
+                        <div class="image-block">
+                            <div class="cont">
+                                <label class="select-img" [for]="'ImgInput' + block.id" *ngIf="!block.imageUrl">
+                                    <img src="../../../../assets/images/image-placeholder.png">
+                                    <span class="select-img">Subir imagen</span>
+                                </label>
+                                <input
+                                    class="file-input"
+                                    type="file"
+                                    name="file"
+                                    (change)="onBlockImageSelected(block, $event)"
+                                    [id]="'ImgInput' + block.id"
+                                />
+
+                                <div *ngIf="block.imageUrl">
+                                    <img [src]="block.imageUrl">
+                                    <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
+                                </div>
+                            </div>
+                            <div class="source-section">
+                                <div class="divider"></div>
+                                <input class="source" type="text" placeholder="Escriba fuente">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-new-editor-block">
+                    <div class="btn-section">
+                        <button (click)="addMenuVisible = !addMenuVisible"
+                                mat-flat-button class="bttn bttn-default btn-circle" [ngClass]="{'close' : addMenuVisible}">
+                            <i class="material-icons">{{addMenuVisible ? 'close' : 'add'}}</i></button>
+                        <ul class="add-menu-list" [ngClass]="{'visible': addMenuVisible}">
+                            <li class="ng-star-inserted">
+                                <button class="icon" (click)="addEditorSection(false)">M&oacute;dulo una columna</button>
+                            </li>
+                            <li class="ng-star-inserted">
+                                <button class="icon" (click)="addEditorSection(true, 'left')">M&oacute;dulo dos columnas</button>
+                            </li>
+                            <li class="ng-star-inserted">
+                                <button class="icon" (click)="addEditorSection(true, 'right')">M&oacute;dulo dos columnas B</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-label">
+                        <span>Agregar nuevo m&oacute;dulo</span>
+                    </div>
+                </div>
+            </div>
+
         </mat-grid-tile>
 
         <!-- COMMENTS -->

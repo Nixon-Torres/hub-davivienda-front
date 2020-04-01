@@ -64,6 +64,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public isFullscreen = false;
     public isAdvancedUser = false;
     public grapeEnabled = false;
+    public addMenuVisible = false;
+
     public list: any = {
         users: [],
         authors: []
@@ -155,6 +157,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor3Data = '';
     public editor4Data = '';
 
+    public blocks: any = [];
+
     constructor(
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
@@ -238,6 +242,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ids.forEach((elementId) => {
             this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
         });
+
+        setTimeout(() => {
+            this.blocks.forEach((block) => {
+                const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                if (element) {
+                    element.innerHTML = block.content;
+                }
+
+                this.addInlineEditor(block.id, block.placeholder);
+                block.initialized = true;
+            });
+        }, 500);
     }
 
     addInlineEditor(elementId: string, placeholder?: string) {
@@ -250,7 +266,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 window.editor = editor;
 
                 editor.model.document.on( 'change:data', () => {
-                    this[elementId + 'Data'] = editor.getData();
+                    const ele = this[elementId + 'Data'];
+                    const block = this.blocks.find(e => e.id === elementId);
+                    const data = editor.getData();
+
+                    if (ele) {
+                        this[elementId + 'Data'] = data;
+                    }
+
+                    if (block) {
+                        block.content = data;
+                    }
                 } );
             } )
             .catch( error => {
@@ -380,6 +406,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
+            this.blocks = this.report.blocks;
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
@@ -680,6 +707,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.rfastContent = this.editor2Data;
         this.report.rSmartContent = this.editor3Data;
         this.report.rDeepContent = this.editor4Data;
+        this.report.blocks = this.blocks;
     }
 
     /** Save the report on DB
@@ -1298,5 +1326,63 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
             }
         });
+    }
+
+    private getUniqueId(parts: number): string {
+        const stringArr = [];
+        for(let i = 0; i< parts; i++){
+            // tslint:disable-next-line:no-bitwise
+            const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+            stringArr.push(S4);
+        }
+        return stringArr.join('-');
+    }
+
+    public removeEditorSection(block) {
+        this.blocks = this.blocks.filter(e => e.id !== block.id);
+    }
+
+    public addEditorSection(twocolumns: boolean, type?: string) {
+        this.addMenuVisible = false;
+        const block = {
+            id: 'block' + this.getUniqueId(1),
+            content: '',
+            type: !twocolumns ? 'onecolumn' : type === 'left' ? 'twocolumns' : 'twocolumnsb',
+            placeholder: !twocolumns ? 'CONTENT' : 'Escriba cuerpo de texto',
+            initialized: true
+        };
+        this.blocks.push(block);
+        setTimeout(() => {
+            this.addInlineEditor(block.id, block.placeholder);
+        }, 500);
+    }
+
+    public removeImageSelected(block: any) {
+        const elementId = 'ImgInput' + block.id;
+        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        element.value = '';
+    }
+
+    public onBlockImageSelected(block: any, event: any) {
+        const file: File = event && event.target && event.target.files && event.target.files.length ?
+            event.target.files[0] : null;
+
+        if (!file) {
+            block.fileName =  null;
+            block.file =  null;
+            block.imageUrl = null;
+            this.removeImageSelected(block);
+            return;
+        }
+
+        block.fileName = file.name;
+        block.file = file;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            block.imageUrl = reader.result;
+        };
     }
 }

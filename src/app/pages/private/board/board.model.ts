@@ -1,8 +1,4 @@
 export interface Report {
-    rtitle?: string;
-    rfastContent?: string;
-    rSmartContent?: string;
-    rDeepContent?: string;
     id?: string;
     name: string;
     slug: string;
@@ -22,4 +18,9 @@ export interface Report {
     users?: any;
     tags?: any;
     reportType?: any;
+    rtitle?: string;
+    rfastContent?: string;
+    rSmartContent?: string;
+    rDeepContent?: string;
+    blocks: any;
 }
