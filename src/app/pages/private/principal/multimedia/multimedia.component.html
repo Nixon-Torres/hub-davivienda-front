@@ -1,14 +1,15 @@
 <section class="multimedia">
     <header class="multimedia__header">
-        <p class="multimedia__title">Multimedia</p>
+        <p class="multimedia__title"> {{multimediaType ? 'Subir ' + multimediaType?.name : 'Multimedia'}}</p>
         <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button>Crear Nuevo Informe <span>&nbsp;</span></button>
         </div>
     </header>
-    <div class="back-btn">
-        <a (click)="changeViewFn()"><span>&#60;</span> Volver </a>
-    </div>
-    <div>
+
+    <div *ngIf="!isAdding">
+        <div class="back-btn">
+            <a (click)="changeViewFn()"><span>&#60;</span> Volver </a>
+        </div>
         <div class="multimedia__top">
             <div class="multimedia__filter">
                 <p class="filter__label">Filtrar por: </p>
@@ -16,7 +17,7 @@
                            [clearable]="false"
                            [searchable]="false"
                            placeholder="Escoger"
-                           (change)="reviewedFilter($event)"
+                           (change)="onLoadMultimedia($event)"
                            bindLabel="name"
                            bindValue="name"
                            class="custom-select custom-select--filter custom-select--no-height">
@@ -27,7 +28,7 @@
                     <span class="insert_text">Subir contenido multimedia</span><span class="icon_insert">&nbsp;</span>
                 </button>
                 <mat-menu #upload="matMenu">
-                    <button mat-menu-item *ngFor="let item of filterOptions">
+                    <button mat-menu-item *ngFor="let item of filterOptions" (click)="openAddMultimedia(item)">
                         <span class="fas" [ngClass]="item.icon"></span>
                         <span class="option">Subir {{item.name}}</span>
                     </button>
@@ -35,54 +36,48 @@
             </div>
         </div>
         <div class="list-wrapper">
-            <article class="multimedia-item">
+            <article class="multimedia-item" *ngFor="let item of multimediaList">
                 <div class="multimedia-item__icon">
-                    <span class="fas fa-podcast"></span>
-                    <span class="icon__title">Podcast</span>
+                    <span class="fas" [ngClass]="item.params?.multimediaType.icon"></span>
+                    <span class="icon__title">{{item.params?.multimediaType.name}}</span>
                 </div>
                 <div class="multimedia-item__name">
-                    <p>nombre muy largo de video podcast webinar</p>
+                    <p>{{item.title}}</p>
                 </div>
                 <div class="multimedia-item__date">
-                    <p>4:53 pm 21 Agosto</p>
+                    <!--<p>4:53 pm 21 Agosto</p>-->
+                    <p>{{item.updatedAt | date: 'hh:mm a dd MMMM'}}</p>
                 </div>
                 <div class="multimedia-item__owner">
-                    <p>Andrés Villanueva</p>
+                    <p>{{item.lastUpdater.name}}</p>
                 </div>
                 <div class="group-menu">
                     <button class="menu icon icon-ellipsis-h"></button>
                     <ul class="menu-list">
-                        <li><button class="icon icon-edit" >Editar</button></li>
-                        <li><button class="icong icong-crown">Destacar contenido</button></li>
-                        <li><button class="icon icon-search-plus">Vista previa</button></li>
-                        <li><button class="icon icon-trash-alt">Eliminar</button></li>
-                    </ul>
-                </div>
-            </article>
-            <article class="multimedia-item">
-                <div class="multimedia-item__icon">
-                    <span class="fas fa-podcast"></span>
-                    <span class="icon__title">Podcast</span>
-                </div>
-                <div class="multimedia-item__name">
-                    <p>nombre muy largo de video podcast webinar</p>
-                </div>
-                <div class="multimedia-item__date">
-                    <p>4:53 pm 21 Agosto</p>
-                </div>
-                <div class="multimedia-item__owner">
-                    <p>Andrés Villanueva</p>
-                </div>
-                <div class="group-menu">
-                    <button class="menu icon icon-ellipsis-h"></button>
-                    <ul class="menu-list">
-                        <li><button class="icon icon-edit" >Editar</button></li>
-                        <li><button class="icong icong-crown">Destacar contenido</button></li>
-                        <li><button class="icon icon-search-plus">Vista previa</button></li>
-                        <li><button class="icon icon-trash-alt">Eliminar</button></li>
+                        <li>
+                            <button class="icon icon-edit" (click)="onEditMultimedia(item)">Editar</button>
+                        </li>
+                        <li>
+                            <button class="icong icong-crown">Destacar contenido</button>
+                        </li>
+                        <li *ngIf="item.params?.multimediaType.name === 'Video' || item.params?.multimediaType.name === 'Podcast' ">
+
+                            <a class="icon icon-search-plus" [href]="item.params?.url" target="_blank"
+                               *ngIf="item.params?.multimediaType.name === 'Podcast'">Vista
+                                previa</a>
+                            <button class="icon icon-search-plus" *ngIf="item.params?.multimediaType.name === 'Video'"
+                                    (click)="openPreviewDialog(item)">Vista previa
+                            </button>
+                        </li>
+                        <li>
+                            <button class="icon icon-trash-alt" (click)="confirmDeleteDialog(item)">Eliminar</button>
+                        </li>
                     </ul>
                 </div>
             </article>
         </div>
     </div>
+    <app-add-multimedia *ngIf="isAdding" [multimediaType]="multimediaType"
+                        [multimediaObj]="multimediaObj"
+                        (isAdding)="isAdding = $event"></app-add-multimedia>
 </section>

@@ -148,7 +148,7 @@
         padding: 12px 0;
         background-color: #ffffff;
         border-radius: 10px;
-        box-shadow: 0px 0px 5px #8888881A;
+        box-shadow: 0 0 5px #8888881A;
         display: flex;
         margin-bottom: 15px;
         * {
@@ -173,6 +173,10 @@
             color: #5C5C5C;
             width: 45.18%;
             padding: 0 38px;
+            p {
+                width: 100%;
+            }
+
         }
         .icon__title,
         &__date,
@@ -249,11 +253,9 @@
                 height: 10px;
                 position: absolute;
                 right: 30px;
-                top: 0;
                 width: 10px;
                 -ms-: rotate(315deg);
                 transform: rotate(315deg);
-                position: absolute;
                 top: -6px;
                 content: '';
             }
@@ -282,6 +284,10 @@
             li {
                 padding: 6px 0;
                 border-bottom: 1px solid #EDEDED;
+                a {
+                    text-decoration: none;
+                    padding: 1px 6px;
+                }
 
                 .icon {
                     color: #5C5C5C;
