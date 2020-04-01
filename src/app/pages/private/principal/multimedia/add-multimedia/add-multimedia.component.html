@@ -1,0 +1,97 @@
+<div class="add-multimedia">
+    <div class="back-btn">
+        <a (click)="updateView()"><span>&#60;</span> Volver </a>
+    </div>
+    <div class="form">
+        <form class="form__wrapper" [formGroup]="multimediaForm" (ngSubmit)="onSaveMultimedia()">
+            <div class="form__container">
+                <div class="form__item">
+                    <label for="title">Titulo</label>
+                    <textarea name="" id="title"
+                              formControlName="title"
+                              placeholder="Escriba el nombre del video"></textarea>
+                </div>
+                <div class="form__item form__item--txtarea">
+                    <label for="description">Descripción</label>
+                    <textarea name="" id="description"
+                              formControlName="description"
+                              placeholder="Escribe de que se trata este video"></textarea>
+                </div>
+                <div class="form__item">
+                    <label for="url">URL del {{multimediaType.name}}</label>
+                    <input type="text" name="" id="url" formControlName="url">
+                </div>
+                <div class="form__item form__item--file">
+                    <p class="form__label" >Miniatura</p>
+                    <div class="file__wrapper">
+                        <label for="thumbnail" class="custom-file">
+                            <span class="fas fa-image"></span>
+                        </label>
+                        <p class="info">Subir miniatura</p>
+                    </div>
+                    <input type="file" name="" id="thumbnail" (change)="loadFile($event)">
+                </div>
+                <div class="form__item form__item--tags">
+                    <label for="tags">Tags</label>
+                    <div class="tags__wrapper">
+                        <input placeholder="Escribe los tags del video"
+                               formControlName="tags"
+                               id="tags" class="tags__input"
+                               [matChipInputFor]="chipList"
+                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                               [matChipInputAddOnBlur]="true"
+                               (matChipInputTokenEnd)="add($event)">
+                        <mat-chip-list #chipList aria-label="tags selection" class="tags__list">
+                            <mat-chip *ngFor="let tag of tags" [selectable]="true"
+                                      [removable]="true" (removed)="remove(tag)" class="tag__chip">
+                                {{tag}}
+                                <mat-icon matChipRemove>close</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </div>
+                <div class="form__item form__item--related ">
+                    <label for="">Informes relacionados</label>
+                    <div class="wrapper">
+                        <ng-select [items]="relatedReports"
+                                   [hideSelected]="true"
+                                   [searchable]="true"
+                                   [clearable]="false"
+                                   formControlName="firstRelated"
+                                   bindLabel="name"
+                                   bindValue="id"
+                                   class="custom-select custom-select--search"
+                                   (change)="removeSelected($event)"
+                                   placeholder="Escriba el nombre del informe"></ng-select>
+                        <ng-select [items]="relatedReports"
+                                   [hideSelected]="true"
+                                   [searchable]="true"
+                                   [clearable]="false"
+                                   formControlName="secondRelated"
+                                   bindLabel="name"
+                                   bindValue="id"
+                                   class="custom-select custom-select--search"
+                                   (change)="removeSelected($event)"
+                                   placeholder="Escriba el nombre del informe"></ng-select>
+                        <ng-select [items]="relatedReports"
+                                   [hideSelected]="true"
+                                   [searchable]="true"
+                                   [clearable]="false"
+                                   [virtualScroll]="true"
+                                   formControlName="thirdRelated"
+                                   bindLabel="name"
+                                   bindValue="id"
+                                   class="custom-select custom-select--search"
+                                   (change)="removeSelected($event)"
+                                   placeholder="Escriba el nombre del informe"></ng-select>
+                    </div>
+                </div>
+                <div class="form__item form__item--buttons">
+                    <button type="button">Cancelar</button>
+                    <button type="submit">Subir {{multimediaType.name}}</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
