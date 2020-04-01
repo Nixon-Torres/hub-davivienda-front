@@ -31,29 +31,31 @@
 }
 
 ::ng-deep {
-    .mat-menu-panel {
-        width: 235px;
-        border: 1px solid #FF003B;
-        border-radius: 0;
-        border-top: 0;
-        box-sizing: border-box;
-        .mat-menu-content:not(:empty) {
-            padding: 0;
-            .mat-menu-item {
-                border-bottom: 1px solid #EDF0F5;
-                display: flex;
-                align-items: center;
-                .fas {
-                    font-size: 1.250rem;
-                    margin-right: 8px;
-                    &:before {
-                        transform: translateY(1px);
+    .insert-options {
+        &.mat-menu-panel {
+            width: 235px;
+            border: 1px solid #FF003B;
+            border-radius: 0;
+            border-top: 0;
+            box-sizing: border-box;
+            .mat-menu-content:not(:empty) {
+                padding: 0;
+                .mat-menu-item {
+                    border-bottom: 1px solid #EDF0F5;
+                    display: flex;
+                    align-items: center;
+                    .fas {
+                        font-size: 1.250rem;
+                        margin-right: 8px;
+                        &:before {
+                            transform: translateY(1px);
+                        }
                     }
-                }
-                .option {
-                    font-family: 'Helvetica Neue', sans-serif;
-                    color: #5C5C5C;
-                    font-size: .875rem;
+                    .option {
+                        font-family: 'Helvetica Neue', sans-serif;
+                        color: #5C5C5C;
+                        font-size: .875rem;
+                    }
                 }
             }
         }
@@ -125,13 +127,16 @@
         }
     }
     .insert_icon{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 5px 0 20px;
         .icon_insert{
             clip-path: polygon(73% 41%, 51% 64%, 29% 41%, 39% 38%, 51% 54%, 66% 36%);
-            color: #ff003b;
-            width: 16%;
-            height: 25px;
-            top: 16%;
-            right: 19%;
+            background-color: #ff003b;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
         }
         .insert_text{
             position: relative;

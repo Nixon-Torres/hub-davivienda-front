@@ -27,7 +27,7 @@
                 <button mat-raised-button class="insert_icon" [matMenuTriggerFor]="upload">
                     <span class="insert_text">Subir contenido multimedia</span><span class="icon_insert">&nbsp;</span>
                 </button>
-                <mat-menu #upload="matMenu">
+                <mat-menu #upload="matMenu" class="insert-options">
                     <button mat-menu-item *ngFor="let item of filterOptions" (click)="openAddMultimedia(item)">
                         <span class="fas" [ngClass]="item.icon"></span>
                         <span class="option">Subir {{item.name}}</span>
