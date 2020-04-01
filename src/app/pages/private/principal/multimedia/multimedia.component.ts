@@ -77,7 +77,7 @@ export class MultimediaComponent implements OnInit {
             if (resp && resp.body) {
                 this.lastUpdater = resp.body.lastUpdater ? resp.body.lastUpdater.name : '';
                 if (filter) {
-                    this.multimediaList = resp.body.filter(e => e.params.multimediaType.name === filter.name);
+                    this.multimediaList = resp.body.filter(e => e.multimediaType.name === filter.name);
                 } else {
                     this.multimediaList = resp.body;
                 }
@@ -88,7 +88,7 @@ export class MultimediaComponent implements OnInit {
 
     private addIconClass(): void {
         this.multimediaList.forEach((item) => {
-            const option = this.filterOptions.find(e => e.name === item.params.multimediaType);
+            const option = this.filterOptions.find(e => e.name === item.multimediaType);
             item.iconClass = option ? option.icon : '';
         });
     }
@@ -96,7 +96,7 @@ export class MultimediaComponent implements OnInit {
     public onEditMultimedia(multimedia: any): void {
         if (multimedia && multimedia.params) {
             this.openAddMultimedia(this.multimediaType);
-            this.multimediaType = multimedia.params.multimediaType;
+            this.multimediaType = multimedia.multimediaType;
             this.multimediaObj = multimedia;
         }
     }

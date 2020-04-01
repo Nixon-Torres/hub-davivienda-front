@@ -32,7 +32,7 @@
                            [(ngModel)]="multimedia"
                 ></ng-select>
                 <div>
-                    <button class="">Cancelar</button>
+                    <button class="" (click)="closeDialog()">Cancelar</button>
                     <button class="" (click)="onSave()">Aceptar</button>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                            [(ngModel)]="multimediaNoHome"
                 ></ng-select>
                 <div>
-                    <button class="">Cancelar</button>
+                    <button class="" (click)="closeDialog()">Cancelar</button>
                     <button class="" (click)="onSave()">Aceptar</button>
                 </div>
             </div>

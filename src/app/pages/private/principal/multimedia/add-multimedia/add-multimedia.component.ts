@@ -108,7 +108,6 @@ export class AddMultimediaComponent implements OnInit {
             path: 'media/upload',
             data: formData
         }).subscribe((resp: any) => {
-            console.log('file resp', resp);
             const state = this.multimediaObj ? 'actualizado' : 'creado';
             const type = this.multimediaType;
             if (resp) {
@@ -127,11 +126,9 @@ export class AddMultimediaComponent implements OnInit {
     }
 
     public onSaveMultimedia(): void {
-        console.log(this.multimediaForm);
         const method = this.multimediaObj ? 'patch' : 'post';
         const path = this.multimediaObj ? `contents/${this.multimediaObj.id}` : 'contents' ;
         const formControls = this.multimediaForm.controls;
-        console.log('is valid ', this.multimediaFormIsValid());
         if (this.multimediaFormIsValid()) {
             this.http[method]({
                 path,
@@ -139,8 +136,8 @@ export class AddMultimediaComponent implements OnInit {
                     key: 'multimedia',
                     title: formControls.title.value,
                     description: formControls.description.value,
+                    multimediaType: this.multimediaType,
                     params: {
-                        multimediaType: this.multimediaType,
                         url: formControls.url.value,
                         tags: this.tags,
                         relatedReports: [
