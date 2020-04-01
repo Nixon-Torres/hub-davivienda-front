@@ -54,9 +54,6 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		.area_content{
 			textarea{
 				width: 21em;
-				@media only screen and (max-width: 1366px){
-					width: 20em;
-				}
 			}
 		}
 		.area_select{
@@ -853,7 +850,7 @@ section {
 		margin-top: 8px;
 		&--create-report{
 			width: 108%;
-			margin-left: 11px;
+			margin-left: 1em;
 		}
     }
 
@@ -943,7 +940,7 @@ section {
 
     form {
         display: block;
-        width: 70%;
+        width: 37em;
 
         .column {
             width: 70%;
@@ -974,7 +971,8 @@ section {
         }
 
         input.normal {
-            height: 30px;
+			height: 30px;
+			width: 22em;
         }
 
         input {
@@ -1007,7 +1005,7 @@ section {
             min-height: 82px;
             margin-top: 10px;
             text-align: left;
-			width: 52%;
+			width: 22em;
 			margin-bottom: 10px;
     		height: 100px;
             resize: none;
