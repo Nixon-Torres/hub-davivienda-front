@@ -49,6 +49,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
 import { MultimediaComponent } from './multimedia/multimedia.component';
 import { AddMultimediaComponent } from './multimedia/add-multimedia/add-multimedia.component';
+import { OutstandingVideosComponent } from './outstanding-videos/outstanding-videos.component';
 
 const routes: Routes = [
     {
@@ -95,7 +96,8 @@ const materialModules: any[] = [
         EditCompaniesComponent,
         TagsDialogComponent,
         MultimediaComponent,
-        AddMultimediaComponent
+        AddMultimediaComponent,
+        OutstandingVideosComponent
     ],
     imports: [
         CommonModule,
