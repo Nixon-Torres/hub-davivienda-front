@@ -223,14 +223,15 @@
                             Eliminar
                         </div>
                         <div class="text-block">
-                            <input class="source" type="text" placeholder="Escriba titulo">
+                            <input [(ngModel)]="block.title" [ngModelOptions]="{standalone: true}"
+                                   class="source" type="text" placeholder="Escriba titulo">
                             <div class="divider"></div>
                             <div class="inline-editor-block" [id]="block.id">
                             </div>
                         </div>
                         <div class="image-block">
                             <div class="cont">
-                                <label class="select-img" [for]="'ImgInput' + block.id" *ngIf="!block.imageUrl">
+                                <label class="select-img" [for]="'ImgInput' + block.id" *ngIf="!block.assetUrl && !block.imageUrl">
                                     <img src="../../../../assets/images/image-placeholder.png">
                                     <span class="select-img">Subir imagen</span>
                                 </label>
@@ -242,14 +243,19 @@
                                     [id]="'ImgInput' + block.id"
                                 />
 
-                                <div *ngIf="block.imageUrl">
+                                <div *ngIf="!block.assetUrl && block.imageUrl">
                                     <img [src]="block.imageUrl">
+                                    <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
+                                </div>
+                                <div *ngIf="block.assetUrl">
+                                    <img [src]="block.assetUrl">
                                     <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
                                 </div>
                             </div>
                             <div class="source-section">
                                 <div class="divider"></div>
-                                <input class="source" type="text" placeholder="Escriba fuente">
+                                <input [(ngModel)]="block.source" [ngModelOptions]="{standalone: true}"
+                                       class="source" type="text" placeholder="Escriba fuente">
                             </div>
                         </div>
                     </div>

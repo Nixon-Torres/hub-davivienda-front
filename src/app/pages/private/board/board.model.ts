@@ -18,8 +18,8 @@ export interface Report {
     users?: any;
     tags?: any;
     reportType?: any;
-    rtitle?: string;
-    rfastContent?: string;
+    rTitle?: string;
+    rFastContent?: string;
     rSmartContent?: string;
     rDeepContent?: string;
     blocks: any;

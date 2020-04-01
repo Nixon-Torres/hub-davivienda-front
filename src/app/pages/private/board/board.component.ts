@@ -22,12 +22,10 @@ import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.
 import {Report} from './board.model';
 import {RevisionModalComponent} from './revision-modal/revision-modal.component';
 import {CreationModalComponent} from './creation-modal/creation-modal.component';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
-// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import * as DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-// import * as MultirootEditor from '@ckeditor/ckeditor5-build-multiroot/build/ckeditor';
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import {forkJoin, Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 declare var grapesjs: any;
 declare global {
@@ -45,6 +43,8 @@ window.editor = window.editor || {};
     encapsulation: ViewEncapsulation.None
 })
 export class BoardComponent implements OnInit, AfterViewInit {
+    public STORAGE_URL = environment.STORAGE_FILES;
+
     public owner: any;
     public editor: any;
     public grapes: any;
@@ -87,6 +87,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             panel: 1
         }
     };
+
+    public blocksToRemove: any = [];
+
     public report: Report = {
         id: null,
         name: '',
@@ -104,7 +107,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
         tags: [],
-        reportType: null
+        reportType: null,
+        blocks: [],
+        rTitle: null,
+        rFastContent: null,
+        rSmartContent: null,
+        rDeepContent: null
     };
 
     public tags = {
@@ -133,7 +141,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public readonly = false;
     public unresolvedComments: any;
     public tendenciesList: any;
-    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
@@ -143,14 +150,17 @@ export class BoardComponent implements OnInit, AfterViewInit {
     @ViewChild('editor3', {static: false}) editor3?: ElementRef;
     @ViewChild('editor4', {static: false}) editor4?: ElementRef;
 
-    /* public Editor = DecoupledEditor;
-
-    public onReady( editor ) {
-        editor.ui.getEditableElement().parentElement.insertBefore(
-            editor.ui.view.toolbar.element,
-            editor.ui.getEditableElement()
-        );
-    } */
+    private editorOptions = {
+        editor1: {
+            removePlugins: [ 'Link' ],
+            heading: {
+                options: [
+                    { model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' }
+                ]
+            },
+            initialData: '<h2></h2>'
+        }
+    };
 
     public editor1Data = '';
     public editor2Data = '';
@@ -210,10 +220,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
 
         // When fullscreen mode is closed update isFullscreen flag
-        const _this = this;
-        document.addEventListener('fullscreenchange', function() {
+        const instance = this;
+        document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                _this.isFullscreen = false;
+                instance.isFullscreen = false;
             }
         });
     }
@@ -233,8 +243,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     setDataInInlineEditor() {
-        this.editor1Data = this.report.rtitle ? this.report.rtitle : '';
-        this.editor2Data = this.report.rfastContent ? this.report.rfastContent : '';
+        this.editor1Data = this.report.rTitle ? this.report.rTitle : '';
+        this.editor2Data = this.report.rFastContent ? this.report.rFastContent : '';
         this.editor3Data = this.report.rSmartContent ? this.report.rSmartContent : '';
         this.editor4Data = this.report.rDeepContent ? this.report.rDeepContent : '';
 
@@ -250,7 +260,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     element.innerHTML = block.content;
                 }
 
-                this.addInlineEditor(block.id, block.placeholder);
+                this.addInlineEditor(block.id, block.type !== 'onecolumn' ? 'Escriba cuerpo de texto' : 'CONTENT');
                 block.initialized = true;
             });
         }, 500);
@@ -258,24 +268,27 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     addInlineEditor(elementId: string, placeholder?: string) {
         const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        const options = this.editorOptions[elementId];
+        const editorOptions = options ? options : {};
+        editorOptions.placeholder = placeholder;
+
+        if (this[elementId + 'Data'] && editorOptions.initialData) {
+            delete editorOptions.initialData;
+        }
+
         InlineEditor
-            .create( element, {
-                placeholder
-            })
+            .create( element, editorOptions)
             .then( editor => {
                 window.editor = editor;
 
                 editor.model.document.on( 'change:data', () => {
-                    const ele = this[elementId + 'Data'];
                     const block = this.blocks.find(e => e.id === elementId);
                     const data = editor.getData();
 
-                    if (ele) {
-                        this[elementId + 'Data'] = data;
-                    }
-
                     if (block) {
                         block.content = data;
+                    } else {
+                        this[elementId + 'Data'] = data;
                     }
                 } );
             } )
@@ -286,21 +299,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     enableGrapeEditor() {
         this.grapeEnabled = true;
-        const _this = this;
+        const instance = this;
         setTimeout(() => {
-           _this.initGrapes();
+            instance.initGrapes();
         }, 2000);
     }
 
     enableInlineEditor() {
         this.grapeEnabled = false;
 
-        const _this = this;
+        const instance = this;
         setTimeout(() => {
-            _this.addInlineEditor('editor1', 'Escriba aquí el subtitulo con el que empieza su informe');
-            _this.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
-            _this.addInlineEditor('editor3', 'SMART CONTENT');
-            _this.addInlineEditor('editor4', 'DEEP CONTENT');
+            instance.addInlineEditor('editor1', 'Escriba aquí el subtitulo con el que empieza su informe');
+            instance.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
+            instance.addInlineEditor('editor3', 'SMART CONTENT');
+            instance.addInlineEditor('editor4', 'DEEP CONTENT');
         }, 500);
     }
 
@@ -363,8 +376,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Get report form database
      *
-     * @param { idReport } Id for get the report
-     * @return { this.report } Obj with the report data
+     * @param idReport Id for get the report
+     * @return report Obj with the report data
      */
     private loadReport(idReport: string): void {
 
@@ -395,6 +408,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 include: ['mainCategory', 'subCategory']
             }
+        }, {
+            relation: 'blocks',
+            scope: {
+                include: ['files']
+            }
         });
 
         this.http.get({
@@ -406,7 +424,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
-            this.blocks = this.report.blocks;
+            this.blocks = this.report.blocks.map(e => {
+                const img = e.files && e.files.length ? e.files[0] : {};
+                return {
+                    ...e,
+                    imageId: img.id,
+                    assetUrl: img && img.fileName ? this.STORAGE_URL + img.fileName : null,
+                    id: 'r' + e.id
+                };
+            });
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
@@ -428,7 +454,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Start to load default data config
      *
-     * @return { this.editor } Object grapes editor
+     * @return editor Object grapes editor
      */
     private initGrapes(): void {
         if (!this.grapeEnabled) {
@@ -465,7 +491,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Init plugins for new advance blocks on editor
      *
-     * @return { grapesjs.plugins } Object grapes editor
+     * @return grapesjs.plugins Object grapes editor
      */
     private activeAdvanceBlocks() {
         grapesjs.plugins.add(
@@ -563,8 +589,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Set report styles on grapes editor
      *
-     * @param { content } String with the report HTML
-     * @param { styles } String with the report CSS rules
+     * @param content string with the report HTML
+     * @param styles string with the report CSS rules
      */
     private addReportContent(content: string, styles: string): void {
         this.editor.getWrapper().append(
@@ -574,11 +600,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Set content dynamically for the report last update
      *
-     * @param { lastupdate } Value for the last update from database
-     * @return { this.lastupdate } Time ago since last update
+     * @param lastupdate Value for the last update from database
+     * @return lastupdate Time ago since last update
      */
     public setLastUpdate(lastupdate) {
-
         this.lastupdate = moment(lastupdate).fromNow();
 
         if (this.timer.lastupdate) {
@@ -592,8 +617,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Load a template for report if exist template ID else load an empty report
      *
-     * @param { templateId } Id for load template
-     * @return { this.report } Set the HTML content and CSS for template
+     * @param templateId Id for load template
+     * @return report Set the HTML content and CSS for template
      */
     private loadTemplate(templateId: string): void {
         if (templateId.toString() === 'false' && this.fromReportId.toString() === 'false') {
@@ -703,11 +728,234 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     setDataFromForm() {
-        this.report.rtitle = this.editor1Data;
-        this.report.rfastContent = this.editor2Data;
+        this.report.rTitle = this.editor1Data;
+        this.report.rFastContent = this.editor2Data;
         this.report.rSmartContent = this.editor3Data;
         this.report.rDeepContent = this.editor4Data;
-        this.report.blocks = this.blocks;
+    }
+
+    public onSaveBlocks(): void {
+        let blocksCreated;
+        let blocksUpdated;
+        let imagesUpserted;
+
+        const IdstoRemove = this.blocksToRemove.map(e => e.id.substr(1));
+        const blocksToCreate = this.blocks.filter(e => e.isNew).map((block) => {
+            return {
+                localId: block.id,
+                title: block.title,
+                content: block.content,
+                source: block.source,
+                fileName: block.fileName,
+                type: block.type
+            };
+        });
+        const blocksToUpdate = this.blocks.filter(e => e.localId).map((block) => {
+            return {
+                id: block.id.substr(1),
+                localId: block.localId,
+                title: block.title,
+                content: block.content,
+                source: block.source,
+                fileName: block.fileName,
+                type: block.type
+            };
+        });
+
+        let imgsToCreate = this.blocks.filter(e => e.file && (e.isNew || (!e.isNew && !e.imageId))).map((block) => {
+            return {
+                isNew: block.isNew,
+                id: block.isNew ? block.id : block.id.substr(1),
+                localId: block.localId,
+                file: block.file,
+                imageId: block.imageId
+            };
+        });
+
+        const imgsToRemove = this.blocks.filter(e => !e.file && e.imageId && !e.assetUrl).map(e => e.imageId);
+
+        this.deleteBlocks(IdstoRemove).then((res) => {
+            return this.createBlocks(blocksToCreate);
+        }).then((res) => {
+            if (res) {
+                blocksCreated = res.map(e => e.body);
+                imgsToCreate = imgsToCreate.map(e => {
+                    if (!e.isNew) {
+                        e.id = e.id.substr(1);
+                        return e;
+                    }
+
+                    const blockCreated = blocksCreated.find(j => j.localId === e.id);
+                    e.id = blockCreated.id;
+                    return e;
+                });
+            }
+            return this.updateBlocks(blocksToUpdate);
+        }).then((res) => {
+            if (res) {
+                blocksUpdated = res.map(e => e.body);
+            }
+
+            return this.saveBlockImages(imgsToCreate);
+        }).then((res) => {
+            if (res) {
+                imagesUpserted = res.map(e => e.body);
+            }
+
+            return this.deleteBlockImages(imgsToRemove);
+        }).then(() => {
+            this.loadBlocks();
+        });
+    }
+
+    public loadBlocks() {
+        return this.http.get({
+            path: 'reports/' + this.report.id + '/blocks',
+            data: {
+                include: [
+                    'files'
+                ]
+            },
+            encode: true
+        }).subscribe((res) => {
+            const blocks = res.body as any;
+            this.blocks = blocks.map(e => {
+                const img = e.files && e.files.length ? e.files[0] : {};
+                return {
+                    ...e,
+                    imageId: img.id,
+                    assetUrl: img && img.fileName ? this.STORAGE_URL + img.fileName : null,
+                    id: 'r' + e.id
+                };
+            });
+
+            setTimeout(() => {
+                this.blocks.forEach((block) => {
+                    const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                    if (element) {
+                        element.innerHTML = block.content;
+                    }
+
+                    this.addInlineEditor(block.id, block.type !== 'onecolumn' ? 'Escriba cuerpo de texto' : 'CONTENT');
+                    block.initialized = true;
+                });
+            }, 500);
+        });
+    }
+
+    public saveBlockImages(blocks): Promise<any> {
+        if (blocks.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = blocks.map((block) => {
+            return this.saveBlockImage(block);
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    private saveBlockImage(block): Observable<any> {
+        const formData = new FormData();
+        formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
+        formData.append('file', block.file);
+        formData.append('key', 'blockImage');
+        formData.append('resourceId', block.id);
+        if (block.imageId) {
+            formData.append('id', block.imageId);
+        }
+        return this.http.post({
+            path: 'media/upload',
+            data: formData
+        });
+    }
+
+    public updateBlocks(blocks): Promise<any> {
+        if (blocks.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = blocks.map((block) => {
+            return this.http.patch({
+                path: 'reportBlocks/' + block.id,
+                data: block
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    public createBlocks(blocks): Promise<any> {
+        if (blocks.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = blocks.map((block) => {
+            return this.http.post({
+                path: 'reports/' + this.report.id + '/blocks',
+                data: block
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    public deleteBlockImages(ids): Promise<any> {
+        if (ids.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = ids.map(id => {
+            return this.http.delete({
+                path: '/media/' + id,
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    public deleteBlocks(ids): Promise<any> {
+        if (ids.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = ids.map(id => {
+            return this.http.delete({
+                path: '/reportBlocks/' + id,
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
     }
 
     /** Save the report on DB
@@ -734,6 +982,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             data
         }).subscribe(
             (response: any) => {
+                this.onSaveBlocks();
                 if (method === 'post' && this.authorsId && this.authorsId.length) {
                     const authorsData = this.authorsId.map((a: string) => {
                         return {authorId: a, reportId: response.body.id};
@@ -810,7 +1059,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public getReviewers(reviewers: Array<object>) {
-        return reviewers.map((reviewer) => {
+        return reviewers.map((reviewer: any) => {
             return {reportId: this.report.id, reviewerId: reviewer.id};
         });
     }
@@ -1158,7 +1407,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private getAvailableAuthors(users: Array<any>): Array<any> {
         const currentAuthors = this.list.authors.map((a: any) => a.author.id);
-        return users.filter((a: any) => currentAuthors.indexOf(a.id) == -1 && this.user != a.id && this.report.id != a.id);
+        return users.filter((a: any) => currentAuthors.indexOf(a.id) === -1 && this.user !== a.id && this.report.id !== a.id);
     }
 
     private onLoadUsers() {
@@ -1277,7 +1526,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /* Tags */
-
     public fillTendenciesTags(): Array<string> {
         return this.tendenciesList.split(',').map(tag => tag.trim());
     }
@@ -1330,7 +1578,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private getUniqueId(parts: number): string {
         const stringArr = [];
-        for(let i = 0; i< parts; i++){
+        for (let i = 0; i < parts; i++) {
             // tslint:disable-next-line:no-bitwise
             const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
             stringArr.push(S4);
@@ -1339,6 +1587,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public removeEditorSection(block) {
+        if (!!!block.isNew) {
+            this.blocksToRemove.push(block);
+        }
         this.blocks = this.blocks.filter(e => e.id !== block.id);
     }
 
@@ -1349,7 +1600,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             content: '',
             type: !twocolumns ? 'onecolumn' : type === 'left' ? 'twocolumns' : 'twocolumnsb',
             placeholder: !twocolumns ? 'CONTENT' : 'Escriba cuerpo de texto',
-            initialized: true
+            initialized: true,
+            isNew: true
         };
         this.blocks.push(block);
         setTimeout(() => {
@@ -1371,6 +1623,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             block.fileName =  null;
             block.file =  null;
             block.imageUrl = null;
+            block.assetUrl = null;
             this.removeImageSelected(block);
             return;
         }

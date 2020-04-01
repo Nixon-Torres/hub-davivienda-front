@@ -674,6 +674,11 @@ $default-font: "Helvetica Neue", Medium;
 
         .inline-editor-block {
             height: 100%;
+
+            h2 {
+                margin: 0px;
+                font-size: 2.2rem;
+            }
         }
     }
 
@@ -1109,7 +1114,7 @@ $default-font: "Helvetica Neue", Medium;
     color: #616161;
     top: 1px;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 1000;
 
     i {
         font-style: normal !important;
