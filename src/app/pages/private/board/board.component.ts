@@ -112,7 +112,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         rTitle: null,
         rFastContent: null,
         rSmartContent: null,
-        rDeepContent: null
+        rDeepContent: null,
+        template: null
     };
 
     public tags = {
@@ -149,6 +150,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     @ViewChild('editor2', {static: false}) editor2?: ElementRef;
     @ViewChild('editor3', {static: false}) editor3?: ElementRef;
     @ViewChild('editor4', {static: false}) editor4?: ElementRef;
+    @ViewChild('editor5', {static: false}) editor5?: ElementRef;
 
     private editorOptions = {
         editor1: {
@@ -166,6 +168,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor2Data = '';
     public editor3Data = '';
     public editor4Data = '';
+    public editor5Data = '';
 
     public blocks: any = [];
 
@@ -247,10 +250,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.editor2Data = this.report.rFastContent ? this.report.rFastContent : '';
         this.editor3Data = this.report.rSmartContent ? this.report.rSmartContent : '';
         this.editor4Data = this.report.rDeepContent ? this.report.rDeepContent : '';
+        this.editor5Data = this.report.rPreContent ? this.report.rPreContent : '';
 
-        const ids = ['editor1', 'editor2', 'editor3', 'editor4'];
+        const ids = ['editor1', 'editor2', 'editor3', 'editor4', 'editor5'];
         ids.forEach((elementId) => {
-            this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
+            if (elementId !== 'editor5' || (elementId === 'editor5' && this.report.template.key === 'html')) {
+                if (this[elementId]) {
+                    this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
+                }
+            }
         });
 
         setTimeout(() => {
@@ -314,6 +322,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             instance.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
             instance.addInlineEditor('editor3', 'SMART CONTENT');
             instance.addInlineEditor('editor4', 'DEEP CONTENT');
+
+            if (this.report && this.report.template && this.report.template.key === 'html') {
+                instance.addInlineEditor('editor5', 'Escriba aquí el seguimientos de las acciones de las empresas');
+            }
         }, 500);
     }
 
@@ -732,6 +744,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.rFastContent = this.editor2Data;
         this.report.rSmartContent = this.editor3Data;
         this.report.rDeepContent = this.editor4Data;
+        this.report.rPreContent = this.editor5Data;
     }
 
     public onSaveBlocks(): void {
@@ -804,7 +817,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             return this.deleteBlockImages(imgsToRemove);
         }).then(() => {
-            this.loadBlocks();
+            if (this.report && this.report.id) {
+                this.loadBlocks();
+            }
         });
     }
 

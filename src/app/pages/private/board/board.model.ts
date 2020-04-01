@@ -22,5 +22,7 @@ export interface Report {
     rFastContent?: string;
     rSmartContent?: string;
     rDeepContent?: string;
-    blocks: any;
+    rPreContent?: string;
+    blocks?: any;
+    template?: any;
 }

@@ -745,6 +745,17 @@ $default-font: "Helvetica Neue", Medium;
         }
     }
 
+    .pre-content {
+        height: 200px;
+
+        .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
+            font-size: 20px;
+            font-weight: bold;
+            width: 360px;
+            line-height: 24px;
+        }
+    }
+
     .smart-content {
         height: 200px;
 

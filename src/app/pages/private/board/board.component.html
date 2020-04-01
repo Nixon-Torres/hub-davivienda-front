@@ -187,6 +187,14 @@
                         class="placeholder" unselectable="on">
                         Escriba aca texto destacado si es necesario (fast content)</span>
                 </div>
+                <div *ngIf="report?.template?.key === 'html'"  class="divider"></div>
+                <div [ngClass]="{'invisible': report?.template?.key !== 'html'}" class="control-wrapper pre-content" (click)="editor5.focus()">
+                    <div class="inline-editor-block" id="editor5" #editor5>
+                    </div>
+                    <span [ngClass]="{'invisible': editor5Data !== ''}"
+                          class="placeholder" unselectable="on">
+                        Escriba aquí el seguimientos de las acciones de las empresas</span>
+                </div>
                 <div class="divider"></div>
                 <div class="control-wrapper smart-content" (click)="editor3.focus()">
                     <div class="inline-editor-block" id="editor3" #editor3>
