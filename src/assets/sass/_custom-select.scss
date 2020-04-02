@@ -19,7 +19,7 @@
                 }
             }
         }
-    } 
+    }
     &.ng-invalid {
         .ng-select-container {
             .ng-value-container {
@@ -42,12 +42,12 @@
             transform-origin: 75% center;
             transform: translateY(-50%) rotate(45deg);
             transition: transform .2s ease-out;
-            
+
         }
     }
     &.ng-select-opened {
         .ng-arrow-wrapper {
-            .ng-arrow { 
+            .ng-arrow {
                 transform-origin: center center;
                 transform: translateY(-15%) rotate(-135deg);
             }
@@ -169,6 +169,67 @@
                         .ng-option-label {
                             font-size: 12px;
                         }
+                    }
+                }
+            }
+        }
+    }
+    &--search {
+        .ng-select-container {
+            padding-left: 10px;
+            position: relative;
+            border-radius: 0;
+            height: 30px;
+            .ng-value-container {
+                padding-left: 0;
+                .ng-placeholder, .ng-value, .ng-input {
+                    font-size: .688rem;
+                }
+                .ng-input {
+                    top: 9px;
+                    padding-left: 10px;
+                    input {
+                        font-size: .688rem;
+                    }
+                }
+            }
+            .ng-arrow-wrapper {
+                display: none;
+            }
+            &:before {
+                font-family: icomoon;
+                content: '\e91d';
+                font-size: .875rem;
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background-color: #A5ABB1;
+                color: #ffffff;
+                width: 33px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-style: solid;
+                border-color: #fff;
+                border-width: 1px 1px 1px 0;
+            }
+
+        }
+        &.ng-select-opened {
+            .ng-dropdown-panel {
+                .ng-dropdown-panel-items {
+                    max-height: 140px;
+                    .ng-option {
+                        padding-left: 10px;
+                        .ng-option-label {
+                            color: #A5ABB1;
+                            font-size: .688rem;
+                            font-style: italic;
+                        }
+                    }
+                    &.scroll-host {
+                        @include custom-scroll;
                     }
                 }
             }
