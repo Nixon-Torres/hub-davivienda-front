@@ -27,4 +27,5 @@ export interface Report {
     blocks?: any;
     template?: any;
     files?: any;
+    presentationUrl?: any;
 }
