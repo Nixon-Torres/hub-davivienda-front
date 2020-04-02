@@ -13,7 +13,7 @@
                 <article>
                     <article class="outstanding"
                              *ngFor="let area of outstandingAreaList"
-                             (click)="setOutstandingArea('area'+area)">
+                             (click)="setOutstandingArea($event,'area'+area)">
                         <section class="outstanding__frame">
                             <p class="outstanding__text">Video {{area}}</p>
                         </section>
@@ -42,7 +42,7 @@
                 <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
                 <article>
                     <header>
-                        <article class="outstanding" (click)="setOutstandingArea('header')">
+                        <article class="outstanding" (click)="setOutstandingArea($event, 'header')">
                             <section class="outstanding__frame">
                                 <p class="outstanding__text">Video 1</p>
                             </section>
@@ -56,7 +56,7 @@
                     <section>
                         <article class="outstanding"
                                  *ngFor="let area of outstandingAreaList"
-                                 (click)="setOutstandingArea('area'+area)">
+                                 (click)="setOutstandingArea($event,'area'+area)">
                             <section class="outstanding__frame">
                                 <p class="outstanding__text">Video {{area + 1}}</p>
                             </section>
