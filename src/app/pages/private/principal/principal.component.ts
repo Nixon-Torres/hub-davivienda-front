@@ -11,7 +11,8 @@ export class PrincipalComponent implements OnInit {
     public view: any = {
         reports: true,
         editSite: false,
-        faq: false
+        faq: false,
+        multimedia: false
     };
 
     constructor() {

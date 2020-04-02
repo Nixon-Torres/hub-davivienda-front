@@ -71,14 +71,14 @@
 	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
 	display: -ms-flexbox;      /* TWEENER - IE 10 */
 	display: -webkit-flex;     /* NEW - Chrome */
-	display: flex; 
+	display: flex;
 }
 
 @mixin align-items($align) {
 	-webkit-box-align: $align;
 	-webkit-align-items: $align;
 	-ms-flex-align: $align;
-	align-items: $align; 
+	align-items: $align;
 }
 
 @mixin border-radius($value) {
@@ -119,8 +119,8 @@
 	border-left: $size solid transparent;
 	border-right: $size solid transparent;
 	border-top: $size solid $color;
-	height: 0; 
-	width: 0; 
+	height: 0;
+	width: 0;
 }
 
 @mixin no-selection {
@@ -145,5 +145,22 @@
 		background-color: transparent;
 	}
 }
- 
-  
+
+@mixin placeholder {
+    &::placeholder {
+        @content;
+    }
+    &::-webkit-input-placeholder {
+        @content
+    }
+    &:-moz-placeholder {
+        @content
+    }
+    &::-moz-placeholder {
+        @content
+    }
+    &:-ms-input-placeholder {
+        @content
+    }
+}
+
