@@ -1,11 +1,158 @@
 .outstanding-videos {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 0;
+        margin: 0 19px 45px;
+        border-bottom: 1px solid #EDEDED;
+        &__title {
+            font-family: 'Helvetica Neue', sans-serif;
+            color: #A5ABB1;
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+        .modal-close-cta {
+            color: #616161;
+            font-style: italic;
+            font-size: 0.750em;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            .icon {
+                font-size: 1.667em;
+                font-style: normal;
+                padding-left: 10px;
+                &:before {
+                    margin-right: 0;
+                    font-size: 1em;
+                }
+            }
+        }
+    }
+    .tab {
+        &__content {
+            padding: 21px 57px 72px 57px;
+        }
+        &__title {
+            font-family: 'Helvetica Neue', sans-serif;
+            color: #616161;
+            font-size: 0.875rem;
+            line-height: 1rem;
+            margin-bottom: 25px;
+        }
+        &__outstanding {
+            border: 1px solid #F5F7FB;
+            padding: 27px 23px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            &--header {
+                flex-direction: column;
+                border: 1px solid #F5F7FB;
+                padding: 27px 23px 30px;
+                margin-bottom: 22px;
+                .tab__outstanding {
+                    border: 0;
+                    padding: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+        &__buttons {
+            border-top: 1px solid #EDEDED;
+            padding-top: 35.5px;
+            display: flex;
+            justify-content: center;
+            margin-top: 17.5px;
+            button {
+                width: 134px;
+                height: 35px;
+                font-family: 'Helvetica Neue', sans-serif;
+                font-weight: 600;
+                color: #A5ABB1;
+                background-color: transparent;
+                margin: 10px;
+                border: 0;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: .875rem;
+                &.confirm {
+                    background-color: #0b86ff;
+                    color: #fff;
+                }
+
+            }
+        }
+    }
+
     .outstanding {
-        width: 130px;
-        height: 63px;
-        border: 1px dashed #C2CBD1;
+        display: flex;
+        flex-direction: column;
         cursor: pointer;
+        &--header {
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 18px;
+            .outstanding__frame {
+                width: 202px;
+                height: 103px;
+                flex-shrink: 0;
+            }
+            .outstanding__lines {
+                padding-left: 34px;
+                width: 40%;
+            }
+        }
+        &__frame {
+            border: 1px dashed #C2CBD1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 130px;
+            height: 63px;
+        }
+        &__text {
+            color: #E1E8ED;
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 0.750rem;
+            font-weight: bold;
+        }
+        &__lines {
+            padding-top: 14px;
+            width: 85%;
+        }
+        &__line {
+            border-style: solid;
+            border-color: #BEC5D0;
+            width: 95%;
+            border-width: 1px;
+            margin-bottom: 7px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &--thicker {
+                border-color: #BEC5D0;
+                width: 55%;
+                border-width: 2px;
+            }
+            &--longer {
+                width: 100%;
+            }
+        }
         &.active {
-            border-color: #0b86ff;
+            .outstanding__frame {
+                background-color: #F7F7F7;
+            }
+            .outstanding__text {
+                color: #0b86ff;
+                font-size: .875rem;
+            }
+            .outstanding__frame,
+            .outstanding__line {
+                border-color: #0b86ff;
+            }
         }
     }
 }

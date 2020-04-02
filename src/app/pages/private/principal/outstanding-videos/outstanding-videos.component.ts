@@ -142,4 +142,7 @@ export class OutstandingVideosComponent implements OnInit {
         this.dialogRef.close();
     }
 
+    onEvent(event) {
+        event.stopPropagation();
+    }
 }
