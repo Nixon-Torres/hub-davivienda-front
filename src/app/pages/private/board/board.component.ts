@@ -114,7 +114,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
         rSmartContent: null,
         rDeepContent: null,
         template: null,
-        files: null
+        files: null,
+        rSmartContentVideo: null,
+        presentationUrl: null
     };
 
     public tags = {
@@ -162,6 +164,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 ]
             },
             initialData: '<h2></h2>'
+        },
+        editor3: {
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'p',
+                            classes: 'box-title',
+                            styles: {
+                                'font-weight': 'bold'
+                            }
+                        },
+                        title: 'Heading 2',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
+                ]
+            }
         },
         editor4: {
             heading: {
@@ -492,7 +516,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
 
-            const updating = !!this.report;
             this.report = response.body;
             const banner = this.report.files.find(e => e.key === 'bannerImage');
 
@@ -512,9 +535,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
 
-            if (!updating) {
-                this.setDataInInlineEditor();
-            }
+            this.setDataInInlineEditor();
 
             this.files = response.body.files;
             this.templateType = response.body.template.key;

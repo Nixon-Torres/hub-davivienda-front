@@ -223,6 +223,9 @@
                         Escriba aquí el seguimientos de las acciones de las empresas</span>
                 </div>
                 <div class="divider"></div>
+                <input [(ngModel)]="report.rSmartContentVideo" [ngModelOptions]="{standalone: true}"
+                       class="source" type="text" placeholder="Video Smart Content (URL)">
+                <div class="divider"></div>
                 <div class="control-wrapper smart-content" (click)="editor3.focus()">
                     <div class="inline-editor-block" id="editor3" #editor3>
                     </div>
@@ -230,6 +233,10 @@
                           class="placeholder" unselectable="on">
                         SMART CONTENT</span>
                 </div>
+                <div class="divider" *ngIf="report?.template?.key === 'presentation'"></div>
+                <input [(ngModel)]="report.presentationUrl" [ngModelOptions]="{standalone: true}"
+                       class="source" type="text" placeholder="Presentación Slideshare (URL)"
+                       *ngIf="report?.template?.key === 'presentation'">
                 <div class="divider"></div>
                 <div class="control-wrapper deep-content" (click)="editor4.focus()">
                     <div class="inline-editor-block" id="editor4" #editor4>

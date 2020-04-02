@@ -23,7 +23,9 @@ export interface Report {
     rSmartContent?: string;
     rDeepContent?: string;
     rPreContent?: string;
+    rSmartContentVideo?: string;
     blocks?: any;
     template?: any;
     files?: any;
+    presentationUrl?: any;
 }

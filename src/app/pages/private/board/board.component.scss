@@ -1054,7 +1054,7 @@ $default-font: "Helvetica Neue", Medium;
                     border: none;
                     color: #0080FF;
                     cursor: pointer;
-                    display: inlineZ;
+                    display: inline;
                     font-size:0.750em;
 
                     &:before {
@@ -1135,8 +1135,34 @@ $default-font: "Helvetica Neue", Medium;
     }
 }
 
-.native-editor-section.new-block {
+.grapes-container input:not([type]), .grapes-container input[type=text]:not(.browser-default),
+.grapes-container input[type=password]:not(.browser-default),
+.grapes-container input[type=email]:not(.browser-default), .grapes-container input[type=url]:not(.browser-default),
+.grapes-container input[type=time]:not(.browser-default), .grapes-container input[type=date]:not(.browser-default),
+.grapes-container input[type=datetime]:not(.browser-default),
+.grapes-container input[type=datetime-local]:not(.browser-default),
+.grapes-container input[type=tel]:not(.browser-default), .grapes-container input[type=number]:not(.browser-default),
+.grapes-container input[type=search]:not(.browser-default), .grapes-container textarea.materialize-textarea {
+    border: 0px !important;
+}
 
+.native-editor-section {
+    input {
+        margin-left: 25px !important;
+        margin-top: 7px !important;
+        width: 90% !important;
+
+        &::placeholder {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 24px;
+        }
+
+        &:focus, &:active {
+            border-bottom: 0px !important;
+            box-shadow: none !important;
+        }
+    }
 }
 
 .invisible {
