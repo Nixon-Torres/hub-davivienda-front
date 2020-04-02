@@ -44,6 +44,7 @@
                 <article class="tab__outstanding--header">
                     <header>
                         <article class="outstanding outstanding--header" (click)="setOutstandingArea($event, 'header')">
+                            <div class="outstanding__layer"></div>
                             <section class="outstanding__frame">
                                 <p class="outstanding__text">Video 1</p>
                             </section>
@@ -58,6 +59,7 @@
                         <article class="outstanding"
                                  *ngFor="let area of outstandingAreaList"
                                  (click)="setOutstandingArea($event,'area'+area)">
+                            <div class="outstanding__layer"></div>
                             <section class="outstanding__frame">
                                 <p class="outstanding__text">Video {{area + 1}}</p>
                             </section>
