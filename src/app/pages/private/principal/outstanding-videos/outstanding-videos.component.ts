@@ -44,20 +44,30 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     public setOutstandingHome(event) {
-        this.outstandingHome = event.index === 0 ? true : false;
+        this.outstandingHome = event.index === 0;
         this.onLoadOutstandingList();
     }
 
-    public setOutstandingArea(area: string) {
+    public selectArea(event): void {
+        const outstandingAreas = document.querySelectorAll<HTMLElement>('.outstanding');
+        outstandingAreas.forEach((e: HTMLElement) => {
+            e.classList.remove('active');
+        });
+        event.target.classList.toggle('active');
+    }
+
+    public setOutstandingArea(event, area: string) {
         this.outstandingArea = area;
         this.previousItem = this.checkIfAreaIsTaken();
+        this.selectArea(event);
+
     }
 
     public onSaveOutstanding(id?: string, modal?: boolean): void {
         this.http.patch({
             path: `contents/${id ? id : this.multimedia}`,
             data: {
-                outstanding: id ? false : true,
+                outstanding: !id,
                 outstandingHome: this.outstandingHome,
                 outstandingArea: id ? '' : this.outstandingArea
             }
