@@ -1,0 +1,184 @@
+@import 'src/assets/sass/mixins';
+
+.add-multimedia {
+    * {
+        box-sizing: border-box;
+    }
+    .back-btn {
+        margin: 15px 0 30px;
+        font-size: .750rem;
+        color: #939393;
+        cursor: pointer;
+        a{
+            font-family: "Helvetica Neue",sans-serif;
+            color: #616161;
+            font-weight: bold;
+            font-size: 1em;
+        }
+    }
+    .form {
+        background-color: #E7ECF4;
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+        max-height: 65vh;
+        overflow: auto;
+        @include custom-scroll;
+        &__wrapper {
+            width: 93.12%;
+            border-radius: 12px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            height: 100%;
+        }
+        &__container {
+            width: 53.10%;
+            padding: 56px 0;
+        }
+        &__item {
+            width: 100%;
+            margin-bottom: 25px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            label, .form__label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 7px;
+            }
+            label, .form__label, textarea, input[type=text], .tags__input {
+                color: #A5ABB1;
+                font-size: .688rem;
+                line-height: .813rem;
+                font-family: 'Helvetica Neue', sans-serif;
+                @include placeholder {
+                    color: #A5ABB1;
+                    font-style: italic;
+                    font-size: .688rem;
+                }
+            }
+            textarea {
+                resize: none;
+                min-height: 60px;
+            }
+            textarea, input[type=text], .tags__input {
+                border: 1px solid #C2CBD1;
+                color: #616161;
+                width: 100%;
+                padding: 9px;
+                outline: none;
+            }
+            &--txtarea {
+                textarea {
+                    min-height: 100px;
+                }
+            }
+            &--file {
+                input[type=file] {
+                    display: none;
+                }
+                .file__wrapper {
+                    width: 130px;
+                    .info {
+                        font-size: .750rem;
+                        line-height: .875rem;
+                        color: #A5ABB1;
+                        text-align: center;
+                    }
+                }
+                .custom-file {
+                    border: 1px solid #E3E3E3;
+                    background-color: #F9FAFC;
+                    border-radius: 5px;
+                    width: 100%;
+                    height: 77px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 6px;
+                    .fas {
+                        font-size: 2.5rem;
+                    }
+                }
+            }
+            &--tags {
+                .tags {
+                    &__wrapper {
+                        border: 1px solid #C2CBD1;
+                        min-height: 100px;
+                    }
+                    &__input {
+                        margin: 0;
+                        border: 0;
+                    }
+                    &__list {
+                        ::ng-deep {
+                            .mat-chip-list-wrapper {
+                                margin: 0;
+                                padding: 10px;
+                            }
+                            .mat-chip {
+                                &.mat-standard-chip {
+                                    background-color: transparent;
+                                    border-radius: 5px;
+                                    border: 1px solid #D0D3DB;
+                                    margin: 3px;
+                                    font-family: 'Helvetica Neue', sans-serif;
+                                    font-size: .625rem;
+                                    line-height: .750rem;
+                                    padding: 3px 5px 4px 8px;
+                                    color: #616161;
+                                    min-height: 0;
+                                    height: auto;
+                                    .mat-chip-remove {
+                                        width: 12px;
+                                        height: 12px;
+                                        font-size: 12px;
+                                        color: #BEC5D0;
+                                        opacity: 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            &--related {
+                .wrapper {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                }
+                .custom-select {
+                    width: 48.34%;
+                    margin-bottom: 14px;
+                }
+            }
+            &--buttons {
+                display: flex;
+                justify-content: center;
+                button {
+                    font-family: 'Helvetica Neue', sans-serif;
+                    margin: 0 10px;
+                    font-size: .875rem;
+                    border-radius: 5px;
+                    width: 134px;
+                    height: 35px;
+                    outline: none;
+                    border: 1px solid #0b86ff;
+                    font-weight: bold;
+                    cursor: pointer;
+                    &[type=submit]{
+                        background-color: #0b86ff;
+                        color: #ffffff;
+                    }
+                    &[type=button] {
+                        background-color: #ffffff;
+                        color: #0b86ff;
+                    }
+                }
+            }
+        }
+    }
+}

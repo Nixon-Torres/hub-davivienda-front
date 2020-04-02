@@ -20,7 +20,7 @@
             </li>
         </ul>
     </div>
-    <div class="options">
+    <div class="options" (click)="changeViewFn({multimedia: true})">
         <p class="options--name icon icon-file-upload variation">Multimedia</p>
     </div>
     <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showMenu">
