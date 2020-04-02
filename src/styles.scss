@@ -735,21 +735,12 @@ margin-top: 2%;
 .content--top{
 	.insert_btn{
 		padding-right: 15px;
-	/* 	@media screen and (max-width: 1510px){
-			width: 25%;
-		}
-		@media screen and (max-width: 1322px){
-			width: 35%;
-		}
-		@media screen and (max-width: 1130px){
-			width: 50%;
-		} */
 		button{
 		background: transparent;
-		color: #ff003b;
-		border: solid 2px #ff003b;
-		border-radius: 5px 10px 10px 5px;
+		color: #ff4a74;
+		border: solid 1px #ff4a74;
 		padding: 0 20px;
+		padding-right: 0;
 		span{
 			padding-right: 10px;
 		}
@@ -1128,22 +1119,35 @@ mat-expansion-panel {
 	position: relative;
     bottom: 2px; */
 }
+.mat-menu-content:not(:empty){
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
 .matmenu_insert{
 	width: 10em;
-    height: 3.3em;
+    height: 4.3em;
 	overflow: hidden;
 	&::after{
 		content: "";
-		border: solid 1px #FF003B;
+		border: solid 1px #ff4a74;
 		position: absolute;
-		top: 0;
-		padding: 34px 79px;
+		top: -1px;
+    	padding: 35px 79px;
 	}
 	button.open_insert{
 		height: 33px;
 		position: relative;
 		bottom: 14px;
 		z-index: 9;
+		font-size: 13px;
+		text-align: center;
+		&.first_tag{
+			margin-top: 14px;
+		}
+		span{
+			position: relative;
+			top: -6px;	
+		}
 	}
 }
 
