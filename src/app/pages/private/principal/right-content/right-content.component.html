@@ -13,7 +13,7 @@
             <mat-menu #insert="matMenu" class="insert_menu-btn">
                 <div class="matmenu_insert">
                     <button mat-menu-item class="open_insert first_tag"><span>Palabra al glosario</span></button>
-                    <button mat-menu-item (click)="openTagDialog()" class="open_insert"><span>Tags de tendencia</span></button>    
+                    <button mat-menu-item (click)="openTagDialog()" class="open_insert"><span>Tags de tendencia</span></button>
                 </div>
           </mat-menu>
         </div>
@@ -27,7 +27,9 @@
             <a (click)="cleanFilters()">&#60; Volver </a>
         </div>
         <div class="search-container">
-            <input type="text" class="search_input" (keydown.enter)="filterReports($event.target.value)"
+            <button class="button-reset" (click)="cleanFilters()" *ngIf="canClearFilters">Limpiar filtros</button>
+
+            <input type="text" class="search_input" (keyup)="filterReports($event.target.value)"
                 placeholder="Busca informes, personas o fechas..."><i class="icon icon-calendar"
                 (click)="toggleCalendar()"> Por fecha: </i>
         </div>
@@ -37,11 +39,12 @@
             <a _ngcontent-xoo-c17="" class="modal-close-cta" (click)="toggleCalendar()">Cerrar <span
                     _ngcontent-xoo-c17="" class="icon icon-times"></span></a>
             <h3 class="calendar-container--title">Búsqueda por fecha</h3>
+            <p class="calendar-container--info">Debe seleccionar fecha inicial y fecha final.</p>
             <div class="calendar-container--form">
                 <mat-form-field class="input-left">
                     <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
                 </mat-form-field>
-                <mat-form-field class=""> *ngIf="!marketing"
+                <mat-form-field class="">
                     <input matInput placeholder="Fecha a" [(ngModel)]="endDate" disabled='disabled'>
                 </mat-form-field>
             </div>
@@ -81,7 +84,7 @@
                                             </ng-select>
                                         </div>
                                     </div>
- 
+
                                 </div>
                                 <div class="right-area category-container__fields">
                                     <div class="form-field form-field--half upload">
@@ -138,9 +141,11 @@
                                 automáticamente.</p>
                         </div>
                         <div *ngIf="!list.reports.length" class="delete_reports">
-                            <div *ngIf="icurrentObj.deletedFg">
+                            <div *ngIf="icurrentObj.deletedFg || finishFilter ">
                                 <img src="/assets/images/file-alt.png" alt="">
-                                <p>No hay informes en la papelera</p>
+                                <p *ngIf="icurrentObj.deletedFg">No hay informes en la papelera
+                                <p *ngIf="finishFilter">No se encontraron resultados a su busqueda.
+                                </p>
                             </div>
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
