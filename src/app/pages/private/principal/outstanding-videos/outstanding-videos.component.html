@@ -6,7 +6,7 @@
                 class="icon icon-times"></span></a>
         </header>
     </div>
-    <mat-tab-group (selectedTabChange)="setOutstandingHome($event)">
+    <mat-tab-group (selectedTabChange)="setOutstandingHome($event)" class="tabs">
         <mat-tab label="Home" class="tab">
             <div class="tab__content">
                 <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
@@ -14,10 +14,11 @@
                     <article class="outstanding"
                              *ngFor="let area of outstandingAreaList"
                              (click)="setOutstandingArea($event,'area'+area)">
-                        <section class="outstanding__frame" (click)="onEvent($event)">
+                        <div class="outstanding__layer"></div>
+                        <section class="outstanding__frame">
                             <p class="outstanding__text">Video {{area}}</p>
                         </section>
-                        <section class="outstanding__lines" (click)="onEvent($event)">
+                        <section class="outstanding__lines">
                             <div class="outstanding__line outstanding__line--thicker"></div>
                             <div class="outstanding__line"></div>
                             <div class="outstanding__line outstanding__line--longer"></div>

@@ -53,7 +53,7 @@ export class OutstandingVideosComponent implements OnInit {
         outstandingAreas.forEach((e: HTMLElement) => {
             e.classList.remove('active');
         });
-        event.target.classList.toggle('active');
+        event.target.parentNode.classList.toggle('active');
     }
 
     public setOutstandingArea(event, area: string) {
