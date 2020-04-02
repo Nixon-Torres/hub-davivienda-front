@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -22,20 +22,28 @@ import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.
 import {Report} from './board.model';
 import {RevisionModalComponent} from './revision-modal/revision-modal.component';
 import {CreationModalComponent} from './creation-modal/creation-modal.component';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material';
+
+import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import {forkJoin, Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 declare var grapesjs: any;
+declare global {
+    interface Window { editor: any; }
+}
+
+window.editor = window.editor || {};
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
     styleUrls: [
         'board.component.scss'
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
-
 export class BoardComponent implements OnInit, AfterViewInit {
+    public STORAGE_URL = environment.STORAGE_FILES;
 
     public owner: any;
     public editor: any;
@@ -55,6 +63,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile = false;
     public isFullscreen = false;
     public isAdvancedUser = false;
+    public grapeEnabled = false;
+    public addMenuVisible = false;
+
     public list: any = {
         users: [],
         authors: []
@@ -76,6 +87,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             panel: 1
         }
     };
+
+    public blocksToRemove: any = [];
+
     public report: Report = {
         id: null,
         name: '',
@@ -93,7 +107,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         ownerId: null,
         users: [],
         tags: [],
-        reportType: null
+        reportType: null,
+        blocks: [],
+        rTitle: null,
+        rFastContent: null,
+        rSmartContent: null,
+        rDeepContent: null,
+        template: null
     };
 
     public tags = {
@@ -122,10 +142,35 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public readonly = false;
     public unresolvedComments: any;
     public tendenciesList: any;
-    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
     @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
+
+    @ViewChild('editor1', {static: false}) editor1?: ElementRef;
+    @ViewChild('editor2', {static: false}) editor2?: ElementRef;
+    @ViewChild('editor3', {static: false}) editor3?: ElementRef;
+    @ViewChild('editor4', {static: false}) editor4?: ElementRef;
+    @ViewChild('editor5', {static: false}) editor5?: ElementRef;
+
+    private editorOptions = {
+        editor1: {
+            removePlugins: [ 'Link' ],
+            heading: {
+                options: [
+                    { model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' }
+                ]
+            },
+            initialData: '<h2></h2>'
+        }
+    };
+
+    public editor1Data = '';
+    public editor2Data = '';
+    public editor3Data = '';
+    public editor4Data = '';
+    public editor5Data = '';
+
+    public blocks: any = [];
 
     constructor(
         public dialog: MatDialog,
@@ -133,7 +178,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         private router: Router,
         private http: HttpService,
         private auth: AuthService,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private ref: ElementRef
     ) {
         this.user = this.auth.getUserData();
         this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
@@ -177,10 +223,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
 
         // When fullscreen mode is closed update isFullscreen flag
-        const _this = this;
-        document.addEventListener('fullscreenchange', function() {
+        const instance = this;
+        document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                _this.isFullscreen = false;
+                instance.isFullscreen = false;
             }
         });
     }
@@ -195,6 +241,92 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         const elems = document.querySelectorAll('.fixed-action-btn');
         M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
+
+        this.enableInlineEditor();
+    }
+
+    setDataInInlineEditor() {
+        this.editor1Data = this.report.rTitle ? this.report.rTitle : '';
+        this.editor2Data = this.report.rFastContent ? this.report.rFastContent : '';
+        this.editor3Data = this.report.rSmartContent ? this.report.rSmartContent : '';
+        this.editor4Data = this.report.rDeepContent ? this.report.rDeepContent : '';
+        this.editor5Data = this.report.rPreContent ? this.report.rPreContent : '';
+
+        const ids = ['editor1', 'editor2', 'editor3', 'editor4', 'editor5'];
+        ids.forEach((elementId) => {
+            if (elementId !== 'editor5' || (elementId === 'editor5' && this.report.template.key === 'html')) {
+                if (this[elementId]) {
+                    this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
+                }
+            }
+        });
+
+        setTimeout(() => {
+            this.blocks.forEach((block) => {
+                const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                if (element) {
+                    element.innerHTML = block.content;
+                }
+
+                this.addInlineEditor(block.id, block.type !== 'onecolumn' ? 'Escriba cuerpo de texto' : 'CONTENT');
+                block.initialized = true;
+            });
+        }, 500);
+    }
+
+    addInlineEditor(elementId: string, placeholder?: string) {
+        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        const options = this.editorOptions[elementId];
+        const editorOptions = options ? options : {};
+        editorOptions.placeholder = placeholder;
+
+        if (this[elementId + 'Data'] && editorOptions.initialData) {
+            delete editorOptions.initialData;
+        }
+
+        InlineEditor
+            .create( element, editorOptions)
+            .then( editor => {
+                window.editor = editor;
+
+                editor.model.document.on( 'change:data', () => {
+                    const block = this.blocks.find(e => e.id === elementId);
+                    const data = editor.getData();
+
+                    if (block) {
+                        block.content = data;
+                    } else {
+                        this[elementId + 'Data'] = data;
+                    }
+                } );
+            } )
+            .catch( error => {
+                console.error( 'There was a problem initializing the editor.', error );
+            } );
+    }
+
+    enableGrapeEditor() {
+        this.grapeEnabled = true;
+        const instance = this;
+        setTimeout(() => {
+            instance.initGrapes();
+        }, 2000);
+    }
+
+    enableInlineEditor() {
+        this.grapeEnabled = false;
+
+        const instance = this;
+        setTimeout(() => {
+            instance.addInlineEditor('editor1', 'Escriba aquí el subtitulo con el que empieza su informe');
+            instance.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
+            instance.addInlineEditor('editor3', 'SMART CONTENT');
+            instance.addInlineEditor('editor4', 'DEEP CONTENT');
+
+            if (this.report && this.report.template && this.report.template.key === 'html') {
+                instance.addInlineEditor('editor5', 'Escriba aquí el seguimientos de las acciones de las empresas');
+            }
+        }, 500);
     }
 
     showSomeoneEditingDialog() {
@@ -256,8 +388,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Get report form database
      *
-     * @param { idReport } Id for get the report
-     * @return { this.report } Obj with the report data
+     * @param idReport Id for get the report
+     * @return report Obj with the report data
      */
     private loadReport(idReport: string): void {
 
@@ -288,6 +420,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 include: ['mainCategory', 'subCategory']
             }
+        }, {
+            relation: 'blocks',
+            scope: {
+                include: ['files']
+            }
         });
 
         this.http.get({
@@ -299,11 +436,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
             this.report = response.body;
+            this.blocks = this.report.blocks.map(e => {
+                const img = e.files && e.files.length ? e.files[0] : {};
+                return {
+                    ...e,
+                    imageId: img.id,
+                    assetUrl: img && img.fileName ? this.STORAGE_URL + img.fileName : null,
+                    id: 'r' + e.id
+                };
+            });
             this.owner = response.body.owner;
             this.setLastUpdate(response.body.updatedAt);
             this.userIsOwner();
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
+
+            this.setDataInInlineEditor();
 
             this.files = response.body.files;
             this.templateType = response.body.template.key;
@@ -318,9 +466,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Start to load default data config
      *
-     * @return { this.editor } Object grapes editor
+     * @return editor Object grapes editor
      */
     private initGrapes(): void {
+        if (!this.grapeEnabled) {
+            return;
+        }
+
         this.grapes = new Grapes({
             blockManager: '.blocks-container',
             traitManager: '.traits-container',
@@ -351,7 +503,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Init plugins for new advance blocks on editor
      *
-     * @return { grapesjs.plugins } Object grapes editor
+     * @return grapesjs.plugins Object grapes editor
      */
     private activeAdvanceBlocks() {
         grapesjs.plugins.add(
@@ -449,8 +601,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Set report styles on grapes editor
      *
-     * @param { content } String with the report HTML
-     * @param { styles } String with the report CSS rules
+     * @param content string with the report HTML
+     * @param styles string with the report CSS rules
      */
     private addReportContent(content: string, styles: string): void {
         this.editor.getWrapper().append(
@@ -460,11 +612,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Set content dynamically for the report last update
      *
-     * @param { lastupdate } Value for the last update from database
-     * @return { this.lastupdate } Time ago since last update
+     * @param lastupdate Value for the last update from database
+     * @return lastupdate Time ago since last update
      */
     public setLastUpdate(lastupdate) {
-
         this.lastupdate = moment(lastupdate).fromNow();
 
         if (this.timer.lastupdate) {
@@ -478,8 +629,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     /** Load a template for report if exist template ID else load an empty report
      *
-     * @param { templateId } Id for load template
-     * @return { this.report } Set the HTML content and CSS for template
+     * @param templateId Id for load template
+     * @return report Set the HTML content and CSS for template
      */
     private loadTemplate(templateId: string): void {
         if (templateId.toString() === 'false' && this.fromReportId.toString() === 'false') {
@@ -525,8 +676,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private setPropertiesReport(): void {
         this.report.name = this.report.name.replace(/(\s)/g, '') ? this.report.name : 'Sin Nombre';
         this.report.slug = `/${this.report.name.toLocaleLowerCase().replace(/(\s)/g, '-')}`;
-        this.report.styles = this.editor.getCss();
-        this.report.content = this.editor.getHtml();
+        this.report.styles = this.editor ? this.editor.getCss() : this.report.styles;
+        this.report.content = this.editor ? this.editor.getHtml() : this.report.content;
         this.report.content = this.report.content ? this.report.content : ' ';
         this.report.folderId = this.report.folderId === 'false' ? null : this.report.folderId;
         this.report.companyId = this.report.companyId === 'false' ? null : this.report.companyId;
@@ -588,22 +739,257 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
     }
 
+    setDataFromForm() {
+        this.report.rTitle = this.editor1Data;
+        this.report.rFastContent = this.editor2Data;
+        this.report.rSmartContent = this.editor3Data;
+        this.report.rDeepContent = this.editor4Data;
+        this.report.rPreContent = this.editor5Data;
+    }
+
+    public onSaveBlocks(): void {
+        let blocksCreated;
+        let blocksUpdated;
+        let imagesUpserted;
+
+        const IdstoRemove = this.blocksToRemove.map(e => e.id.substr(1));
+        const blocksToCreate = this.blocks.filter(e => e.isNew).map((block) => {
+            return {
+                localId: block.id,
+                title: block.title,
+                content: block.content,
+                source: block.source,
+                fileName: block.fileName,
+                type: block.type
+            };
+        });
+        const blocksToUpdate = this.blocks.filter(e => e.localId).map((block) => {
+            return {
+                id: block.id.substr(1),
+                localId: block.localId,
+                title: block.title,
+                content: block.content,
+                source: block.source,
+                fileName: block.fileName,
+                type: block.type
+            };
+        });
+
+        let imgsToCreate = this.blocks.filter(e => e.file && (e.isNew || (!e.isNew && !e.imageId))).map((block) => {
+            return {
+                isNew: block.isNew,
+                id: block.isNew ? block.id : block.id.substr(1),
+                localId: block.localId,
+                file: block.file,
+                imageId: block.imageId
+            };
+        });
+
+        const imgsToRemove = this.blocks.filter(e => !e.file && e.imageId && !e.assetUrl).map(e => e.imageId);
+
+        this.deleteBlocks(IdstoRemove).then((res) => {
+            return this.createBlocks(blocksToCreate);
+        }).then((res) => {
+            if (res) {
+                blocksCreated = res.map(e => e.body);
+                imgsToCreate = imgsToCreate.map(e => {
+                    if (!e.isNew) {
+                        e.id = e.id.substr(1);
+                        return e;
+                    }
+
+                    const blockCreated = blocksCreated.find(j => j.localId === e.id);
+                    e.id = blockCreated.id;
+                    return e;
+                });
+            }
+            return this.updateBlocks(blocksToUpdate);
+        }).then((res) => {
+            if (res) {
+                blocksUpdated = res.map(e => e.body);
+            }
+
+            return this.saveBlockImages(imgsToCreate);
+        }).then((res) => {
+            if (res) {
+                imagesUpserted = res.map(e => e.body);
+            }
+
+            return this.deleteBlockImages(imgsToRemove);
+        }).then(() => {
+            if (this.report && this.report.id) {
+                this.loadBlocks();
+            }
+        });
+    }
+
+    public loadBlocks() {
+        return this.http.get({
+            path: 'reports/' + this.report.id + '/blocks',
+            data: {
+                include: [
+                    'files'
+                ]
+            },
+            encode: true
+        }).subscribe((res) => {
+            const blocks = res.body as any;
+            this.blocks = blocks.map(e => {
+                const img = e.files && e.files.length ? e.files[0] : {};
+                return {
+                    ...e,
+                    imageId: img.id,
+                    assetUrl: img && img.fileName ? this.STORAGE_URL + img.fileName : null,
+                    id: 'r' + e.id
+                };
+            });
+
+            setTimeout(() => {
+                this.blocks.forEach((block) => {
+                    const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                    if (element) {
+                        element.innerHTML = block.content;
+                    }
+
+                    this.addInlineEditor(block.id, block.type !== 'onecolumn' ? 'Escriba cuerpo de texto' : 'CONTENT');
+                    block.initialized = true;
+                });
+            }, 500);
+        });
+    }
+
+    public saveBlockImages(blocks): Promise<any> {
+        if (blocks.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = blocks.map((block) => {
+            return this.saveBlockImage(block);
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    private saveBlockImage(block): Observable<any> {
+        const formData = new FormData();
+        formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
+        formData.append('file', block.file);
+        formData.append('key', 'blockImage');
+        formData.append('resourceId', block.id);
+        if (block.imageId) {
+            formData.append('id', block.imageId);
+        }
+        return this.http.post({
+            path: 'media/upload',
+            data: formData
+        });
+    }
+
+    public updateBlocks(blocks): Promise<any> {
+        if (blocks.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = blocks.map((block) => {
+            return this.http.patch({
+                path: 'reportBlocks/' + block.id,
+                data: block
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    public createBlocks(blocks): Promise<any> {
+        if (blocks.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = blocks.map((block) => {
+            return this.http.post({
+                path: 'reports/' + this.report.id + '/blocks',
+                data: block
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    public deleteBlockImages(ids): Promise<any> {
+        if (ids.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = ids.map(id => {
+            return this.http.delete({
+                path: '/media/' + id,
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
+    public deleteBlocks(ids): Promise<any> {
+        if (ids.length === 0) {
+            return Promise.resolve(null);
+        }
+
+        const observables = ids.map(id => {
+            return this.http.delete({
+                path: '/reportBlocks/' + id,
+            });
+        });
+
+        return new Promise((res, rej) => {
+            forkJoin(observables).subscribe((response) => {
+                return res(response);
+            }, (err) => {
+                return rej(err);
+            });
+        });
+    }
+
     /** Save the report on DB
      *
      * @param autoSave Flag for autosave
      * @param cb Callback
      */
     public onSave(autoSave?: boolean, cb?: any): void {
-        let isUpdate: boolean = this.report.id ? true : false;
-        let method: string = isUpdate ? 'patch' : 'post';
-        let path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
+        const isUpdate: boolean = !!this.report.id;
+        const method: string = isUpdate ? 'patch' : 'post';
+        const path: string = isUpdate ? `reports/${this.report.id}` : 'reports';
         if (this.timer.change) {
             clearTimeout(this.timer.change);
         }
 
         this.setPropertiesReport();
+        this.setDataFromForm();
 
-        let data = Object.assign({}, this.report);
+        const data = Object.assign({}, this.report);
         delete data.state;
 
         this.http[method]({
@@ -611,9 +997,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             data
         }).subscribe(
             (response: any) => {
+                this.onSaveBlocks();
                 if (method === 'post' && this.authorsId && this.authorsId.length) {
-                    let authorsData = this.authorsId.map((a: string) => {
-                        return {'authorId': a, 'reportId': response.body.id};
+                    const authorsData = this.authorsId.map((a: string) => {
+                        return {authorId: a, reportId: response.body.id};
                     });
                     this.http.post({
                         path: 'reports/authors',
@@ -663,13 +1050,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openPreviewDialog(): void {
-        var paramsDialog = {
+        const paramsDialog = {
             width: '80vw',
             height: '80vh',
             data: {
-                'reportId': this.report.id,
-                'styles': '',
-                'content': ''
+                reportId: this.report.id,
+                styles: '',
+                content: ''
             }
         };
 
@@ -687,8 +1074,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public getReviewers(reviewers: Array<object>) {
-        return reviewers.map((reviewer) => {
-            return {reportId: this.report.id, reviewerId: reviewer['id']};
+        return reviewers.map((reviewer: any) => {
+            return {reportId: this.report.id, reviewerId: reviewer.id};
         });
     }
 
@@ -884,13 +1271,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public getEditorClasses() {
-        var classes = [];
+        const classes = [];
 
         if (this.templateType === 'pdf' || this.templateType === 'presentation') {
             classes.push('pdf-button');
         }
 
-        //{'pdf-button': (templateType === 'pdf' || templateType === 'presentation'), showAsMobile ? 'mobile' : 'desktop'}
+        // {'pdf-button': (templateType === 'pdf' || templateType === 'presentation'), showAsMobile ? 'mobile' : 'desktop'}
         if (this.showAsMobile) {
             classes.push('mobile');
         } else {
@@ -921,7 +1308,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private findParent(element, parent) {
-        for (let parentNode of element.path) {
+        for (const parentNode of element.path) {
             if (parentNode === parent) {
                 return;
             } else {
@@ -939,7 +1326,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             if (this.findParent(e, this.editorsParent.nativeElement)) {
                 this.flags.editorsList = false;
             }
-            ;
+
         });
     }
 
@@ -989,14 +1376,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
      *   Change template content by code
      */
     public importCode() {
-        let codeMirror = new CodeMirror();
-        let codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
+        const codeMirror = new CodeMirror();
+        const codeViewer = this.editor.CodeManager.getViewer('CodeMirror').clone();
         let viewerEditor = codeViewer.editor;
-        let modal = this.editor.Modal;
-        let grapesContent = this.editor.getHtml();
-        let container = this.getModalContainer();
-        let txtarea = container.children[1];
-        let btn: HTMLElement = container.children[2] as HTMLElement;
+        const modal = this.editor.Modal;
+        const grapesContent = this.editor.getHtml();
+        const container = this.getModalContainer();
+        const txtarea = container.children[1];
+        const btn: HTMLElement = container.children[2] as HTMLElement;
 
         modal.setTitle('Editor de código');
         modal.setContent(container);
@@ -1014,11 +1401,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private getModalContainer() {
-        let pfx = this.editor.getConfig('stylePrefix');
-        let container = document.createElement('div');
-        let labelEl = document.createElement('div');
-        let txtarea = document.createElement('textarea');
-        let btnImp = document.createElement('button');
+        const pfx = this.editor.getConfig('stylePrefix');
+        const container = document.createElement('div');
+        const labelEl = document.createElement('div');
+        const txtarea = document.createElement('textarea');
+        const btnImp = document.createElement('button');
 
         labelEl.className = `${pfx}import-label`;
         labelEl.innerHTML = 'Edite aqui su HTML/CSS y haga click en Importar';
@@ -1034,23 +1421,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     private getAvailableAuthors(users: Array<any>): Array<any> {
-        let currentAuthors = this.list.authors.map((a: any) => a.author.id);
-        return users.filter((a: any) => currentAuthors.indexOf(a.id) == -1 && this.user != a.id && this.report.id != a.id);
+        const currentAuthors = this.list.authors.map((a: any) => a.author.id);
+        return users.filter((a: any) => currentAuthors.indexOf(a.id) === -1 && this.user !== a.id && this.report.id !== a.id);
     }
 
     private onLoadUsers() {
         this.http.get({
-            'path': 'users/list'
+            path: 'users/list'
         }).subscribe((response) => {
-            var users = response.body as unknown as any[];
+            const users = response.body as unknown as any[];
             this.list.users = this.getAvailableAuthors(users);
         });
     }
 
     private onLoadAuthors(idReport) {
         this.http.get({
-            'path': `reportAuthors`,
-            'data': {
+            path: `reportAuthors`,
+            data: {
                 include: [
                     {
                         relation: 'author',
@@ -1078,7 +1465,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         event.stopPropagation();
         this.isDeleting = true;
         this.http.delete({
-            'path': `reportAuthors/${authorId}`,
+            path: `reportAuthors/${authorId}`,
         }).subscribe((response: any) => {
             if (response) {
                 this.onLoadAuthors(this.report.id);
@@ -1091,8 +1478,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.isAdding = true;
         if (!this.maxAuthors) {
             this.http.post({
-                'path': `reportAuthors`,
-                'data': {
+                path: `reportAuthors`,
+                data: {
                     reportId: this.report.id,
                     authorId: author.id
                 },
@@ -1154,7 +1541,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     /* Tags */
-
     public fillTendenciesTags(): Array<string> {
         return this.tendenciesList.split(',').map(tag => tag.trim());
     }
@@ -1203,5 +1589,68 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
             }
         });
+    }
+
+    private getUniqueId(parts: number): string {
+        const stringArr = [];
+        for (let i = 0; i < parts; i++) {
+            // tslint:disable-next-line:no-bitwise
+            const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+            stringArr.push(S4);
+        }
+        return stringArr.join('-');
+    }
+
+    public removeEditorSection(block) {
+        if (!!!block.isNew) {
+            this.blocksToRemove.push(block);
+        }
+        this.blocks = this.blocks.filter(e => e.id !== block.id);
+    }
+
+    public addEditorSection(twocolumns: boolean, type?: string) {
+        this.addMenuVisible = false;
+        const block = {
+            id: 'block' + this.getUniqueId(1),
+            content: '',
+            type: !twocolumns ? 'onecolumn' : type === 'left' ? 'twocolumns' : 'twocolumnsb',
+            placeholder: !twocolumns ? 'CONTENT' : 'Escriba cuerpo de texto',
+            initialized: true,
+            isNew: true
+        };
+        this.blocks.push(block);
+        setTimeout(() => {
+            this.addInlineEditor(block.id, block.placeholder);
+        }, 500);
+    }
+
+    public removeImageSelected(block: any) {
+        const elementId = 'ImgInput' + block.id;
+        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        element.value = '';
+    }
+
+    public onBlockImageSelected(block: any, event: any) {
+        const file: File = event && event.target && event.target.files && event.target.files.length ?
+            event.target.files[0] : null;
+
+        if (!file) {
+            block.fileName =  null;
+            block.file =  null;
+            block.imageUrl = null;
+            block.assetUrl = null;
+            this.removeImageSelected(block);
+            return;
+        }
+
+        block.fileName = file.name;
+        block.file = file;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            block.imageUrl = reader.result;
+        };
     }
 }
