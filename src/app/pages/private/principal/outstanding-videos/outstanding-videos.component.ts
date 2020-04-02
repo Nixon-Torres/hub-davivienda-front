@@ -35,6 +35,7 @@ export class OutstandingVideosComponent implements OnInit {
         this.onLoadMultimediaList();
         this.onLoadOutstandingList();
         this.multimedia = this.data.id;
+        this.multimediaNoHome = this.data.id;
         this.outstandingHome = true;
         this.previousItem = null;
     }
@@ -83,9 +84,7 @@ export class OutstandingVideosComponent implements OnInit {
                             }
                         }
                     });
-                    dialog.afterClosed().subscribe(() => {
-                       this.onReset();
-                    });
+                    dialog.afterClosed().subscribe(() => {});
                 }
             }
         });
