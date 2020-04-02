@@ -83,7 +83,6 @@ export class AddMultimediaComponent implements OnInit {
                 if (resp) {
                    this.currentFile = resp.body[0];
                 }
-                console.log('current file', resp);
             });
         }
     }

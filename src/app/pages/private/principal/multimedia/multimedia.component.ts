@@ -16,7 +16,7 @@ export class MultimediaComponent implements OnInit {
     public filterOptions: any;
     public marketing: boolean;
     public isAdding = false;
-    public multimediaType: string;
+    public multimediaType: any;
     public multimediaList = [];
     public lastUpdater: any;
     public multimediaObj: any;

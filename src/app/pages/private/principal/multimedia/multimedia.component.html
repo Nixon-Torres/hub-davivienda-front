@@ -1,6 +1,6 @@
 <section class="multimedia">
     <header class="multimedia__header">
-        <p class="multimedia__title"> {{multimediaType ? 'Subir ' + multimediaType['name'] : 'Multimedia'}}</p>
+        <p class="multimedia__title"> {{multimediaType ? 'Subir ' + multimediaType?.name : 'Multimedia'}}</p>
         <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button>Crear Nuevo Informe <span>&nbsp;</span></button>
         </div>
