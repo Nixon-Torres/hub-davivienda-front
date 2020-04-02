@@ -1138,3 +1138,50 @@ $default-font: "Helvetica Neue", Medium;
 .native-editor-section.new-block {
 
 }
+
+.invisible {
+    display: none;
+}
+
+#banner {
+    .btn {
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        background-color: #A5ABB1;
+        border-radius: 4px;
+        font-size: 12px !important;
+        line-height: 30px;
+        border: 0;
+        color: #fff;
+        padding: 0 15px;
+        text-transform: uppercase !important;
+        width: 128px;
+        margin: 0 auto;
+        height: 30px;
+    }
+
+    .delete {
+        font-size: 10px;
+        line-height: 12px;
+        color: #616161;
+        text-align: center;
+        margin-top: 3px;
+        cursor: pointer;
+        margin-top: 15px;
+
+        i {
+            position: relative;
+            top: 7px;
+        }
+    }
+
+    .banner-max {
+        font-size: 10px;
+        line-height: 12px;
+        color: #616161;
+        text-align: center;
+        margin-top: 3px;
+    }
+}

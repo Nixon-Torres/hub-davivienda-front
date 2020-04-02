@@ -25,4 +25,5 @@ export interface Report {
     rPreContent?: string;
     blocks?: any;
     template?: any;
+    files?: any;
 }

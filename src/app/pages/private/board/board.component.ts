@@ -113,7 +113,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         rFastContent: null,
         rSmartContent: null,
         rDeepContent: null,
-        template: null
+        template: null,
+        files: null
     };
 
     public tags = {
@@ -161,6 +162,55 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 ]
             },
             initialData: '<h2></h2>'
+        },
+        editor4: {
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title',
+                            styles: {
+                                'font-weight': 'bold',
+                                'margin-bottom': '5px'
+                            }
+                        },
+                        title: 'Heading 2',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
+                ]
+            }
+        },
+        blocks: {
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title',
+                            styles: {
+                                'font-weight': 'bold',
+                                'margin-bottom': '5px'
+                            }
+                        },
+                        title: 'Heading 2',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
+                ]
+            }
+        },
+        default: {
+
         }
     };
 
@@ -171,6 +221,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor5Data = '';
 
     public blocks: any = [];
+    public banner: any = {};
+    public newBanner: any = {};
 
     constructor(
         public dialog: MatDialog,
@@ -276,7 +328,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     addInlineEditor(elementId: string, placeholder?: string) {
         const element = this.ref.nativeElement.querySelector( '#' + elementId );
-        const options = this.editorOptions[elementId];
+        let options = this.editorOptions[elementId] || this.editorOptions.default;
+
+        if (elementId.startsWith('r')) {
+            options = this.editorOptions.blocks;
+        }
         const editorOptions = options ? options : {};
         editorOptions.placeholder = placeholder;
 
@@ -435,7 +491,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
             response.body.folderId = response.body.folderId ? response.body.folderId : null;
             response.body.companyId = response.body.companyId ? response.body.companyId : null;
             response.body.templateId = response.body.templateId ? response.body.templateId : null;
+
+            const updating = !!this.report;
             this.report = response.body;
+            const banner = this.report.files.find(e => e.key === 'bannerImage');
+
+            this.banner = banner ? banner : {};
             this.blocks = this.report.blocks.map(e => {
                 const img = e.files && e.files.length ? e.files[0] : {};
                 return {
@@ -451,7 +512,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
 
-            this.setDataInInlineEditor();
+            if (!updating) {
+                this.setDataInInlineEditor();
+            }
 
             this.files = response.body.files;
             this.templateType = response.body.template.key;
@@ -876,6 +939,37 @@ export class BoardComponent implements OnInit, AfterViewInit {
         });
     }
 
+    private saveBannerImage() {
+        if (this.banner.toDelete && !this.newBanner.imageUrl) {
+            return this.http.delete({
+                path: 'media/' + this.banner.id
+            }).subscribe((res) => {
+                this.banner = {};
+            });
+        }
+
+        if (!this.newBanner.imageUrl) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
+        formData.append('file', this.newBanner.file);
+        formData.append('key', 'bannerImage');
+        formData.append('resourceId', this.report.id);
+        if (this.banner.id) {
+            formData.append('id', this.banner.id);
+        }
+        return this.http.post({
+            path: 'media/upload',
+            data: formData
+        }).subscribe((res) => {
+            const banner = res.body as any;
+            this.banner = banner.file;
+            this.newBanner = {};
+        });
+    }
+
     private saveBlockImage(block): Observable<any> {
         const formData = new FormData();
         formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
@@ -998,6 +1092,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe(
             (response: any) => {
                 this.onSaveBlocks();
+                this.saveBannerImage();
                 if (method === 'post' && this.authorsId && this.authorsId.length) {
                     const authorsData = this.authorsId.map((a: string) => {
                         return {authorId: a, reportId: response.body.id};
@@ -1628,6 +1723,36 @@ export class BoardComponent implements OnInit, AfterViewInit {
         const elementId = 'ImgInput' + block.id;
         const element = this.ref.nativeElement.querySelector( '#' + elementId );
         element.value = '';
+    }
+
+    public onBannerImageSelected(event: any) {
+        const file: File = event && event.target && event.target.files && event.target.files.length ?
+            event.target.files[0] : null;
+
+        if (!file) {
+            this.newBanner.fileName =  null;
+            this.newBanner.file =  null;
+            this.newBanner.imageUrl = null;
+            this.newBanner.assetUrl = null;
+            if (this.banner) {
+                this.banner.toDelete = true;
+            }
+
+            const elementId = 'reportBannerImg';
+            const element = this.ref.nativeElement.querySelector( '#' + elementId );
+            element.value = '';
+            return;
+        }
+
+        this.newBanner.fileName = file.name;
+        this.newBanner.file = file;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            this.newBanner.imageUrl = reader.result;
+        };
     }
 
     public onBlockImageSelected(block: any, event: any) {

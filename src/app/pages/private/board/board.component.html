@@ -1,6 +1,6 @@
 <section class="grapes-container">
 
-    <div class="fixed-action-btn">
+    <div class="fixed-action-btn invisible">
         <button class="btn-floating btn-large blue-hub" [disabled]="readonly">
             <i class="large material-icons">build</i>
         </button>
@@ -157,7 +157,7 @@
         <!-- EDITOR -->
         <mat-grid-tile [colspan]="grid.col.builder" [rowspan]="1" class="builder">
 
-            <div class="editorModeSection">
+            <div class="editorModeSection" *ngIf="isMarketing">
                 <button mat-flat-button class="bttn bttn-default" [ngClass]="{'bttn-primary': !grapeEnabled}"
                         (click)="enableInlineEditor()">Formulario</button>
                 <button mat-flat-button class="bttn bttn-default html" [ngClass]="{'bttn-primary': grapeEnabled}"
@@ -169,6 +169,33 @@
                 </button>
                 <p class="pdf__max">Tamaño máximo hasta 10GB</p>
             </div>
+
+            <div class="report-banner-selection">
+                <div id="banner" class="banner">
+                    <label for="reportBannerImg">
+                        <div class="btn">
+                            <span class="icon icong-upload"></span> <span>{{ (banner?.id && !banner.toDelete)
+                            || newBanner.imageUrl ? 'Editar' : 'Subir' }} banner</span>
+                        </div>
+                    </label>
+                    <input
+                        class="file-input invisible"
+                        type="file"
+                        name="file"
+                        (change)="onBannerImageSelected($event)"
+                        id="reportBannerImg"/>
+                    <p class="banner-max">Tamaño máximo hasta 1MB</p>
+
+                    <div class="delete" *ngIf="(banner?.id && !banner.toDelete)
+                            || newBanner.imageUrl" (click)="onBannerImageSelected(null)">
+                        <a>
+                            <i class="material-icons">delete</i>
+                            Eliminar banner
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div *ngIf="grapeEnabled" id="gjs" [ngClass]="getEditorClasses()"></div>
             <div *ngIf="!grapeEnabled" class="native-editor-section">
 
@@ -305,7 +332,7 @@
             <div class="readonly-overlay" *ngIf="readonly"></div>
             <div class="row">
                 <div class="col s12">
-                    <ul class="tabs">
+                    <ul class="tabs invisible">
                         <li class="tab col s4">
                             <a href="#blocks-tab" matRipple>
                                 <i class="material-icons">extension</i>
