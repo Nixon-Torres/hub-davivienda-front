@@ -16,6 +16,7 @@ import {AuthService} from '../../../../services/auth.service';
 import {HttpService} from '../../../../services/http.service';
 import {AsideFoldersService} from 'src/app/services/aside-folders.service';
 import {TagsDialogComponent} from '../tags-dialog/tags-dialog.component';
+import {start} from 'repl';
 
 @Component({
     selector: 'app-right-content',
@@ -73,6 +74,8 @@ export class RightContentComponent implements OnInit {
     public isBasicUser: boolean;
     public selects: FormGroup;
     public tabIndex = 0;
+    public canClearFilters: boolean;
+    public finishFilter = false;
 
     @Input()
     set currentObj(value: any) {
@@ -526,6 +529,7 @@ export class RightContentComponent implements OnInit {
     }
 
     private getReports(query: any) {
+        this.finishFilter = false;
         const path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') ?
             `users/${this.user.id}/reportsa` : 'reports';
         this.list.reports = [];
@@ -535,6 +539,8 @@ export class RightContentComponent implements OnInit {
             encode: true
         }).subscribe((response: any) => {
             this.addCheckboxes(response.body);
+            let finisher = null;
+            clearTimeout(finisher)
             setTimeout(() => {
                 this.list.reports = response.body;
                 if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
@@ -545,6 +551,9 @@ export class RightContentComponent implements OnInit {
                     this.getFullReportList(query);
                 }
             }, 100);
+            finisher = setTimeout(() => {
+                this.finishFilter = true;
+            }, 2000);
         });
     }
 
@@ -810,6 +819,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public filterReports(text: string) {
+        this.canClearFilters =  text.length > 0;
         this.loadReports(text);
     }
 
@@ -818,12 +828,12 @@ export class RightContentComponent implements OnInit {
             start: this.startDate,
             end: this.endDate
         };
-
         this.calendarOpen = false;
         this.loadReports(this.ifilter);
     }
 
     public onDateUpdate(event: any) {
+        this.canClearFilters = event;
         this.startDate = event.startDate.toString();
         this.endDate = event.endDate.toString().replace('00:00:00', '23:59:59');
     }
@@ -840,9 +850,13 @@ export class RightContentComponent implements OnInit {
             deletedFg: false,
             currentStateName: 'Todos Informes'
         };
+        this.ifilterdate = null;
+        this.startDate = '';
+        this.endDate = '';
         this.loadReports();
         this.valueChange.emit(null);
         this.resetSelect();
+        this.canClearFilters = false;
     }
 
     public onCloneReport(pos: number) {
