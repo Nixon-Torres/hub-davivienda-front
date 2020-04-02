@@ -223,6 +223,9 @@
                         Escriba aquí el seguimientos de las acciones de las empresas</span>
                 </div>
                 <div class="divider"></div>
+                <input [(ngModel)]="report.rSmartContentVideo" [ngModelOptions]="{standalone: true}"
+                       class="source" type="text" placeholder="Video Smart Content (URL)">
+                <div class="divider"></div>
                 <div class="control-wrapper smart-content" (click)="editor3.focus()">
                     <div class="inline-editor-block" id="editor3" #editor3>
                     </div>
