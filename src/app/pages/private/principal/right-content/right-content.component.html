@@ -13,12 +13,14 @@
             <mat-menu #insert="matMenu" class="insert_menu-btn">
                 <div class="matmenu_insert">
                     <button mat-menu-item class="open_insert first_tag"><span>Palabra al glosario</span></button>
-                    <button mat-menu-item (click)="openTagDialog()" class="open_insert"><span>Tags de tendencia</span></button>
                 </div>
           </mat-menu>
         </div>
         <div class="info_btn" *ngIf="!marketing">
             <button mat-raised-button (click)="openDialog()">Crear Nuevo Informe <span>&nbsp;</span></button>
+        </div>
+        <div class="insert-tags" *ngIf="marketing && category && category.description">
+            <button mat-raised-button (click)="openTagDialog(category.id)">Insertar Tags de tendencia</button>
         </div>
     </div>
 
@@ -154,7 +156,7 @@
                                     <div class="row" [ngClass]="report.state.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
-                                        <mat-checkbox [formControlName]="i" *ngIf="!marketing" (change)="checkElemet($event)">
+                                        <mat-checkbox [formControlName]="i" *ngIf="!marketing" (change)="checkElement($event)">
 
                                         </mat-checkbox>
                                         <h2 class="report--title">{{report.name}}</h2>
