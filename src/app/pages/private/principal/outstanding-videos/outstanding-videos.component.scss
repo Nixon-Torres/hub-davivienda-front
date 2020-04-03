@@ -1,3 +1,10 @@
+
+::ng-deep {
+    .mat-tab-label-container {
+        background-color: transparent;
+    }
+}
+
 .outstanding-videos {
     .header {
         display: flex;
@@ -91,6 +98,7 @@
         display: flex;
         flex-direction: column;
         cursor: pointer;
+        position: relative;
         &--header {
             flex-direction: row;
             align-items: center;
@@ -104,6 +112,14 @@
                 padding-left: 34px;
                 width: 40%;
             }
+        }
+        &__layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9;
         }
         &__frame {
             border: 1px dashed #C2CBD1;

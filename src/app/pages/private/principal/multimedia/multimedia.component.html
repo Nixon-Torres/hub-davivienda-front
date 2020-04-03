@@ -60,13 +60,10 @@
                         <li>
                             <button class="icong icong-crown" (click)="openOutstandingDialog(item)">Destacar contenido</button>
                         </li>
-                        <li *ngIf="item.multimediaType.name === 'Video' || item.multimediaType.name === 'Podcast' ">
-
-                            <a class="icon icon-search-plus" [href]="item.params?.url" target="_blank"
-                               *ngIf="item.multimediaType.name === 'Podcast'">Vista
-                                previa</a>
-                            <button class="icon icon-search-plus" *ngIf="item.multimediaType.name === 'Video'"
-                                    (click)="openPreviewDialog(item)">Vista previa
+                        <li *ngIf="item.multimediaType.name === 'Video' || item.multimediaType.name === 'Podcast'">
+                            <button class="icon icon-search-plus"
+                                    (click)="openPreviewDialog(item, item.multimediaType.name)">
+                                Vista previa
                             </button>
                         </li>
                         <li>
