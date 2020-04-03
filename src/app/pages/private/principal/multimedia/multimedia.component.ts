@@ -140,14 +140,15 @@ export class MultimediaComponent implements OnInit {
         });
     }
 
-    public openPreviewDialog(multimedia: any): void {
+    public openPreviewDialog(multimedia: any, type: string): void {
         const multimediaUrl = multimedia.params.url;
         const multimediaName = multimedia.title;
         this.dialog.open(VideoModalComponent, {
             width: '800px',
             data: {
-                videoId: multimediaUrl,
-                videoName: multimediaName,
+                type,
+                url: multimediaUrl,
+                name: multimediaName,
             }
         });
     }

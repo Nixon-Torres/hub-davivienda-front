@@ -9,27 +9,30 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 })
 export class VideoModalComponent implements OnInit {
 
-    public videoInfo: any;
-    public videoId: SafeResourceUrl;
+    public url: SafeResourceUrl;
     constructor(
         public dialogRef: MatDialogRef<VideoModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private sanitizer: DomSanitizer
     ) {
-        this.videoInfo = data;
-        this.videoId = this.getVideoIframe(this.videoInfo.videoId);
+        this.url = this.getSecureUrl(this.data.url);
     }
 
     ngOnInit() {
     }
 
-    getVideoIframe(url) {
-        if (!url) {
-            return '';
+    getSecureUrl(url) {
+        let finalUrl = '';
+        if (this.data && this.data.type && this.data.type) {
+            if (this.data.type === 'Video') {
+                const results = url.match('[\\?&]v=([^&#]*)');
+                const video   = (results === null) ? url : results[1];
+                finalUrl = `https://www.youtube.com/embed/${video}?enablejsapi=1&autoplay=1`;
+            } else {
+                finalUrl = url;
+            }
         }
-        const results = url.match('[\\?&]v=([^&#]*)');
-        const video   = (results === null) ? url : results[1];
-        return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${video}?enablejsapi=1&autoplay=1`);
+        return url ? this.sanitizer.bypassSecurityTrustResourceUrl(finalUrl) : '';
     }
 
     public closeDialog() {
