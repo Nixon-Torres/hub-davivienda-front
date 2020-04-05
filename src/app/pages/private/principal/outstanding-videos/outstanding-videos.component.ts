@@ -9,11 +9,10 @@ import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confi
     styleUrls: ['./outstanding-videos.component.scss']
 })
 export class OutstandingVideosComponent implements OnInit {
-
     public multimediaList: Array<any>;
     public multimedia: any;
     public multimediaNoHome: any;
-    public outstandingHome: boolean;
+    public outstandingHomeTabSelected: boolean;
     public outstandingArea: string;
     public outstandingList: Array<any>;
     public previousItem: any;
@@ -36,7 +35,7 @@ export class OutstandingVideosComponent implements OnInit {
         this.onLoadOutstandingList();
         this.multimedia = this.data.id;
         this.multimediaNoHome = this.data.id;
-        this.outstandingHome = true;
+        this.outstandingHomeTabSelected = true;
         this.previousItem = null;
     }
 
@@ -45,7 +44,7 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     public setOutstandingHome(event) {
-        this.outstandingHome = event.index === 0;
+        this.outstandingHomeTabSelected = event.index === 0;
         this.onLoadOutstandingList();
     }
 
@@ -61,17 +60,23 @@ export class OutstandingVideosComponent implements OnInit {
         this.outstandingArea = area;
         this.previousItem = this.checkIfAreaIsTaken();
         this.selectArea(event);
-
     }
 
     public onSaveOutstanding(id?: string, modal?: boolean): void {
+        const removingOutstandingItem = !!id;
+        const data: any = {};
+
+        if (this.outstandingHomeTabSelected) {
+            data.outstandingHome = !removingOutstandingItem;
+            data.outstandingHomeArea = removingOutstandingItem ? '' : this.outstandingArea;
+        } else {
+            data.outstanding = !removingOutstandingItem;
+            data.outstandingArea = removingOutstandingItem ? '' : this.outstandingArea;
+        }
+
         this.http.patch({
-            path: `contents/${id ? id : this.multimedia}`,
-            data: {
-                outstanding: !id,
-                outstandingHome: this.outstandingHome,
-                outstandingArea: id ? '' : this.outstandingArea
-            }
+            path: `contents/${removingOutstandingItem ? id : this.multimedia}`,
+            data
         }).subscribe((resp: any) => {
             if (resp) {
                 this.previousItem = null;
@@ -91,7 +96,7 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     public onSave(): void {
-        if (this.previousItem) {
+        if (this.previousItem && (!this.multimedia || (this.previousItem.id !== this.multimedia))) {
             this.onSaveOutstanding(this.previousItem.id);
             this.onSaveOutstanding(null, true);
         } else {
@@ -122,7 +127,7 @@ export class OutstandingVideosComponent implements OnInit {
                 where: {
                     key: 'multimedia',
                     outstanding: true,
-                    outstandingHome: this.outstandingHome
+                    outstandingHome: this.outstandingHomeTabSelected
                 }
             },
             encode: true
@@ -134,7 +139,8 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     private checkIfAreaIsTaken() {
-        return this.outstandingList.filter(e => e.outstandingArea === this.outstandingArea)[0];
+        const item = this.outstandingList.find(e => e.outstandingArea === this.outstandingArea);
+        return item;
     }
 
     public closeDialog(): void {
