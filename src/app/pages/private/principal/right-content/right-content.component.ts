@@ -1031,15 +1031,18 @@ export class RightContentComponent implements OnInit {
         return this.list.reviewed.length && !this.isFiltered && !this.isFilteringByState();
     }
 
-    public checkElemet(event): void {
-        let action = event.checked ? 'add' : 'remove';
-        let parentElement = event.source._elementRef.nativeElement.parentNode;
+    public checkElement(event): void {
+        const action = event.checked ? 'add' : 'remove';
+        const parentElement = event.source._elementRef.nativeElement.parentNode;
         parentElement.classList[action]('checked');
     }
 
-    public openTagDialog(): void {
+    public openTagDialog(categoryId: string): void {
         this.dialog.open(TagsDialogComponent, {
             width: '602px',
+            data: {
+                categoryId
+            }
         });
     }
 }

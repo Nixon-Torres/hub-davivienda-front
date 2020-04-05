@@ -1,0 +1,97 @@
+@import "src/assets/sass/mixins";
+
+.tags-dialog {
+    * {
+        box-sizing: border-box;
+    }
+    &__header {
+        border-bottom: 1px solid #EDEDED;
+        padding: 14.5px 0 12px;
+        margin: 0 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .modal-close-cta {
+        color: #616161;
+        font-style: italic;
+        font-size: 0.750em;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        .icon {
+            font-size: 1.667em;
+            font-style: normal;
+            padding-left: 10px;
+            &:before {
+                margin-right: 0;
+                font-size: 1em;
+            }
+        }
+    }
+    &__title {
+        font-family: 'Helvetica Neue', sans-serif;
+        font-weight: bold;
+        color: #A5ABB1;
+        font-size: 1.125rem;
+    }
+    &__body {
+        padding: 40px 59px;
+    }
+    &__label {
+        font-family: 'Helvetica Neue', sans-serif;
+        font-style: italic;
+        color: #A5ABB1;
+        font-size: .875rem;
+        display: block;
+        align-self: flex-start;
+        cursor: text;
+    }
+    &__input {
+        border: 1px solid #E7EAF1;
+        background-color: #F5F7FB;
+        margin-bottom: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 484px;
+        height: 328px;
+        padding: 23px 26px;
+        input {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: .625rem;
+            line-height: .750rem;
+            color: #616161;
+            border: 0;
+            align-self: flex-start;
+            background-color: transparent;
+            outline: none;
+            width: auto;
+            padding: 0 4px;
+        }
+        .chip-list {
+            .chip {
+                font-family: 'Helvetica Neue', sans-serif;
+                background-color: transparent;
+                border: 1px solid #D0D3DB;
+                border-radius: 5px;
+                color: #616161;
+                font-size: .625em;
+                padding: 3px 0 3px 8px;
+                min-height: unset;
+                height: auto;
+                .icon {
+                    color: #616161;
+                    font-size: 9px;
+                    width: 14px;
+                    height: 14px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+    .footer {
+        display: flex;
+        justify-content: center;
+    }
+}

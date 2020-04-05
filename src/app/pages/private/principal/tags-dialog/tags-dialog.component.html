@@ -1,30 +1,32 @@
 <div class="tags-dialog">
     <header class="tags-dialog__header">
-        <p class=""></p>
+        <p class="tags-dialog__title">Tags de tendencias</p>
         <a (click)="closeDialog()" class="modal-close-cta">Cerrar <span
             class="icon icon-times"></span></a>
     </header>
-    <div class="tags-dialog__input">
-        <!--<mat-form-field class="example-chip-list">
-            <mat-chip-list #chipList aria-label="Fruit selection">
-                <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
-                          [removable]="removable" (removed)="remove(fruit)">
-                    {{fruit.name}}
-                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    <div class="tags-dialog__body">
+        <div class="tags-dialog__input">
+            <label for="inputTag" class="tags-dialog__label" *ngIf="isListEmpty && input.length === 0">
+                Escriba cada tag separado por enter</label>
+            <mat-chip-list #chipList class="chip-list">
+                <mat-chip *ngFor="let tag of tagsList" [selectable]="false"
+                          [removable]="removable" (removed)="remove(tag)" class="chip">
+                    {{tag}}
+                    <mat-icon matChipRemove *ngIf="removable" class="icon">close</mat-icon>
                 </mat-chip>
-                <input placeholder="New fruit..."
-                       [matChipInputFor]="chipList"
-                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                       [matChipInputAddOnBlur]="addOnBlur"
-                       (matChipInputTokenEnd)="add($event)">
             </mat-chip-list>
-        </mat-form-field>-->
-
-    </div>
-    <div class="footer">
-        <button mat-button class="btn btn-cancel"
-                (click)="closeDialog()">Cancelar</button>
-        <button mat-button class="btn btn-primary"
-                (click)="closeDialog()">Continuar</button>
+            <input [matChipInputFor]="chipList"
+                   [matChipInputAddOnBlur]="true"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   (matChipInputTokenEnd)="add($event)"
+                   id="inputTag"
+                   [(ngModel)]="input">
+        </div>
+        <div class="footer">
+            <button mat-button class="btn btn-cancel"
+                    (click)="closeDialog()">Cancelar</button>
+            <button mat-button class="btn btn-primary"
+                    (click)="onSaveTags()">{{isEditing ? 'Editar' : 'Agregar'}}</button>
+        </div>
     </div>
 </div>
