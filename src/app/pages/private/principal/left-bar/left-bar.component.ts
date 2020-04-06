@@ -18,13 +18,15 @@ export class LeftBarComponent implements OnInit {
     @Output() deleteChange = new EventEmitter();
     @Output() changeView = new EventEmitter();
 
-    readonly ROLE = 'Admin';
+    readonly ADMIN_ROLE = 'Admin';
+    readonly MEDIUM_ROLE = 'medium';
 
     private currentState: any;
     private currentFolder: any;
     private currentCategory: any;
     private deletedStateEnabled = false;
-    public showMenu = false;
+    public showEditSiteMenu = false;
+    public showMultimediaMenu = false;
     public user: any = {};
     public marketing: boolean;
     public categories: any;
@@ -185,8 +187,12 @@ export class LeftBarComponent implements OnInit {
     }
 
     public setShowMenu() {
-        const found = this.user.roles.find(element => element === this.ROLE);
-        this.showMenu = found !== undefined;
-        return this.showMenu;
+        const adminFound = this.user.roles.find(element => element === this.ADMIN_ROLE);
+        const mediumFound = this.user.roles.find(element => element === this.MEDIUM_ROLE);
+
+        this.showEditSiteMenu = adminFound !== undefined && mediumFound === undefined;
+        this.showMultimediaMenu = adminFound !== undefined;
+
+        return this.showEditSiteMenu;
     }
 }

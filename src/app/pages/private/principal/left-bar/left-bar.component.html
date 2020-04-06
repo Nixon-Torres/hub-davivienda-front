@@ -20,10 +20,10 @@
             </li>
         </ul>
     </div>
-    <div class="options" (click)="changeViewFn({multimedia: true})">
+    <div class="options" (click)="changeViewFn({multimedia: true})" *ngIf="showMultimediaMenu">
         <p class="options--name icon icon-file-upload variation">Multimedia</p>
     </div>
-    <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showMenu">
+    <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showEditSiteMenu">
         <p class="options--name fas fa-laptop-code variation">Editar sitio</p>
     </div>
     <div class="options delete-section-btn">
