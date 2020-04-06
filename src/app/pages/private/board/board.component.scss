@@ -1211,3 +1211,31 @@ $default-font: "Helvetica Neue", Medium;
         margin-top: 3px;
     }
 }
+
+.panel-body.seo {
+    p {
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+
+    .first {
+        margin-top: 0px;
+    }
+
+    textarea {
+        margin-bottom: 15px;
+        resize: none;
+        background: #f5f7fb;
+        border: 1px solid #e7eaf1;
+        padding: 7px;
+        width: 93%;
+
+        &::placeholder {
+            color: #98999a;
+        }
+    }
+
+    textarea.first {
+        margin-bottom: 0px;
+    }
+}

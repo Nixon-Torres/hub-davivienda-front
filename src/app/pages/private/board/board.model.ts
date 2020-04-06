@@ -28,4 +28,6 @@ export interface Report {
     template?: any;
     files?: any;
     presentationUrl?: any;
+    metaTitle?: any;
+    metaDescription?: any;
 }

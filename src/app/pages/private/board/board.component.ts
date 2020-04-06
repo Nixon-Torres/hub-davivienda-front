@@ -116,7 +116,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
         template: null,
         files: null,
         rSmartContentVideo: null,
-        presentationUrl: null
+        presentationUrl: null,
+        metaTitle: null,
+        metaDescription: null
     };
 
     public tags = {

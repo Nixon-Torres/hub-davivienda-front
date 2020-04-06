@@ -404,7 +404,13 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
 
-                            <p>This is the primary content of the panel.</p>
+                            <div class="panel-body seo">
+                                <p class="tags__info first">Meta titulo de la URL</p>
+                                <textarea [(ngModel)]="report.metaTitle" placeholder="Ejemplo: Nombre/"></textarea>
+                                <p class="tags__info">Meta descripci&oacute;n de la URL</p>
+                                <textarea [(ngModel)]="report.metaDescription" placeholder="Ejemplo: Nombre/"></textarea>
+                                <button class="tags__save" (click)="validateMarketingOnSave()">Guardar</button>
+                            </div>
 
                         </mat-expansion-panel>
 
