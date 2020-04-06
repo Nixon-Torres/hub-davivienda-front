@@ -95,7 +95,6 @@ export class NotificationsComponent implements OnInit {
         }).subscribe((response: any) => {
             document.getElementsByClassName('loader')[0].classList.add('hide');
             const notifications = response.body as any;
-            console.log('total', notifications.length);
             notifications.forEach(notification => {
                 this.processNotification(notification);
             });
