@@ -1671,6 +1671,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public onSaveTags(): void {
         this.tags.tendencies = this.fillTendenciesTags();
+        this.report.tags = this.tags.tendencies;
         this.http.patch({
             path: `reports/${this.report.id}`,
             data: {
