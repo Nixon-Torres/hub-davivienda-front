@@ -25,7 +25,7 @@
     "@ckeditor/ckeditor5-angular": "^1.2.3",
     "@ckeditor/ckeditor5-build-classic": "^18.0.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^18.0.0",
-    "@ckeditor/ckeditor5-build-inline": "^18.0.0",
+    "@ckeditor/ckeditor5-build-inline": "juaneduardodelgado/ckeditor5-build-inline#production",
     "@ckeditor/ckeditor5-build-multiroot": "file:../ckeditor5-build-multiroot",
     "@ckeditor/ckeditor5-essentials": "^18.0.0",
     "@ng-select/ng-option-highlight": "0.0.4",
