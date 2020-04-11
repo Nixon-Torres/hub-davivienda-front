@@ -95,6 +95,11 @@ export class AddMultimediaComponent implements OnInit {
     }
 
     public onSaveThumbnail(resourceId: string): void {
+        if (this.uploadFileForm.get('thumbnail').value === '') {
+            this.showSaveModal();
+            return;
+        }
+
         const formData = new FormData();
         formData.append('types', encodeURI(JSON.stringify(['png', 'jpg', 'gif', 'jpeg'])));
         formData.append('file', this.uploadFileForm.get('thumbnail').value);
@@ -107,19 +112,23 @@ export class AddMultimediaComponent implements OnInit {
             path: 'media/upload',
             data: formData
         }).subscribe((resp: any) => {
-            const state = this.multimediaObj ? 'actualizado' : 'creado';
-            const type = this.multimediaType;
             if (resp) {
                 this.currentFile = resp.body[0];
-                this.dialog.open(ConfirmationDialogComponent, {
-                    width: '410px',
-                    data: {
-                        config: {
-                            title: `Se ha ${state} exitosamente el ${type.name}`,
-                            subtitle: this.multimediaForm.get('title').value
-                        }
-                    }
-                });
+                this.showSaveModal();
+            }
+        });
+    }
+
+    public showSaveModal() {
+        const state = this.multimediaObj ? 'actualizado' : 'creado';
+        const type = this.multimediaType;
+        this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                config: {
+                    title: `Se ha ${state} exitosamente el ${type.name}`,
+                    subtitle: this.multimediaForm.get('title').value
+                }
             }
         });
     }
@@ -188,7 +197,7 @@ export class AddMultimediaComponent implements OnInit {
     public multimediaFormIsValid(): boolean {
         return this.multimediaForm.status !== 'INVALID' &&
             this.tags.length !== 0 &&
-            this.uploadFileForm.get('thumbnail').value !== '';
+            ((!this.multimediaObj && this.uploadFileForm.get('thumbnail').value !== '') || this.multimediaObj.id);
     }
 
     public openDialogCancel(): void {
