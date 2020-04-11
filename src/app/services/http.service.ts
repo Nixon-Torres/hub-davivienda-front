@@ -72,8 +72,12 @@ export class HttpService {
         }).pipe(catchError(this.handleError));
     }
 
+    public path(base: string) {
+        return `${this._URL_API}${base}`;
+    }
+
     public headers() {
-        let headers: any = {};
+        const headers: any = {};
         if(this.authorization) {
             headers.Authorization = this.authorization;
         }

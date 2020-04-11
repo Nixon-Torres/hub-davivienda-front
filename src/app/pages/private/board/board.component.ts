@@ -369,7 +369,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         const headers = this.http.headers();
         editorOptions.simpleUpload =  {
-            uploadUrl: 'http://localhost:3000/api/reports/' + this.report.id + '/upload',
+            uploadUrl: this.http.path('/reports/' + this.report.id + '/upload'),
             headers
         };
 
