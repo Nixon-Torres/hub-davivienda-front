@@ -24,6 +24,7 @@ import {RevisionModalComponent} from './revision-modal/revision-modal.component'
 import {CreationModalComponent} from './creation-modal/creation-modal.component';
 
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+// import InlineEditor from '/home/omnigroupit/workspace/angular/ckeditor5-build-inline';
 import {forkJoin, Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 
@@ -365,6 +366,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         if (this[elementId + 'Data'] && editorOptions.initialData) {
             delete editorOptions.initialData;
         }
+
+        const headers = this.http.headers();
+        editorOptions.simpleUpload =  {
+            uploadUrl: 'http://localhost:3000/api/reports/' + this.report.id + '/upload',
+            headers
+        };
 
         InlineEditor
             .create( element, editorOptions)
