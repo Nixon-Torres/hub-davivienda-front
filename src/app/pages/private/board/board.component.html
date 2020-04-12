@@ -272,8 +272,15 @@
                             </div>
                         </div>
                         <div class="image-block">
+                            <textarea [(ngModel)]="block.externalImageUrl" [ngModelOptions]="{standalone: true}"
+                               class="external-source-input" type="text" placeholder="URL externa" *ngIf="block.externalImage">
+                            </textarea>
+                            <div class="cont" *ngIf="block.externalImage" style="top: 75%">
+                                <span class="select-img" (click)="block.externalImage = false">Borrar imagen</span>
+                            </div>
+
                             <div class="cont">
-                                <label class="select-img" [for]="'ImgInput' + block.id" *ngIf="!block.assetUrl && !block.imageUrl">
+                                <label class="select-img" [for]="'ImgInput' + block.id" *ngIf="!block.assetUrl && !block.imageUrl && !block.externalImage">
                                     <img src="../../../../assets/images/image-placeholder.png">
                                     <span class="select-img">Subir imagen</span>
                                 </label>
@@ -284,13 +291,17 @@
                                     (change)="onBlockImageSelected(block, $event)"
                                     [id]="'ImgInput' + block.id"
                                 />
+                                <div *ngIf="!block.assetUrl && !block.imageUrl &&!block.externalImage">
+                                    <span>&oacute;</span><br/>
+                                    <span class="select-img" (click)="block.externalImage = true">Cargar imagen externa</span>
+                                </div>
 
                                 <div *ngIf="!block.assetUrl && block.imageUrl">
-                                    <img [src]="block.imageUrl">
+                                    <img [src]="block.imageUrl" class="selected-image">
                                     <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
                                 </div>
                                 <div *ngIf="block.assetUrl">
-                                    <img [src]="block.assetUrl">
+                                    <img [src]="block.assetUrl" class="selected-image">
                                     <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
                                 </div>
                             </div>

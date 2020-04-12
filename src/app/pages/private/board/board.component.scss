@@ -885,6 +885,23 @@ $default-font: "Helvetica Neue", Medium;
                     font-size: 13px;
                 }
             }
+
+            .selected-image {
+                width: 260px !important;
+            }
+
+            .external-source-input {
+                margin-top: 50px;
+                height: 57%;
+                padding-left: 22px;
+                padding-right: 25px;
+                width: 80%;
+            }
+
+            .select-img {
+                cursor: pointer;
+                font-size: 13px;
+            }
         }
 
         .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {

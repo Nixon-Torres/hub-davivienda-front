@@ -864,7 +864,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 content: block.content,
                 source: block.source,
                 fileName: block.fileName,
-                type: block.type
+                type: block.type,
+                externalImage: block.externalImage,
+                externalImageUrl: block.externalImageUrl
             };
         });
 
