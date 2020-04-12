@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 import { LoginContext, AccessTokenInterface, UserInterface } from './auth.service.model';
 import { HttpService } from './http.service';
@@ -10,11 +10,13 @@ import { CookieStorage } from './storage/cookie.storage';
 })
 export class AuthService {
     private tokenName = '94a08da1fecbb6e8b46990538c7b50b2-*';
+    public user: Subject<any>;
 
     constructor(
         private cookie: CookieStorage,
         private http: HttpService
     ) {
+        this.user = new Subject();
         this.setAuthorization();
     }
 
@@ -31,6 +33,13 @@ export class AuthService {
     public getUserData(attr?: string): any {
         const token = this.get();
         return (token ? (attr ? token.user[attr] : token.user) : {});
+    }
+
+    public setUser(user: any): void {
+        const token = this.get();
+        token.user = user;
+        this.set(token);
+        this.user.next(token.user);
     }
 
     public setUserData(attr: string, value: boolean): any {

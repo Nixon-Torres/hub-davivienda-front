@@ -91,6 +91,10 @@ export class ProfileFormComponent implements OnInit {
             data
         }).subscribe((res) => {
             this.profileImage = res.body as any;
+            const files = this.user.files.filter(e => e.key !== 'profile-image');
+            files.push(this.profileImage);
+            this.user.files = files;
+            this.auth.setUser(this.user);
         });
     }
 

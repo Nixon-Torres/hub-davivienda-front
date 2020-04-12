@@ -46,6 +46,11 @@ export class HeaderComponent implements OnInit {
         moment.locale('es'); // Set locale lang for momentJs
         this.getNotifications();
         this.getCountNotifications();
+
+        this.auth.user.subscribe((user) => {
+            console.log(user);
+            this.user = user;
+        });
     }
 
     public getUserImage() {
