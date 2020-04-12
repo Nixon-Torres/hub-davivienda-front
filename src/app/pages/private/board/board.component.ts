@@ -373,6 +373,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
             headers
         };
 
+        editorOptions.mediaEmbed = {
+            extraProviders: [
+                {
+                    name: 'dataWrapper',
+                    url: /^datawrapper\.dwcdn\.net\/(\w+)/,
+                    html: match => '------------------------------------------------------ <br/>' +
+                        'DATAWRAPPER IMAGE (NO PREVIEW) <br/> ' +
+                        '------------------------------------------------------'
+                }
+            ]
+        };
+
         InlineEditor
             .create( element, editorOptions)
             .then( editor => {
