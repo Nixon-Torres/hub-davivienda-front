@@ -49,13 +49,16 @@ export class HighlightDialogComponent implements OnInit {
     }
 
     getImage(id) {
-
         this.http.get({
             path: 'media/',
-            data: {where: {resourceId: id}},
+            data: {
+                where: {
+                    resourceId: id,
+                    key: 'outstandingimage'
+                }
+            },
             encode: true
         }).subscribe((response: any) => {
-            this.photo = response.body[0].fileName;
             this.file = response.body[0];
         }, (error: any) => {
             console.error(error);
@@ -68,7 +71,7 @@ export class HighlightDialogComponent implements OnInit {
     }
 
     isActive(section): boolean {
-        return this.sectionSelect === section ? true : false;
+        return this.sectionSelect === section;
     }
 
     onNoClick(): void {
@@ -79,7 +82,11 @@ export class HighlightDialogComponent implements OnInit {
         const dialogRef = this.dialog.open(GalleryDialogComponent, {
             width: '900px',
             height: '500px',
-            data: {name: this.reportName, id: this.reportId}
+            data: {
+                name: this.reportName,
+                id: this.reportId,
+                title: 'Seleccionar imagen'
+            }
         });
 
         dialogRef.afterClosed().subscribe((result: any) => {
@@ -87,7 +94,6 @@ export class HighlightDialogComponent implements OnInit {
                 this.photo = result.data.name;
                 this.imageSelected = true;
                 this.idImage = result.data.id;
-                this.file = result.data;
             }
             this.dialogRef.updateSize('760px', '900px');
         });
@@ -176,11 +182,42 @@ export class HighlightDialogComponent implements OnInit {
             data: report
         }).subscribe((response: any) => {
             if (updateImage) {
-                this.onUpdateImage();
+                this.cloneImage(this.idImage, this.report.id, this.file ? this.file.id : null);
             }
         }, (error: any) => {
             console.error(error);
         });
     }
 
+    public getReportImage() {
+        if (!this.file && !this.photo) {
+            return '';
+        }
+
+        if (this.photo) {
+            return this.storageBase + this.photo;
+        } else {
+            return this.storageBase + this.file.fileName;
+        }
+    }
+
+    public cloneImage(imageId, resourceId, replaceId) {
+        const data: any = {
+            resourceId,
+            public: false,
+            key: 'outstandingimage'
+        };
+
+        if (replaceId) {
+            data.replaceId = replaceId;
+        }
+
+        this.http.post({
+            path: `media/${imageId}/clone`,
+            data
+        }).subscribe((res) => {
+            this.file = res.body as any;
+            this.dialogRef.close({event: 'save'});
+        });
+    }
 }

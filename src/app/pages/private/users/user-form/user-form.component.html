@@ -1,8 +1,7 @@
 <form [formGroup]="userForm" >
 	<div class="top">
 		<div class="column--small">
-            <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
-            <img style="width: 50px" *ngIf="user.photo" src="{{storageBase}}{{user.photo}}">
+            <img style="width: 50px" [src]="getUserImage(user)">
 			<button type="" class="simple icong-camera" (click)="openDialog()">Subir foto</button>
 		</div>
 		<div class="column">

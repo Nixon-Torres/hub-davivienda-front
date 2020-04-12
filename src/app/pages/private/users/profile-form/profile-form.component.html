@@ -1,7 +1,7 @@
 <form [formGroup] = "profileForm">
 	<div class="column--small">
-        <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
-        <img *ngIf="user.photo" src="{{storageBase}}{{user.photo}}">
+        <img *ngIf="!profileImage?.clientPath" src="/assets/images/user/user.png"/>
+        <img *ngIf="profileImage?.clientPath" src="{{storageBase}}{{profileImage?.fileName}}">
 		<button type="button" (click)="openDialog()" class="simple icong-camera">Subir foto</button>
 	</div>
 	<div class="column">

@@ -57,8 +57,8 @@
                     <hr class="last-hr">
                 </div>
             </div>
-        </div>        
-    
+        </div>
+
     </div>
 
     <div class="highlight_image" *ngIf="pictureSelect">
@@ -70,10 +70,10 @@
             <p>Tamaño máximo de imagen 1MB</p>
         </div>
         <div class="list" *ngIf="imageSelected">
-            <img src="{{storageBase}}{{photo}}">
-            <p>{{photo}}</p>
+            <img [src]="getReportImage()">
+            <p>{{file ? file?.fileName : photo}}</p>
             <button class="del icon icon-times" (click)="onRemoveImage()"></button>
-        </div>    
+        </div>
     </div>
 
     <div class="highlight_btm">

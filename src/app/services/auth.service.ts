@@ -19,23 +19,23 @@ export class AuthService {
     }
 
     public isLoggedin(): any {
-        let token = this.get();
+        const token = this.get();
         return token ? true : false;
     }
 
     public getAuthorization(): string {
-        let token = this.get();
+        const token = this.get();
         return token.id;
     }
 
     public getUserData(attr?: string): any {
-        let token = this.get();
+        const token = this.get();
         return (token ? (attr ? token.user[attr] : token.user) : {});
     }
 
-    public setUserData(attr: string, value:boolean): any {
-        let token = this.get();
-        if(!this.getUserData(attr)) {
+    public setUserData(attr: string, value: boolean): any {
+        const token = this.get();
+        if (!this.getUserData(attr)) {
             token.user[attr] = value;
             this.set(token);
         }
@@ -76,10 +76,10 @@ export class AuthService {
         });
     }
 
-    public reloadUser () {
-        let token = this.get();
-        console.log(this.getUserData("id"));
-        this.getCurrentUser(this.getUserData("id"), (err: any, user: UserInterface) => {
+    public reloadUser() {
+        const token = this.get();
+        console.log(this.getUserData('id'));
+        this.getCurrentUser(this.getUserData('id'), (err: any, user: UserInterface) => {
             if (err) {
                 console.log(err);
                 return;
@@ -105,7 +105,7 @@ export class AuthService {
     }
 
     private getToken(input: any, fn: any) {
-        this.http.post({ 'path': 'users/login', 'data': input }).subscribe(
+        this.http.post({ path: 'users/login', data: input }).subscribe(
             (response: any) => {
                 fn(null, response.body);
             },
@@ -117,8 +117,8 @@ export class AuthService {
 
     private removeToken(fn: any) {
         this.http.post({
-            'path': 'users/logout', 'data': {
-                'access_token': this.http.authorization
+            path: 'users/logout', data: {
+                access_token: this.http.authorization
             }
         }).subscribe(
             (response: any) => {
@@ -132,14 +132,20 @@ export class AuthService {
 
     private getCurrentUser(userId?: string, fn?: any) {
         userId = userId ? userId : null;
-        this.http.get({ 'path': `users/${userId}` }).subscribe(
+        this.http.get({
+            path: `users/${userId}`,
+            data: {
+                include: ['files']
+            },
+            encode: true
+        }).subscribe(
             (response: any) => {
-                var body = response.body;
-                this.http.get({ 'path': 'me' }).subscribe(
-                    (response: any) => {
-                        body.roles = response.body.roles;
+                const body = response.body;
+                this.http.get({ path: 'me' }).subscribe(
+                    (res: any) => {
+                        body.roles = res.body.roles;
                         fn(null, body);
-                    },(error) => {
+                    }, (error) => {
                         fn(error, null);
                     }
                 );
@@ -151,7 +157,7 @@ export class AuthService {
     }
 
     private setAuthorization(): void {
-        let token = this.get();
+        const token = this.get();
         if (token) {
             this.http.authorization = token.id;
         } else {
@@ -160,7 +166,7 @@ export class AuthService {
     }
 
     private get(): any {
-        let token = this.cookie.get(this.tokenName);
+        const token = this.cookie.get(this.tokenName);
         return (typeof (token) == 'string') ? JSON.parse(token) : token;
     }
 

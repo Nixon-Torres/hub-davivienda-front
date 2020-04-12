@@ -48,6 +48,17 @@ export class HeaderComponent implements OnInit {
         this.getCountNotifications();
     }
 
+    public getUserImage() {
+        const files = this.user.files;
+        const profileImage = files && files.length ? files.find(e => e.key === 'profile-image') : null;
+
+        if (!profileImage) {
+            return '/assets/images/user/user.png';
+        }
+
+        return this.STORAGE_URL + profileImage.fileName;
+    }
+
     private getNotifications(): void {
      this.http.get({
             path: `notifications`,

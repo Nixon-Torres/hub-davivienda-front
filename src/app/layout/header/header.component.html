@@ -38,8 +38,7 @@
 
 		<!-- USER MENU -->
 		<div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing">
-            <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
-            <img *ngIf="user.photo" src="{{STORAGE_URL}}{{user.photo}}">
+            <img [src]="getUserImage()">
 			<span>{{ user.name }}</span>
 		</div>
         <mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">

@@ -1,6 +1,6 @@
 <div class="galerie-content">
-	<p class="title">Cambiar foto de perfil</p>
-	<a (click)="onNoClick()" class="modal-close-cta">Cerrar <span class="icon icon-times"></span> </a>	
+	<p class="title">{{ data?.title ? data?.title : 'Cambiar foto de perfil' }}</p>
+	<a (click)="onNoClick()" class="modal-close-cta">Cerrar <span class="icon icon-times"></span> </a>
 	<div class="galerie-content--list">
 		<form [formGroup]="searchForm" class="form-actions">
 			<input class="search" formControlName="search" type="search" placeholder='Buscar "Mis imágenes"' value="" (keydown)="onSearch($event)">
@@ -14,7 +14,7 @@
 				</div>
 				<p>{{imagen.name}}</p>
 			</li>
-		</ul>	
+		</ul>
 	</div>
 	<div class="box-buttons">
 		<form [formGroup] = "imageForm">
@@ -27,5 +27,5 @@
 			<button type="button" class="form-button" (click)="onNoClick()">Cancelar</button>
 			<button type="button" class="form-button plus" (click)="onSave()">Seleccionar</button>
 		</div>
-	</div>	
-</div>	
+	</div>
+</div>

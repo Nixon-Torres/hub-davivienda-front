@@ -268,7 +268,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public tabClick(event: any) {
-        this.ifilterreviewed = (event.index === 0 ? true : false);
+        this.ifilterreviewed = (event.index === 0);
         this.loadReports(this.ifilter);
         this.isFiltered = false;
         this.resetSelect();
@@ -974,7 +974,6 @@ export class RightContentComponent implements OnInit {
                     this.updateReports();
                 }, 200);
             }
-
         });
     }
 
@@ -993,12 +992,12 @@ export class RightContentComponent implements OnInit {
 
     public showOptionMenu(state): boolean {
         const found = this.user.roles.findIndex(element => element === 'Admin');
-        return state === '5e068c81d811c55eb40d14d0' && found >= 0 ? true : false;
+        return state === '5e068c81d811c55eb40d14d0' && found >= 0;
     }
 
     public isHighlighted(id): boolean {
         const found = this.list.reports.find(element => element.id === id);
-        return found.stateId === '5e068c81d811c55eb40d14d0' && found.outstanding ? true : false;
+        return found.stateId === '5e068c81d811c55eb40d14d0' && found.outstanding;
     }
 
     public openConfirmation(): void {
