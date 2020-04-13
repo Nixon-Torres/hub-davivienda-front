@@ -1,0 +1,30 @@
+<div class='dialog-box'>
+	<div class="dialog_header">
+		<h1 mat-dialog-title>Agregar palabra al glosario</h1>
+		<p (click)="onNoClick(false)">Cerrar <img src="/assets/images/cerrar.png" alt=""></p>
+	</div>
+    <form class="form-box" [formGroup]="AddWordGroup" (ngSubmit)="onSaveWord()">
+        <div mat-dialog-content>
+                <div class="new-word">
+                    <button class="icon icon-plus-circle">editar</button>
+                    <mat-form-field>
+                        <input id="title" name="title" matInput
+                               placeholder="Nueva palabra" formControlName="title"
+                               [(ngModel)]="title">
+                        <mat-error *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched) &&
+                            titleInput.errors.wordExist">
+                            Esta palabra ya existe en el glosario
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="content">
+                    <textarea id="description" name="description" formControlName="description" class="description" [(ngModel)]="description" placeholder="Escriba el significado de la palabra"></textarea>
+                    <textarea id="source" name="source" formControlName="source" class="source" [(ngModel)]="source" placeholder="Fuente"></textarea>
+                </div>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button class="dialog_cancel" (click)="onNoClick(false)">Cancelar</button>
+            <button mat-button class="btn btn-primary" type="submit" [disabled]="AddWordGroup.invalid">Aceptar</button>
+        </div>
+    </form>
+</div>

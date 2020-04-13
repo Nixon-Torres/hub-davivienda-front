@@ -16,6 +16,7 @@ import {AuthService} from '../../../../services/auth.service';
 import {HttpService} from '../../../../services/http.service';
 import {AsideFoldersService} from 'src/app/services/aside-folders.service';
 import {TagsDialogComponent} from '../tags-dialog/tags-dialog.component';
+import {AddWordsDialogComponent} from '../add-words-dialog/add-words-dialog.component';
 import {start} from 'repl';
 
 @Component({
@@ -1041,6 +1042,14 @@ export class RightContentComponent implements OnInit {
             width: '602px',
             data: {
                 categoryId
+            }
+        });
+    }
+
+    public openWordsDialog(): void {
+        this.dialog.open(AddWordsDialogComponent, {
+            width: '602px',
+            data: {
             }
         });
     }

@@ -47,6 +47,7 @@ import { FaqContentComponent } from './faq-content/faq-content.component';
 import { VideoModalModule } from './faq-content/video-modal/video-modal.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
+import { AddWordsDialogComponent } from './add-words-dialog/add-words-dialog.component';
 import { MultimediaComponent } from './multimedia/multimedia.component';
 import { AddMultimediaComponent } from './multimedia/add-multimedia/add-multimedia.component';
 import {OutstandingVideosModule} from './outstanding-videos/outstanding-videos.module';
@@ -95,6 +96,7 @@ const materialModules: any[] = [
         FaqContentComponent,
         EditCompaniesComponent,
         TagsDialogComponent,
+        AddWordsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
     ],
@@ -122,6 +124,7 @@ const materialModules: any[] = [
         CreateReportDialogComponent,
         HighlightDialogComponent,
         TagsDialogComponent,
+        AddWordsDialogComponent
     ]
 })
 export class PrincipalModule { }

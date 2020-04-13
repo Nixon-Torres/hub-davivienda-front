@@ -12,7 +12,8 @@
             </button>
             <mat-menu #insert="matMenu" class="insert_menu-btn">
                 <div class="matmenu_insert">
-                    <button mat-menu-item class="open_insert first_tag"><span>Palabra al glosario</span></button>
+                    <button mat-menu-item class="open_insert first_tag"
+                            (click)="openWordsDialog()"><span>Palabra al glosario</span></button>
                 </div>
           </mat-menu>
         </div>
