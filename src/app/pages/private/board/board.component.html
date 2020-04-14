@@ -450,8 +450,43 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
 
-                            <p>This is the primary content of the panel.</p>
-                            <!-- <app-related-reports></app-related-reports> -->
+                            <div id="searchWords2">
+                                <form [formGroup]="glossaryForm">
+                                    <mat-form-field class="example-full-width" floatLabel="never">
+                                        <input matInput placeholder="Escriba la palabra que desea encontrar" [matAutocomplete]="auto"
+                                               formControlName="searchInput">
+                                    </mat-form-field>
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                        <mat-option *ngFor="let word of (foundWordsObservable | async)" [value]="word"
+                                            (click)="addWord(word)">
+                                            <span>{{ word.word }}</span>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </form>
+
+                                <!--<mat-form-field floatLabel="never">
+                                    <input matInput class="search-input" type="search" [(ngModel)]="searchWordText" (keyup)="searchWords()"
+                                       placeholder="Escriba la palabra que desea encontrar" autocomplete="off" >
+                                    <mat-icon matSuffix>search</mat-icon>
+                                </mat-form-field>
+
+                                <mat-action-list id="foundedReports" *ngIf="wordsVisible">
+                                    <button mat-list-item *ngFor="let word of foundWords;" (click)="addWord(word)">
+                                        <span>{{ word.word }}</span>
+                                    </button>
+                                </mat-action-list>-->
+                            </div>
+                            <div class="glossary-list-section">
+                                <mat-form-field class="word-chip-list">
+                                    <mat-chip-list #chipWordList aria-label="Fruit selection">
+                                        <mat-chip *ngFor="let word of report.glossary" [selectable]="false"
+                                                  [removable]="true" (removed)="removeWord(word)">
+                                            {{word.word}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </mat-form-field>
+                            </div>
 
                         </mat-expansion-panel>
                     </mat-accordion>

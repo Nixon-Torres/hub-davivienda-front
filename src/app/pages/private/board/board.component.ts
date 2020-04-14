@@ -27,6 +27,8 @@ import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 // import InlineEditor from '/home/omnigroupit/workspace/angular/ckeditor5-build-inline';
 import {forkJoin, Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {debounceTime, map, switchMap} from 'rxjs/operators';
 
 declare var grapesjs: any;
 declare global {
@@ -67,6 +69,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public grapeEnabled = false;
     public addMenuVisible = false;
 
+    public searchWordText = '';
+    public foundWords = [];
+    public wordsVisible = false;
+
     public list: any = {
         users: [],
         authors: []
@@ -78,9 +84,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     };
     public grid: any = {
         col: {
-            builder: 10,
+            builder: 9,
             comments: 0,
-            panel: 2
+            panel: 3
         },
         row: {
             builder: 1,
@@ -119,7 +125,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         rSmartContentVideo: null,
         presentationUrl: null,
         metaTitle: null,
-        metaDescription: null
+        metaDescription: null,
+        glossary: null
     };
 
     public tags = {
@@ -251,6 +258,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public banner: any = {};
     public newBanner: any = {};
 
+    public glossaryForm: FormGroup;
+    public foundWordsObservable: Observable<any>;
+
     constructor(
         public dialog: MatDialog,
         private activatedRoute: ActivatedRoute,
@@ -258,7 +268,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         private http: HttpService,
         private auth: AuthService,
         private renderer: Renderer2,
-        private ref: ElementRef
+        private ref: ElementRef,
+        private fb: FormBuilder
     ) {
         this.user = this.auth.getUserData();
         this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
@@ -269,6 +280,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.showSomeoneEditingDialog();
         moment.locale('es'); // Set locale lang for momentJs
+
+        this.glossaryForm = this.fb.group({
+            searchInput: new FormControl('')
+        })
+
+        this.foundWordsObservable = this.glossaryForm.get('searchInput').valueChanges
+            .pipe(
+                debounceTime(300),
+                switchMap(value => this.searchWordO(value))
+            );
 
         this.activatedRoute.paramMap.subscribe((params: any) => {
 
@@ -526,7 +547,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             scope: {
                 include: ['files']
             }
-        });
+        }, 'glossary');
 
         this.http.get({
             path: `reports/${idReport}`,
@@ -1822,5 +1843,64 @@ export class BoardComponent implements OnInit, AfterViewInit {
         reader.onload = () => {
             block.imageUrl = reader.result;
         };
+    }
+
+    public searchWords() {
+        this.http.get({
+            path: 'glossaries',
+            data: {
+                where: {
+                    word: {
+                        like: this.searchWordText, options: 'i'
+                    }
+                }
+            },
+            encode: true
+        }).subscribe((res) => {
+            const words = res.body as any;
+            this.foundWords = words.filter(e => !this.report.glossary.find(j => j.id === e.id));
+
+            this.wordsVisible = !!this.foundWords.length;
+        });
+    }
+
+    public addWord(word: any) {
+        this.wordsVisible = false;
+        this.http.put({
+            path: 'reports/' + this.report.id + '/glossary/rel/' + word.id
+        }).subscribe((res) => {
+            this.report.glossary.push(word);
+        });
+    }
+
+    public removeWord(word: any) {
+        this.http.delete({
+            path: 'reports/' + this.report.id + '/glossary/rel/' + word.id
+        }).subscribe((res) => {
+            this.report.glossary = this.report.glossary.filter(e => e.id !== word.id);
+        });
+    }
+
+    displayFn(word: any) {
+        if (word) { return word.word; }
+    }
+
+    public searchWordO(text: string): Observable<any> {
+        return this.http.get({
+            path: 'glossaries',
+            data: {
+                where: {
+                    word: {
+                        like: this.searchWordText, options: 'i'
+                    }
+                },
+                limit: 5
+            },
+            encode: true
+        }).pipe(map((res) => {
+            const words = res.body as any;
+            const foundWords = words.filter(e => !this.report.glossary.find(j => j.id === e.id));
+            return foundWords;
+        }));
     }
 }
