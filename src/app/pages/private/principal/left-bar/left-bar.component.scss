@@ -89,7 +89,8 @@
 		padding-left: 6%;
 		text-align: left;
         display: flex;
-        align-items: center;
+		align-items: center;
+		cursor: pointer;
         &:before  {
             color: #bec5d0;
         }

@@ -101,7 +101,7 @@
             font-family: "Helvetica Neue",sans-serif;
             color: #616161;
             font-weight: bold;
-            font-size: 1em;
+            font-size: 1.2em;
         }
     }
     &__top {
@@ -148,6 +148,9 @@
         width: 100%;
         box-sizing: border-box;
         padding: 3.46% 2.89% 1.73% 4.04%;
+        height: 54vh;
+        overflow: scroll;
+        overflow-x: hidden;
     }
     .multimedia-item {
         padding: 12px 0;
