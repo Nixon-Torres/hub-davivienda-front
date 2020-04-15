@@ -174,7 +174,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             path: 'users/list'
         }).subscribe((response) => {
             this.originalUsers = response.body as unknown as any[];
-            var users = this.originalUsers;
+            let users = this.originalUsers;
 
             users = users.filter((e) => this.isAuthorAddedAlready(e));
             this.list.users = users;
@@ -270,6 +270,17 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         };
 
         this.saveReport(newReport);
+    }
+
+    public getUserImage(user: any) {
+        const defaultImg = '/assets/images/user/user.png';
+        const image = user.files && user.files.length ? user.files.find(e => e.key === 'profile-image') : null;
+
+        if (!image) {
+            return defaultImg;
+        }
+
+        return this.STORAGE_URL + image.fileName;
     }
 
     public getThumbnail(report: any) {
