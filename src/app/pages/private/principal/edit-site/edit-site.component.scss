@@ -23,6 +23,7 @@
         color: #616161;
         font-size: 14px;
         line-height: 16px;
+        font-weight: bold;
         span {
             font-weight: 600;
         }
@@ -43,5 +44,6 @@
     }
     &__container {
         padding: 20px 30px;
+        height: 61vh;
     }
 }
