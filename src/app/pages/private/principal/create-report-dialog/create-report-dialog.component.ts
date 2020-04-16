@@ -165,7 +165,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             },
             encode: true
         }).subscribe((response) => {
-            this.list.companies = response.body;
+            this.list.companies = (response.body as any).sort((a, b) => {
+                if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                    return 1;
+                }
+                if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                    return -1;
+                }
+                return 0;
+            });
         });
     }
 
@@ -219,7 +227,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
                 y.push(x);
             }
             return y;
-        }, []);
+        }, []).sort((a, b) => {
+            if (a.description > b.description) {
+                return 1;
+            }
+            if (b.description > a.description) {
+                return -1;
+            }
+            return 0;
+        });
         types.push(this.newReportObj);
         this.list.typeSections = types;
         this.createReportForm.patchValue({sectionTypeKey: null});

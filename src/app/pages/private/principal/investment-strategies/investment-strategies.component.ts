@@ -69,7 +69,15 @@ export class InvestmentStrategiesComponent implements OnInit {
             data: {where: {stateId: '5e068c81d811c55eb40d14d0'}},
             encode: true
         }).subscribe((response: any) => {
-            this.list.reports = response.body;
+            this.list.reports = response.body.sort((a, b) => {
+                if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                    return 1;
+                }
+                if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                    return -1;
+                }
+                return 0;
+            });
         }, (error: any) => {
             console.error(error);
         });
