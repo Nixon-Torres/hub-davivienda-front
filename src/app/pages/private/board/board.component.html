@@ -457,7 +457,7 @@
                                                formControlName="searchInput">
                                     </mat-form-field>
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                        <mat-option *ngFor="let word of (foundWordsObservable | async)" [value]="word"
+                                        <mat-option *ngFor="let word of (foundWordsObservable | async)"
                                             (click)="addWord(word)">
                                             <span>{{ word.word }}</span>
                                         </mat-option>
