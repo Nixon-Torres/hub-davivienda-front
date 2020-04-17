@@ -1,6 +1,5 @@
 .draggable-list {
     width: 100%;
-    min-height: 60px;
     display: block;
     background: white;
     overflow: hidden;
@@ -64,6 +63,9 @@
 
     &.show {
         display: block !important;
+        height: 8em;
+        overflow: scroll;
+        overflow-x: hidden;
     }
     display: none;
 }
