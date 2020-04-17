@@ -278,7 +278,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.showSomeoneEditingDialog();
         moment.locale('es'); // Set locale lang for momentJs
 
         this.glossaryForm = this.fb.group({
@@ -301,6 +300,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
                 this.checkNotifications(this.report.id);
+                this.checkIfEditable();
 
             } else if (params.get('stateId')) {
                 const folderId = params.get('folderId');
@@ -449,6 +449,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 instance.addInlineEditor('editor5', 'Escriba aquí el seguimientos de las acciones de las empresas');
             }
         }, 500);
+    }
+
+    checkIfEditable() {
+        this.http.post({
+            path: '/reportEditions/' + this.report.id
+        }).subscribe((res) => {
+            const editable = res.body as any;
+            this.readonly = !editable.editable;
+            this.showSomeoneEditingDialog();
+        });
     }
 
     showSomeoneEditingDialog() {
@@ -1866,6 +1876,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public addWord(word: any) {
         this.wordsVisible = false;
+
         this.http.put({
             path: 'reports/' + this.report.id + '/glossary/rel/' + word.id
         }).subscribe((res) => {
@@ -1891,10 +1902,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             data: {
                 where: {
                     word: {
-                        like: this.searchWordText, options: 'i'
+                        like: text, options: 'i'
                     }
                 },
-                limit: 5
+                order: 'word ASC'
             },
             encode: true
         }).pipe(map((res) => {
