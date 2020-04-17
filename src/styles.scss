@@ -634,6 +634,9 @@ $builder-bg: #f5f7fb;
 .info_content{
 	mat-checkbox{
 		width: 8%;
+		@media only screen and (max-width: 600px){
+			display: none;
+		}
 		&::before{
 			content: "";
 			border: solid 1px #f3f3f373;
@@ -658,10 +661,19 @@ $builder-bg: #f5f7fb;
 	.report_content{
 		margin: 0 auto;
 		max-width: 80px;
+		@media only screen and (max-width: 600px){
+			max-width: initial;
+			width: 100%;
+			text-align: center;
+		}
 	}
 	.report--title{
 		max-width: 40%;
-    width: 35%
+		width: 35%;
+		@media only screen and (max-width: 600px){
+			max-width: initial;
+			width: 75%;
+		}
 	}
 }
 
@@ -1163,6 +1175,8 @@ mat-expansion-panel {
 	#mat-autocomplete-0{
 		box-shadow: none;
 		background-color: #f7f7f7;
+		min-width: 287px;
+		max-width: initial;
 	}
 	
 	.glossary_options{
