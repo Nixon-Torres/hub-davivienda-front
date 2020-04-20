@@ -7,7 +7,7 @@ hooks:
   ApplicationStart:
     - location: scripts/copy_application_files
       timeout: 300
-      runas: ubuntu
+      runas: root
     - location: scripts/restart_service
       timeout: 300
       runas: ubuntu
