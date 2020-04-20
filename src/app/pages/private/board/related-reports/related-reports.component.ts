@@ -11,7 +11,7 @@ import {HttpService} from '../../../../services/http.service';
 export class RelatedReportsComponent implements OnInit {
 
     @Input('reportId') private reportId: string;
-    @Input('readOnly') private readOnly: boolean;
+    @Input('readOnly') public readOnly: boolean;
 
     public timer: any = {
         toRelated: null
