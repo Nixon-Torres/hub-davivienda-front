@@ -11,6 +11,7 @@ import {HttpService} from '../../../../services/http.service';
 export class RelatedReportsComponent implements OnInit {
 
     @Input('reportId') private reportId: string;
+    @Input('readOnly') private readOnly: boolean;
 
     public timer: any = {
         toRelated: null
@@ -29,6 +30,9 @@ export class RelatedReportsComponent implements OnInit {
     }
 
     public drop(event: CdkDragDrop<string[]>) {
+        if (this.readOnly) {
+            return;
+        }
         moveItemInArray(this.relatedReports, event.previousIndex, event.currentIndex);
         this.relatedReports.map((val, ind) => {
             val.pos = ind;
@@ -82,16 +86,25 @@ export class RelatedReportsComponent implements OnInit {
                             },
                             trash: false
                         }]
-                    }
+                    },
+                    order: 'name ASC'
                 },
                 encode: true
             }).subscribe((response: any) => {
-                this.foundedReports = response.body;
+                this.foundedReports = response.body.sort((a, b) => {
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                        return 1;
+                    }
+                    if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                        return -1;
+                    }
+                    return 0;
+                });
             });
         }, 800);
     }
 
-    public saveRelatations(input: Array<any>, fn?: Function): any {
+    public saveRelatations(input: Array<any>, fn?: () => void): any {
         this.rcSaveRelations(input, 0, () => {
             if (fn) {
                 return fn();
@@ -99,14 +112,14 @@ export class RelatedReportsComponent implements OnInit {
         });
     }
 
-    private rcSaveRelations(input: Array<any>, index: number, fn: Function): Function {
-        if (index == input.length) {
+    private rcSaveRelations(input: Array<any>, index: number, fn: () => void) {
+        if (index === input.length) {
             return fn();
         }
-        let val = input[index];
-        let path = val.id ? `reportsRelated/${val.id}` : 'reportsRelated';
-        let method = val.id ? 'patch' : 'post';
-        let data = val.id ? {
+        const val = input[index];
+        const path = val.id ? `reportsRelated/${val.id}` : 'reportsRelated';
+        const method = val.id ? 'patch' : 'post';
+        const data = val.id ? {
             pos: val.pos
         } : {
             pos: val.pos,
@@ -115,11 +128,11 @@ export class RelatedReportsComponent implements OnInit {
         };
 
         this.http[method]({
-            path: path,
-            data: data
+            path,
+            data
         }).subscribe((response: any) => {
             if (!val.id) {
-                response.body['related'] = val.related;
+                response.body.related = val.related;
                 this.relatedReports.push(response.body);
             }
             index++;
@@ -149,11 +162,14 @@ export class RelatedReportsComponent implements OnInit {
     }
 
     public deleteReportRelationship(related: any): void {
+        if (this.readOnly) {
+            return;
+        }
+
         this.http.delete({
             path: `reportsRelated/${related.id}`
         }).subscribe(() => {
-            this.relatedReports = this.relatedReports.filter((a) => a.id != related.id);
+            this.relatedReports = this.relatedReports.filter((a) => a.id !== related.id);
         });
     }
-
 }

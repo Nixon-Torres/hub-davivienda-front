@@ -457,6 +457,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe((res) => {
             const editable = res.body as any;
             this.readonly = !editable.editable;
+
+            if (!this.readonly) {
+                setTimeout(() => {
+                    this.checkIfEditable();
+                }, 30000);
+            }
             this.showSomeoneEditingDialog();
         });
     }
