@@ -165,7 +165,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             },
             encode: true
         }).subscribe((response) => {
-            this.list.companies = response.body;
+            this.list.companies = (response.body as any).sort((a, b) => {
+                if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                    return 1;
+                }
+                if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                    return -1;
+                }
+                return 0;
+            });
         });
     }
 
@@ -174,7 +182,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             path: 'users/list'
         }).subscribe((response) => {
             this.originalUsers = response.body as unknown as any[];
-            var users = this.originalUsers;
+            let users = this.originalUsers;
 
             users = users.filter((e) => this.isAuthorAddedAlready(e));
             this.list.users = users;
@@ -219,7 +227,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
                 y.push(x);
             }
             return y;
-        }, []);
+        }, []).sort((a, b) => {
+            if (a.description > b.description) {
+                return 1;
+            }
+            if (b.description > a.description) {
+                return -1;
+            }
+            return 0;
+        });
         types.push(this.newReportObj);
         this.list.typeSections = types;
         this.createReportForm.patchValue({sectionTypeKey: null});
@@ -270,6 +286,17 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         };
 
         this.saveReport(newReport);
+    }
+
+    public getUserImage(user: any) {
+        const defaultImg = '/assets/images/user/user.png';
+        const image = user.files && user.files.length ? user.files.find(e => e.key === 'profile-image') : null;
+
+        if (!image) {
+            return defaultImg;
+        }
+
+        return this.STORAGE_URL + image.fileName;
     }
 
     public getThumbnail(report: any) {

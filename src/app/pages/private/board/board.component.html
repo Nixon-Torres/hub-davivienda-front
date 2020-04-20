@@ -164,13 +164,13 @@
                         (click)="enableGrapeEditor()">HTML</button>
             </div>
             <div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
-                <button class="pdf__btn" (click)="openUploadDialog()">
+                <button class="pdf__btn" (click)="openUploadDialog()" [disabled]="readonly">
                     <span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
                 </button>
                 <p class="pdf__max">Tamaño máximo hasta 10GB</p>
             </div>
 
-            <div class="report-banner-selection">
+            <div class="report-banner-selection" *ngIf="!readonly">
                 <div id="banner" class="banner">
                     <label for="reportBannerImg">
                         <div class="btn">
@@ -250,7 +250,7 @@
             <div *ngIf="!grapeEnabled" class="inline-editor-additional-sections">
                 <div class="native-editor-section new-block" *ngFor="let block of blocks">
                     <div class="control-wrapper onecolumn-content" *ngIf="block.type === 'onecolumn'">
-                        <div class="remove-section" (click)="removeEditorSection(block)">
+                        <div class="remove-section" (click)="removeEditorSection(block)" *ngIf="!readonly">
                             <i class="material-icons">delete</i>
                             Eliminar
                         </div>
@@ -260,7 +260,7 @@
                     <div class="control-wrapper twocolumns-content"
                          [ngClass]="{'twocolumnsb-content': block.type === 'twocolumnsb'}"
                          *ngIf="block.type !== 'onecolumn'">
-                        <div class="remove-section" (click)="removeEditorSection(block)">
+                        <div class="remove-section" (click)="removeEditorSection(block)" *ngIf="!readonly">
                             <i class="material-icons">delete</i>
                             Eliminar
                         </div>
@@ -276,7 +276,7 @@
                                class="external-source-input" type="text" placeholder="URL externa" *ngIf="block.externalImage">
                             </textarea>
                             <div class="cont" *ngIf="block.externalImage" style="top: 75%">
-                                <span class="select-img" (click)="block.externalImage = false">Borrar imagen</span>
+                                <span class="select-img" (click)="block.externalImage = false" *ngIf="!readonly">Borrar imagen</span>
                             </div>
 
                             <div class="cont">
@@ -314,7 +314,7 @@
                     </div>
                 </div>
 
-                <div class="add-new-editor-block">
+                <div class="add-new-editor-block" *ngIf="!readonly">
                     <div class="btn-section">
                         <button (click)="addMenuVisible = !addMenuVisible"
                                 mat-flat-button class="bttn bttn-default btn-circle" [ngClass]="{'close' : addMenuVisible}">
@@ -347,7 +347,7 @@
 
         <!-- PANEL -->
         <mat-grid-tile [colspan]="grid.col.panel" [rowspan]="1" class="builder-tabs">
-            <div class="readonly-overlay" *ngIf="readonly"></div>
+            <div class="readonly-overlay" *ngIf="false && readonly"></div>
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs invisible">
@@ -403,7 +403,7 @@
                                     </section>
                                 </section>
                                 <p class="tags__info">Separa las etiquetas con comas (ej. prueba1, prueba2)</p>
-                                <button class="tags__save" (click)="onSaveTags()">Guardar</button>
+                                <button class="tags__save" (click)="onSaveTags()" [disabled]="readonly">Guardar</button>
                             </div>
                         </mat-expansion-panel>
 
@@ -420,7 +420,7 @@
                                 <textarea [(ngModel)]="report.metaTitle" placeholder="Ejemplo: Nombre/"></textarea>
                                 <p class="tags__info">Meta descripci&oacute;n de la URL</p>
                                 <textarea [(ngModel)]="report.metaDescription" placeholder="Ejemplo: Nombre/"></textarea>
-                                <button class="tags__save" (click)="validateMarketingOnSave()">Guardar</button>
+                                <button class="tags__save" (click)="validateMarketingOnSave()" [disabled]="readonly">Guardar</button>
                             </div>
 
                         </mat-expansion-panel>
@@ -436,7 +436,7 @@
                                 <p>Seleccione entre 1 y 4 informes relacionados con su contenido</p>
 
                                 <div class="filter">
-                                    <app-related-reports [reportId]="report.id"></app-related-reports>
+                                    <app-related-reports [readOnly]="readonly" [reportId]="report.id"></app-related-reports>
                                 </div>
                             </div>
 
@@ -450,8 +450,43 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
 
-                            <p>This is the primary content of the panel.</p>
-                            <!-- <app-related-reports></app-related-reports> -->
+                            <div id="searchWords2">
+                                <form [formGroup]="glossaryForm" *ngIf="!readonly">
+                                    <mat-form-field class="example-full-width" floatLabel="never">
+                                        <input matInput placeholder="Escriba la palabra que desea encontrar" [matAutocomplete]="auto"
+                                               formControlName="searchInput">
+                                    </mat-form-field>
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                        <mat-option *ngFor="let word of (foundWordsObservable | async)"
+                                            (click)="addWord(word)">
+                                            <span>{{ word.word }}</span>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </form>
+
+                                <!--<mat-form-field floatLabel="never">
+                                    <input matInput class="search-input" type="search" [(ngModel)]="searchWordText" (keyup)="searchWords()"
+                                       placeholder="Escriba la palabra que desea encontrar" autocomplete="off" >
+                                    <mat-icon matSuffix>search</mat-icon>
+                                </mat-form-field>
+
+                                <mat-action-list id="foundedReports" *ngIf="wordsVisible">
+                                    <button mat-list-item *ngFor="let word of foundWords;" (click)="addWord(word)">
+                                        <span>{{ word.word }}</span>
+                                    </button>
+                                </mat-action-list>-->
+                            </div>
+                            <div class="glossary-list-section">
+                                <mat-form-field class="word-chip-list">
+                                    <mat-chip-list #chipWordList aria-label="Fruit selection">
+                                        <mat-chip *ngFor="let word of report.glossary" [selectable]="false"
+                                                  [removable]="!readonly" (removed)="removeWord(word)">
+                                            {{word.word}}
+                                            <mat-icon *ngIf="!readonly" matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </mat-form-field>
+                            </div>
 
                         </mat-expansion-panel>
                     </mat-accordion>

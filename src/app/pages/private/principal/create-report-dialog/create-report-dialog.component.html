@@ -67,14 +67,12 @@
 		<div class="authors-box">
 			<ul>
                 <li>
-                    <img *ngIf="!user.photo" src="/assets/images/user/user.png" class="user-img">
-                    <img *ngIf="user.photo" src="{{STORAGE_URL}}{{user.photo}}" class="user-img">
+                    <img [src]="getUserImage(user)" class="user-img">
                     <p class="name">{{user.name}}</p>
                     <p class="cargue">{{user.charge}}</p>
                 </li>
 				<li *ngFor="let author of list.authors; let indice=index">
-                    <img *ngIf="!author.photo" src="/assets/images/user/user.png" class="user-img">
-                    <img *ngIf="author.photo" src="{{STORAGE_URL}}{{author.photo}}" class="user-img">
+                    <img [src]="getUserImage(author)" class="user-img">
 					<p class="name">{{author.name}}</p>
 					<p class="cargue">{{author.charge}}</p>
 					<button class="del icon icon-times" (click)=onDeleteAuthor(indice)></button>

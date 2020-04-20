@@ -525,7 +525,15 @@ export class RightContentComponent implements OnInit {
             data: query.filter,
             encode: true
         }).subscribe((response: any) => {
-            this.fullReportList = response.body;
+            this.fullReportList = response.body.sort((a, b) => {
+                if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                    return 1;
+                }
+                if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                    return -1;
+                }
+                return 0;
+            });
         });
     }
 

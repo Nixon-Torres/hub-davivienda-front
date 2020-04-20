@@ -30,4 +30,5 @@ export interface Report {
     presentationUrl?: any;
     metaTitle?: any;
     metaDescription?: any;
+    glossary?: any;
 }

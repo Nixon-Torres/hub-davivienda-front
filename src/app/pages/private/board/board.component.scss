@@ -1256,3 +1256,126 @@ $default-font: "Helvetica Neue", Medium;
         margin-bottom: 0px;
     }
 }
+
+#searchWords2 {
+    margin-bottom: 10px;
+
+    .mat-form-field-wrapper {
+        width: 251px;
+        background: #f5f7fb;
+        border: 1px solid #eff1f6;
+
+        input {
+            padding-left: 10px;
+            margin-bottom: 0px;
+            height: 19px;
+            border: 0 !important;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .mat-form-field-label-wrapper{
+            margin-left: 10px;
+            margin-top: 3px;
+        }
+    }
+}
+
+.mat-form-field-outline-start, .mat-form-field-outline-end {
+    border-radius: 0 !important;
+}
+
+.mat-form-field-infix {
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+        border: 0 !important;
+    }
+
+    .mat-form-field-appearance-legacy .mat-form-field-underline {
+        height: 0 !important;
+    }
+}
+
+#searchWords {
+    position: relative;
+
+    input {
+        background: #f5f7fb;
+        border: 1px solid #eff1f6;
+        padding: 0px 10px;
+        height: 30px;
+        width: 100%;
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+
+        &::placeholder {
+            font-size: 12px;
+            font-style: italic;
+        }
+    }
+
+    .mat-list {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+        top: 21px;
+    }
+}
+
+.glossary-list-section {
+    padding: 0 4px;
+
+    .word-chip-list {
+        width: 100%;
+
+        .mat-input-element {
+            caret-color: transparent;
+        }
+
+        .mat-chip-input {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .mat-chip-list-wrapper {
+            border: 1px solid #eff4f8;
+            padding: 2px;
+            min-height: 50px;
+            background: #f5f7fb;
+        }
+
+        .mat-chip {
+            border: 2px solid #eff4f8;
+            background: white;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            font-size: 12px;
+            padding-left: 9px;
+            min-height: 23px;
+        }
+
+        .mat-standard-chip {
+            border-radius: 5px;
+            color: #999;
+        }
+
+        .mat-standard-chip:hover::after {
+            opacity: .035;
+        }
+
+        .mat-standard-chip .mat-chip-remove.mat-icon {
+            width: 10px;
+            height: 13px;
+            font-size: 13px;
+            opacity: 0.18;
+        }
+    }
+}
+
+.select-authors{
+	.ng-select.ng-select-single .ng-select-container .ng-value-container, .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value{
+		display: flex;
+		align-items: center;
+		overflow: initial;
+	}
+}

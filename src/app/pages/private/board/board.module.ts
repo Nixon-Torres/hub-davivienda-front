@@ -32,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import {MatAutocompleteModule, MatInputModule} from '@angular/material';
 
 const routes: Routes = [
     {
@@ -87,7 +88,9 @@ const materialModules: any[] = [
         NgOptionHighlightModule,
         DragDropModule,
         MatListModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        MatInputModule,
+        MatAutocompleteModule
     ],
     exports: [
         materialModules

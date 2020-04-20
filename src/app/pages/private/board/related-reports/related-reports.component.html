@@ -1,4 +1,4 @@
-<div id="searchReports">
+<div id="searchReports" *ngIf="!readOnly">
 	<input type="text" [(ngModel)]="ifilter" (keyup)="searchReports()" placeholder="Escribe el nombre del informe">
 </div>
 
