@@ -661,6 +661,10 @@ $default-font: "Helvetica Neue", Medium;
     background: white;
     margin: 50px auto -3px;
 
+    .new-block.footer {
+        padding-top: 0px;
+    }
+
     .divider {
         border: 1px solid #e7eaf1;
         height: 0;

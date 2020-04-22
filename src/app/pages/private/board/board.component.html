@@ -335,6 +335,16 @@
                         <span>Agregar nuevo m&oacute;dulo</span>
                     </div>
                 </div>
+
+                <div class="native-editor-section new-block footer">
+                    <div class="control-wrapper deep-content" (click)="editor6.focus()">
+                        <div class="inline-editor-block" id="editor6" #editor6>
+                        </div>
+                        <span [ngClass]="{'invisible': editor6Data !== ''}"
+                              class="placeholder" unselectable="on">
+                        DEEP CONTENT</span>
+                    </div>
+                </div>
             </div>
 
         </mat-grid-tile>

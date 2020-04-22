@@ -31,4 +31,5 @@ export interface Report {
     metaTitle?: any;
     metaDescription?: any;
     glossary?: any;
+    rReferences?: any;
 }
