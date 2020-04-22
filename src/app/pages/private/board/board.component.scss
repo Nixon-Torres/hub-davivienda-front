@@ -1264,17 +1264,18 @@ $default-font: "Helvetica Neue", Medium;
     margin-bottom: 10px;
 
     .mat-form-field-wrapper {
-        width: 251px;
+        width: 277px;
         background: #f5f7fb;
         border: 1px solid #eff1f6;
 
         input {
             padding-left: 10px;
             margin-bottom: 0px;
-            height: 19px;
+            height: 30px;
             border: 0 !important;
             outline: none;
             box-shadow: none;
+            color: #a5abb1;
         }
 
         .mat-form-field-label-wrapper{

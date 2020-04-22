@@ -634,6 +634,9 @@ $builder-bg: #f5f7fb;
 .info_content{
 	mat-checkbox{
 		width: 8%;
+		@media only screen and (max-width: 600px){
+			display: none;
+		}
 		&::before{
 			content: "";
 			border: solid 1px #f3f3f373;
@@ -658,10 +661,19 @@ $builder-bg: #f5f7fb;
 	.report_content{
 		margin: 0 auto;
 		max-width: 80px;
+		@media only screen and (max-width: 600px){
+			max-width: initial;
+			width: 100%;
+			text-align: center;
+		}
 	}
 	.report--title{
 		max-width: 40%;
-    width: 35%
+		width: 35%;
+		@media only screen and (max-width: 600px){
+			max-width: initial;
+			width: 75%;
+		}
 	}
 }
 
@@ -693,6 +705,8 @@ $builder-bg: #f5f7fb;
 		.mat-form-field-flex{
 		.mat-form-field-infix{
 			border-top: none;
+			padding: 0;
+			min-height: 2em;
 		}
 	}
 	.mat-form-field-underline{
@@ -731,10 +745,16 @@ margin-top: 2%;
 	padding-top: 4%;
 	max-height: 47vh;
 	overflow-y: auto;
+	@media only screen and (max-width: 1000px){
+		max-height: initial;
+	}
 }
 .content--top{
 	.insert_btn{
 		padding-right: 15px;
+		@media only screen and (max-width: 1000px){
+			display: none;
+		}
 		button{
 		background: transparent;
 		color: #ff4a74;
@@ -1044,18 +1064,20 @@ margin-top: 2%;
             background-image: url('assets/images/related.png');
             background-repeat: no-repeat;
 			background-position: right;
-			border: solid 1px #c4c4c4;
-			padding: 7px 5px;
+			border: solid 1px #c4c4c4 !important;
 			background-size: 16%;
 			background-color: #f5f7fb;
-			width: 89%;
 			margin-top: 7%;
 			font-family: Roboto, "Helvetica Neue", sans-serif;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			color: #a5abb1;
-			padding-right: 30px;
-			width: calc(100% - 30px);
+			padding-right: 57px !important;
+			width: calc(100% - 63px) !important;
+			height: 2em !important;
+			background-size: 12%;
+			background-color: #f5f7fb !important;
+    		padding-left: 9px !important;
         }
         }
 
@@ -1150,6 +1172,21 @@ mat-expansion-panel {
 		}
 	}
 }
+
+	#mat-autocomplete-0{
+		box-shadow: none;
+		background-color: #f7f7f7;
+		min-width: 287px;
+		max-width: initial;
+	}
+	
+	.glossary_options{
+		color: #a5abb1;
+		font-size: .875em;
+		font-style: italic;
+		line-height: 1.2;
+		height: 30px !important;
+	}
 
 
 

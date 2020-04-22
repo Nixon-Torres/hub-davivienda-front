@@ -93,7 +93,10 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		margin-top: 20px;
         display: flex;
         justify-content: flex-end;
-        align-items: center;
+		align-items: center;
+		@media only screen and (max-width: 1000px){
+			display: none;
+		}
         .button-reset {
             font-family: 'Helvetica Neue', sans-serif;
             border: 0;
@@ -472,6 +475,9 @@ section {
 .folder_container{
 	padding-bottom: 3%;
 	position: relative;
+	@media only screen and (max-width: 1000px){
+		display: none;
+	}
 
 	.operation-cta{
 		bottom: 0;
