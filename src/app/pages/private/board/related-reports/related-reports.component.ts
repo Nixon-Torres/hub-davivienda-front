@@ -57,7 +57,15 @@ export class RelatedReportsComponent implements OnInit {
             },
             encode: true
         }).subscribe((response: any) => {
-            this.relatedReports = response.body;
+            this.relatedReports = response.body.sort((a, b) => {
+                if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                    return 1;
+                }
+                if (b.name.toLowerCase() > a.name.toLowerCase()) {
+                    return -1;
+                }
+                return 0;
+            });
         });
     }
 
@@ -65,7 +73,7 @@ export class RelatedReportsComponent implements OnInit {
         if (this.timer.toRelated) {
             clearTimeout(this.timer.toRelated);
         }
-        if (!this.ifilter.replace(/\s/g, '').length || this.relatedReports.length >= 4) {
+        if ((this.ifilter && !this.ifilter.replace(/\s/g, '').length) || this.relatedReports.length >= 4) {
             this.foundedReports = [];
             this.ifilter = '';
             return;
