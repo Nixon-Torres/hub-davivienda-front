@@ -58,6 +58,10 @@ export class RelatedReportsComponent implements OnInit {
             encode: true
         }).subscribe((response: any) => {
             this.relatedReports = response.body.sort((a, b) => {
+                if (!a.name || !b.name) {
+                    return 0;
+                }
+
                 if (a.name.toLowerCase() > b.name.toLowerCase()) {
                     return 1;
                 }

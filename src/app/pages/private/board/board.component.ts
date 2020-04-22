@@ -167,13 +167,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private editorOptions = {
         editor1: {
-            removePlugins: [ 'Link' ],
+            removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
+                'Table', 'TableToolbar'],
             heading: {
                 options: [
                     { model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' }
                 ]
             },
             initialData: '<h2></h2>'
+        },
+        editor2: {
+            removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
+                'Table', 'TableToolbar']
         },
         editor3: {
             heading: {
@@ -440,7 +447,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         const instance = this;
         setTimeout(() => {
-            instance.addInlineEditor('editor1', 'Escriba aquí el subtitulo con el que empieza su informe');
+            instance.addInlineEditor('editor1', 'Escriba aquí el titulo de su informe');
             instance.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
             instance.addInlineEditor('editor3', 'SMART CONTENT');
             instance.addInlineEditor('editor4', 'DEEP CONTENT');
