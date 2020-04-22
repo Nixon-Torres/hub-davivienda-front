@@ -89,6 +89,9 @@ header {
                 margin-right: 15px;
                 color: #616161;
                 font-size: 13px;
+                @media only screen and (max-width: 1000px){
+                    display: none;
+                }
                 &:after {
                     top: 12px;
                     left: 15px;
@@ -103,6 +106,9 @@ header {
 
         .notifications {
             outline: none;
+            @media only screen and (max-width: 1000px){
+                display: none;
+            }
             .notifications_icon{
                 color: silver;
             }
