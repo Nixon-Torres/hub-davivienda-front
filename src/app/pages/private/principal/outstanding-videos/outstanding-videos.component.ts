@@ -12,10 +12,10 @@ export class OutstandingVideosComponent implements OnInit {
     public multimediaList: Array<any>;
     public multimedia: any;
     public multimediaNoHome: any;
-    public outstandingHomeTabSelected: boolean;
+    public outstandingHomeTabSelected = true;
     public outstandingArea: string;
     public outstandingList: Array<any>;
-    public previousItem: any;
+    public previousItems: any;
     public outstandingAreaList = [1, 2, 3];
 
     constructor(
@@ -36,7 +36,7 @@ export class OutstandingVideosComponent implements OnInit {
         this.multimedia = this.data.id;
         this.multimediaNoHome = this.data.id;
         this.outstandingHomeTabSelected = true;
-        this.previousItem = null;
+        this.previousItems = null;
     }
 
     public selectOutstanding(event): void {
@@ -58,7 +58,7 @@ export class OutstandingVideosComponent implements OnInit {
 
     public setOutstandingArea(event, area: string) {
         this.outstandingArea = area;
-        this.previousItem = this.checkIfAreaIsTaken();
+        this.previousItems = this.checkIfAreaIsTaken();
         this.selectArea(event);
     }
 
@@ -79,7 +79,7 @@ export class OutstandingVideosComponent implements OnInit {
             data
         }).subscribe((resp: any) => {
             if (resp) {
-                this.previousItem = null;
+                this.previousItems = null;
                 if (modal) {
                     const dialog = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
@@ -96,12 +96,15 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     public onSave(): void {
-        if (this.previousItem && (!this.multimedia || (this.previousItem.id !== this.multimedia))) {
-            this.onSaveOutstanding(this.previousItem.id);
-            this.onSaveOutstanding(null, true);
-        } else {
-            this.onSaveOutstanding(null, true);
+        const isSet = this.previousItems && this.previousItems.length === 1 ? this.previousItems[0].id === this.multimedia : false;
+        this.previousItems = this.previousItems.filter(e => e.id !== this.multimedia);
+        
+        if (this.previousItems && this.previousItems.length && (!this.multimedia || !isSet)) {
+            this.previousItems.forEach((item) => {
+                this.onSaveOutstanding(item.id, false);
+            });
         }
+        this.onSaveOutstanding(null, true);
     }
 
     private onLoadMultimediaList(): void {
@@ -121,14 +124,20 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     private onLoadOutstandingList(): void {
+        const where: any = {
+            key: 'multimedia'
+        };
+
+        if (this.outstandingHomeTabSelected) {
+            where.outstandingHome = true;
+        } else {
+            where.outstanding = true;
+        }
+
         this.http.get({
             path: 'contents',
             data: {
-                where: {
-                    key: 'multimedia',
-                    outstanding: true,
-                    outstandingHome: this.outstandingHomeTabSelected
-                }
+                where
             },
             encode: true
         }).subscribe((resp: any) => {
@@ -139,8 +148,10 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     private checkIfAreaIsTaken() {
-        const item = this.outstandingList.find(e => e.outstandingArea === this.outstandingArea);
-        return item;
+        if (this.outstandingHomeTabSelected) {
+            return this.outstandingList.filter(e => e.outstandingHomeArea === this.outstandingArea);
+        }
+        return this.outstandingList.filter(e => e.outstandingArea === this.outstandingArea);
     }
 
     public closeDialog(): void {
