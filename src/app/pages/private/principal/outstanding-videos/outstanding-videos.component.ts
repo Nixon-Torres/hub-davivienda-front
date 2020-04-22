@@ -98,7 +98,7 @@ export class OutstandingVideosComponent implements OnInit {
     public onSave(): void {
         const isSet = this.previousItems && this.previousItems.length === 1 ? this.previousItems[0].id === this.multimedia : false;
         this.previousItems = this.previousItems.filter(e => e.id !== this.multimedia);
-        
+
         if (this.previousItems && this.previousItems.length && (!this.multimedia || !isSet)) {
             this.previousItems.forEach((item) => {
                 this.onSaveOutstanding(item.id, false);
