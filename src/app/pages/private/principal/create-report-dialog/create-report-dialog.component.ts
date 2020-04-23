@@ -227,7 +227,10 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
                 y.push(x);
             }
             return y;
-        }, []).sort((a, b) => {
+        }, []).map(e => {
+            e.description = e.fullDescription ? e.fullDescription : e.description;
+            return e;
+        }).sort((a, b) => {
             if (a.description > b.description) {
                 return 1;
             }
