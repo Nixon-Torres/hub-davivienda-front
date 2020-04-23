@@ -53,7 +53,7 @@ export class RevisionModalComponent implements OnInit {
         }
 
         if (this.reviewers.length === 0) {
-            this.selectIsVisible = !this.selectIsVisible;
+            this.selectIsVisible = true;
         }
     }
 }
