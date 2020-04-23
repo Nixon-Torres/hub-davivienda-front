@@ -1500,7 +1500,7 @@ $default-font: "Helvetica Neue", Medium;
     display: inline-block !important;;
     width: 60px !important;;
     height: 34px !important;
-    z-index: 1001 !important;
+    z-index: 999 !important;
 }
 
 /* Hide default HTML checkbox */
@@ -1577,7 +1577,7 @@ input:checked + .slider:before {
 
 .fast-content-mask {
     position: absolute;
-    z-index: 1000;
+    z-index: 998;
     background: gray;
     opacity: 0.3;
     width: 100%;
