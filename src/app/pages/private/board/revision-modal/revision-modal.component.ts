@@ -35,21 +35,25 @@ export class RevisionModalComponent implements OnInit {
         this.selectIsVisible = false;
     }
 
-    removeUser(id: string, list:Array<object>, state?: string) {
+    removeUser(id: string, list: Array<object>, state?: string) {
         let found;
         for (const key in list) {
             if (list.hasOwnProperty(key)) {
-                const element = list[key];
-                if(element['id'] === id) {
+                const element: any = list[key];
+                if (element.id === id) {
                     found = key;
                 }
             }
         }
         const removed = list.splice(found, 1)[0];
-        if(state) {
+        if (state) {
             this.reviewers.push(removed);
         } else {
             this.users = [...this.users, removed];
+        }
+
+        if (this.reviewers.length === 0) {
+            this.selectIsVisible = !this.selectIsVisible;
         }
     }
 }
