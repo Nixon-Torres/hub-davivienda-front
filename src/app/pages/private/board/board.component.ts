@@ -272,6 +272,29 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 ]
             },
         },
+        editor6: {
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title',
+                            styles: {
+                                'font-weight': 'bold',
+                                'margin-bottom': '5px'
+                            }
+                        },
+                        title: 'Heading 2',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
+                ]
+            },
+        },
         blocks: {
             heading: {
                 options: [
@@ -432,7 +455,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         const element = this.ref.nativeElement.querySelector( '#' + elementId );
         let options = this.editorOptions[elementId] || this.editorOptions.default;
 
-        if (elementId.startsWith('r')) {
+        if (elementId.startsWith('r') || elementId.startsWith('block')) {
             options = this.editorOptions.blocks;
         }
         const editorOptions = options ? options : {};
