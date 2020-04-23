@@ -1383,3 +1383,18 @@ $default-font: "Helvetica Neue", Medium;
 		overflow: initial;
 	}
 }
+
+.inline-editor-block {
+    .box-title {
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    p {
+        margin-bottom: 20px;
+        line-height: 20px;
+    }
+}
