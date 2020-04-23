@@ -182,7 +182,27 @@ export class BoardComponent implements OnInit, AfterViewInit {
         editor2: {
             removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
-                'Table', 'TableToolbar']
+                'Table', 'TableToolbar'],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'p',
+                            classes: 'box-title',
+                            styles: {
+                                'font-weight': 'bold'
+                            }
+                        },
+                        title: 'Heading 2',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
+                ]
+            }
         },
         editor3: {
             heading: {
@@ -228,6 +248,29 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     }
                 ]
             }
+        },
+        editor5: {
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title',
+                            styles: {
+                                'font-weight': 'bold',
+                                'margin-bottom': '5px'
+                            }
+                        },
+                        title: 'Heading 2',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
+                ]
+            },
         },
         blocks: {
             heading: {
