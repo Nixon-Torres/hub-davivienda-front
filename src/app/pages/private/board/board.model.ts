@@ -32,4 +32,5 @@ export interface Report {
     metaDescription?: any;
     glossary?: any;
     rReferences?: any;
+    fastContentEnabled?: any;
 }

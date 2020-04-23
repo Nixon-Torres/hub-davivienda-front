@@ -207,12 +207,25 @@
                         Escriba aquí el subtitulo con el que empieza su informe</span>
                 </div>
                 <div class="divider"></div>
-                <div class="control-wrapper fast-content" (click)="editor2.focus()">
+                <div class="control-wrapper fast-content" #editor2Cont>
                     <div class="inline-editor-block" id="editor2" #editor2>
                     </div>
                     <span [ngClass]="{'invisible': editor2Data !== ''}"
                         class="placeholder" unselectable="on">
                         Escriba aca texto destacado si es necesario (fast content)</span>
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="report.fastContentEnabled"
+                               (click)="report.fastContentEnabled ? editor1.focus() : editor2.focus()">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="chars-counter">
+                        <span>{{getChars(editor2Data)}} Caracteres de 2000</span>
+                        <div class="radialProgressBar" [ngClass]="'progress-' + getCharsPercentage(editor2Data, 2000)">
+                            <div class="overlay">100</div>
+                        </div>
+                    </div>
+                    <div class="fast-content-mask" *ngIf="!report.fastContentEnabled"></div>
                 </div>
                 <div *ngIf="report?.template?.key === 'html'"  class="divider"></div>
                 <div [ngClass]="{'invisible': report?.template?.key !== 'html'}" class="control-wrapper pre-content" (click)="editor5.focus()">

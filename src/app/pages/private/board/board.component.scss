@@ -743,7 +743,7 @@ $default-font: "Helvetica Neue", Medium;
         .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
             font-size: 20px;
             font-weight: bold;
-            width: 360px;
+            width: 500px;
             line-height: 24px;
         }
     }
@@ -1384,7 +1384,20 @@ $default-font: "Helvetica Neue", Medium;
 	}
 }
 
+.chars-counter {
+    position: absolute;
+    right: 35px;
+    bottom: 20px;
+
+    span {
+        float: left;
+        color: #a5abb1;
+    }
+}
+
 .inline-editor-block {
+    position: relative;
+
     .box-title {
         margin-bottom: 20px;
     }
@@ -1397,4 +1410,178 @@ $default-font: "Helvetica Neue", Medium;
         margin-bottom: 20px;
         line-height: 20px;
     }
+}
+
+.radialProgressBar {
+    border-radius: 50%;
+    -webkit-transform: translate(50%, 50%);
+    transform: translate(50%, 50%);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background: #a5abb1;
+    float:left;
+    width: 30px;
+    height: 30px;
+    margin: -22px 0 0;
+}
+.radialProgressBar .overlay {
+    border-radius: 50%;
+    margin: auto;
+    background: #fff;
+    text-align: center;
+    padding-top: 30%;
+
+    height: 13px !important;
+    width: 22px;
+    font-size: 0;
+}
+
+.progress-0 {
+    background-image: -webkit-linear-gradient(left, #ddd 50%, transparent 50%), -webkit-linear-gradient(left, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(90deg, #ddd 50%, transparent 50%), linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-10 {
+    background-image: -webkit-linear-gradient(36deg, #ddd 50%, transparent 50%), -webkit-linear-gradient(left, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(54deg, #ddd 50%, transparent 50%), linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-20 {
+    background-image: -webkit-linear-gradient(72deg, #ddd 50%, transparent 50%), -webkit-linear-gradient(left, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(18deg, #ddd 50%, transparent 50%), linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-30 {
+    background-image: -webkit-linear-gradient(108deg, #ddd 50%, transparent 50%), -webkit-linear-gradient(left, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(-18deg, #ddd 50%, transparent 50%), linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-40 {
+    background-image: -webkit-linear-gradient(144deg, #ddd 50%, transparent 50%), -webkit-linear-gradient(left, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(-54deg, #ddd 50%, transparent 50%), linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-50 {
+    background-image: -webkit-linear-gradient(right, #ddd 50%, transparent 50%), -webkit-linear-gradient(left, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(-90deg, #ddd 50%, transparent 50%), linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-60 {
+    background-image: -webkit-linear-gradient(left, #028cd5 50%, transparent 50%), -webkit-linear-gradient(36deg, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(90deg, #028cd5 50%, transparent 50%), linear-gradient(54deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-70 {
+    background-image: -webkit-linear-gradient(left, #028cd5 50%, transparent 50%), -webkit-linear-gradient(72deg, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(90deg, #028cd5 50%, transparent 50%), linear-gradient(18deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-80 {
+    background-image: -webkit-linear-gradient(left, #028cd5 50%, transparent 50%), -webkit-linear-gradient(108deg, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(90deg, #028cd5 50%, transparent 50%), linear-gradient(-18deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-90 {
+    background-image: -webkit-linear-gradient(left, #028cd5 50%, transparent 50%), -webkit-linear-gradient(144deg, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(90deg, #028cd5 50%, transparent 50%), linear-gradient(-54deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-100 {
+    background-image: -webkit-linear-gradient(left, #028cd5 50%, transparent 50%), -webkit-linear-gradient(144deg, #028cd5 50%, #ddd 50%);
+    background-image: linear-gradient(90deg, #028cd5 50%, transparent 50%), linear-gradient(-90deg, #028cd5 50%, #ddd 50%);
+}
+
+/* The switch - the box around the slider */
+.switch {
+    top: 9px;
+    position: absolute !important;
+    right: 15px;
+    display: inline-block !important;;
+    width: 60px !important;;
+    height: 34px !important;
+    z-index: 1001 !important;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0 !important;;
+    width: 0 !important;;
+    height: 0 !important;;
+}
+
+.grapes-container [type=checkbox]:checked + span:not(.lever):before {
+    border: 0 !important;
+}
+
+.grapes-container [type=checkbox] + span:not(.lever):before, .grapes-container [type=checkbox]:not(.filled-in) + span:not(.lever):after {
+    border: 0 !important;
+}
+
+.slider.round {
+    width: 17px !important;
+}
+
+.grapes-container [type=checkbox]:checked + span:not(.lever):before {
+    top: 0!important;
+}
+
+/* The slider */
+.slider {
+    width: 17px;
+    position: absolute !important;;
+    cursor: pointer !important;;
+    top: 0 !important;;
+    left: 0 !important;;
+    right: 0 !important;;
+    bottom: 0 !important;;
+    background-color: #ccc !important;;
+    -webkit-transition: .4s !important;;
+    transition: .4s !important;;
+}
+
+.slider:before {
+    position: absolute !important;;
+    content: "" !important;;
+    height: 20px !important;;
+    width: 20px !important;;
+    left: 4px !important;;
+    bottom: 4px !important;;
+    background-color: white !important;;
+    -webkit-transition: .4s !important;;
+    transition: .4s !important;;
+}
+
+input:checked + .slider {
+    background-color: #2196F3 !important;;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3 !important;;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px) !important;;
+    -ms-transform: translateX(26px) !important;;
+    transform: translateX(26px) !important;;
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px !important;;
+}
+
+.slider.round:before {
+    border-radius: 50% !important;;
+}
+
+.fast-content-mask {
+    position: absolute;
+    z-index: 1000;
+    background: gray;
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }

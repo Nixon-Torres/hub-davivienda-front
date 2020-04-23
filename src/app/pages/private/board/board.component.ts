@@ -127,7 +127,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         metaTitle: null,
         metaDescription: null,
         glossary: null,
-        rReferences: null
+        rReferences: null,
+        fastContentEnabled: null
     };
 
     public tags = {
@@ -183,6 +184,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
                 'Table', 'TableToolbar'],
+            wordcount: {
+                showCharCount: true,
+                charLimit: 200
+            },
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -515,7 +520,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         const instance = this;
         setTimeout(() => {
             instance.addInlineEditor('editor1', 'Escriba aquí el titulo de su informe');
-            instance.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
+            // tslint:disable-next-line:max-line-length
+            instance.addInlineEditor('editor2', 'Escriba aquí el destacado si es necesario que contenga un máximo de 2000 caracteres (Fast content)');
             instance.addInlineEditor('editor3', 'SMART CONTENT');
             instance.addInlineEditor('editor4', 'DEEP CONTENT');
             instance.addInlineEditor('editor6', 'PIE DE PÁGINA');
@@ -1995,5 +2001,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const foundWords = words.filter(e => !this.report.glossary.find(j => j.id === e.id));
             return foundWords;
         }));
+    }
+
+    public getChars(html: string) {
+        return html.replace(/<[^>]*>?/gm, '').length;
+    }
+
+    public getCharsPercentage(html: string, max: number) {
+        html = html.replace(/<[^>]*>?/gm, '')
+        const perc = Math.floor(html.length / max * 10);
+        return Math.min(perc * 10, 100);
     }
 }
