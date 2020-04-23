@@ -222,15 +222,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private updateTypeSections(section: any) {
         let types = section.reportsType || [];
-        types = types.reduce((y, x) => {
+        types = types.map(e => {
+            e.description = e.fullDescription ? e.fullDescription : e.description;
+            return e;
+        }).reduce((y, x) => {
             if (!y.find((e) => e.description === x.description)) {
                 y.push(x);
             }
             return y;
-        }, []).map(e => {
-            e.description = e.fullDescription ? e.fullDescription : e.description;
-            return e;
-        }).sort((a, b) => {
+        }, []).sort((a, b) => {
             if (a.description > b.description) {
                 return 1;
             }
