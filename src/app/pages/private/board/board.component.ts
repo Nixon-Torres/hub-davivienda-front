@@ -236,8 +236,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                             name: 'h2',
                             classes: 'box-title',
                             styles: {
-                                'font-weight': 'bold',
-                                'margin-bottom': '5px'
+                                'font-weight': 'bold'
                             }
                         },
                         title: 'Heading 2',
@@ -259,8 +258,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                             name: 'h2',
                             classes: 'box-title',
                             styles: {
-                                'font-weight': 'bold',
-                                'margin-bottom': '5px'
+                                'font-weight': 'bold'
                             }
                         },
                         title: 'Heading 2',
@@ -282,8 +280,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                             name: 'h2',
                             classes: 'box-title',
                             styles: {
-                                'font-weight': 'bold',
-                                'margin-bottom': '5px'
+                                'font-weight': 'bold'
                             }
                         },
                         title: 'Heading 2',
