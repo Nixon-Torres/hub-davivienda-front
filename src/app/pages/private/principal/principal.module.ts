@@ -50,7 +50,8 @@ import { TagsDialogComponent } from './tags-dialog/tags-dialog.component';
 import { AddWordsDialogComponent } from './add-words-dialog/add-words-dialog.component';
 import { MultimediaComponent } from './multimedia/multimedia.component';
 import { AddMultimediaComponent } from './multimedia/add-multimedia/add-multimedia.component';
-import {OutstandingVideosModule} from './outstanding-videos/outstanding-videos.module';
+import { OutstandingVideosModule } from './outstanding-videos/outstanding-videos.module';
+import { EditBookComponent } from './edit-book/edit-book.component';
 
 const routes: Routes = [
     {
@@ -95,6 +96,7 @@ const materialModules: any[] = [
         FaqButtonComponent,
         FaqContentComponent,
         EditCompaniesComponent,
+        EditBookComponent,
         TagsDialogComponent,
         AddWordsDialogComponent,
         MultimediaComponent,
