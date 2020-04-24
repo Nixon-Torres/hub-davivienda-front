@@ -52,6 +52,7 @@ import { MultimediaComponent } from './multimedia/multimedia.component';
 import { AddMultimediaComponent } from './multimedia/add-multimedia/add-multimedia.component';
 import { OutstandingVideosModule } from './outstanding-videos/outstanding-videos.module';
 import { EditBookComponent } from './edit-book/edit-book.component';
+import { EditBookVersionsComponent } from './edit-book-versions/edit-book-versions.component';
 
 const routes: Routes = [
     {
@@ -97,6 +98,7 @@ const materialModules: any[] = [
         FaqContentComponent,
         EditCompaniesComponent,
         EditBookComponent,
+        EditBookVersionsComponent,
         TagsDialogComponent,
         AddWordsDialogComponent,
         MultimediaComponent,

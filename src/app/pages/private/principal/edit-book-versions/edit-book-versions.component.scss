@@ -471,3 +471,37 @@ input.mat-input-element {
     }
 }
 
+h2.book-title {
+    margin-left: 29px;
+    font-weight: bold;
+    color: #0080FF;
+    cursor: pointer;
+
+    i {
+        vertical-align: middle;
+    }
+}
+
+.book-forms {
+    padding-bottom: 5px;
+}
+
+.book {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.book-buttons {
+    a {
+        margin-left: 28px;
+        font-size: 8px;
+        border: 1px solid #ccc;
+        padding: 4px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover {
+            background: #ccc;
+        }
+    }
+}

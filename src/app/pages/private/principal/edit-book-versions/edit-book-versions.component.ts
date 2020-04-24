@@ -14,12 +14,12 @@ export interface Company {
 }
 
 @Component({
-    selector: 'app-edit-book',
-    templateUrl: './edit-book.component.html',
-    styleUrls: ['./edit-book.component.scss'],
+    selector: 'app-edit-book-versions',
+    templateUrl: './edit-book-versions.component.html',
+    styleUrls: ['./edit-book-versions.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class EditBookComponent implements OnInit, AfterViewInit {
+export class EditBookVersionsComponent implements OnInit, AfterViewInit {
 
     public list: any = {
         companies: []
@@ -30,98 +30,45 @@ export class EditBookComponent implements OnInit, AfterViewInit {
 
     public content: any = null;
     visible = true;
+    public booksVisible: any = {};
 
     public STORAGE_URL = environment.STORAGE_FILES;
 
-    public blocks: any = [ {
-        id: 'mainBook',
-        title: 'PDF Libro',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: '',
-        content: '',
-        type: 'image',
-        class: 'image'
-    }, {
+    public blocksTmpls: any = [{
         id: 'title',
-        title: 'Titulo',
+        title: 'Titulo Libro ',
         subtitle: 'Actualmente se muestra la siguiente información:',
         placeholder: 'Escriba aquí el titulo',
         content: '',
         type: 'input',
         class: 'title'
-    }, {
-        id: 'header',
-        title: 'Header',
+    },  {
+        id: 'year',
+        title: 'Año Libro ',
         subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
+        placeholder: 'Escriba aquí el año',
         content: '',
-        type: 'html',
-        class: 'html header'
+        type: 'input',
+        class: 'title'
     }, {
-        id: 'image',
-        title: 'Imagen 1',
+        id: 'book',
+        title: 'PDF Libro ',
         subtitle: 'Actualmente se muestra la siguiente información:',
         placeholder: '',
         content: '',
         type: 'image',
         class: 'image'
     }, {
-        id: 'second',
-        title: 'Segunda sección',
+        id: 'thumbnail',
+        title: 'Thumbnail Libro ',
         subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
+        placeholder: '',
         content: '',
-        type: 'html',
-        class: 'html second'
-    }, {
-        id: 'third',
-        title: 'Tercera sección',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
-        content: '',
-        type: 'html',
-        class: 'html third'
-    }, {
-        id: 'fourth',
-        title: 'Cuarta sección',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
-        content: '',
-        type: 'html',
-        class: 'html fourth'
-    }, {
-        id: 'fifth',
-        title: 'Quinta sección',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
-        content: '',
-        type: 'html',
-        class: 'html fifth'
-    }, {
-        id: 'sixth',
-        title: 'Sexta sección',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
-        content: '',
-        type: 'html',
-        class: 'html sixth'
-    }, {
-        id: 'seventh',
-        title: 'Septima sección',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
-        content: '',
-        type: 'html',
-        class: 'html seventh'
-    },  {
-        id: 'atencionTable',
-        title: 'Tabla atención',
-        subtitle: 'Actualmente se muestra la siguiente información:',
-        placeholder: 'Escriba aquí el contenido',
-        content: '',
-        type: 'html',
-        class: 'html atencion-table'
-    } ];
+        type: 'image',
+        class: 'image'
+    }];
+    public books: any = [];
+    public blocks: any = [];
 
     private editorOptions = {
         default: {
@@ -140,6 +87,37 @@ export class EditBookComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
+    }
+
+    showBook(book: any) {
+        if (this.booksVisible[book.id]) {
+            return this.booksVisible[book.id].visible = !this.booksVisible[book.id].visible;
+        }
+        return this.booksVisible[book.id] = {visible: true};
+    }
+
+    removeBook(book) {
+        this.books = this.books.filter(e => e.id !== book.id);
+        this.blocks = this.blocks.filter(e => e.bookId !== book.id);
+    }
+
+    addBook() {
+        const id = this.books.length === 0 ? 1 : this.books[this.books.length - 1 ].id + 1;
+        this.books.push({
+            id
+        });
+        this.blocks = this.blocks.concat(this.blocksTmpls.map(e => {
+            return {
+                ...e,
+                id: e.id + '-' + id,
+                bookId: id,
+                title: e.title + id
+            };
+        }));
+    }
+
+    getBlocks(book: any) {
+        return this.blocks.filter(e => e.bookId === book.id);
     }
 
     enableInlineEditor() {
@@ -204,6 +182,17 @@ export class EditBookComponent implements OnInit, AfterViewInit {
             } );
     }
 
+    public createContent() {
+        this.http.post({
+            path: 'contents',
+            data: {
+                key: 'thebookVersionsKey'
+            }
+        }).subscribe((response: any) => {
+          this.getContent();
+        });
+    }
+
     public saveContent() {
         const id = this.content ? '/' + this.content.id : '';
         const verb = this.content ? 'patch' : 'post';
@@ -211,13 +200,15 @@ export class EditBookComponent implements OnInit, AfterViewInit {
         this.http[verb]({
             path: 'contents' + id,
             data: {
-                key: 'thebookKey',
+                key: 'thebookVersionsKey',
                 blocks: this.blocks.map(e => {
                     return {
                         id: e.id,
-                        content: e.content
+                        content: e.content,
+                        bookId: e.bookId
                     };
-                })
+                }),
+                books: this.books
             }
         }).subscribe((response: any) => {
             this.saveImages();
@@ -299,19 +290,17 @@ export class EditBookComponent implements OnInit, AfterViewInit {
     public getContent() {
         this.http.get({
             path: 'contents',
-            data: {where: {key: 'thebookKey'}, include: ['lastUpdater', 'files']},
+            data: {where: {key: 'thebookVersionsKey'}, include: ['lastUpdater', 'files']},
             encode: true
         }).subscribe((response) => {
             if ((response.body as unknown as []).length > 0) {
                 this.name = response.body[0].lastUpdater.name;
                 this.time = response.body[0].updatedAt;
                 this.content = response.body[0];
-                this.blocks = this.blocks.map(e => {
-                    const block = this.content.blocks.find(j => j.id === e.id);
+                this.books = this.content.books ? this.content.books : [];
 
-                    if (!block) {
-                        return  e;
-                    }
+                this.blocks = this.content.blocks.map(e => {
+                    const block = this.blocksTmpls.find(j => e.id.indexOf(j.id) > -1);
 
                     const file = this.content.files.find(j => j.key === 'blockImage-' + e.id);
                     e.fileName =  null;
@@ -319,8 +308,10 @@ export class EditBookComponent implements OnInit, AfterViewInit {
                     e.imageUrl = null;
                     e.assetUrl = null;
                     return {
-                        ...e,
-                        content: block.content,
+                        ...block,
+                        id: e.id,
+                        content: e.content,
+                        bookId: e.bookId,
                         imageId: file ? file.id : null,
                         assetUrl: file && file.fileName ? this.STORAGE_URL + file.fileName : null,
                         fileName: file && file.fileName ? file.fileName  : null
@@ -328,6 +319,8 @@ export class EditBookComponent implements OnInit, AfterViewInit {
                 });
 
                 this.enableInlineEditor();
+            } else {
+                this.createContent();
             }
         });
     }

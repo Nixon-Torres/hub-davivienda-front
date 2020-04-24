@@ -1,0 +1,77 @@
+<article class="outstanding" style="margin-top: 20px">
+    <div class="outstanding__buttons">
+        <button class="btn btn--filled" (click)="saveBookContent()">Guardar</button>
+        <button class="btn btn--filled" (click)="addBook()">Agregar Libro</button>
+    </div>
+
+    <form class="book-forms" autocomplete="off">
+        <div class="book" *ngFor="let book of books">
+            <h2 class="book-title" (click)="showBook(book)">
+                LIBRO {{book.id}}
+                <i class="material-icons">{{booksVisible && booksVisible[book.id] && !!booksVisible[book.id].visible ? 'expand_less' : 'expand_more'}}</i>
+            </h2>
+
+            <div *ngIf="booksVisible && booksVisible[book.id] && !!booksVisible[book.id].visible">
+                <div class="book-buttons">
+                    <a (click)="removeBook(book)">Remover libro</a>
+                </div>
+                <header class="outstanding__header" *ngFor="let block of getBlocks(book)">
+                    <div class="outstanding__texts">
+                        <p class="text--blue">{{block.title}}</p>
+                        <p class="text--small">{{block.subtitle}}</p>
+
+                        <div class="control-wrapper" [ngClass]="[block.class]">
+
+                            <div *ngIf="block.type === 'html'" class="inline-editor-block" [id]="block.id" autocomplete="off">
+                            </div>
+
+                            <div class="control-block" *ngIf="block.type === 'image'">
+                                <div class="cont">
+                                    <label class="select-img" [for]="'ImgInput' + block.id"
+                                           *ngIf="!block.assetUrl && !block.imageUrl">
+                                        <div class="img-container">
+                                            <img src="../../../../assets/images/image-placeholder.png">
+                                            <span class="select-img">Subir archivo</span>
+                                        </div>
+                                    </label>
+                                    <input
+                                        class="file-input"
+                                        type="file"
+                                        name="file"
+                                        (change)="onBlockImageSelected(block, $event)"
+                                        [id]="'ImgInput' + block.id"
+                                    />
+
+                                    <div class="selected-img-cont" *ngIf="block.assetUrl || block.imageUrl">
+
+                                        <img src="../../../../assets/images/image-placeholder.png"
+                                             *ngIf="!isImage(block.imageUrl) && !isImage(block.assetUrl) &&
+                                     !isPdf(block.imageUrl) && !isPdf(block.assetUrl)">
+
+                                        <img class="pdf-icon" src="../../../../assets/images/pdf-icon.png"
+                                             *ngIf="(isPdf(block.imageUrl) || isPdf(block.assetUrl))">
+
+                                        <img [src]="block.imageUrl" class="selected-image"
+                                             *ngIf="block.imageUrl && isImage(block.imageUrl)">
+                                        <img [src]="block.assetUrl" class="selected-image"
+                                             *ngIf="block.assetUrl && isImage(block.assetUrl)">
+
+                                        <span class="select-img" *ngIf="!isImage(block.imageUrl) && !isImage(block.assetUrl)">
+                                    {{block.fileName}}
+                                </span>
+                                        <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar archivo</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="control-block" *ngIf="block.type === 'input'">
+                                <input type="text" matInput [placeholder]="block.placeholder"
+                                       [(ngModel)]="block.content" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        </div>
+    </form>
+</article>
