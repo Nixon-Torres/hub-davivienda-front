@@ -228,12 +228,19 @@
                     <div class="fast-content-mask" *ngIf="!report.fastContentEnabled"></div>
                 </div>
                 <div *ngIf="report?.template?.key === 'html'"  class="divider"></div>
-                <div [ngClass]="{'invisible': report?.template?.key !== 'html'}" class="control-wrapper pre-content" (click)="editor5.focus()">
+                <div [ngClass]="{'invisible': report?.template?.key !== 'html'}" class="control-wrapper pre-content">
                     <div class="inline-editor-block" id="editor5" #editor5>
                     </div>
                     <span [ngClass]="{'invisible': editor5Data !== ''}"
                           class="placeholder" unselectable="on">
                         Escriba aquí el seguimientos de las acciones de las empresas</span>
+                    <!-- Rounded switch -->
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="report.preContentEnabled" (change)="setPrecontent()"
+                               (click)="report.preContentEnabled ? editor3.focus() : editor5.focus()">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="fast-content-mask" *ngIf="!report.preContentEnabled"></div>
                 </div>
                 <div class="divider"></div>
                 <input [(ngModel)]="report.rSmartContentVideo" [ngModelOptions]="{standalone: true}"

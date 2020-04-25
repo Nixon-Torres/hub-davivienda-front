@@ -29,6 +29,7 @@ import {forkJoin, Observable} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, map, switchMap} from 'rxjs/operators';
+import {CKEditor5} from '@ckeditor/ckeditor5-angular';
 
 declare var grapesjs: any;
 declare global {
@@ -128,7 +129,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         metaDescription: null,
         glossary: null,
         rReferences: null,
-        fastContentEnabled: null
+        fastContentEnabled: null,
+        preContentEnabled: null
     };
 
     public tags = {
@@ -332,6 +334,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor5Data = '';
     public editor6Data = '';
 
+    public editor5Instance: any;
+
     public blocks: any = [];
     public banner: any = {};
     public newBanner: any = {};
@@ -423,6 +427,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.enableInlineEditor();
     }
 
+    setPrecontent() {
+        this.editor5Data = !this.report.preContentEnabled ? '' :
+            // tslint:disable-next-line:max-line-length
+            '<h2 class="box-title" style="font-weight:bold;"><strong>P.O. 2020FA: 8,800 / SOBREPONDERAR</strong></h2><p><strong>Sector:</strong> Construcción</p><p><strong>Dividend yield:</strong> 4.0%</p><p><strong>Flotante: </strong>20%</p><p><strong>Último Precio: </strong>1,125</p><p><strong>Sector:</strong> Construcción</p><p><strong>Dividend yield:</strong> 4.0%</p><p><strong>Flotante: </strong>20%</p><p><strong>Último Precio: </strong>1,125</p><p><strong>Sector:</strong> Construcción</p><p><strong>Dividend yield:</strong> 4.0%</p><p><strong>Flotante: </strong>20%</p><p><strong>Último Precio: </strong>1,125</p>';
+        this.editor5Instance.setData(this.editor5Data);
+    }
+
     setDataInInlineEditor() {
         this.editor1Data = this.report.rTitle ? this.report.rTitle : '';
         this.editor2Data = this.report.rFastContent ? this.report.rFastContent : '';
@@ -489,7 +500,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             .create( element, editorOptions)
             .then( editor => {
                 window.editor = editor;
-
+                if (elementId === 'editor5') {
+                    this.editor5Instance = editor;
+                }
                 editor.model.document.on( 'change:data', () => {
                     const block = this.blocks.find(e => e.id === elementId);
                     const data = editor.getData();
@@ -527,7 +540,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             instance.addInlineEditor('editor6', 'PIE DE PÁGINA');
 
             if (this.report && this.report.template && this.report.template.key === 'html') {
-                instance.addInlineEditor('editor5', 'Escriba aquí el seguimientos de las acciones de las empresas');
+                instance.addInlineEditor('editor5', 'Escriba la información de la lista del destacado corredores, sin alterar el orden y la estructura');
             }
         }, 500);
     }
