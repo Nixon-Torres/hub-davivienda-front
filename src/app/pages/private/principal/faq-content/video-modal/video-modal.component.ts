@@ -10,12 +10,17 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 export class VideoModalComponent implements OnInit {
 
     public url: SafeResourceUrl;
+    public urlData: any;
+    public isIframe = false;
     constructor(
         public dialogRef: MatDialogRef<VideoModalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private sanitizer: DomSanitizer
     ) {
         this.url = this.getSecureUrl(this.data.url);
+
+        this.isIframe = this.data.url.indexOf('<iframe') > -1;
+        this.urlData = this.sanitizer.bypassSecurityTrustHtml(this.data.url);
     }
 
     ngOnInit() {

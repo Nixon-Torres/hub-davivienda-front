@@ -19,7 +19,14 @@
                 </div>
                 <div class="form__item">
                     <label for="url">URL del {{multimediaType.name}}</label>
-                    <input type="text" name="" id="url" formControlName="url">
+                    <textarea placeholder="Puede incluir tanto enlaces MP3, como códigos enbebidos de Spotify"
+                              class="url-textarea" type="text" name="" id="url" formControlName="url"
+                              *ngIf="multimediaType.name === 'Podcast'"
+                        ></textarea>
+
+                    <input [placeholder]="'Escribe la URL del ' + multimediaType.name"
+                              type="text" name="" id="url2" formControlName="url"
+                              *ngIf="multimediaType.name !== 'Podcast'">
                 </div>
                 <div class="form__item form__item--file">
                     <p class="form__label" >Miniatura</p>
