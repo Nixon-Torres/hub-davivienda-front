@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
 import io from 'socket.io-client';
+import {HttpService} from './http.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,8 @@ export class SocketService {
     public user: any;
 
     constructor(
-        private auth: AuthService
+        private auth: AuthService,
+        private http: HttpService
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -77,8 +79,13 @@ export class SocketService {
 
     private authenticate(): void {
         const userId = this.user.id;
-        this.socket.emit('authentication', {
+        const payload: any = {
             userId
-        });
+        };
+
+        if (isDevMode()) {
+            payload.id = this.http.getAuthorization();
+        }
+        this.socket.emit('authentication', payload);
     }
 }

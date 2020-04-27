@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
 
 import { LoginContext, AccessTokenInterface, UserInterface } from './auth.service.model';
@@ -18,7 +18,11 @@ export class AuthService {
         private http: HttpService
     ) {
         this.user = new ReplaySubject<any>(1);
-        // this.http.setAuthorization('6Wk3eaWAH693rlbXjc418JiBOAvMbslU1yybTCEVOnbQ47HwNLgkHRz9bgc61egg');
+
+        if (isDevMode() && this.cookie.get('accessToken')) {
+            this.http.setAuthorization(this.cookie.get('accessToken'));
+        }
+
         this.reloadUser();
     }
 
@@ -30,10 +34,12 @@ export class AuthService {
         this.user.next(user);
     }
 
-    public setUserData(attr: string, value: boolean): any {
+    public setUserData(attr: string, value: any): any {
         this.user.subscribe((user) => {
-            user[attr] = value;
-            this.user.next(user);
+            if (user[attr] !== value) {
+                user[attr] = value;
+                this.user.next(user);
+            }
         });
     }
 
@@ -55,6 +61,11 @@ export class AuthService {
                     observer.complete();
                     return;
                 }
+                if (isDevMode()) {
+                    this.cookie.set('accessToken', token.id);
+                    this.http.setAuthorization(token.id);
+                }
+
                 this.getCurrentUser(token.userId, (err: any, user: UserInterface) => {
                     if (err) {
                         observer.error(err);
@@ -101,6 +112,10 @@ export class AuthService {
             path: 'users/logout'
         }).subscribe(
             (response: any) => {
+                if (isDevMode()) {
+                    this.cookie.remove('accessToken');
+                }
+
                 fn(null, response.body);
             },
             (error) => {
