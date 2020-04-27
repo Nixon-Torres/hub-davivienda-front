@@ -66,8 +66,12 @@ export class NotificationsComponent implements OnInit {
         this.getNotifications();
     }
 
-    getWhere(idx) {
+    getWhere(idx: number, readed?: boolean) {
         const where: any = {};
+
+        if (readed === false) {
+            where.readed = false;
+        }
 
         where.ownerId = this.user.id;
         if (idx === 2) {
@@ -103,6 +107,18 @@ export class NotificationsComponent implements OnInit {
         });
     }
 
+    public checkNotifications(notificationId: string, cb: any) {
+        const dataFilter = encodeURI(JSON.stringify({id: notificationId}));
+        this.http.patch({
+            path: `notifications/read?filter=${dataFilter}`,
+            data: {readed: true}
+        }).subscribe(() => {
+            if (cb) {
+                cb();
+            }
+        });
+    }
+
     private getCountNotifications(): void {
         this.http.get({
             path: `notifications/count?where=`,
@@ -116,21 +132,21 @@ export class NotificationsComponent implements OnInit {
 
         this.http.get({
             path: `notifications/count?where=`,
-            data: this.getWhere(2)
+            data: this.getWhere(2, false)
         }).subscribe((response: any) => {
             this.commentsQty = response.body.count;
         });
 
         this.http.get({
             path: `notifications/count?where=`,
-            data: this.getWhere(3)
+            data: this.getWhere(3, false)
         }).subscribe((response: any) => {
             this.othersQty = response.body.count;
         });
 
         this.http.get({
             path: `notifications/count?where=`,
-            data: this.getWhere(4)
+            data: this.getWhere(4, false)
         }).subscribe((response: any) => {
             this.publishedOthersQty = response.body.count;
         });
@@ -167,8 +183,14 @@ export class NotificationsComponent implements OnInit {
         });
     }
 
-    public openNotification(reportId) {
-        this.router.navigate(['app/board', reportId]);
+    public openNotification(notification: any) {
+        this.checkNotifications(notification.id, () => {
+            const queryParams: any = {};
+            if (notification.type === 'report-comment') {
+                queryParams.showComments = true;
+            }
+            this.router.navigate(['app/board', notification.reportId], { queryParams });
+        });
     }
 
     public goBack() {

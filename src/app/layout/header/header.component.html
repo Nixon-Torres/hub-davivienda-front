@@ -23,7 +23,7 @@
                 <button mat-menu-item
                         [ngClass]="{'to-check' : !notification.readed}"
                         *ngFor="let notification of notifications"
-                        (click)="openNotf(notification.reportId, notification.readed)">
+                        (click)="openNotf(notification)">
                     <img class="indicator" src="../assets/images/comments.png" *ngIf="notification.type === 'report-comment'">
                     <div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'"></div>
                     <h6>{{ notification.subject }}</h6>

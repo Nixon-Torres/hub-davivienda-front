@@ -167,7 +167,22 @@ export class HeaderComponent implements OnInit {
         ntContainer.classList.add('notifications');
     }
 
-    openNotf(reportId: number, readed: boolean) {
+    public checkNotifications(notificationId: string, cb: any) {
+        const dataFilter = encodeURI(JSON.stringify({id: notificationId}));
+        this.http.patch({
+            path: `notifications/read?filter=${dataFilter}`,
+            data: {readed: true}
+        }).subscribe(() => {
+            if (cb) {
+                cb();
+            }
+        });
+    }
+
+    openNotf(notification) {
+        const notificationId = notification.id;
+        const reportId = notification.reportId;
+
         this.getCountNotifications();
         this.notifications.filter((a) => {
             if (a.reportId === reportId) {
@@ -175,7 +190,14 @@ export class HeaderComponent implements OnInit {
             }
             return true;
         });
-        this.router.navigate(['app/board', reportId]);
+
+        this.checkNotifications(notificationId, () => {
+            const queryParams: any = {};
+            if (notification.type === 'report-comment') {
+                queryParams.showComments = true;
+            }
+            this.router.navigate(['app/board', reportId],  { queryParams });
+        });
     }
 
     public gotoTo() {

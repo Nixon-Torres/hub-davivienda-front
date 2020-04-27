@@ -374,18 +374,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 switchMap(value => this.searchWordO(value))
             );
 
+
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            if (params.showComments === 'true') {
+                this.showComments();
+            }
+        });
+
         this.activatedRoute.paramMap.subscribe((params: any) => {
 
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get('id')) {
-
                 this.report.id = params.get('id');
                 this.loadReport(this.report.id);
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
-                this.checkNotifications(this.report.id);
                 this.checkIfEditable();
-
             } else if (params.get('stateId')) {
                 const folderId = params.get('folderId');
                 const companyId = params.get('companyId');
@@ -1799,14 +1803,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
         if (this.report.ownerId === this.user.id) {
             this.isOwner = true;
         }
-    }
-
-    public checkNotifications(reportId: string) {
-        const dataFilter = encodeURI(JSON.stringify({reportId}));
-        this.http.patch({
-            path: `notifications/read?filter=${dataFilter}`,
-            data: {readed: true}
-        }).subscribe();
     }
 
     private goToPrincipalPage(): void {
