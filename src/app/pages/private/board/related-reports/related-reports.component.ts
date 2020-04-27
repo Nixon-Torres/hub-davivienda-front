@@ -26,7 +26,9 @@ export class RelatedReportsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getRelatedReports();
+        if (this.reportId) {
+            this.getRelatedReports();
+        }
     }
 
     public drop(event: CdkDragDrop<string[]>) {
