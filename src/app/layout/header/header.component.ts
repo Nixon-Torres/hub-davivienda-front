@@ -36,7 +36,9 @@ export class HeaderComponent implements OnInit {
         private http: HttpService,
         private socket: SocketService
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
         this.startToListenRouter(this.router);
         this.startToListenSockets();
         this.marketing = this.auth.isMarketing();

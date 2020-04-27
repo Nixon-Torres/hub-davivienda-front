@@ -68,12 +68,16 @@ export class HttpService {
         let headers = this.headers();
         return this.http.delete<Response>(this._URL_API + input.path, {
             observe: 'response',
-            headers: headers
+            headers
         }).pipe(catchError(this.handleError));
     }
 
     public path(base: string) {
         return `${this._URL_API}${base}`;
+    }
+
+    public setAuthorization(token: string) {
+        this.authorization = token;
     }
 
     public headers() {

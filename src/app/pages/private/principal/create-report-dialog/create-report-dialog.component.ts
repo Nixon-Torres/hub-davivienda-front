@@ -27,7 +27,9 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
         private router: Router,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
     }
 
     public authors = [];
@@ -84,7 +86,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
 
     private loadReports(): void {
         const query = new loopback();
-        query.filter.where.ownerId = this.auth.getUserData('id');
+        query.filter.where.ownerId = this.user.id;
         query.filter.where.trash = false;
         query.filter.where.reviewed = true;
         query.filter.limit = 6;

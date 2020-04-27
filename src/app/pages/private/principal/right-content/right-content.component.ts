@@ -85,10 +85,12 @@ export class RightContentComponent implements OnInit {
             this.resetSelect();
             this.isFiltered = false;
 
-            if (!this.icurrentObj.currentCategory) {
-                this.loadReports(this.ifilter);
-            } else {
-                this.loadCategory();
+            if (this.user && this.user.id) {
+                if (!this.icurrentObj.currentCategory) {
+                    this.loadReports(this.ifilter);
+                } else {
+                    this.loadCategory();
+                }
             }
 
             if (this.icurrentObj.currentFolder) {
@@ -119,7 +121,17 @@ export class RightContentComponent implements OnInit {
             image: [''],
         });
 
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+
+            if (!this.icurrentObj.currentCategory) {
+                this.loadReports(this.ifilter);
+            } else {
+                this.loadCategory();
+            }
+
+            this.getFolders();
+        });
         this.marketing = this.auth.isMarketing();
         this.isBasicUser = this.auth.isBasicUser();
         this.selectsFn();
@@ -232,8 +244,6 @@ export class RightContentComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadReports();
-        this.getFolders();
         this.setFilterOptions();
     }
 
@@ -297,7 +307,7 @@ export class RightContentComponent implements OnInit {
 
     private loadPager(where: any, path?: any): void {
         this.http.get({
-            path: !path ? 'reports/count?where=' : `users/${this.auth.getUserData('id')}/reportsa/count`,
+            path: !path ? 'reports/count?where=' : `users/${this.user.id}/reportsa/count`,
             data: !path ? where : ''
         }).subscribe((response: any) => {
             this.pager.totalItems = response.body.count;

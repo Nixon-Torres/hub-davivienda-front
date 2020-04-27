@@ -31,8 +31,10 @@ export class ProfileFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.user = this.auth.getUserData();
-        this.getProfileImage();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+            this.getProfileImage();
+        });
 
         this.profileForm = this.formBuilder.group({
             name: new FormControl(this.user.name),

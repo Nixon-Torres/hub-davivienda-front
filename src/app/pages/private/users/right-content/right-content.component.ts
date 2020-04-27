@@ -30,7 +30,9 @@ export class RightContentComponent implements OnInit {
         private users: UsersService,
         public dialog: MatDialog
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
     }
 
     ngOnInit() {

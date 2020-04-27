@@ -27,7 +27,9 @@ export class LeftBarComponent implements OnInit {
         private auth: AuthService,
         private users: UsersService
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
         this.setActive(this.user.id);
     }
 

@@ -353,9 +353,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
         private ref: ElementRef,
         private fb: FormBuilder
     ) {
-        this.user = this.auth.getUserData();
-        this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
-        this.isMarketing = this.auth.isMarketing();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+            this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+            this.isMarketing = this.auth.isMarketing();
+        });
         // this.closeToggleLists();
     }
 

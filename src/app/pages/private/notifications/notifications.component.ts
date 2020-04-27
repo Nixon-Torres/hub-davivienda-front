@@ -38,7 +38,9 @@ export class NotificationsComponent implements OnInit {
         private socket: SocketService
     ) {
         // this.startToListenSockets() // TODO refactory this service for panel
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
     }
 
     ngOnInit() {

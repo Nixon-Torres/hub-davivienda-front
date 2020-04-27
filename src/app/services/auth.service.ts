@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
 
 import { LoginContext, AccessTokenInterface, UserInterface } from './auth.service.model';
 import { HttpService } from './http.service';
@@ -10,54 +10,40 @@ import { CookieStorage } from './storage/cookie.storage';
 })
 export class AuthService {
     private tokenName = '94a08da1fecbb6e8b46990538c7b50b2-*';
-    public user: Subject<any>;
+    public user: ReplaySubject<any>;
+    public loggedIn = false;
 
     constructor(
         private cookie: CookieStorage,
         private http: HttpService
     ) {
-        this.user = new Subject();
-        this.setAuthorization();
+        this.user = new ReplaySubject<any>(1);
+        // this.http.setAuthorization('6Wk3eaWAH693rlbXjc418JiBOAvMbslU1yybTCEVOnbQ47HwNLgkHRz9bgc61egg');
+        this.reloadUser();
     }
 
     public isLoggedin(): any {
-        const token = this.get();
-        return token ? true : false;
-    }
-
-    public getAuthorization(): string {
-        const token = this.get();
-        return token.id;
-    }
-
-    public getUserData(attr?: string): any {
-        const token = this.get();
-        return (token ? (attr ? token.user[attr] : token.user) : {});
+        return this.loggedIn;
     }
 
     public setUser(user: any): void {
-        const token = this.get();
-        token.user = user;
-        this.set(token);
-        this.user.next(token.user);
+        this.user.next(user);
     }
 
     public setUserData(attr: string, value: boolean): any {
-        const token = this.get();
-        if (!this.getUserData(attr)) {
-            token.user[attr] = value;
-            this.set(token);
-        }
-        return token;
+        this.user.subscribe((user) => {
+            user[attr] = value;
+            this.user.next(user);
+        });
     }
 
     public isMarketing(): any {
-        const roles = this.getUserData('roles');
+        const roles = []; // this.getUserData('roles');
         return !!(roles && roles.find((role) => role === 'marketing'));
     }
 
     public isBasicUser(): any {
-        const roles = this.getUserData('roles');
+        const roles = []; // this.getUserData('roles');
         return !(roles && roles.find((role) => (role === 'Admin' || role === 'medium')));
     }
 
@@ -69,32 +55,18 @@ export class AuthService {
                     observer.complete();
                     return;
                 }
-                this.set(token);
                 this.getCurrentUser(token.userId, (err: any, user: UserInterface) => {
                     if (err) {
                         observer.error(err);
                         observer.complete();
                         return;
                     }
-                    token.user = user;
-                    this.set(token);
+                    this.loggedIn = true;
+                    this.user.next(user);
                     observer.next(true);
                     observer.complete();
                 });
             });
-        });
-    }
-
-    public reloadUser() {
-        const token = this.get();
-        console.log(this.getUserData('id'));
-        this.getCurrentUser(this.getUserData('id'), (err: any, user: UserInterface) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            token.user = user;
-            this.set(token);
         });
     }
 
@@ -106,7 +78,7 @@ export class AuthService {
                     observer.complete();
                     return;
                 }
-                this.clear();
+                this.user.next(null);
                 observer.next(true);
                 observer.complete();
             });
@@ -126,9 +98,7 @@ export class AuthService {
 
     private removeToken(fn: any) {
         this.http.post({
-            path: 'users/logout', data: {
-                access_token: this.http.authorization
-            }
+            path: 'users/logout'
         }).subscribe(
             (response: any) => {
                 fn(null, response.body);
@@ -137,6 +107,35 @@ export class AuthService {
                 fn(error, null);
             }
         );
+    }
+
+    public reloadUser() {
+        this.http.get({
+            path: `me`,
+        }).subscribe((res: any) => {
+            const user = res.body;
+            this.http.get({
+                path: `users/${user.id}`,
+                data: {
+                    include: ['files']
+                },
+                encode: true
+            }).subscribe(
+                (response: any) => {
+                    const nuser = response.body;
+                    nuser.roles = user.roles;
+
+                    if (user && nuser) {
+                        this.loggedIn = true;
+                    }
+
+                    this.user.next(nuser);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        });
     }
 
     private getCurrentUser(userId?: string, fn?: any) {
@@ -153,39 +152,15 @@ export class AuthService {
                 this.http.get({ path: 'me' }).subscribe(
                     (res: any) => {
                         body.roles = res.body.roles;
-                        fn(null, body);
+                        if (fn) { fn(null, body); }
                     }, (error) => {
-                        fn(error, null);
+                        if (fn) { fn(error, null); }
                     }
                 );
             },
             (error) => {
-                fn(error, null);
+                if (fn) { fn(error, null); }
             }
         );
-    }
-
-    private setAuthorization(): void {
-        const token = this.get();
-        if (token) {
-            this.http.authorization = token.id;
-        } else {
-            this.http.authorization = null;
-        }
-    }
-
-    private get(): any {
-        const token = this.cookie.get(this.tokenName);
-        return (typeof (token) == 'string') ? JSON.parse(token) : token;
-    }
-
-    private set(token: any): void {
-        this.cookie.set(this.tokenName, JSON.stringify(token));
-        this.setAuthorization();
-    }
-
-    private clear(): void {
-        this.cookie.remove(this.tokenName);
-        this.setAuthorization();
     }
 }
