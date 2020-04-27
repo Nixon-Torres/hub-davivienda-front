@@ -15,7 +15,7 @@ pipelines:
             - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME
             - zip -r /tmp/artifact.zip * # package up the application for deployment
             - python codedeploy_deploy.py # run the deployment script
-      
+    
     hub-pro:
       - step:
           script:
