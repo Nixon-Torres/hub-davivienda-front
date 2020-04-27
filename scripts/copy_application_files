@@ -1,2 +1,4 @@
 #!/bin/bash
-cp -R /tmp/hub-contenidos-front/dist/hub-contenidos-front/* /home/ubuntu/hub-contenidos-api/client/dist/
+sudo cp -R /tmp/hub-contenidos-front/dist/hub-contenidos-front/* /home/ubuntu/hub-contenidos-api/client/dist/
+sudo find /tmp/hub-contenidos-front/dist/hub-contenidos-front/ -type f -empty -delete
+sudo aws s3 cp /tmp/hub-contenidos-front/dist/hub-contenidos-front s3://production-site-davivienda/admin/  --recursive
