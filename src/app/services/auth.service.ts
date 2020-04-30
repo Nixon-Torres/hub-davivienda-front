@@ -13,6 +13,9 @@ export class AuthService {
     public user: ReplaySubject<any>;
     public loggedIn = false;
 
+    private isMarketer = false;
+    private isBasic = false;
+
     constructor(
         private cookie: CookieStorage,
         private http: HttpService
@@ -44,13 +47,11 @@ export class AuthService {
     }
 
     public isMarketing(): any {
-        const roles = []; // this.getUserData('roles');
-        return !!(roles && roles.find((role) => role === 'marketing'));
+        return this.isMarketer;
     }
 
     public isBasicUser(): any {
-        const roles = []; // this.getUserData('roles');
-        return !(roles && roles.find((role) => (role === 'Admin' || role === 'medium')));
+        return this.isBasic;
     }
 
     public login(context: LoginContext): Observable<any> {
@@ -73,6 +74,9 @@ export class AuthService {
                         return;
                     }
                     this.loggedIn = true;
+                    const roles = user.roles;
+                    this.isMarketer = !!(roles && roles.find((role) => role === 'marketing'));
+                    this.isBasic = !(roles && roles.find((role) => (role === 'Admin' || role === 'medium')));
                     this.user.next(user);
                     observer.next(true);
                     observer.complete();
@@ -142,8 +146,10 @@ export class AuthService {
 
                     if (user && nuser) {
                         this.loggedIn = true;
+                        const roles = user.roles;
+                        this.isMarketer = !!(roles && roles.find((role) => role === 'marketing'));
+                        this.isBasic = !(roles && roles.find((role) => (role === 'Admin' || role === 'medium')));
                     }
-
                     this.user.next(nuser);
                 },
                 (error) => {
