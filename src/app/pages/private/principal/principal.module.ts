@@ -55,6 +55,7 @@ import { EditBookComponent } from './edit-book/edit-book.component';
 import { EditBookVersionsComponent } from './edit-book-versions/edit-book-versions.component';
 import { EditIndicatorsComponent } from './edit-indicators/edit-indicators.component';
 import { EditIndicatorsContentComponent } from './edit-indicators-content/edit-indicators-content.component';
+import { EditFooterComponent } from './edit-footer/edit-footer.component';
 
 const routes: Routes = [
     {
@@ -103,6 +104,7 @@ const materialModules: any[] = [
         EditBookVersionsComponent,
         EditIndicatorsComponent,
         EditIndicatorsContentComponent,
+        EditFooterComponent,
         TagsDialogComponent,
         AddWordsDialogComponent,
         MultimediaComponent,

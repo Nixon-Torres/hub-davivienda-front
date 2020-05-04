@@ -357,7 +357,7 @@ export class EditIndicatorsComponent implements OnInit, AfterViewInit {
             width: '410px',
             data: {
                 config: {
-                    title: 'Se ha guardado exitosamente el contenido del libro',
+                    title: 'Se ha guardado exitosamente el contenido de nuestros indicadores',
                     subtitle: title,
                 }
             }
