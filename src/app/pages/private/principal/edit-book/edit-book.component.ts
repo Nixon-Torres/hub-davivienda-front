@@ -66,6 +66,14 @@ export class EditBookComponent implements OnInit, AfterViewInit {
         type: 'image',
         class: 'image'
     }, {
+        id: 'pdfPreviewSrc',
+        title: 'Pdf Preview',
+        subtitle: 'Actualmente se muestra la siguiente información:',
+        placeholder: '',
+        content: '',
+        type: 'image',
+        class: 'image'
+    }, {
         id: 'second',
         title: 'Segunda sección',
         subtitle: 'Actualmente se muestra la siguiente información:',
