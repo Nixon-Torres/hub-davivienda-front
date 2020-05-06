@@ -172,7 +172,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     private editorOptions = {
         editor1: {
-            removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+            removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage', 'Bold',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
                 'Table', 'TableToolbar'],
             heading: {
