@@ -185,7 +185,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         editor2: {
             removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
-                'Table', 'TableToolbar'],
+                'Table', 'TableToolbar', 'Table'],
             wordcount: {
                 showCharCount: true,
                 charLimit: 200
@@ -212,6 +212,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         },
         editor3: {
+            removePlugins: [ 'Table' ],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -234,6 +235,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         },
         editor4: {
+            removePlugins: [ 'Table' ],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -256,6 +258,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         },
         editor5: {
+            removePlugins: [ 'Table' ],
+            wordcount: {
+                showParagraphs: false,
+                showWordCount: true,
+                showCharCount: true,
+                countSpacesAsChars: false,
+                countHTML: false,
+                maxWordCount: -1,
+                maxCharCount: 2000
+            },
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -278,6 +290,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
         },
         editor6: {
+            removePlugins: [ 'Table' ],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -300,6 +313,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
         },
         blocks: {
+            removePlugins: [ 'Table' ],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -512,12 +526,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     const block = this.blocks.find(e => e.id === elementId);
                     let data = editor.getData();
                     const total = this.getChars(data);
-                    if (elementId === 'editor2' && total > 2000) {
+                    /* if (elementId === 'editor2' && total > 2000) {
                         console.log(data);
                         data = data.substring(0, 2000);
                         console.log(data);
                         editor.setData(data);
-                    }
+                    } */
 
                     if (block) {
                         block.content = data;

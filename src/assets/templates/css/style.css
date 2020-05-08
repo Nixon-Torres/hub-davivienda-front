@@ -27,6 +27,7 @@ h2{
     font-weight: bold;
     margin-bottom: 30px;
 }
+
 .box-title{
     color: #EC2023;
     font-size: 20px;
@@ -46,8 +47,6 @@ h2{
     font-style: normal;
 }
 
-
-
 .da-lead-section{
     max-width: 720px;
     margin: 0 auto;
@@ -60,7 +59,7 @@ h2{
 .da-lead-section p{
     font-size: 12px;
     color: #5F5F5F;
-    
+
 }
 .da-lead-section .dl-icon a{
     color: #363636;
@@ -138,7 +137,7 @@ h2{
 }
 
 .podcast-video .video-desc p{
-    font-size: 13px;  
+    font-size: 13px;
     color: #505050;
     font-family: 'Helvetica-Neue';
 }
@@ -396,7 +395,7 @@ p.left-arrow-paragraph::before{
 
 .carousel-indicators{
     bottom: -50px;
- 
+
     position: initial;
 }
 

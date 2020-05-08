@@ -934,7 +934,7 @@ $default-font: "Helvetica Neue", Medium;
     }
 
     .deep-content {
-        height: 200px;
+        height: 400px;
         background: #dbe1e6;
 
         .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
@@ -1600,4 +1600,8 @@ input:checked + .slider:before {
     .banner {
         margin-top: 10px;
     }
+}
+
+.native-editor-section ol ol ol {
+    list-style-type: lower-roman;
 }
