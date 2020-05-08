@@ -343,6 +343,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public glossaryForm: FormGroup;
     public foundWordsObservable: Observable<any>;
+    public creationTemplate: any;
 
     constructor(
         public dialog: MatDialog,
@@ -407,6 +408,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.authorsId = authorsId ? JSON.parse(decodeURI(authorsId)) : null;
                 if (!this.user.reportCreationWizardHidden) {
                     this.openCreateModal(templateId, this.user.id);
+                }
+
+                if (templateId) {
+                    this.getTemplate(templateId);
                 }
             }
         });
@@ -602,6 +607,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
                }
             });
         }
+    }
+
+    private getTemplate(templateId) {
+        this.http.get({
+            path: `reports/${templateId}`
+        }).subscribe((res) => {
+            this.creationTemplate = res.body;
+        });
     }
 
     private shouldHaveFileMessage(templateId: string): boolean {
