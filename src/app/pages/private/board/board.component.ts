@@ -512,7 +512,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
                 editor.model.document.on( 'change:data', () => {
                     const block = this.blocks.find(e => e.id === elementId);
-                    const data = editor.getData();
+                    let data = editor.getData();
+                    const total = this.getChars(data);
+                    if (elementId === 'editor2' && total > 2000) {
+                        data = data.substr(0, 2000);
+                        editor.setData(data);
+                    }
 
                     if (block) {
                         block.content = data;
@@ -2021,11 +2026,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public getChars(html: string) {
-        return html.replace(/<[^>]*>?/gm, '').length;
+        return html.replace(/&nbsp;/g, '').replace(/<[^>]*>?/gm, '').length;
     }
 
     public getCharsPercentage(html: string, max: number) {
-        html = html.replace(/<[^>]*>?/gm, '')
+        html = html.replace(/&nbsp;/g, '').replace(/<[^>]*>?/gm, '')
         const perc = Math.floor(html.length / max * 10);
         return Math.min(perc * 10, 100);
     }

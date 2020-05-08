@@ -739,7 +739,11 @@ $default-font: "Helvetica Neue", Medium;
 
     .fast-content {
         padding-top: 39px;
-        height: 80px;
+        height: 200px;
+
+        .inline-editor-block {
+            height: 160px;
+        }
 
         .ck.ck-editor__editable > .ck-placeholder::before, .placeholder {
             font-size: 20px;
