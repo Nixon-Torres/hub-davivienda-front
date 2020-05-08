@@ -520,7 +520,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     let data = editor.getData();
                     const total = this.getChars(data);
                     if (elementId === 'editor2' && total > 2000) {
-                        data = data.substr(0, 2000);
+                        data = data.substring(0, 2000);
                         editor.setData(data);
                     }
 

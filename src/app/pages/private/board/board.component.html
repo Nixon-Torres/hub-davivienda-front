@@ -228,8 +228,8 @@
                     </div>
                     <div class="fast-content-mask" *ngIf="!report.fastContentEnabled"></div>
                 </div>
-                <div *ngIf="creationTemplate?.key === 'html' || report?.template?.key === 'html'"  class="divider"></div>
-                <div [ngClass]="{'invisible': report?.template?.key !== 'html'}" class="control-wrapper pre-content">
+                <div class="divider"></div>
+                <div class="control-wrapper pre-content">
                     <div class="inline-editor-block" id="editor5" #editor5>
                     </div>
                     <span [ngClass]="{'invisible': editor5Data !== ''}"
