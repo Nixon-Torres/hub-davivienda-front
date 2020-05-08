@@ -343,7 +343,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public glossaryForm: FormGroup;
     public foundWordsObservable: Observable<any>;
-    public creationTemplate: any;
 
     constructor(
         public dialog: MatDialog,
@@ -409,10 +408,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 if (!this.user.reportCreationWizardHidden) {
                     this.openCreateModal(templateId, this.user.id);
                 }
-
-                if (templateId) {
-                    this.getTemplate(templateId);
-                }
             }
         });
 
@@ -456,10 +451,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         const ids = ['editor1', 'editor2', 'editor3', 'editor4', 'editor5', 'editor6'];
         ids.forEach((elementId) => {
-            if (elementId !== 'editor5' || (elementId === 'editor5' && this.report.template.key === 'html')) {
-                if (this[elementId]) {
-                    this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
-                }
+            if (this[elementId]) {
+                this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
             }
         });
 
@@ -520,7 +513,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     let data = editor.getData();
                     const total = this.getChars(data);
                     if (elementId === 'editor2' && total > 2000) {
+                        console.log(data);
                         data = data.substring(0, 2000);
+                        console.log(data);
                         editor.setData(data);
                     }
 
@@ -555,10 +550,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             instance.addInlineEditor('editor3', 'SMART CONTENT');
             instance.addInlineEditor('editor4', 'DEEP CONTENT');
             instance.addInlineEditor('editor6', 'PIE DE PÁGINA');
-
-            if (this.report && this.report.template && this.report.template.key === 'html') {
-                instance.addInlineEditor('editor5', 'Escriba la información de la lista del destacado corredores, sin alterar el orden y la estructura');
-            }
+            instance.addInlineEditor('editor5', 'Escriba la información de la lista del destacado corredores, sin alterar el orden y la estructura');
         }, 500);
     }
 
@@ -607,14 +599,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
                }
             });
         }
-    }
-
-    private getTemplate(templateId) {
-        this.http.get({
-            path: `reports/${templateId}`
-        }).subscribe((res) => {
-            this.creationTemplate = res.body;
-        });
     }
 
     private shouldHaveFileMessage(templateId: string): boolean {
