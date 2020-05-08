@@ -1231,6 +1231,10 @@ $default-font: "Helvetica Neue", Medium;
         color: #616161;
         text-align: center;
         margin-top: 3px;
+
+        &.error {
+            color: #ff4a74;
+        }
     }
 }
 
@@ -1586,4 +1590,10 @@ input:checked + .slider:before {
     height: 100%;
     top: 0;
     left: 0;
+}
+
+.report-banner-selection {
+    .banner {
+        margin-top: 10px;
+    }
 }

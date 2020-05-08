@@ -184,7 +184,8 @@
                         name="file"
                         (change)="onBannerImageSelected($event)"
                         id="reportBannerImg"/>
-                    <p class="banner-max">Tamaño máximo hasta 1MB</p>
+                    <p class="banner-max error" *ngIf="bannerFileSizeExceeded">La imagen cargada supera el límite de peso.<br/> Tamaño máximo hasta 10 MB</p>
+                    <p class="banner-max" *ngIf="!bannerFileSizeExceeded">Tamaño máximo hasta 10MB</p>
 
                     <div class="delete" *ngIf="(banner?.id && !banner.toDelete)
                             || newBanner.imageUrl" (click)="onBannerImageSelected(null)">

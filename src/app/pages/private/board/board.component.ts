@@ -339,6 +339,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public blocks: any = [];
     public banner: any = {};
     public newBanner: any = {};
+    public bannerFileSizeExceeded = false;
 
     public glossaryForm: FormGroup;
     public foundWordsObservable: Observable<any>;
@@ -1919,6 +1920,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             return;
         }
 
+        const size = file.size / 1024 / 1024;
+        if (size > 10) {
+            return this.bannerFileSizeExceeded = true;
+        }
+        this.bannerFileSizeExceeded = false;
         this.newBanner.fileName = file.name;
         this.newBanner.file = file;
 
