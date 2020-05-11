@@ -521,6 +521,13 @@ $default-font: "Helvetica Neue", Medium;
     }
 }
 
+.grapes-container #pdf .pdf__btn {
+    &.disabled {
+        background-color: #ccc;
+        cursor: default;
+    }
+}
+
 .blue-hub {
     background-color: #0080ff !important;
 }

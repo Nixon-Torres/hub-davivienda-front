@@ -130,7 +130,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         glossary: null,
         rReferences: null,
         fastContentEnabled: null,
-        preContentEnabled: null
+        preContentEnabled: null,
+        type: null
     };
 
     public tags = {
@@ -889,6 +890,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe((response: any) => {
             this.report.content = response.body.content ? response.body.content : '';
             this.report.styles = response.body.styles ? response.body.styles : '';
+            this.report.type = response.body.key ? response.body.key : '';
+            this.report.template = {
+                key: response.body.key
+            };
 
             setTimeout(() => {
                 this.initGrapes();
@@ -1486,6 +1491,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openUploadDialog(): void {
+        if (!this.report || (this.report && !this.report.id)) {
+            return;
+        }
+
         const dialogRef = this.dialog.open(PdfUploadComponent, {
             width: '470px',
             data: {

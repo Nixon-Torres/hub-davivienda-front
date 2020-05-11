@@ -163,8 +163,10 @@
                 <button mat-flat-button class="bttn bttn-default html" [ngClass]="{'bttn-primary': grapeEnabled}"
                         (click)="enableGrapeEditor()">HTML</button>
             </div>
-            <div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
-                <button class="pdf__btn" (click)="openUploadDialog()" [disabled]="readonly">
+
+            <div id="pdf" class="pdf"
+                 *ngIf="templateType === 'pdf' || templateType === 'presentation' || report?.type === 'pdf' || report?.type === 'presentation'">
+                <button class="pdf__btn" (click)="openUploadDialog()" [disabled]="readonly" [ngClass]="{'disabled': !report?.id}">
                     <span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
                 </button>
                 <p class="pdf__max">Tamaño máximo hasta 10GB</p>
@@ -258,8 +260,9 @@
                 <input [(ngModel)]="report.presentationUrl" [ngModelOptions]="{standalone: true}"
                        class="source" type="text" placeholder="Presentación Slideshare (URL)"
                        *ngIf="false && report?.template?.key === 'presentation'">
-                <div class="divider"></div>
-                <div class="control-wrapper deep-content" (click)="editor4.focus()">
+                <div class="divider" [ngClass]="{'invisible': report?.template?.key === 'presentation'}"></div>
+                <div class="control-wrapper deep-content" (click)="editor4.focus()"
+                     [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
                     <div class="inline-editor-block" id="editor4" #editor4>
                     </div>
                     <span [ngClass]="{'invisible': editor4Data !== ''}"
@@ -335,7 +338,7 @@
                     </div>
                 </div>
 
-                <div class="add-new-editor-block" *ngIf="!readonly">
+                <div class="add-new-editor-block" *ngIf="!readonly" [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
                     <div class="btn-section">
                         <button (click)="addMenuVisible = !addMenuVisible"
                                 mat-flat-button class="bttn bttn-default btn-circle" [ngClass]="{'close' : addMenuVisible}">
@@ -344,10 +347,10 @@
                             <li class="ng-star-inserted">
                                 <button class="icon" (click)="addEditorSection(false)">M&oacute;dulo una columna</button>
                             </li>
-                            <li class="ng-star-inserted">
+                            <li class="ng-star-inserted" *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns'">
                                 <button class="icon" (click)="addEditorSection(true, 'left')">M&oacute;dulo dos columnas</button>
                             </li>
-                            <li class="ng-star-inserted">
+                            <li class="ng-star-inserted" *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns'">
                                 <button class="icon" (click)="addEditorSection(true, 'right')">M&oacute;dulo dos columnas B</button>
                             </li>
                         </ul>

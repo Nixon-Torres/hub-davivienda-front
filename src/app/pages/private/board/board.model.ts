@@ -34,4 +34,5 @@ export interface Report {
     rReferences?: any;
     fastContentEnabled?: any;
     preContentEnabled?: any;
+    type?: any;
 }
