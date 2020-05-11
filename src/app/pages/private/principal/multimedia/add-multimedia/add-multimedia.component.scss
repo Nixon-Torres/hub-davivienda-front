@@ -149,10 +149,14 @@
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: space-between;
-                }
-                .custom-select {
-                    width: 48.34%;
-                    margin-bottom: 14px;
+
+                    .item {
+                        width: 48.34%;
+                        margin-bottom: 14px;
+                        .custom-select {
+                            width: 100%;
+                        }
+                    }
                 }
             }
             &--buttons {
@@ -185,4 +189,10 @@
 
 .url-textarea {
     height: 150px;
+}
+
+.alert.alert-danger {
+    color: #ff4a74;
+    font-size: 12px;
+    margin-top: 4px;
 }
