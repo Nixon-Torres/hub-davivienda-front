@@ -264,6 +264,13 @@ export class EditFooterComponent implements OnInit, AfterViewInit {
             content: '',
             type: 'input',
             class: 'title' },
+        { id: 'link-youtube2',
+            title: 'Link Youtube II',
+            subtitle: 'Actualmente se muestra la siguiente información:',
+            placeholder: 'Escriba aquí el link',
+            content: '',
+            type: 'input',
+            class: 'title' },
         {
             id: 'logo1',
             title: 'Logo 1',
@@ -276,6 +283,14 @@ export class EditFooterComponent implements OnInit, AfterViewInit {
         {
             id: 'logo2',
             title: 'Logo 2',
+            subtitle: 'Actualmente se muestra la siguiente información:',
+            placeholder: '',
+            content: '',
+            type: 'image',
+            class: 'image'
+        }, {
+            id: 'logo3',
+            title: 'Logo 3',
             subtitle: 'Actualmente se muestra la siguiente información:',
             placeholder: '',
             content: '',
