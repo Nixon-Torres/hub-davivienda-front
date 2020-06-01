@@ -235,11 +235,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
         },
         editor6: {
-            removePlugins: [ 'Table' ],
+            removePlugins: [ 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
+                'Table', 'TableToolbar', 'Table' ],
             heading: {
                 options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' }
                 ]
             },
         },
