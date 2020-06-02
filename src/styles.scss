@@ -1168,7 +1168,7 @@ mat-expansion-panel {
 		}
 		span{
 			position: relative;
-			top: -6px;	
+			top: -6px;
 		}
 	}
 }
@@ -1179,7 +1179,7 @@ mat-expansion-panel {
 		min-width: 287px;
 		max-width: initial;
 	}
-	
+
 	.glossary_options{
 		color: #a5abb1;
 		font-size: .875em;
@@ -1199,3 +1199,8 @@ mat-expansion-panel {
 .bg-toReview { background-color: #F9E333; }
 .bg-draft { background-color: #D9D9D9; }
 .bg-default { background-color: black; }
+
+
+.modal .header .content .buttons-section .download .icon {
+    margin-top: 21px;
+}
