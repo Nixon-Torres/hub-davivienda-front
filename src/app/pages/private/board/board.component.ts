@@ -1934,7 +1934,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 this.banner.toDelete = true;
             }
 
-            const elementId = 'reportThumbImg';
+            const elementId = 'reportBannerImg';
             const element = this.ref.nativeElement.querySelector('#' + elementId);
             element.value = '';
             return;
