@@ -1,15 +1,15 @@
-import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
-import {loopback} from '../../../models/common/loopback.model';
-import {HttpService} from '../../../services/http.service';
-import {AuthService} from '../../../services/auth.service';
-import {PreviewDialogComponent} from '../preview-dialog/preview-dialog.component';
-import {ConfirmationDialogComponent} from './confirmation-dialog/confirmation-dialog.component';
-import {PdfUploadComponent} from './pdf-upload/pdf-upload.component';
-import {Grapes} from './grapes/grape.config';
-import {CodeMirror} from './grapes/code-mirror.config';
+import { loopback } from '../../../models/common/loopback.model';
+import { HttpService } from '../../../services/http.service';
+import { AuthService } from '../../../services/auth.service';
+import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
+import { Grapes } from './grapes/grape.config';
+import { CodeMirror } from './grapes/code-mirror.config';
 
 import * as M from 'materialize-css/dist/js/materialize';
 import * as $ from 'jquery/dist/jquery';
@@ -19,17 +19,17 @@ import * as tabs from 'grapesjs-tabs/dist/grapesjs-tabs.min.js';
 import * as slider from 'grapesjs-lory-slider/dist/grapesjs-lory-slider.min.js';
 import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.js';
 
-import {Report} from './board.model';
-import {RevisionModalComponent} from './revision-modal/revision-modal.component';
-import {CreationModalComponent} from './creation-modal/creation-modal.component';
+import { Report } from './board.model';
+import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreationModalComponent } from './creation-modal/creation-modal.component';
 
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 // import InlineEditor from '/home/omnigroupit/workspace/angular/ckeditor5-build-inline';
-import {forkJoin, Observable} from 'rxjs';
-import {environment} from '../../../../environments/environment';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {debounceTime, map, switchMap} from 'rxjs/operators';
-import {CKEditor5} from '@ckeditor/ckeditor5-angular';
+import { forkJoin, Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 
 declare var grapesjs: any;
 declare global {
@@ -161,19 +161,19 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public unresolvedComments: any;
     public tendenciesList: any;
 
-    @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
-    @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
+    @ViewChild('authorsParent', { static: false }) authorsParent?: ElementRef;
+    @ViewChild('editorsParent', { static: false }) editorsParent?: ElementRef;
 
-    @ViewChild('editor1', {static: false}) editor1?: ElementRef;
-    @ViewChild('editor2', {static: false}) editor2?: ElementRef;
-    @ViewChild('editor3', {static: false}) editor3?: ElementRef;
-    @ViewChild('editor4', {static: false}) editor4?: ElementRef;
-    @ViewChild('editor5', {static: false}) editor5?: ElementRef;
-    @ViewChild('editor6', {static: false}) editor6?: ElementRef;
+    @ViewChild('editor1', { static: false }) editor1?: ElementRef;
+    @ViewChild('editor2', { static: false }) editor2?: ElementRef;
+    @ViewChild('editor3', { static: false }) editor3?: ElementRef;
+    @ViewChild('editor4', { static: false }) editor4?: ElementRef;
+    @ViewChild('editor5', { static: false }) editor5?: ElementRef;
+    @ViewChild('editor6', { static: false }) editor6?: ElementRef;
 
     private editorOptions = {
         editor1: {
-            removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage', 'Bold',
+            removePlugins: ['Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage', 'Bold',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
                 'Table', 'TableToolbar'],
             heading: {
@@ -184,7 +184,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             initialData: '<h2></h2>'
         },
         editor2: {
-            removePlugins: [ 'Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+            removePlugins: ['Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
                 'Table', 'TableToolbar', 'Table'],
             wordcount: {
@@ -199,7 +199,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         },
         editor3: {
-            removePlugins: [ 'Table' ],
+            removePlugins: ['Table'],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -208,7 +208,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         },
         editor4: {
-            removePlugins: [ 'Table' ],
+            removePlugins: ['Table'],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -231,7 +231,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
         },
         editor5: {
-            removePlugins: [ 'Table' ],
+            removePlugins: ['Table'],
             wordcount: {
                 showParagraphs: false,
                 showWordCount: true,
@@ -263,9 +263,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
         },
         editor6: {
-            removePlugins: [ 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+            removePlugins: ['SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
                 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'List', 'MediaEmbed',
-                'Table', 'TableToolbar', 'Table' ],
+                'Table', 'TableToolbar', 'Table'],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' }
@@ -273,7 +273,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
         },
         blocks: {
-            removePlugins: [ 'Table' ],
+            removePlugins: ['Table'],
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -311,8 +311,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public blocks: any = [];
     public banner: any = {};
+    public thumb: any = {};
     public newBanner: any = {};
+    public newThumb: any = {};
     public bannerFileSizeExceeded = false;
+    public thumbFileSizeExceeded = false;
 
     public glossaryForm: FormGroup;
     public foundWordsObservable: Observable<any>;
@@ -402,7 +405,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         M.Tabs.init(tabsEl); // Initialize the tabs materialize function
 
         const elems = document.querySelectorAll('.fixed-action-btn');
-        M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
+        M.FloatingActionButton.init(elems, { direction: 'top', hoverEnabled: false });
 
         this.enableInlineEditor();
     }
@@ -431,7 +434,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         setTimeout(() => {
             this.blocks.forEach((block) => {
-                const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                const element = this.ref.nativeElement.querySelector('#' + block.id);
                 if (element) {
                     element.innerHTML = block.content;
                 }
@@ -443,7 +446,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     addInlineEditor(elementId: string, placeholder?: string) {
-        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        const element = this.ref.nativeElement.querySelector('#' + elementId);
         let options = this.editorOptions[elementId] || this.editorOptions.default;
 
         if (elementId.startsWith('r') || elementId.startsWith('block')) {
@@ -457,7 +460,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
 
         const headers = this.http.headers();
-        editorOptions.simpleUpload =  {
+        editorOptions.simpleUpload = {
             uploadUrl: this.http.path('/reports/' + this.report.id + '/upload'),
             headers
         };
@@ -475,13 +478,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
         };
 
         InlineEditor
-            .create( element, editorOptions)
-            .then( editor => {
+            .create(element, editorOptions)
+            .then(editor => {
                 window.editor = editor;
                 if (elementId === 'editor5') {
                     this.editor5Instance = editor;
                 }
-                editor.model.document.on( 'change:data', () => {
+                editor.model.document.on('change:data', () => {
                     const block = this.blocks.find(e => e.id === elementId);
                     let data = editor.getData();
                     const total = this.getChars(data);
@@ -497,11 +500,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
                     } else {
                         this[elementId + 'Data'] = data;
                     }
-                } );
-            } )
-            .catch( error => {
-                console.error( 'There was a problem initializing the editor.', error );
-            } );
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem initializing the editor.', error);
+            });
     }
 
     enableGrapeEditor() {
@@ -567,9 +570,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
             });
             dialogRef.afterClosed().subscribe(resp => {
-               if (resp) {
+                if (resp) {
                     this.router.navigate(['app/principal']);
-               }
+                }
             });
         }
     }
@@ -622,7 +625,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, {
             relation: 'files',
             scope: {
-                fields: ['id', 'name', 'key', 'size']
+                fields: ['id', 'name', 'key', 'size', 'clientPath']
             }
         }, {
             relation: 'template',
@@ -652,8 +655,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             this.report = response.body;
             const banner = this.report.files.find(e => e.key === 'bannerImage');
+            const thumb = this.report.files.find(e => e.key === 'thumbImage');
 
             this.banner = banner ? banner : {};
+            this.thumb = thumb ? thumb : {};
             this.blocks = this.report.blocks.map(e => {
                 const img = e.files && e.files.length ? e.files[0] : {};
                 return {
@@ -1071,7 +1076,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             setTimeout(() => {
                 this.blocks.forEach((block) => {
-                    const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                    const element = this.ref.nativeElement.querySelector('#' + block.id);
                     if (element) {
                         element.innerHTML = block.content;
                     }
@@ -1129,6 +1134,37 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const banner = res.body as any;
             this.banner = banner.file;
             this.newBanner = {};
+        });
+    }
+
+    private saveThumbImage() {
+        if (this.thumb.toDelete && !this.newThumb.imageUrl) {
+            return this.http.delete({
+                path: 'media/' + this.thumb.id
+            }).subscribe((res) => {
+                this.thumb = {};
+            });
+        }
+
+        if (!this.newThumb.imageUrl) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
+        formData.append('file', this.newThumb.file);
+        formData.append('key', 'thumbImage');
+        formData.append('resourceId', this.report.id);
+        if (this.thumb.id) {
+            formData.append('id', this.thumb.id);
+        }
+        return this.http.post({
+            path: 'media/upload',
+            data: formData
+        }).subscribe((res) => {
+            const thumb = res.body as any;
+            this.thumb = thumb.file;
+            this.newThumb = {};
         });
     }
 
@@ -1255,9 +1291,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             (response: any) => {
                 this.onSaveBlocks();
                 this.saveBannerImage();
+                this.saveThumbImage();
                 if (method === 'post' && this.authorsId && this.authorsId.length) {
                     const authorsData = this.authorsId.map((a: string) => {
-                        return {authorId: a, reportId: response.body.id};
+                        return { authorId: a, reportId: response.body.id };
                     });
                     this.http.post({
                         path: 'reports/authors',
@@ -1332,7 +1369,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public getReviewers(reviewers: Array<object>) {
         return reviewers.map((reviewer: any) => {
-            return {reportId: this.report.id, reviewerId: reviewer.id};
+            return { reportId: this.report.id, reviewerId: reviewer.id };
         });
     }
 
@@ -1823,14 +1860,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public onLoadTendenciesTags(): void {
         if (this.report.tags && this.report.tags.length) {
-           this.tendenciesList = this.report.tags.join(', ');
+            this.tendenciesList = this.report.tags.join(', ');
         }
     }
 
     public onLoadCategoriesTags(): any {
         this.tags.categories = this.report.reportType && this.report.reportType.mainCategory
             && this.report.reportType.mainCategory.length
-                ? this.report.reportType.mainCategory[0].tags : null;
+            ? this.report.reportType.mainCategory[0].tags : null;
         return this.tags.categories;
     }
 
@@ -1880,7 +1917,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public removeImageSelected(block: any) {
         const elementId = 'ImgInput' + block.id;
-        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        const element = this.ref.nativeElement.querySelector('#' + elementId);
         element.value = '';
     }
 
@@ -1889,8 +1926,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             event.target.files[0] : null;
 
         if (!file) {
-            this.newBanner.fileName =  null;
-            this.newBanner.file =  null;
+            this.newBanner.fileName = null;
+            this.newBanner.file = null;
             this.newBanner.imageUrl = null;
             this.newBanner.assetUrl = null;
             if (this.banner) {
@@ -1898,7 +1935,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
 
             const elementId = 'reportBannerImg';
-            const element = this.ref.nativeElement.querySelector( '#' + elementId );
+            const element = this.ref.nativeElement.querySelector('#' + elementId);
             element.value = '';
             return;
         }
@@ -1919,13 +1956,48 @@ export class BoardComponent implements OnInit, AfterViewInit {
         };
     }
 
+    public onThumbImageSelected(event: any) {
+        const file: File = event && event.target && event.target.files && event.target.files.length ?
+            event.target.files[0] : null;
+
+        if (!file) {
+            this.newThumb.fileName = null;
+            this.newThumb.file = null;
+            this.newThumb.imageUrl = null;
+            this.newThumb.assetUrl = null;
+            if (this.thumb) {
+                this.thumb.toDelete = true;
+            }
+
+            const elementId = 'uploadPicture';
+            const element = this.ref.nativeElement.querySelector('#' + elementId);
+            element.value = '';
+            return;
+        }
+
+        const size = file.size / 1024 / 1024;
+        if (size > 10) {
+            return this.thumbFileSizeExceeded = true;
+        }
+        this.thumbFileSizeExceeded = false;
+        this.newThumb.fileName = file.name;
+        this.newThumb.file = file;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            this.newThumb.imageUrl = reader.result;
+        };
+    }
+
     public onBlockImageSelected(block: any, event: any) {
         const file: File = event && event.target && event.target.files && event.target.files.length ?
             event.target.files[0] : null;
 
         if (!file) {
-            block.fileName =  null;
-            block.file =  null;
+            block.fileName = null;
+            block.file = null;
             block.imageUrl = null;
             block.assetUrl = null;
             this.removeImageSelected(block);

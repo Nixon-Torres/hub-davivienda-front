@@ -11,6 +11,19 @@ $default-font: "Helvetica Neue", Medium;
 .grapes-container {
     @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
 
+    .button-thumb{
+        margin-left: 5px;
+        button{
+            &:focus {
+                background-color: transparent !important;
+            }
+        }
+    }
+
+    .m-l-0{
+        margin-left: 0px;
+    }
+
     .fixed-action-btn {
         left: 25px;
         right: unset;
@@ -22,6 +35,60 @@ $default-font: "Helvetica Neue", Medium;
         max-width: 1440px;
         width: 88% !important;
         position: relative;
+    }
+
+    .thumb-image {
+        height: 43px;
+        width: 47%;
+        border-radius: 10.5px;
+    }
+
+    .thumb-row{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .thumb-icon{
+        color: #0080ff;
+        font-size: 70%;
+    }
+
+    .thumb-text {
+        color: #616161;
+        text-overflow: ellipsis;
+        flex-flow: wrap;
+        overflow: hidden;
+        margin-bottom: 0px;
+    }
+
+    .thumb-text {
+        color: #616161;
+    }
+
+    .col-thumb{
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        vertical-align: middle;
+        padding:0px !important;
+    }
+
+    .upload-icon{
+        font-size: 14px;
+        color: #616161 !important;
+    }
+
+    .file-input-align{
+        margin-left: 0px !important;
+    }
+
+    .thumb-section {
+        height: 62px;
+    }
+
+    .thumb{
+        margin-left: 25px;
     }
 
     #toolbar {
@@ -147,7 +214,7 @@ $default-font: "Helvetica Neue", Medium;
 
             .divider {
                 height: 36px;
-                margin: 0 26px 0 15px;
+                margin: 0 15px 0 15px;
                 display: inline-block;
                 vertical-align: middle;
                 border-left: solid 1px #D7DBE2;
