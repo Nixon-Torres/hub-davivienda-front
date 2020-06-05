@@ -155,7 +155,20 @@
                         accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
                         (change)="onThumbImageSelected($event)" class="file-input invisible" />
                 </button>
-
+                <div class="group-menu">
+                    <button class="info-button report--menu icon icon-plus-circle"></button>
+                    <div class="report--menu-list">
+                        <div class="row row-tooltip tooltip-container">
+                            <div class="col s2 text-center col-thumb">
+                                <span class="icon icon-exclamation-triangle"></span>
+                            </div>
+                            <div class="col s10">
+                                <p class="title">¡Tenga en cuenta!</p>
+                                <p class="subtitle">Esta imagen quedará fija en el home y en los destacados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </mat-toolbar-row>
 
