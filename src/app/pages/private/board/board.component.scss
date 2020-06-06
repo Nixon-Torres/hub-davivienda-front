@@ -8,6 +8,10 @@
 $builder-bg: #f5f7fb;
 $default-font: "Helvetica Neue", Medium;
 
+.fa-info-circle{
+    font-size: 18px !important;
+}
+
 .grapes-container {
     @import '../../../../../node_modules/materialize-css/sass/materialize.scss';
 
@@ -122,8 +126,7 @@ $default-font: "Helvetica Neue", Medium;
             display: none;
             position: absolute;
             padding: 5px 5px 5px 5px;
-            right: 118px;
-            // width: 330px;
+            right: 105px;
             bottom: 53px;
             z-index: 100;
 

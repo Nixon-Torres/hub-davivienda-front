@@ -29,6 +29,7 @@
     "@ckeditor/ckeditor5-build-inline": "juaneduardodelgado/ckeditor5-build-inline#production",
     "@ckeditor/ckeditor5-build-multiroot": "file:../ckeditor5-build-multiroot",
     "@ckeditor/ckeditor5-essentials": "^18.0.0",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@ng-select/ng-option-highlight": "0.0.4",
     "@ng-select/ng-select": "^3.7.1",
     "@types/materialize-css": "^1.0.7",
