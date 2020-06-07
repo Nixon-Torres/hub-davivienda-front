@@ -52,7 +52,7 @@ $default-font: "Helvetica Neue", Medium;
 				font-size: 1.3em;
 				line-height: 1.4em;
                 margin-left: 22px;
-                
+
                 float: right;
                 width: calc(100% - 3.6em);
                 height: 1em;
@@ -1852,4 +1852,15 @@ input:checked + .slider:before {
 
 .native-editor-section ol ol ol {
     list-style-type: lower-roman;
+}
+
+.group-menu {
+    position: relative;
+
+    .report--menu-list {
+        right: -47px;
+        bottom: 45px;
+        height: 76px;
+        width: 410px;
+    }
 }
