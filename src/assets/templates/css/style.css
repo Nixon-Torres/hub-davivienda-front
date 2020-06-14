@@ -476,16 +476,20 @@ p.left-arrow-paragraph::before{
     font-weight: normal;
 }
 
-.doscolumn_section .graph_block .image_block {
+.doscolumn_section .graph_block .image_block,
+.doscolumn_section figure .image_block {
     position: relative;
     padding-top: 5%;
 }
 
-.doscolumn_section .graph_block .image_block img {
+.doscolumn_section .graph_block .image_block img,
+.doscolumn_section figure .image_block img {
     width: 100%;
 }
 
-.doscolumn_section .graph_block .image_block .zoom_btn {
+.doscolumn_section .graph_block .image_block .zoom_btn,
+.doscolumn_section figure .image_block .zoom_btn
+{
     position: absolute;
     background-image: url("../images/zoom_icon.png");
     width: 45px;
