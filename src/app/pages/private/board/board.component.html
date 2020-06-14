@@ -148,14 +148,14 @@
 
                 <div class="divider" *ngIf="report.id"></div>
 
-                <button for="reportThumbImg" class="file-input file-input-align" type="file" name="file" mat-button
+                <button for="reportThumbImg2" class="file-input file-input-align" type="file" name="file" mat-button
                     (click)="fileInput.click()">
                     <span class="icon icong-upload upload-icon"></span>Cargar Imagen
-                    <input id="reportThumbImg" #fileInput type="file"
+                    <input id="reportThumbImg2" #fileInput type="file"
                         accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
                         (change)="onThumbImageSelected($event)" class="file-input invisible" />
                 </button>
-                <div class="group-menu">
+                <div class="group-menu upload-thumb-icon">
                     <button class="info-button report--menu">
                         <i class="fas fa fa-info-circle"></i>
                     </button>
@@ -280,7 +280,7 @@
                         <span class="slider round"></span>
                     </label>
                     <div class="chars-counter">
-                        <span>{{getChars(editor2Data)}} Caracteres de 2000</span>
+                        <span>{{getMaxChars(editor2Data)}} Caracteres de 2000</span>
                         <div class="radialProgressBar" [ngClass]="'progress-' + getCharsPercentage(editor2Data, 2000)">
                             <div class="overlay">100</div>
                         </div>

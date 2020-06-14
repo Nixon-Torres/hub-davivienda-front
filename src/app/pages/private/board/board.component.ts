@@ -477,6 +477,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             ]
         };
 
+        let previousData = null;
         InlineEditor
             .create(element, editorOptions)
             .then(editor => {
@@ -486,14 +487,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
                 editor.model.document.on('change:data', () => {
                     const block = this.blocks.find(e => e.id === elementId);
-                    let data = editor.getData();
+                    const prevData = editor.getData();
+                    const data = editor.getData();
                     const total = this.getChars(data);
-                    /* if (elementId === 'editor2' && total > 2000) {
-                        console.log(data);
-                        data = data.substring(0, 2000);
-                        console.log(data);
-                        editor.setData(data);
-                    } */
+                    if (elementId === 'editor2') {
+                        if (total > 2000) {
+                            editor.setData(previousData);
+                        } else {
+                            previousData = prevData;
+                        }
+                    }
 
                     if (block) {
                         block.content = data;
@@ -2075,13 +2078,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }));
     }
 
+    public getMaxChars(html: string) {
+        html = html.replace(/&nbsp;/g, '');
+        html = html.replace(/<(?:.|\n)*?>/gm, ' ');
+        html = html.trimLeft().trimRight().replace(/\s+/g, ' ');
+        return Math.min(2000, html.length);
+    }
+
     public getChars(html: string) {
-        return html.replace(/&nbsp;/g, '').replace(/<[^>]*>?/gm, '').length;
+        html = html.replace(/&nbsp;/g, '');
+        html = html.replace(/<(?:.|\n)*?>/gm, ' ');
+        html = html.trimLeft().trimRight().replace(/\s+/g, ' ');
+        return html.length;
     }
 
     public getCharsPercentage(html: string, max: number) {
-        html = html.replace(/&nbsp;/g, '').replace(/<[^>]*>?/gm, '')
-        const perc = Math.floor(html.length / max * 10);
+        const len = this.getChars(html);
+        const perc = Math.floor(len / max * 10);
         return Math.min(perc * 10, 100);
     }
 }
