@@ -261,7 +261,7 @@
                     </div>
                 </div>
                 <div class="divider" *ngIf="(thumb?.id && !thumb.toDelete) || newThumb.imageUrl"></div>
-                <div class="control-wrapper title" (click)="editor1.focus()">
+                <div class="control-wrapper title">
                     <div class="inline-editor-block" id="editor1" #editor1>
                     </div>
                     <span [ngClass]="{'invisible': editor1Data !== ''}" class="placeholder" unselectable="on">
@@ -305,7 +305,7 @@
                 <input [(ngModel)]="report.rSmartContentVideo" [ngModelOptions]="{standalone: true}" class="source"
                     type="text" placeholder="Formato enganche: URL Youtube, Spotify o Soundcloud">
                 <div class="divider"></div>
-                <div class="control-wrapper smart-content" (click)="editor3.focus()">
+                <div class="control-wrapper smart-content">
                     <div class="inline-editor-block" id="editor3" #editor3>
                     </div>
                     <span [ngClass]="{'invisible': editor3Data !== ''}" class="placeholder" unselectable="on">
@@ -316,7 +316,7 @@
                     type="text" placeholder="Presentación Slideshare (URL)"
                     *ngIf="false && report?.template?.key === 'presentation'">
                 <div class="divider" [ngClass]="{'invisible': report?.template?.key === 'presentation'}"></div>
-                <div class="control-wrapper deep-content" (click)="editor4.focus()"
+                <div class="control-wrapper deep-content"
                     [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
                     <div class="inline-editor-block" id="editor4" #editor4>
                     </div>
@@ -422,7 +422,7 @@
                 </div>
 
                 <div class="native-editor-section new-block footer">
-                    <div class="control-wrapper deep-content" (click)="editor6.focus()">
+                    <div class="control-wrapper deep-content">
                         <div class="inline-editor-block" id="editor6" #editor6>
                         </div>
                         <span [ngClass]="{'invisible': editor6Data !== ''}" class="placeholder" unselectable="on">
