@@ -62,8 +62,8 @@ export class PdfUploadComponent implements OnInit {
             (response: any) => {
                 this.spinner = false;
                 this.files = this.data.files;
-                if (response.body.name && (response.body.statusCode || response.body.code)) {
-                    const err = response.body.name;
+                if (response.body && (response.body.file.statusCode || response.body.file.code)) {
+                    const err = response.body.file.name;
                     this.errorMsg = (err === 'ValidationError')
                         ? 'Solo se permite archivos PDFS'
                         : 'Ha superado del tamaño maximo del archivo';
@@ -74,7 +74,8 @@ export class PdfUploadComponent implements OnInit {
                 this.currentFile = this.fileData.file;
                 this.workMsg = this.currentFile ? 'Ha subido el siguiente archivo:' : '';
             },
-            () => {
+            (err) => {
+                console.log(err);
                 this.spinner = false;
                 this.fileData = null;
                 document.querySelector('#iFile')['value'] = '';
