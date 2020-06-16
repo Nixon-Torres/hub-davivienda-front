@@ -19,6 +19,22 @@ html{
     font-family: 'Helvetica-Neue';
 }
 
+sub,
+sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 10px !important;
+  vertical-align: super !important;
+}
+
+sub {
+  bottom: -.25em;
+}
+
+sup {
+  top: 0 !important;
+}
+
 h2{
     font-size: 42px;
     line-height: 44px;
