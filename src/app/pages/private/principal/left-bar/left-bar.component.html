@@ -21,10 +21,10 @@
         </ul>
     </div>
     <div class="options" (click)="changeViewFn({multimedia: true})" *ngIf="showMultimediaMenu">
-        <p class="options--name icon icon-file-upload variation">Multimedia</p>
+        <p class="options--name icon icon-file-upload variation" [ngClass]="{'active': barActive === 'barActive1'}" (click)="barActive='barActive1'">Multimedia</p>
     </div>
     <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showEditSiteMenu">
-        <p class="options--name fas fa-laptop-code variation">Editar sitio</p>
+        <p class="options--name fas fa-laptop-code variation" [ngClass]="{'active': barActive === 'barActive2'}" (click)="barActive='barActive2'">Editar sitio</p>
     </div>
     <div class="options delete-section-btn">
         <p class="options--name icon icon-trash-alt variation" [ngClass]="{active: isDeleteActive()}"
