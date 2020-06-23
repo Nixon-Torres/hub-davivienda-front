@@ -27,6 +27,7 @@ export class EditCompaniesComponent implements OnInit {
 
     public content: any = null;
     public showPanel: boolean;
+    public showForm: false;
 
     visible = true;
     selectable = true;
