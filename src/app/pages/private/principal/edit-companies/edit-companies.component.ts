@@ -185,7 +185,7 @@ export class EditCompaniesComponent implements OnInit {
             width: '410px',
             data: {
                 config: {
-                    title: 'Las compañías ' + companiesAddedStr + ' se han agregado exitosamente.',
+                    title: 'Las compañias ' + companiesAddedStr + ' se han agregado exitosamente.',
                     twoButtons: true,
                     icon: 'icon-check',
                     iconColor: '#19d600',

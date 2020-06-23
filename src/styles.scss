@@ -69,8 +69,14 @@ body {
 }
 
 // --------------------- NOTIFICATIONS ---------------------
+.cdk-overlay-container{
+	.mat-menu-panel{
+		max-width: 290px;
+	}
+}
+
 .mat-menu-content.notifications {
-    width: 241px;
+    width: 290px;
 
     h1 {
 	    color: #0080FF;
@@ -157,7 +163,7 @@ body {
 
 	footer {
 		text-align: center;
-		padding: 7px 16px 2px;
+		padding: 7px 16px 7px;
 		border-top: solid 1px #EDEDED;
 
 	    a {

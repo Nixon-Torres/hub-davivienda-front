@@ -360,6 +360,9 @@ $default-font: "Helvetica Neue", Medium;
                 font-size: 12px;
                 line-height: 36px !important;
                 font-family: Roboto,"Helvetica Neue",sans-serif !important;
+                @media only screen and (max-width: 1300px){
+                    padding: 0 7px;
+                }
 
                 span.icon {
                     color: #bec5d0;
@@ -597,7 +600,7 @@ $default-font: "Helvetica Neue", Medium;
     }
 
     .bttn-default {
-        color: #A5ABB1;
+        color: #616161;
         box-shadow: none;
         background-color: white;
         border: 1px solid #e2e4e8; // #D0D0D0;
