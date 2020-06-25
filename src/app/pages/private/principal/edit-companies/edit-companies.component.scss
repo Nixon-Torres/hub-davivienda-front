@@ -65,9 +65,13 @@
 
     .mat-standard-chip .mat-chip-remove.mat-icon {
         width: 10px;
-        height: 13px;
-        font-size: 13px;
-        opacity: 0.18;
+        height: 100%;
+        font-size: 11px;
+        opacity: 0.4;
+        border-left: solid 1px #E2EAF1;
+        padding-left: 4px;
+        display: flex;
+        align-items: center;
     }
 }
 
@@ -303,3 +307,21 @@
     margin: 0;
 }
 
+.companies_add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: solid 1px #F3F4F8;
+    border-bottom: solid 1px #F3F4F8;
+    padding: 13px 0;
+    cursor: pointer;
+    span, p {
+        color: #0080FF;
+    }
+    span {
+        font-size: 24px;
+    }
+    p {
+        font-size: 0.875em;
+    }
+}
