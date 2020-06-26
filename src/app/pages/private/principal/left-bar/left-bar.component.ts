@@ -150,15 +150,23 @@ export class LeftBarComponent implements OnInit {
     setCurrentState(state: any) {
         this.deletedStateEnabled = false;
         this.currentState = state;
-        this.valueChange.emit({ state: state.id, deleted: false, folder: this.currentFolder ?
-                this.currentFolder.id : null, stateName: state.name });
+        this.valueChange.emit({
+            state: state.id,
+            deleted: false,
+            folder: null,
+            stateName: state.name
+        });
     }
 
     setCurrentFolder(folder: any) {
         this.deletedStateEnabled = false;
         this.currentFolder = folder;
-        this.valueChange.emit({ state: this.currentState ?
-                this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name });
+        this.valueChange.emit({
+            state: null,
+            deleted: false,
+            folder: folder.id,
+            stateName: folder.name
+        });
     }
 
     setCurrentCategory(category: any) {
