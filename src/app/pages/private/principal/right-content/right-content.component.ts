@@ -557,9 +557,11 @@ export class RightContentComponent implements OnInit {
             data: query.filter,
             encode: true
         }).subscribe((response: any) => {
+            this.startDate = null;
+            this.endDate = null;
             this.addCheckboxes(response.body);
             let finisher = null;
-            clearTimeout(finisher)
+            clearTimeout(finisher);
             setTimeout(() => {
                 this.list.reports = response.body;
                 if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
@@ -845,7 +847,7 @@ export class RightContentComponent implements OnInit {
     public filterDateReports() {
         this.ifilterdate = {
             start: this.startDate,
-            end: this.endDate
+            end: this.endDate ? this.endDate : this.startDate.toString().replace('00:00:00', '23:59:59')
         };
         this.calendarOpen = false;
         this.loadReports(this.ifilter);

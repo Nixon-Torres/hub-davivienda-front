@@ -42,7 +42,7 @@
             <a _ngcontent-xoo-c17="" class="modal-close-cta" (click)="toggleCalendar()">Cerrar <span
                     _ngcontent-xoo-c17="" class="icon icon-times"></span></a>
             <h3 class="calendar-container--title">Búsqueda por fecha</h3>
-            <p class="calendar-container--info">Debe seleccionar fecha inicial y fecha final.</p>
+            <p class="calendar-container--info">Para realizar una búsqueda por fecha, siempre debe seleccionar fecha inicial y fecha final. <span> Esta acción es obligatoria.</span></p>
             <div class="calendar-container--form">
                 <mat-form-field class="input-left">
                     <input matInput placeholder="Fecha de" [(ngModel)]="startDate" disabled='disabled'>
@@ -54,7 +54,7 @@
             <ngx-daterangepicker-material class="box-content" autoApply=true (datesUpdated)="onDateUpdate($event)">
             </ngx-daterangepicker-material>
             <button class="mat-button mat-button-base" (click)="toggleCalendar()">Cancelar</button>
-            <button type="button" (click)="filterDateReports()" mat-raised-button>Filtrar Ahora</button>
+            <button type="button" (click)="filterDateReports()" mat-raised-button [disabled]="!endDate">Filtrar Ahora</button>
         </div>
     </div>
 
