@@ -1,6 +1,20 @@
 <header>
 	<div class="container">
 
+        <div class="mobile_menu">
+
+            <div class="icon_menu">
+                <div (click)=" sidevarMenu = !sidevarMenu" class="">
+                    <span *ngIf="sidevarMenu" class="material-icons" (click)="openNav()">menu</span>
+                    <p *ngIf="sidevarMenu">Menú</p>
+                </div>
+                <div (click)="sidevarMenu = !sidevarMenu" class="">
+                    <span *ngIf="!sidevarMenu" class="material-icons" (click)="closeNav()">close</span>
+                    <p *ngIf="!sidevarMenu">Cerrar</p>
+                </div>
+            </div>
+        </div>
+
 		<!-- LOGO -->
 		<img class="logo-principal" src="../assets/images/section/davivienda.svg" alt="Logo Davivienda" *ngIf="onPrincipal">
 
@@ -61,5 +75,32 @@
             <span>Cerrar sesión</span>
             <span class="fas fa-sign-out-alt"></span>
         </button>
+
+        <div class="mobile_header" *ngIf="isMobileLayout">
+            <div>
+                <div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing" (click)="openNotf(notification.reportId, notification.readed)">
+                    <span>{{ user.name }}</span>
+                </div>
+            </div>
+            <div class="mat-menu-content notifications notification_mobile">
+                    <h1 id="notificationHeader">Notificaciones</h1>
+                    <section>
+                        <button mat-menu-item [ngClass]="{'to-check' : !notification.readed}"
+                            *ngFor="let notification of notifications"
+                            (click)="openNotf(notification.reportId, notification.readed)">
+                            <img class="indicator" src="../assets/images/comments.png"
+                                *ngIf="notification.type === 'report-comment'">
+                            <div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'">
+                            </div>
+                            <h6>{{ notification.subject }}</h6>
+                            <p>{{ notification.text }}</p>
+                            <small>{{ notification.timeAgo }}</small>
+                        </button>
+                    </section>
+                    <footer>
+                        <a [routerLink]="['notifications']">Ver todas las notificaciones</a>
+                    </footer>
+            </div>
+        </div>
 	</div>
 </header>

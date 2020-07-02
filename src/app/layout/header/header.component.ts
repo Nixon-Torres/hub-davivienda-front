@@ -29,6 +29,8 @@ export class HeaderComponent implements OnInit {
     };
     public STORAGE_URL = environment.STORAGE_FILES;
     public marketing: boolean;
+    public sidevarMenu = true;
+    public isMobileLayout = false
 
     constructor(
         private router: Router,
@@ -204,4 +206,13 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['app/users']);
 
     }
+
+    openNav() {
+        document.getElementById("mySidenav").style.width = "371px",
+        document.getElementById("leftBar").style.zIndex = "9";
+        }
+     closeNav() {
+        document.getElementById("mySidenav").style.width = "0",
+        setTimeout(function(){ document.getElementById("leftBar").style.zIndex = "0"; }, 1000);
+      }
 }

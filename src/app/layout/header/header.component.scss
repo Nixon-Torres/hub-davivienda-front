@@ -21,9 +21,16 @@ header {
         max-width: 1440px;
         display: flex;
         align-items: center;
+        @media only screen and (max-width: 768px) {
+            justify-content: space-between;
+        }
         img.logo-principal {
             height: 70px;
             margin-left: -15px;
+            @media only screen and (max-width: 768px) {
+                height: 55px;
+                margin-left: 15px;
+            }
         }
 
         a {
@@ -90,7 +97,7 @@ header {
                 margin-right: 15px;
                 color: #616161;
                 font-size: 13px;
-                @media only screen and (max-width: 1000px){
+                @media only screen and (max-width: 768px) {
                     display: none;
                 }
                 &:after {
@@ -107,11 +114,38 @@ header {
 
         .notifications {
             outline: none;
-            @media only screen and (max-width: 1000px){
+            @media only screen and (max-width: 768px) {
                 display: none;
+                &.notification_mobile {
+                    display: block;
+                    section{
+                        max-height: 85vh;
+                        width: 78vw;
+                    }
+                }
             }
             .notifications_icon{
                 color: silver;
+            }
+        }
+
+        .mobile_header {
+            display: none;
+            @media only screen and (max-width: 768px) {
+                display: block;
+                position: absolute;
+                background: #ffffff;
+                height: 100%;
+                z-index: 9;
+                left: 20%;
+                top: 10%;
+                width: 330px;
+                .user-menu {
+                    span {
+                        display: block;
+                        position: initial;
+                    }
+                }
             }
         }
     }
@@ -134,5 +168,34 @@ header {
     }
     .all-right {
         margin-left: auto;
+    }
+}
+
+.mobile_menu {
+    .icon_menu {
+        display: none;
+    }
+    .side_search {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mobile_menu {
+        display: none;
+        .icon_menu {
+            display: block;
+        }
+        .side_search {
+            display: block;
+        }
+        display: block;
+        color: #a0a0a0;
+        span {
+            font-size: 2em;
+        }
+        p {
+            font-size: 0.8em;
+        }
     }
 }
