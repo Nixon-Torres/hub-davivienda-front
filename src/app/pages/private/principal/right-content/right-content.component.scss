@@ -184,6 +184,10 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		font-size: 1.125em;
 		font-weight: 600;
 		width: 100%;
+		@media only screen and (max-width: 768px) {
+			font-size: 1em;
+			margin-left: 20px;
+		}
 	}
 }
 
@@ -240,6 +244,9 @@ section {
 		min-height: 76px;
 		padding: 0 3%;
 		position: relative;
+		@media only screen and (max-width: 600px) {
+			flex-wrap: wrap;
+		}
 
 		&.yellow {
 			&:after {
@@ -482,6 +489,9 @@ section {
 	}
 	.group-menu{
 		width: 4%;
+		@media only screen and (max-width: 600px){
+			display: none;
+		}
 	}
 }
 

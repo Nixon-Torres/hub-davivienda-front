@@ -676,6 +676,9 @@ $builder-bg: #f5f7fb;
 	.report_name{
 		width: 12%;
 		padding-right: 2%;
+		@media only screen and (max-width: 600px) {
+			width: 100%;
+		}
 	}
 	.report_content{
 		margin: 0 auto;
@@ -691,7 +694,8 @@ $builder-bg: #f5f7fb;
 		width: 35%;
 		@media only screen and (max-width: 600px){
 			max-width: initial;
-			width: 75%;
+			width: 100%;
+			text-align: center;
 		}
 	}
 }
