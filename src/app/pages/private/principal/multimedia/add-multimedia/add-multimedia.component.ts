@@ -22,6 +22,7 @@ export class AddMultimediaComponent implements OnInit {
     public thumbnailFile: Array<any>;
     public currentFile: any;
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    categories: any;
 
     constructor(
         public dialog: MatDialog,
@@ -34,14 +35,16 @@ export class AddMultimediaComponent implements OnInit {
     ngOnInit() {
         this.onInitForms(this.multimediaObj);
         this.onLoadRelatedReports();
+        this.onLoadCategories();
         this.onLoadCurrentFile();
         this.thumbnailFile = this.multimediaObj;
     }
     private onInitForms(multimediaObj?: any) {
         this.multimediaForm = new FormGroup({
-            title: new FormControl(multimediaObj ? multimediaObj.title : '', Validators.required),
+            title: new FormControl(multimediaObj ? multimediaObj.title : '', [Validators.required, Validators.maxLength(70)]),
             description: new FormControl(multimediaObj ? multimediaObj.description : '', Validators.required),
             url: new FormControl(multimediaObj ? multimediaObj.params.url : '', Validators.required),
+            category: new FormControl(multimediaObj ? multimediaObj.params.category : '', Validators.required),
             firstRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[0] : null, Validators.required),
             secondRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[1] : null, Validators.required),
             thirdRelated: new FormControl(multimediaObj ? multimediaObj.params.relatedReports[2] : null, Validators.required)
@@ -67,6 +70,16 @@ export class AddMultimediaComponent implements OnInit {
                 this.relatedReports = resp.body;
             }
         });
+    }
+
+    public onLoadCategories() {
+        this.categories = [
+            {id: '0', name: 'Corredores davivienda'},
+            {id: '1', name: 'Estrategia'},
+            {id: '2', name: 'Estrategia davivienda'},
+            {id: '3', name: 'Indicadores'},
+            {id: '4', name: 'Otros'},
+        ];
     }
 
     public onLoadCurrentFile(): void {
@@ -147,6 +160,7 @@ export class AddMultimediaComponent implements OnInit {
                     multimediaType: this.multimediaType,
                     params: {
                         url: formControls.url.value,
+                        category: formControls.category.value,
                         tags: this.tags,
                         relatedReports: [
                             formControls.firstRelated.value,
@@ -167,6 +181,10 @@ export class AddMultimediaComponent implements OnInit {
 
     public removeSelected(event) {
         this.relatedReports = this.relatedReports.filter((report: any) =>  report.id !== event.id);
+    }
+
+    public removeCategorySelected(event) {
+        this.categories = this.categories.filter((cat: any) =>  cat.id !== event.id);
     }
 
     add(event: MatChipInputEvent): void {
@@ -233,5 +251,25 @@ export class AddMultimediaComponent implements OnInit {
         this.currentFile = null;
         this.multimediaObj = null;
         this.tags = [];
+    }
+
+    public getMaxChars(html: string) {
+        html = html.replace(/&nbsp;/g, '');
+        html = html.replace(/<(?:.|\n)*?>/gm, ' ');
+        html = html.trimLeft().trimRight().replace(/\s+/g, ' ');
+        return Math.min(70, html.length);
+    }
+
+    public getCharsPercentage(html: string, max: number) {
+        const len = this.getChars(html);
+        const perc = Math.floor(len / max * 10);
+        return Math.min(perc * 10, 100);
+    }
+
+    public getChars(html: string) {
+        html = html.replace(/&nbsp;/g, '');
+        html = html.replace(/<(?:.|\n)*?>/gm, ' ');
+        html = html.trimLeft().trimRight().replace(/\s+/g, ' ');
+        return html.length;
     }
 }
