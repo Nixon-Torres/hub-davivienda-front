@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div *ngIf="myform.submitted || (multimediaForm?.controls?.title?.invalid && (multimediaForm?.controls?.title?.dirty || multimediaForm?.controls?.title?.touched))"
-                         class="alert alert-danger">
+                         class="alert alert-danger alert-danger-title">
 
                         <div *ngIf="multimediaForm?.controls?.title?.errors?.required">
                             Nombre del video es requerido.

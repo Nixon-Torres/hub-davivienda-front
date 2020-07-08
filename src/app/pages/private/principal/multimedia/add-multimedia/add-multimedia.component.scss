@@ -186,7 +186,7 @@
 
 .chars-counter {
     position: relative;
-    left: 63%;
+    left: 59%;
     bottom: 33px;
 
     span {
@@ -195,20 +195,17 @@
     }
 }
 
-
-
 .radialProgressBar {
     border-radius: 50%;
     -webkit-transform: translate(50%, 50%);
     transform: translate(50%, 50%);
     display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     background: #a5abb1;
-    float:left;
-    width: 30px;
-    height: 30px;
-    margin: -22px 0 0;
+    float: left;
+    width: 18px;
+    margin: -15px 0 0;
+    padding: 3px;
 }
 .radialProgressBar .overlay {
     border-radius: 50%;
@@ -285,5 +282,9 @@
     color: #ff4a74;
     font-size: 12px;
     margin-top: 4px;
-    position: absolute;
+}
+
+.alert-danger-title{
+    position: relative;
+    right: 162px;
 }

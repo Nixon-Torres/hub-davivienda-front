@@ -37,6 +37,7 @@ export class LeftBarComponent implements OnInit {
         states: [],
         categories: []
     };
+    barActive: any;
 
     @Input()
     set currentObj(value: any) {
@@ -142,6 +143,7 @@ export class LeftBarComponent implements OnInit {
     }
 
     setDeletedState() {
+        this.barActive = null;
         this.deletedStateEnabled = true;
         this.currentState = null;
         this.valueChange.emit({ state: null, deleted: true, folder: null, stateName: 'Eliminados' });
@@ -191,6 +193,7 @@ export class LeftBarComponent implements OnInit {
     }
 
     changeViewFn(view: any) {
+        this.deletedStateEnabled = false;
         this.changeView.emit(view);
     }
 
