@@ -13,11 +13,6 @@ export class AsideFoldersService {
     folders: [],
     states: []
   };
-  private sharedFolder: any = {
-    id: 'shared',
-    name: 'Carpeta Colaborativa',
-    count: 0
-  };
 
   public listenFolders: Subject<any>;
   public $listenFolders: Observable<any>;
@@ -79,8 +74,6 @@ export class AsideFoldersService {
       for (const folder of folders) {
         folder.count = folder.reports.length;
       }
-      this.sharedFolder.count = response.body.count;
-      this.list.folders.push(this.sharedFolder);
       this.list.folders = this.updateFolders(this.list.folders.concat(folders));
     });
   }
