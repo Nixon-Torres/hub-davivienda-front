@@ -154,7 +154,7 @@
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
                                 <li *ngFor="let report of list.reports; let i = index">
-                                    <div class="row" [ngClass]="report.state.color">
+                                    <div class="row" [ngClass]="report.state?.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         <mat-checkbox [formControlName]="i" *ngIf="!marketing" (change)="checkElement($event)">
@@ -230,7 +230,7 @@
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index">
-                                    <div class="row" [ngClass]="report.state.color">
+                                    <div class="row" [ngClass]="report.state?.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         <mat-checkbox [formControlName]="i">
