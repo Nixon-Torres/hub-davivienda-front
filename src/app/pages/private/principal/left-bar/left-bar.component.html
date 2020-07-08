@@ -20,7 +20,7 @@
             </li>
         </ul>
     </div>
-    <div class="options" (click)="changeViewFn({multimedia: true})" *ngIf="showMultimediaMenu">
+    <div class="options delete-section-btn" (click)="changeViewFn({multimedia: true})" *ngIf="showMultimediaMenu">
         <p class="options--name icon icon-file-upload variation" [ngClass]="{'active': barActive === 'barActive1'}" (click)="barActive='barActive1'">Multimedia</p>
     </div>
     <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showEditSiteMenu">

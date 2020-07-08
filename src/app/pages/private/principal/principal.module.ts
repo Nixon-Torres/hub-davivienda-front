@@ -56,6 +56,7 @@ import { EditBookVersionsComponent } from './edit-book-versions/edit-book-versio
 import { EditIndicatorsComponent } from './edit-indicators/edit-indicators.component';
 import { EditIndicatorsContentComponent } from './edit-indicators-content/edit-indicators-content.component';
 import { EditFooterComponent } from './edit-footer/edit-footer.component';
+import { ArraySortPipe } from 'src/app/pipes/array-sort.pipe';
 
 const routes: Routes = [
     {
@@ -109,6 +110,7 @@ const materialModules: any[] = [
         AddWordsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
+        ArraySortPipe
     ],
     imports: [
         CommonModule,
@@ -126,7 +128,8 @@ const materialModules: any[] = [
         OutstandingVideosModule
     ],
     exports: [
-        materialModules
+        materialModules,
+        ArraySortPipe
     ],
     entryComponents: [
         DialogBoxComponent,
