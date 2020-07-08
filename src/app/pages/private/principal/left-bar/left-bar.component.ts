@@ -4,7 +4,7 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
-import {HttpService} from '../../../../services/http.service';
+import { HttpService } from '../../../../services/http.service';
 
 @Component({
     selector: 'app-left-bar',
@@ -151,10 +151,8 @@ export class LeftBarComponent implements OnInit {
         this.deletedStateEnabled = false;
         this.currentState = state;
         this.valueChange.emit({
-            state: state.id,
-            deleted: false,
-            folder: null,
-            stateName: state.name
+            state: state.id, deleted: false, folder: this.currentFolder ?
+                this.currentFolder.id : null, stateName: state.name
         });
     }
 
@@ -162,18 +160,18 @@ export class LeftBarComponent implements OnInit {
         this.deletedStateEnabled = false;
         this.currentFolder = folder;
         this.valueChange.emit({
-            state: null,
-            deleted: false,
-            folder: folder.id,
-            stateName: folder.name
+            state: this.currentState ?
+                this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name
         });
     }
 
     setCurrentCategory(category: any) {
         this.deletedStateEnabled = false;
         this.currentCategory = category;
-        this.valueChange.emit({ state: null, deleted: false, folder: null,
-            stateName: this.currentCategory.name, category: this.currentCategory.id });
+        this.valueChange.emit({
+            state: null, deleted: false, folder: null,
+            stateName: this.currentCategory.name, category: this.currentCategory.id
+        });
     }
 
     isItemActive(state: string) {
