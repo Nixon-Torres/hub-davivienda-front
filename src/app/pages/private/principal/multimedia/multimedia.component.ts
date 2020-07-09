@@ -1,10 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AuthService} from '../../../../services/auth.service';
-import {HttpService} from '../../../../services/http.service';
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
-import {VideoModalComponent} from '../faq-content/video-modal/video-modal.component';
-import {OutstandingVideosComponent} from '../outstanding-videos/outstanding-videos.component';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AuthService } from '../../../../services/auth.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { VideoModalComponent } from '../faq-content/video-modal/video-modal.component';
+import { OutstandingVideosComponent } from '../outstanding-videos/outstanding-videos.component';
 
 @Component({
     selector: 'app-multimedia',
@@ -79,7 +79,7 @@ export class MultimediaComponent implements OnInit {
                 if (filter) {
                     this.multimediaList = resp.body.filter(e => e.multimediaType.name === filter.name);
                 } else {
-                    this.multimediaList = resp.body;
+                    this.multimediaList = resp.body.filter(e => !e.trash);
                 }
                 this.addIconClass();
             }
@@ -122,21 +122,22 @@ export class MultimediaComponent implements OnInit {
     }
 
     public onDeleteMultimedia(multimedia: any): void {
-        this.http.delete({
-            path: `contents/${multimedia.id}`
-        }).subscribe((resp: any) => {
-            if (resp) {
-                this.onLoadMultimedia();
-                this.dialog.open(ConfirmationDialogComponent, {
-                    width: '410px',
-                    data: {
-                        config: {
-                            title: 'Se ha eliminado el contenido',
-                            subtitle: multimedia.title
-                        }
-                    }
-                });
+        this.http.patch({
+            path: `contents/${multimedia.id}`,
+            data: {
+                trash: true
             }
+        }).subscribe(() => {
+            this.onLoadMultimedia();
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    config: {
+                        title: 'Se ha eliminado el contenido',
+                        subtitle: multimedia.title
+                    }
+                }
+            });
         });
     }
 

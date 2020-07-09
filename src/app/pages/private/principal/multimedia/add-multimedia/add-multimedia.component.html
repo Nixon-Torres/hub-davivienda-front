@@ -5,17 +5,25 @@
     <div class="form">
         <form class="form__wrapper" [formGroup]="multimediaForm" (ngSubmit)="onSaveMultimedia()" #myform="ngForm">
             <div class="form__container">
-                <div class="form__item">
+                <div class="form__item form__item--txtarea">
                     <label for="title">Titulo</label>
                     <textarea name="" id="title"
                               formControlName="title"
-                              placeholder="Escriba el nombre del video"></textarea>
-
+                              placeholder="Escriba el nombre del video" maxlength="70"></textarea>
+                    <div class="chars-counter">
+                        <span>{{getMaxChars(multimediaForm.controls.title.value)}} Caracteres de 70</span>
+                        <div class="radialProgressBar" [ngClass]="'progress-' + getCharsPercentage(multimediaForm.controls.title.value, 70)">
+                            <div class="overlay">100</div>
+                        </div>
+                    </div>
                     <div *ngIf="myform.submitted || (multimediaForm?.controls?.title?.invalid && (multimediaForm?.controls?.title?.dirty || multimediaForm?.controls?.title?.touched))"
-                         class="alert alert-danger">
+                         class="alert alert-danger alert-danger-title">
 
                         <div *ngIf="multimediaForm?.controls?.title?.errors?.required">
                             Nombre del video es requerido.
+                        </div>
+                        <div *ngIf="multimediaForm?.controls?.title?.errors?.maxlength">
+                            Nombre del video debe tener máximo 70 caracteres de longitud.
                         </div>
                     </div>
                 </div>
@@ -57,7 +65,7 @@
                         <label for="thumbnail" class="custom-file">
                             <span class="fas fa-image"></span>
                         </label>
-                        <p class="info">Subir miniatura</p>
+                        <p class="info">Subir miniatura <span>(Peso máximo 25MB)</span></p>
                     </div>
                     <input type="file" name="" id="thumbnail" (change)="loadFile($event)">
 
@@ -91,6 +99,31 @@
 
                         <div *ngIf="tags?.length === 0">
                             Tags son requeridos.
+                        </div>
+                    </div>
+                </div>
+                <div class="form__item form__item--related ">
+                    <label for="">Lista de categoría</label>
+                    <div class="wrapper">
+                        <div class="item">
+                            <ng-select [items]="categories"
+                                       [hideSelected]="true"
+                                       [searchable]="true"
+                                       [clearable]="false"
+                                       formControlName="category"
+                                       bindLabel="name"
+                                       bindValue="id"
+                                       class="custom-select"
+                                       (change)="removeSelected($event)"
+                                       placeholder="-Seleccione categoría-"></ng-select>
+                            <div *ngIf="myform.submitted || (multimediaForm?.controls?.category?.invalid && (multimediaForm?.controls?.category?.dirty ||
+                            multimediaForm?.controls?.category?.touched))"
+                                 class="alert alert-danger">
+
+                                <div *ngIf="multimediaForm?.controls?.category?.errors?.required">
+                                    Categoría es requerida.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

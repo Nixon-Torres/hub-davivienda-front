@@ -22,6 +22,9 @@ export class PrincipalComponent implements OnInit {
     }
 
     setCurrentState(value: any) {
+        this.view = {
+            reports: true
+        };
         this.cleanObj = value;
         this.currentObj = {
             currentFolder: value ? value.folder : null,

@@ -706,6 +706,11 @@ $builder-bg: #f5f7fb;
     background-position: 97% 50%;
 }
 
+.mat-select-info-move {
+    position: relative;
+    top: 8px;
+}
+
 .info_move-text{
 	display: inline-block;
 	padding: 0 1.5% 0 10%;
@@ -715,6 +720,7 @@ $builder-bg: #f5f7fb;
 	font-size: 14px;
 	position: relative;
 	right: 3%;
+	top: 5px;
 	&.filter{
 		right: 5%;
 	}

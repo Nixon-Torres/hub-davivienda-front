@@ -109,7 +109,7 @@
                             <p class="info_move-text">Mover a:</p>
                             <mat-form-field class="simple" floatLabel="never">
                                 <mat-label class="folder_label">Escoger</mat-label>
-                                <mat-select (selectionChange)="moveReports($event)" class="info_select">
+                                <mat-select (selectionChange)="moveReports($event)" class="info_select mat-select-info-move">
                                     <mat-option class="info_options" *ngFor="let folder of list.folders"
                                         [value]="folder.id">{{folder.name}}</mat-option>
                                     <mat-option class="info_options" *ngIf="!icurrentObj.deletedFg">
@@ -154,7 +154,7 @@
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
                                 <li *ngFor="let report of list.reports; let i = index">
-                                    <div class="row" [ngClass]="report.state.color">
+                                    <div class="row" [ngClass]="report.state?.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         <mat-checkbox [formControlName]="i" *ngIf="!marketing" (change)="checkElement($event)">
@@ -201,7 +201,7 @@
                             <p class="info_move-text">Mover a:</p>
                             <mat-form-field class="simple" floatLabel="never">
                                 <mat-label class="folder_label">Escoger</mat-label>
-                                <mat-select (selectionChange)="moveReports($event)" class="info_select" [disabled]="getCheckboxesSelected().length === 0">
+                                <mat-select (selectionChange)="moveReports($event)" class="info_select mat-select-info-move" [disabled]="getCheckboxesSelected().length === 0">
                                     <mat-option class="info_options" *ngFor="let folder of list.folders"
                                         [value]="folder.id">{{folder.name}}</mat-option>
                                     <mat-option class="info_options">
@@ -230,7 +230,7 @@
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index">
-                                    <div class="row" [ngClass]="report.state.color">
+                                    <div class="row" [ngClass]="report.state?.color">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         <mat-checkbox [formControlName]="i">
