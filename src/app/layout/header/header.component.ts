@@ -208,7 +208,7 @@ export class HeaderComponent implements OnInit {
     }
 
     openNav() {
-        document.getElementById("mySidenav").style.width = "371px",
+        document.getElementById("mySidenav").style.width = "320px",
         document.getElementById("leftBar").style.zIndex = "9";
         }
      closeNav() {

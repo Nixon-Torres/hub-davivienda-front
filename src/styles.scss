@@ -910,6 +910,9 @@ margin-top: 2%;
 }
 
 .header_setting{
+	@media only screen and (max-width: 768px){
+		display: none;
+	}
 	button{
 		border-bottom: solid 1px rgba(217, 219, 221, 0.637);
 		height: 30px;
@@ -1211,7 +1214,11 @@ mat-expansion-panel {
 		height: 30px !important;
 	}
 
-
+	@media only screen and (max-width: 768px) {
+		.cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
+			display: none;
+		}
+	}
 
 /* =========================================================== *\
     						NOTIFICATIONS

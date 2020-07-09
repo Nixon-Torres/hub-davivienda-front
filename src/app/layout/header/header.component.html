@@ -51,10 +51,12 @@
         </mat-menu>
 
 		<!-- USER MENU -->
-		<div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing">
-            <img [src]="getUserImage()">
-			<span>{{ user.name }}</span>
-		</div>
+		<div (click)="isMobileLayout = !isMobileLayout">
+            <div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing">
+                <img [src]="getUserImage()">
+                <span>{{ user.name }}</span>
+            </div>
+        </div>
         <mat-menu #userMenu="matMenu" xPosition="before" class="header_setting">
 		  	<button mat-menu-item (click)="gotoTo()">
 		  		<!-- <i class="material-icons menu-icons">person</i> -->
@@ -77,9 +79,14 @@
         </button>
 
         <div class="mobile_header" *ngIf="isMobileLayout">
-            <div>
-                <div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing" (click)="openNotf(notification.reportId, notification.readed)">
-                    <span>{{ user.name }}</span>
+            <div class="right_navbar_header">
+                <div>
+                    <span class="user_name">{{ user.name }}</span>
+                </div>
+                <div class="mobile_social_content">
+                    <div class="mobile_social_content--logout">
+                        <p (click)="logout()">Cerrar sesión</p>
+                    </div>
                 </div>
             </div>
             <div class="mat-menu-content notifications notification_mobile">
