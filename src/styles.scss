@@ -1214,7 +1214,25 @@ mat-expansion-panel {
 		height: 30px !important;
 	}
 
-
+	.outstanding {
+		&__fields {
+			.mat-form-field-label-wrapper {
+				label {
+					font-size: 1em;
+					transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(.001px);
+				}
+			}
+			.mat-chip-list-wrapper {
+				border: solid 1px #C2CBD1;
+				margin-top: 5px;
+			}
+		}
+		.mat-form-field-underline {
+			.mat-form-field-ripple {
+				background-color: transparent;
+			}
+		}
+	}
 
 /* =========================================================== *\
     						NOTIFICATIONS
