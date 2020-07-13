@@ -136,7 +136,7 @@ export class AddMultimediaComponent implements OnInit {
         const state = this.multimediaObj ? 'actualizado' : 'creado';
         const type = this.multimediaType;
         this.dialog.open(ConfirmationDialogComponent, {
-            width: '410px',
+            width: '425px',
             data: {
                 config: {
                     title: `Se ha ${state} exitosamente el ${type.name}`,
