@@ -835,9 +835,10 @@ margin-top: 2%;
 }
 .cdk-overlay-container{
 	.mat-select-panel{
+		min-width: calc(100% + 45px) !important;
 		font-size: 14px !important;
-		margin-top: 20%;
-		margin-left: 8%;
+		margin-top: 30%;
+		margin-left: 12%;
 	}
 }
 	.info_options{
@@ -1223,6 +1224,25 @@ mat-expansion-panel {
 	@media only screen and (max-width: 768px) {
 		.cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
 			display: none;
+		}
+		
+	.outstanding {
+		&__fields {
+			.mat-form-field-label-wrapper {
+				label {
+					font-size: 1em;
+					transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(.001px);
+				}
+			}
+			.mat-chip-list-wrapper {
+				border: solid 1px #C2CBD1;
+				margin-top: 5px;
+			}
+		}
+		.mat-form-field-underline {
+			.mat-form-field-ripple {
+				background-color: transparent;
+			}
 		}
 	}
 

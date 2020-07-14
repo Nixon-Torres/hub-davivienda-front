@@ -13,7 +13,7 @@ function shareOnLinkedin() {
   var h = 300;
   var left = (screen.width/2)-(w/2);
   var top = (screen.height/2)-(h/2);
-  var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + window.location + '&title=LinkedIn%20Developer%20Network&summary=My%20favorite%20developer%20program&source=LinkedIn';
+  var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + window.location.href + '&title=LinkedIn%20Developer%20Network&summary=My%20favorite%20developer%20program&source=LinkedIn';
   window.open(url, '_blank', 'menubar=no,toolbar=no,resizable=none,scrollbars=no,height=' + h + ',width=' + w + ',top=' + top + ',left=' + left);
   return false;
 }
