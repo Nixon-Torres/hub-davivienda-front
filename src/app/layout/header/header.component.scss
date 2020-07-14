@@ -23,6 +23,10 @@ header {
         align-items: center;
         @media only screen and (max-width: 768px) {
             justify-content: space-between;
+
+            @media screen and (max-width: 320px) {
+                width: 100%;
+            }
         }
         img.logo-principal {
             height: 70px;
@@ -146,21 +150,9 @@ header {
                 background: #ffffff;
                 height: 100%;
                 z-index: 9;
-                left: 20%;
+                right: 0;
                 top: 11%;
-                width: 330px;
-                &::before {
-                    content: '';
-                    width: 0;
-                    height: 0;
-                    border-right: 15px solid transparent;
-                    border-top: 15px solid transparent;
-                    border-left: 15px solid transparent;
-                    border-bottom: 15px solid #ffffff;
-                    position: relative;
-                    top: -1.8em;
-                    left: 76%;
-                }
+                width: auto;
                 .user-menu {
                     span {
                         display: block;

@@ -652,7 +652,9 @@ $builder-bg: #f5f7fb;
 
 .info_content{
 	mat-checkbox{
-		width: 8%;
+		width: 3em;
+		margin: 0 auto;
+		text-align: center;
 		@media only screen and (max-width: 600px){
 			display: none;
 		}
@@ -774,14 +776,14 @@ margin-top: 2%;
 	padding-top: 4%;
 	max-height: 47vh;
 	overflow-y: auto;
-	@media only screen and (max-width: 1000px){
+	@media only screen and (max-width: 768px){
 		max-height: initial;
 	}
 }
 .content--top{
 	.insert_btn{
 		padding-right: 15px;
-		@media only screen and (max-width: 1000px){
+		@media only screen and (max-width: 768px){
 			display: none;
 		}
 		button{
@@ -1225,7 +1227,8 @@ mat-expansion-panel {
 		.cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
 			display: none;
 		}
-		
+	}
+
 	.outstanding {
 		&__fields {
 			.mat-form-field-label-wrapper {
