@@ -16,7 +16,7 @@
     justify-content: flex-start;
 
     .two-columns {
-        padding: 6.82% 2.43% 8.29%;
+        padding: 6.82% 0% 8.29%;
         position: relative;
         width: 100%;
         text-align: center;
@@ -49,10 +49,13 @@
         }
 
         .message-section {
+            word-wrap: break-word;
             font-size: 1em;
             color: #616161;
             line-height: 1.625em;
             .message-subtitle {
+                margin-right: 16px;
+                margin-left: 16px;
                 display: block;
                 font-weight: bold;
             }
