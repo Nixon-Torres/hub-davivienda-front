@@ -702,6 +702,11 @@ $builder-bg: #f5f7fb;
     background-position: 97% 50%;
 }
 
+.mat-select-info-move {
+    position: relative;
+    top: 8px;
+}
+
 .info_move-text{
 	display: inline-block;
 	padding: 0 1.5% 0 10%;
@@ -711,6 +716,7 @@ $builder-bg: #f5f7fb;
 	font-size: 14px;
 	position: relative;
 	right: 3%;
+	top: 5px;
 	&.filter{
 		right: 5%;
 	}
@@ -825,9 +831,10 @@ margin-top: 2%;
 }
 .cdk-overlay-container{
 	.mat-select-panel{
+		min-width: calc(100% + 45px) !important;
 		font-size: 14px !important;
-		margin-top: 20%;
-		margin-left: 8%;
+		margin-top: 30%;
+		margin-left: 12%;
 	}
 }
 	.info_options{
@@ -1207,7 +1214,25 @@ mat-expansion-panel {
 		height: 30px !important;
 	}
 
-
+	.outstanding {
+		&__fields {
+			.mat-form-field-label-wrapper {
+				label {
+					font-size: 1em;
+					transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(.001px);
+				}
+			}
+			.mat-chip-list-wrapper {
+				border: solid 1px #C2CBD1;
+				margin-top: 5px;
+			}
+		}
+		.mat-form-field-underline {
+			.mat-form-field-ripple {
+				background-color: transparent;
+			}
+		}
+	}
 
 /* =========================================================== *\
     						NOTIFICATIONS

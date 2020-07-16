@@ -271,7 +271,7 @@ export class RightContentComponent implements OnInit {
 
     private getFolders(): void {
         this.folderService.$listenFolders.subscribe((data: any) => {
-            this.list.folders = data;
+            this.list.folders = data.filter((a: any) => a.id !== 'shared');
         });
     }
 
