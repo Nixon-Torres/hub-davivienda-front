@@ -587,6 +587,21 @@
                             </div>
 
                         </mat-expansion-panel>
+
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-book"></span>
+                                    <span>Activar tabla de contenido</span>
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    <label class="switch-table">
+                                        <input type="checkbox" [(ngModel)]="allowContentTable">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                        </mat-expansion-panel>
                     </mat-accordion>
                 </div>
             </div>
