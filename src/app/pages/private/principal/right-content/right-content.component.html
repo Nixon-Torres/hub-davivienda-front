@@ -155,7 +155,7 @@
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
                                 <li *ngFor="let report of list.reports; let i = index">
                                     <div class="row" [ngClass]="report.state?.color">
-                                        <div>
+                                        <div class="report_status">
                                             <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         </div>
@@ -235,7 +235,7 @@
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index">
                                     <div class="row" [ngClass]="report.state?.color">
-                                        <div>
+                                        <div class="report_status">
                                             <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         </div>
@@ -275,7 +275,7 @@
                                     <h1>Informes revisados</h1>
                                     <li *ngFor="let report of list.reviewed; let i = index">
                                         <div class="row" [ngClass]="report.state?.color">
-                                            <div>
+                                            <div class="report_status">
                                                 <span class="report--span report_name">{{report.state.name}}</span>
                                             </div>
                                             <mat-checkbox [formControlName]="i">

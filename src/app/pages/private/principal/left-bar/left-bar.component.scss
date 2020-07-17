@@ -20,7 +20,10 @@
  li.edit-btn-item {
      padding-bottom: 0px !important;
 	 padding-top: 10px !important;
-	 @media only screen and (max-width: 768px) {
+	 @media only screen and (max-width: 800px) {
+       padding-left: 0;
+    }
+	 @media only screen and (max-width: 720px) {
         display: none;
     }
 
@@ -129,7 +132,10 @@
 			border-bottom: 1px solid #E7EAF1;
 			padding: 20px 0;
 			position: relative;
-			cursor: pointer;
+            cursor: pointer;
+            @media only screen and (max-width: 800px) {
+                padding-left: 12px;
+            }
 
 			a {
 				color: #616161;
@@ -137,6 +143,9 @@
 				padding-left: 22px;
 				text-decoration: none;
                 cursor: pointer;
+                @media only screen and (max-width: 800px) {
+                    padding-left: 0;
+                }
 			}
 
 			&:before {
@@ -241,7 +250,10 @@
 	background: #0080FF;
 	box-shadow: none;
 	color: #FFFFFF;
-	width: 100%;
+    width: 100%;
+    @media only screen and (max-width: 991px){
+        width: auto;
+    }
 
 	.mat-button-wrapper {
 		font-size: 0.875em;
@@ -250,7 +262,10 @@
 
 .cog_icon{
 	position: relative;
-	top: 3px;
+    top: 3px;
+    @media only screen and (max-width: 800px) {
+        display: none;
+    }
 }
 
 /* .bar_name.active{
@@ -264,7 +279,7 @@
     display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 720px) {
     .sidenav {
         height: 100%;
         width: 0;

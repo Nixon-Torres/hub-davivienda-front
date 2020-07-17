@@ -571,8 +571,8 @@ section {
 	.filter-wrapper {
 		width: 180px;
 		display: inline-block;
-		@media only screen and (max-width: 768px){
-			width: 120px;
+		@media only screen and (max-width: 991px){
+			width: 100px;
 		}
 	}
 }
@@ -1130,6 +1130,10 @@ section {
 
 .fulldesc {
     margin-bottom: 9px;
+}
+
+.report_status {
+	max-width: 7%;
 }
 
 .report_class {

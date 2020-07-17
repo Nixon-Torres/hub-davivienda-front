@@ -21,7 +21,7 @@ header {
         max-width: 1440px;
         display: flex;
         align-items: center;
-        @media only screen and (max-width: 768px) {
+        @media only screen and (max-width: 720px) {
             justify-content: space-between;
 
             @media screen and (max-width: 320px) {
@@ -31,7 +31,7 @@ header {
         img.logo-principal {
             height: 70px;
             margin-left: -15px;
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: 720px) {
                 height: 55px;
                 margin-left: 15px;
             }
@@ -46,7 +46,7 @@ header {
             text-decoration: none;
             border-left: 1px solid #EDEDED;
             border-right: 1px solid #EDEDED;
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: 720px) {
                 height: 25px;
             }
 
@@ -104,7 +104,7 @@ header {
                 margin-right: 15px;
                 color: #616161;
                 font-size: 13px;
-                @media only screen and (max-width: 768px) {
+                @media only screen and (max-width: 720px) {
                     display: none;
                 }
                 &:after {
@@ -121,7 +121,7 @@ header {
 
         .notifications {
             outline: none;
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: 720px) {
                 display: none;
                 background-color: #F5F7FB;
                 width: 100%;
@@ -144,7 +144,7 @@ header {
 
         .mobile_header {
             display: none;
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: 720px) {
                 display: block;
                 position: absolute;
                 background: #ffffff;
@@ -222,7 +222,7 @@ header {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 720px) {
     .mobile_menu {
         display: none;
         .icon_menu {

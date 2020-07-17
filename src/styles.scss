@@ -40,6 +40,9 @@ body {
 	margin: auto;
 	max-width: 1440px;
 	width: 88%;
+	@media only screen and (max-width: 900px) {
+		width: 95%;
+	}
 }
 
 // UTILS
@@ -665,6 +668,9 @@ $builder-bg: #f5f7fb;
 			left: 14%;
 			top: 17%;
 			height: 50px;
+			@media only screen and (max-width: 991px) {
+				display: none;
+			}
 		}
 		&::after{
 			content: "";
@@ -673,6 +679,9 @@ $builder-bg: #f5f7fb;
 			left: 20%;
 			top: 17%;
 			height: 50px;
+			@media only screen and (max-width: 991px) {
+				display: none;
+			}
 		}
 	}
 	.report_name{
@@ -783,7 +792,7 @@ margin-top: 2%;
 .content--top{
 	.insert_btn{
 		padding-right: 15px;
-		@media only screen and (max-width: 768px){
+		@media only screen and (max-width: 720px){
 			display: none;
 		}
 		button{
@@ -919,7 +928,7 @@ margin-top: 2%;
 }
 
 .header_setting{
-	@media only screen and (max-width: 768px){
+	@media only screen and (max-width: 720px){
 		display: none;
 	}
 	button{
@@ -1223,9 +1232,15 @@ mat-expansion-panel {
 		height: 30px !important;
 	}
 
-	@media only screen and (max-width: 768px) {
+	@media only screen and (max-width: 720px) {
 		.cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
 			display: none;
+		}
+	}
+
+	@media only screen and (max-width: 991px) {
+		div#cdk-overlay-1 {
+			max-width: 100% !important;
 		}
 	}
 
