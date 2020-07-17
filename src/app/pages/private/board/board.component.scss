@@ -776,6 +776,15 @@ $default-font: "Helvetica Neue", Medium;
     background-color: #0080ff !important;
 }
 
+.switch-table{
+    position: absolute !important;
+    right: 15px;
+    display: inline-block !important;
+    width: 60px !important;
+    height: 34px !important;
+    z-index: 999 !important;
+}
+
 .readonly-overlay {
     position: absolute;
     width: 100%;

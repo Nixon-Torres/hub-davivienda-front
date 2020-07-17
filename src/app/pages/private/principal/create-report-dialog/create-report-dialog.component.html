@@ -28,7 +28,7 @@
                  *ngIf="typeObjSelected && typeObjSelected.mainCategory && typeObjSelected.mainCategory.length &&
                  typeObjSelected.mainCategory[0].code === 'ANLISISDECOMPAAS'">
                 <ng-select [items]="list.companies" bindValue="id" bindLabel="name"
-                           placeholder="Seleccione compañia" [virtualScroll]="true"
+                           placeholder="Seleccione compañía" [virtualScroll]="true"
                            [clearable]="false" class="custom-select"
                            [(ngModel)]="companySelected" [ngModelOptions]="{standalone: true}">
                 </ng-select>
