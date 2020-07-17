@@ -1,15 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {HttpService} from '../../../../../services/http.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmationDialogComponent} from '../../../board/confirmation-dialog/confirmation-dialog.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-add-multimedia',
     templateUrl: './add-multimedia.component.html',
-    styleUrls: ['./add-multimedia.component.scss']
+    styleUrls: ['./add-multimedia.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class AddMultimediaComponent implements OnInit {
     @Output() isAdding: EventEmitter<boolean>;
@@ -73,13 +75,56 @@ export class AddMultimediaComponent implements OnInit {
     }
 
     public onLoadCategories() {
-        this.categories = [
-            {id: '0', name: 'Corredores davivienda'},
-            {id: '1', name: 'Estrategia'},
-            {id: '2', name: 'Estrategia davivienda'},
-            {id: '3', name: 'Indicadores'},
-            {id: '4', name: 'Otros'},
-        ];
+        const observables = this.http.get({
+            path: 'sections',
+            data: {
+                include: [
+                    {
+                        relation: 'reportsType',
+                        scope: {
+                            include: 'mainCategory'
+                        }
+                    }
+                ],
+                order: 'priority DESC'
+            },
+            encode: true
+        });
+        const observables2 = this.http.get({ path: 'companies/' });
+
+        forkJoin([observables, observables2]).subscribe((results: any) => {
+            const categories = results && results[0] && results[0].body
+                ? results[0].body
+                : [];
+            const companies = results && results[1] && results[1].body
+                ? results[1].body.map(e => {
+                    e.description = e.name ? e.name : e.description;
+                    return e; })
+                : [];
+
+            const categoriesList = categories.map((e) => Object.assign({}, e));
+            this.categories = categoriesList.flatMap(x => x.reportsType)
+            .concat(companies)
+            .map(e => {
+                e.description = e.fullDescription ? e.fullDescription : e.description;
+                return e;
+            })
+            .reduce((y, x) => {
+                if (!y.find((e) => e.description === x.description)) {
+                    y.push(x);
+                }
+                return y;
+            }, [])
+            .sort((a, b) => {
+                if (a.description > b.description) {
+                    return 1;
+                }
+                if (b.description > a.description) {
+                    return -1;
+                }
+                return 0;
+            });
+        });
     }
 
     public onLoadCurrentFile(): void {
