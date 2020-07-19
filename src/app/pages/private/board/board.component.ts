@@ -67,6 +67,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile = false;
     public isFullscreen = false;
     public isAdvancedUser = false;
+    public isMediumUser = false;
     public grapeEnabled = false;
     public addMenuVisible = false;
 
@@ -339,6 +340,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.auth.user.subscribe((user) => {
             this.user = user;
             this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
             this.isMarketing = this.auth.isMarketing();
         });
         // this.closeToggleLists();
@@ -903,7 +905,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public canApprove(): boolean {
-        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+            this.report.stateId === this.states.toReview;
     }
 
     public canPublish(): boolean {
