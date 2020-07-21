@@ -130,6 +130,7 @@
             justify-content: flex-start;
             padding: 0 30px;
             position: relative;
+            width: 70%;
 
             img {
                 height: auto;
@@ -146,11 +147,11 @@
             border: 1px solid #ff003b;
             color: #ff003b;
             cursor: pointer;
-            height: 16px;
+            height: 20px;
             position: absolute;
-            width: 16px;
+            width: 20px;
             background-color: #fff;
-            font-size: 1em;
+            font-size: 1.7em;
             margin: auto;
             right: 0;
             top: 0;
@@ -158,8 +159,8 @@
 
             &:before {
                 position: absolute;
-                top: 4px;
-                left: 5.5px;
+                top: 4.5px;
+                left: 6.5px;
                 font-size: 0.375em;
             }
         }
