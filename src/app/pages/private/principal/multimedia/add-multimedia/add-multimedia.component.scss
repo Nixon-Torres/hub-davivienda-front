@@ -2,7 +2,12 @@
 
 app-add-multimedia{
     .ng-dropdown-panel-items {
-        max-height: 10px !important;
+        max-height: 180px !important;
+    }
+    
+    .ng-select.custom-select--search .ng-select-container .ng-value-container .ng-input {
+        top: 0px;
+        padding-left: 0px;
     }
 
     .add-multimedia {
