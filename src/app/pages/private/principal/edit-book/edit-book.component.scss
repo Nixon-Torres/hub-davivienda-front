@@ -456,10 +456,19 @@ input.mat-input-element {
 
     ul {
         list-style: inside;
+
+        ul, ol {
+            margin-left: 0;
+            padding-left: 40px;
+        }
     }
 
     ol {
         list-style-type: decimal;
+        ul, ol {
+            margin-left: 0;
+            padding-left: 40px;
+        }
 
         li {
             list-style-position: inside;
@@ -474,3 +483,41 @@ input.mat-input-element {
     }
 }
 
+.delete-cta {
+    text-decoration: underline;
+    color: black !important;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.native-editor-section {
+    strong {
+        font-weight: bold !important;
+    }
+
+    i {
+        font-style: italic !important;
+    }
+
+    ul {
+        list-style-type: disc !important;
+        list-style-position: inside !important;
+    }
+    ul > li {
+        list-style-type: disc  !important;
+    }
+    ol {
+        list-style-type: decimal;
+        list-style-position: inside;
+    }
+    ul ul, ol ul {
+        list-style-type: circle;
+        list-style-position: inside;
+        margin-left: 15px;
+    }
+    ol ol, ul ol {
+        list-style-type: lower-latin;
+        list-style-position: inside;
+        margin-left: 15px;
+    }
+}

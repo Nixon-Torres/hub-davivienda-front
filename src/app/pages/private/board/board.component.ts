@@ -67,6 +67,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile = false;
     public isFullscreen = false;
     public isAdvancedUser = false;
+    public isMediumUser = false;
     public grapeEnabled = false;
     public addMenuVisible = false;
 
@@ -121,6 +122,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         rFastContent: null,
         rSmartContent: null,
         rDeepContent: null,
+        rContentTable: false,
         template: null,
         files: null,
         rSmartContentVideo: null,
@@ -211,6 +213,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
             removePlugins: ['Table'],
             heading: {
                 options: [
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading2' },
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     {
                         model: 'headingFancy',
@@ -319,6 +324,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public glossaryForm: FormGroup;
     public foundWordsObservable: Observable<any>;
+    editorContentTable: string;
+    allowContentTable = false;
 
     constructor(
         public dialog: MatDialog,
@@ -333,6 +340,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.auth.user.subscribe((user) => {
             this.user = user;
             this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
             this.isMarketing = this.auth.isMarketing();
         });
         // this.closeToggleLists();
@@ -677,6 +685,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
 
+            this.allowContentTable = this.report.rContentTable ? this.report.rContentTable : false;
             this.setDataInInlineEditor();
 
             this.files = response.body.files;
@@ -896,7 +905,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public canApprove(): boolean {
-        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+            this.report.stateId === this.states.toReview;
     }
 
     public canPublish(): boolean {
@@ -973,6 +983,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.rTitle = this.editor1Data;
         this.report.rFastContent = this.editor2Data;
         this.report.rSmartContent = this.editor3Data;
+        this.report.rContentTable = this.allowContentTable;
         this.report.rDeepContent = this.editor4Data;
         this.report.rPreContent = this.editor5Data;
         this.report.rReferences = this.editor6Data;

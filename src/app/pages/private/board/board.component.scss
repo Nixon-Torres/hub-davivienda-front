@@ -641,10 +641,9 @@ $default-font: "Helvetica Neue", Medium;
             position: absolute;
             top: 100%;
             left: 0;
-            right: 0;
             z-index: 2;
             background-color: #ffffff;
-            padding: 0 7.5px;
+            padding: 0 7.5px !important;
             border: 1px solid #0080FF;
         }
         &__item {
@@ -774,6 +773,15 @@ $default-font: "Helvetica Neue", Medium;
 
 .blue-hub {
     background-color: #0080ff !important;
+}
+
+.switch-table{
+    position: absolute !important;
+    right: 15px;
+    display: inline-block !important;
+    width: 60px !important;
+    height: 34px !important;
+    z-index: 999 !important;
 }
 
 .readonly-overlay {

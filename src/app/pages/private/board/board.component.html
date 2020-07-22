@@ -55,15 +55,15 @@
                     [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
                     <span class="icon icon-clipboard-check"></span>Enviar a revisión
                 </button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canReturnToEdit()"
+                <button mat-flat-button class="bttn bttn-primary" *ngIf="canReturnToEdit()"
                     [disabled]="!report.id || readonly" (click)="returnToEdit()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()"
+                <button mat-flat-button class="bttn bttn-primary" *ngIf="canApprove()" (click)="approve()"
                     [disabled]="readonly">
                     <span class="icon icon-clipboard-check"></span>Aprobar
                 </button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()"
+                <button mat-flat-button class="bttn bttn-primary" *ngIf="canPublish()"
                     (click)="validateUnresolvedComments()" [disabled]="readonly">
                     <span class="icon icon-check"></span>Publicar
                 </button>
@@ -586,6 +586,21 @@
                                 </mat-form-field>
                             </div>
 
+                        </mat-expansion-panel>
+
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-book"></span>
+                                    <span>Activar tabla de contenido</span>
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    <label class="switch-table">
+                                        <input type="checkbox" [(ngModel)]="allowContentTable">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>

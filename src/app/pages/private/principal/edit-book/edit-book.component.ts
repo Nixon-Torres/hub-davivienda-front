@@ -233,7 +233,7 @@ export class EditBookComponent implements OnInit, AfterViewInit {
     }
 
     public saveImages() {
-        const imgsToCreate = this.blocks.filter(e => e.type === 'image' && e.file && !e.imageId).map((block) => {
+        const imgsToCreate = this.blocks.filter(e => e.type === 'image' && e.file && (!e.imageId  || e.isUpdate)).map((block) => {
             return {
                 id: block.id,
                 file: block.file,
@@ -365,6 +365,7 @@ export class EditBookComponent implements OnInit, AfterViewInit {
 
         block.fileName = file.name;
         block.file = file;
+        block.isUpdate = !!block.imageId;
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
