@@ -1234,6 +1234,15 @@ mat-expansion-panel {
 		}
 	}
 
+.cdk-global-overlay-wrapper {
+ .cdk-overlay-pane {
+	 @media only screen and (max-width: 1280px) {
+		max-width: 90vw !important;
+		width: 90vw !important;
+	 }
+ }
+}
+
 /* =========================================================== *\
     						NOTIFICATIONS
 \* =========================================================== */
