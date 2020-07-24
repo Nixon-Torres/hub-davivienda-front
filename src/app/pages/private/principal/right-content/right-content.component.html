@@ -153,7 +153,7 @@
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
-                                <li *ngFor="let report of list.reports; let i = index">
+                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
                                             <span class="report--span report_name"
@@ -168,7 +168,7 @@
                                                 class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
                                             <span class="report--span report_content">{{report.user?.name}}</span>
                                         </div>
-                                        <div class="group-menu">
+                                        <div class="group-menu" *ngIf="!isMobileVersion()">
                                             <button class="report--menu icon icon-ellipsis-h"></button>
                                             <ul class="report--menu-list">
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-edit"
@@ -233,10 +233,10 @@
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
-                                <li *ngFor="let report of list.reports; let i = index">
+                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
-                                            <span class="report--span report_name"
+                                        <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         </div>
                                         <mat-checkbox [formControlName]="i">
@@ -247,7 +247,7 @@
                                                 class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
                                             <span class="report--span report_content">{{report.user?.name}}</span>
                                         </div>
-                                        <div class="group-menu">
+                                        <div class="group-menu" *ngIf="!isMobileVersion()">
                                             <button class="report--menu icon icon-ellipsis-h"></button>
                                             <ul class="report--menu-list">
                                                 <li><button class="icon icon-edit"
@@ -273,7 +273,7 @@
                                 <ul class="report-list info_content" formArrayName="reviewed"
                                     style="margin-bottom: 100px">
                                     <h1>Informes revisados</h1>
-                                    <li *ngFor="let report of list.reviewed; let i = index">
+                                    <li *ngFor="let report of list.reviewed; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                         <div class="row" [ngClass]="report.state?.color">
                                             <div class="report_status">
                                                 <span class="report--span report_name">{{report.state.name}}</span>
@@ -288,7 +288,7 @@
                                                     class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
                                                 <span class="report--span report_content">{{report.user?.name}}</span>
                                             </div>
-                                            <div class="group-menu">
+                                            <div class="group-menu" *ngIf="!isMobileVersion()">
                                                 <button class="report--menu icon icon-ellipsis-h"></button>
                                                 <ul class="report--menu-list">
                                                     <li><button class="icon icon-edit"
