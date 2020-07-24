@@ -235,6 +235,7 @@
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
+                                        <div class="report_status">
                                         <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         </div>
