@@ -45,8 +45,16 @@ h2{
 }
 
 .box-title{
-    color: #EC2023;
-    font-size: 20px;
+    font-weight: bold !important;
+    color: #EC2023 !important;
+    font-size: 20px !important;
+    font-weight: 500;
+    font-family: 'Helvetica-Neue';
+}
+
+.box-title-h3{
+    color: #EC2023 !important;
+    font-size: 17px !important;
     font-weight: 500;
     font-family: 'Helvetica-Neue';
 }
