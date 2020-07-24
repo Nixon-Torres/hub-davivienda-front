@@ -212,7 +212,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
             removePlugins: ['Table'],
             heading: {
                 options: [
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
                     {
                         model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
                         view: {
