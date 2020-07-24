@@ -153,7 +153,7 @@
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
-                                <li *ngFor="let report of list.reports; let i = index">
+                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
                                             <span class="report--span report_name"
@@ -233,10 +233,9 @@
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
-                                <li *ngFor="let report of list.reports; let i = index">
+                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
-                                        <div class="report_status">
-                                            <span class="report--span report_name"
+                                        <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
                                         </div>
                                         <mat-checkbox [formControlName]="i">

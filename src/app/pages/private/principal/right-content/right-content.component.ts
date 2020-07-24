@@ -138,6 +138,10 @@ export class RightContentComponent implements OnInit {
         this.selectsFn();
     }
 
+    public isMobileVersion() {
+        return(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+    }
+
     public onFileSelect(event: any): void {
         if (event.target.files.length > 0) {
             const image = event.target.files[0];
