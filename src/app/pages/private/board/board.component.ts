@@ -213,24 +213,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
             heading: {
                 options: [
                     { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading2' },
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     {
-                        model: 'headingFancy',
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
                         view: {
-                            name: 'p',
-                            classes: 'box-title',
-                            styles: {
-                                'font-weight': 'bold'
-                            }
+                            name: 'h2',
+                            classes: 'box-title'
                         },
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2_fancy',
-
-                        // It needs to be converted before the standard 'heading2'.
-                        converterPriority: 'high'
-                    }
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
+                    },
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                 ]
             }
         },
@@ -249,19 +246,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     {
-                        model: 'headingFancy',
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
                         view: {
-                            name: 'p',
-                            classes: 'box-title',
-                            styles: {
-                                'font-weight': 'bold'
-                            }
+                            name: 'h2',
+                            classes: 'box-title'
                         },
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2_fancy',
-
-                        // It needs to be converted before the standard 'heading2'.
-                        converterPriority: 'high'
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
                     }
                 ]
             },
@@ -272,7 +268,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 'Table', 'TableToolbar', 'Table'],
             heading: {
                 options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' }
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title'
+                        },
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
+                    }
                 ]
             },
         },
@@ -282,19 +292,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     {
-                        model: 'headingFancy',
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
                         view: {
-                            name: 'p',
-                            classes: 'box-title',
-                            styles: {
-                                'font-weight': 'bold'
-                            }
+                            name: 'h2',
+                            classes: 'box-title'
                         },
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2_fancy',
-
-                        // It needs to be converted before the standard 'heading2'.
-                        converterPriority: 'high'
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
                     }
                 ]
             }
