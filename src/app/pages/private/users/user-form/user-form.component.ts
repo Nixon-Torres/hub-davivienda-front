@@ -13,6 +13,7 @@ import {environment} from '../../../../../environments/environment';
 export class UserFormComponent implements OnInit {
 
     @Input() user: any;
+    @Input() canEdit: boolean;
 
     private collapse = true;
     public imageProfile: string;
@@ -40,7 +41,7 @@ export class UserFormComponent implements OnInit {
     }
 
     public setHide() {
-        this.collapse = this.collapse === true;
+        this.collapse = !this.collapse;
         this.save = false;
     }
 
@@ -108,6 +109,7 @@ export class UserFormComponent implements OnInit {
 
         const userData = {
             name: this.userForm.get('name').value,
+            email: this.userForm.get('email').value,
             charge: this.userForm.get('charge').value,
             leyend: this.userForm.get('leyend').value,
             photo: this.user.photo,

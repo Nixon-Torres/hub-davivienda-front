@@ -155,15 +155,19 @@
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
                                 <li *ngFor="let report of list.reports; let i = index">
                                     <div class="row" [ngClass]="report.state?.color">
-                                        <span class="report--span report_name"
+                                        <div class="report_status">
+                                            <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
+                                        </div>
                                         <mat-checkbox [formControlName]="i" *ngIf="!marketing" (change)="checkElement($event)">
 
                                         </mat-checkbox>
-                                        <h2 class="report--title">{{report.name}}</h2>
-                                        <span
-                                            class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-                                        <span class="report--span report_content">{{report.user?.name}}</span>
+                                        <div class="report_class">
+                                            <h2 class="report--title">{{report.name}}</h2>
+                                            <span
+                                                class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                            <span class="report--span report_content">{{report.user?.name}}</span>
+                                        </div>
                                         <div class="group-menu">
                                             <button class="report--menu icon icon-ellipsis-h"></button>
                                             <ul class="report--menu-list">
@@ -231,14 +235,18 @@
                             <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
                                 <li *ngFor="let report of list.reports; let i = index">
                                     <div class="row" [ngClass]="report.state?.color">
-                                        <span class="report--span report_name"
+                                        <div class="report_status">
+                                            <span class="report--span report_name"
                                             [ngClass]="{'icong-crown':isHighlighted(report.id)}">{{report.state.name}}</span>
+                                        </div>
                                         <mat-checkbox [formControlName]="i">
                                         </mat-checkbox>
-                                        <h2 class="report--title">{{report.name}}</h2>
-                                        <span
-                                            class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-                                        <span class="report--span report_content">{{report.user?.name}}</span>
+                                        <div class="report_class">
+                                            <h2 class="report--title">{{report.name}}</h2>
+                                            <span
+                                                class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                            <span class="report--span report_content">{{report.user?.name}}</span>
+                                        </div>
                                         <div class="group-menu">
                                             <button class="report--menu icon icon-ellipsis-h"></button>
                                             <ul class="report--menu-list">
@@ -267,15 +275,19 @@
                                     <h1>Informes revisados</h1>
                                     <li *ngFor="let report of list.reviewed; let i = index">
                                         <div class="row" [ngClass]="report.state?.color">
-                                            <span class="report--span report_name">{{report.state.name}}</span>
+                                            <div class="report_status">
+                                                <span class="report--span report_name">{{report.state.name}}</span>
+                                            </div>
                                             <mat-checkbox [formControlName]="i">
                                                 <span class="checkt"></span>
 
                                             </mat-checkbox>
-                                            <h2 class="report--title">{{report.name}}</h2>
-                                            <span
-                                                class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
-                                            <span class="report--span report_content">{{report.user?.name}}</span>
+                                            <div class="report_class">
+                                                <h2 class="report--title">{{report.name}}</h2>
+                                                <span
+                                                    class="report--span report_content">{{(report.updatedAt ? report.updatedAt : report.createdAt) | date: 'shortDate'}}</span>
+                                                <span class="report--span report_content">{{report.user?.name}}</span>
+                                            </div>
                                             <div class="group-menu">
                                                 <button class="report--menu icon icon-ellipsis-h"></button>
                                                 <ul class="report--menu-list">

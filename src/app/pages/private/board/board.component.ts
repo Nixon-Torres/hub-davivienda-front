@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -46,7 +46,7 @@ window.editor = window.editor || {};
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class BoardComponent implements OnInit, AfterViewInit {
+export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     public STORAGE_URL = environment.STORAGE_FILES;
 
     public owner: any;
@@ -67,6 +67,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile = false;
     public isFullscreen = false;
     public isAdvancedUser = false;
+    public isMediumUser = false;
     public grapeEnabled = false;
     public addMenuVisible = false;
 
@@ -348,6 +349,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.auth.user.subscribe((user) => {
             this.user = user;
             this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
             this.isMarketing = this.auth.isMarketing();
         });
         // this.closeToggleLists();
@@ -869,6 +871,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, 30000);
     }
 
+    ngOnDestroy() {
+        if (this.timer.lastupdate) {
+            clearInterval(this.timer.lastupdate);
+        }
+    }
+
     /** Load a template for report if exist template ID else load an empty report
      *
      * @param templateId Id for load template
@@ -912,7 +920,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public canApprove(): boolean {
-        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+            this.report.stateId === this.states.toReview;
     }
 
     public canPublish(): boolean {
