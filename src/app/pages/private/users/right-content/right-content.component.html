@@ -4,7 +4,7 @@
 	</div>
 
 	<div class="top-section-list">
-		<div class="back-btn">
+		<div class="back-btn" *ngIf="!profile">
 			<a [routerLink]="['/app/principal']" >&#60; Volver </a>
 		</div>
 	</div>
@@ -12,7 +12,7 @@
 		<app-profile-form ></app-profile-form>
 	</section>
 	<section class="user" *ngIf="!profile">
-		<app-user-form *ngFor="let user of currentUsersGroup" [user]= "user"></app-user-form>
+		<app-user-form *ngFor="let user of currentUsersGroup" [user]= "user" [canEdit]="canEdit"></app-user-form>
 	</section>
 </div>
 

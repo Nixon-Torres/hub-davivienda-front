@@ -73,6 +73,7 @@ h2{
 
 .da-lead-section{
     max-width: 720px;
+    width: 100%;
     margin: 0 auto;
     padding: 40px 71px;
     border-bottom: 1px solid #E3E3E3;
@@ -95,7 +96,7 @@ h2{
 
 .da-ponderar{
     max-width: 855px;
-    margin: 57px auto;
+    margin: 20px auto;
 }
 .da-ponderar .box-title{
     margin-bottom: 31px;
@@ -114,8 +115,7 @@ h2{
 
 .brief-section{
     background-color: #F7F7F7;
-    margin-top: 72px;
-    margin-bottom: 46px;
+    margin: 46px;
 }
 
 .brief-section.white{
@@ -621,3 +621,34 @@ p.left-arrow-paragraph::before{
         padding: 15px;
     }
   }
+
+
+.pr-full-bg .container .brief-section.smart-content-section {
+    padding: 20px 0;
+  }
+
+section .pr-full-bg .container .brief-section,
+.presentation .container .brief-section {
+    padding: 20px 0;
+}
+
+.company-legaltxt .brief-content {
+    max-width: 720px;
+    padding: 0;
+}
+
+.doscolumn_section {
+    margin-top: 20px;
+}
+
+.container-fluid .smart-content-section .doscolumn-container.bottom {
+    min-width: 570px;
+}
+
+.person-portfolio .img-block {
+    height: auto;
+}
+
+.brief-section .brief-content {
+    padding: 0;
+}

@@ -107,7 +107,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
         display: flex;
         justify-content: flex-end;
 		align-items: center;
-		@media only screen and (max-width: 1000px){
+		@media only screen and (max-width: 768px){
 			display: none;
 		}
         .button-reset {
@@ -184,6 +184,10 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		font-size: 1.125em;
 		font-weight: 600;
 		width: 100%;
+		@media only screen and (max-width: 600px) {
+			font-size: 1em;
+			margin-left: 20px;
+		}
 	}
 }
 
@@ -220,6 +224,9 @@ section {
 	box-shadow: none;
 	color: #FFFFFF;
 	padding: 0 40px;
+	@media only screen and (max-width: 600px) {
+        display: none;
+    }
 
 	.mat-button-wrapper {
 		font-size: 0.875em;
@@ -240,6 +247,9 @@ section {
 		min-height: 76px;
 		padding: 0 3%;
 		position: relative;
+		@media only screen and (max-width: 600px) {
+			flex-wrap: wrap;
+		}
 
 		&.yellow {
 			&:after {
@@ -363,6 +373,7 @@ section {
 			right: 0;
 			width: 130px;
 			z-index: 100;
+			text-align: initial;
 
 			&:after {
 					border-right: 1px solid #0080FF;
@@ -480,15 +491,19 @@ section {
 	.report-user-name{
 		width: 15%;
 	}
-	.group-menu{
-		width: 4%;
+	.group-menu {
+		width: 8%;
+    	text-align: end;
+		@media only screen and (max-width: 600px){
+			display: none;
+		}
 	}
 }
 
 .folder_container{
 	padding-bottom: 3%;
 	position: relative;
-	@media only screen and (max-width: 1000px){
+	@media only screen and (max-width: 720px){
 		display: none;
 	}
 
@@ -556,6 +571,9 @@ section {
 	.filter-wrapper {
 		width: 180px;
 		display: inline-block;
+		@media only screen and (max-width: 991px){
+			width: 100px;
+		}
 	}
 }
 
@@ -1112,4 +1130,26 @@ section {
 
 .fulldesc {
     margin-bottom: 9px;
+}
+
+.report_status {
+	max-width: 7%;
+}
+
+.report_class {
+	display: flex;
+	flex-wrap: wrap;
+	width: 69%;
+	justify-content: space-between;
+	align-items: center;
+	@media only screen and (max-width: 600px) {
+		width: 60%;
+	}
+	h2 {
+		text-align: initial;
+	}
+	span {
+		margin: 0;
+		text-align: initial;
+	}
 }

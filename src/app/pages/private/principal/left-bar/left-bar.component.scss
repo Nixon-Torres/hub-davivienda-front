@@ -1,8 +1,5 @@
  .content-bar {
 	width: 100%;
-	@media only screen and (max-width: 1000px){
-		display: none;
-	}
 
 	a, p {
 		font-weight: 400;
@@ -22,7 +19,13 @@
 
  li.edit-btn-item {
      padding-bottom: 0px !important;
-     padding-top: 10px !important;
+	 padding-top: 10px !important;
+	 @media only screen and (max-width: 800px) {
+       padding-left: 0;
+    }
+	 @media only screen and (max-width: 720px) {
+        display: none;
+    }
 
      button  {
 		 border-radius: 0px;
@@ -86,6 +89,9 @@
 	border: solid 1px #E7EAF1;
 	border-bottom: none;
 	font-size: 1em;
+	@media only screen and (max-width: 768px) {
+        background: none;
+    }
 
 	&--name {
 		color: #616161;
@@ -126,7 +132,10 @@
 			border-bottom: 1px solid #E7EAF1;
 			padding: 20px 0;
 			position: relative;
-			cursor: pointer;
+            cursor: pointer;
+            @media only screen and (max-width: 800px) {
+                padding-left: 12px;
+            }
 
 			a {
 				color: #616161;
@@ -134,6 +143,9 @@
 				padding-left: 22px;
 				text-decoration: none;
                 cursor: pointer;
+                @media only screen and (max-width: 800px) {
+                    padding-left: 0;
+                }
 			}
 
 			&:before {
@@ -238,7 +250,10 @@
 	background: #0080FF;
 	box-shadow: none;
 	color: #FFFFFF;
-	width: 100%;
+    width: 100%;
+    @media only screen and (max-width: 991px){
+        width: auto;
+    }
 
 	.mat-button-wrapper {
 		font-size: 0.875em;
@@ -247,9 +262,105 @@
 
 .cog_icon{
 	position: relative;
-	top: 3px;
+    top: 3px;
+    @media only screen and (max-width: 800px) {
+        display: none;
+    }
 }
 
 /* .bar_name.active{
 	color: #0080ff;
 } */
+
+.side_search{
+    display: none;
+}
+.questions_mobile{
+    display: none;
+}
+
+@media screen and (max-width: 720px) {
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: relative;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #f5f7fb;
+        overflow-x: hidden;
+        transition: 0.5s;
+        z-index: 9;
+
+        .side_search {
+            background-color: #ffffff;
+            padding: 20px;
+            display: block;
+            &.search_input {
+                background-position: 94% 50%;
+            }
+            input {
+                width: 100%;
+                line-height: 11px;
+                padding: 5px 5px;
+                font-style: italic;
+                color: #757575;
+                font-size: 14px;
+                font-weight: 200;
+                border: none;
+                border-bottom: 1px solid #bec5d0;
+                font-family: "Helvetica Neue", sans-serif;
+                background-color: transparent;
+            }
+        }
+
+        .sidenav_content {
+            padding: 20px;
+            .options {
+                &--folder_menu {
+                    display: flex;
+                    justify-content: space-between;
+                    .options--name {
+                        font-size: 1em;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .last_option {
+            display: none !important;
+        }
+
+        .folder_name {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 11% 0px 3%;
+            span {
+                display: block;
+            }
+            p{
+                background: none;
+            }
+        }
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    @media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+        .sidenav a {
+            font-size: 18px;
+        }
+    }
+}

@@ -5,9 +5,10 @@
             class="icon icon-times"></span></a>
     </header>
     <div class="tags-dialog__body">
+        <input class="tags-dialog__label" placeholder="Escriba cada tag separado por enter" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="false"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" id="inputTag"
+            [(ngModel)]="input">
         <div class="tags-dialog__input">
-            <label for="inputTag" class="tags-dialog__label" *ngIf="isListEmpty && input.length === 0">
-                Escriba cada tag separado por enter</label>
             <mat-chip-list #chipList class="chip-list">
                 <mat-chip *ngFor="let tag of tagsList" [selectable]="false"
                           [removable]="removable" (removed)="remove(tag)" class="chip">
@@ -15,12 +16,6 @@
                     <mat-icon matChipRemove *ngIf="removable" class="icon">close</mat-icon>
                 </mat-chip>
             </mat-chip-list>
-            <input [matChipInputFor]="chipList"
-                   [matChipInputAddOnBlur]="true"
-                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                   (matChipInputTokenEnd)="add($event)"
-                   id="inputTag"
-                   [(ngModel)]="input">
         </div>
         <div class="footer">
             <button mat-button class="btn btn-cancel"
