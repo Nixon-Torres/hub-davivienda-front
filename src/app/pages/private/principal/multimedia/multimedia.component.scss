@@ -208,9 +208,15 @@
         }
         &__date {
             width: 16.43%;
+            @media only screen and (max-width: 1024px) {
+                padding: 0 10px;
+            }
         }
         &__owner {
             width: 17.72%;
+            @media only screen and (max-width: 1024px) {
+                padding: 0 10px;
+            }
         }
         .group-menu {
             width: 8.09%;

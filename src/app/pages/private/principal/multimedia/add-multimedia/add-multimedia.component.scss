@@ -161,6 +161,9 @@ app-add-multimedia{
                         .item {
                             width: 48.34%;
                             margin-bottom: 14px;
+                            @media only screen and (max-width: 1024px) {
+                               width: 100%;
+                            }
                             .custom-select {
                                 width: 100%;
                             }
@@ -199,6 +202,9 @@ app-add-multimedia{
         position: relative;
         left: 59%;
         bottom: 33px;
+        @media only screen and (max-width: 1024px) {
+            left: 50%;
+        }
 
         span {
             float: left;
