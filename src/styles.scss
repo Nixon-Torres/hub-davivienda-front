@@ -1136,7 +1136,10 @@ margin-top: 2%;
 			height: 2em !important;
 			background-size: 12%;
 			background-color: #f5f7fb !important;
-    		padding-left: 9px !important;
+			padding-left: 9px !important;
+			@media only screen and (max-width: 1024px) {
+				background-size: 16% !important;	
+			}
         }
         }
 

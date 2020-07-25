@@ -13,6 +13,11 @@ $default-font: "Helvetica Neue", Medium;
 
     .fa-info-circle{
         font-size: 18px !important;
+        @media only screen and (max-width: 1024px) {
+            position: relative;
+            left: 10px;
+            bottom: 5px;
+         }
     }
 
     .button-thumb{
@@ -322,18 +327,28 @@ $default-font: "Helvetica Neue", Medium;
                 padding-top: 2px;
                 margin-right: 20px;
                 display: inline-block;
+                @media only screen and (max-width: 1024px) {
+                   margin: 0;
+                 }
 
                 label {
                     color: #A5ABB1;
                     font-size: 14px;
                     margin-right: 15px;
                     display: inline-block;
+                    @media only screen and (max-width: 1024px) {
+                        margin: 0;
+                      }
                 }
 
                 .input-field {
                     width: 20vw;
                     display: inline-block;
                     max-width: 300px;
+                    @media only screen and (max-width: 1024px) {
+                        max-width: initial;
+                        width: 13vw;
+                      }
 
                     input {
                         width: 100%;
@@ -360,6 +375,10 @@ $default-font: "Helvetica Neue", Medium;
                 font-size: 12px;
                 line-height: 36px !important;
                 font-family: Roboto,"Helvetica Neue",sans-serif !important;
+                @media only screen and (max-width: 1024px) {
+                    margin: 0;
+                 }
+
                 @media only screen and (max-width: 1300px){
                     padding: 0 7px;
                 }
@@ -776,12 +795,15 @@ $default-font: "Helvetica Neue", Medium;
 }
 
 .switch-table{
-    position: absolute !important;
+    position: absolute;
     right: 15px;
-    display: inline-block !important;
-    width: 60px !important;
-    height: 34px !important;
-    z-index: 999 !important;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    z-index: 999;
+    @media only screen and (max-width: 1024px) {
+        width: 40px;
+     }
 }
 
 .readonly-overlay {
@@ -1536,6 +1558,9 @@ $default-font: "Helvetica Neue", Medium;
         width: 277px;
         background: #f5f7fb;
         border: 1px solid #eff1f6;
+        @media only screen and (max-width: 1024px) {
+            width: 190px;
+         }
 
         input {
             padding-left: 10px;
