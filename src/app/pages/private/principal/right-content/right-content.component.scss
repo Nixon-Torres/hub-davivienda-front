@@ -213,6 +213,12 @@ section {
 					height: 8px;
 					background-color: #FF003B;
 					border-radius: 50%;
+					@media only screen and (max-width: 720px) {
+						left: -15px;
+						top: 3px;
+						width: 10px;
+						height: 10px;
+					}
 				}
 			}
 		}
@@ -1151,5 +1157,12 @@ section {
 	span {
 		margin: 0;
 		text-align: initial;
+	}
+}
+
+.info_content {
+	margin-bottom: 100px;
+	@media only screen and (max-width: 720px) {
+		margin-bottom: 30px;
 	}
 }
