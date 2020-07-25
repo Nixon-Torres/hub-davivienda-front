@@ -151,7 +151,6 @@ header {
                 height: 100%;
                 z-index: 9;
                 right: 0;
-                top: 11%;
                 width: auto;
                 .user-menu {
                     span {
@@ -239,5 +238,15 @@ header {
         p {
             font-size: 0.8em;
         }
+    }
+
+    .sidenav_notification {
+        background-color: #9a9a9a82;
+        width: 720px;
+        position: absolute;
+        right: 0;
+        height: 790px;
+        z-index: 9;
+        top: 9%;
     }
 }

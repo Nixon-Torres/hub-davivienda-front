@@ -25,7 +25,7 @@
 		width: 150%;
 		z-index: 0;
 		@media only screen and (max-width: 1024px) {
-			width: 100%;
+			width: 94vw;
 		}
 	}
 }
@@ -46,5 +46,6 @@ app-right-content{
 	z-index: 2;
 	@media only screen and (max-width: 600px) {
 		width: 100%;
+		background-color: #ffffff;
 	}
 }
