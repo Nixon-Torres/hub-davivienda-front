@@ -126,6 +126,7 @@ header {
                 background-color: #F5F7FB;
                 width: 100%;
                 padding-top: 15px !important;
+                border-radius: 0 0 10px 10px;
                 &.notification_mobile {
                     display: block;
                     section {
@@ -150,8 +151,10 @@ header {
                 background: #ffffff;
                 height: 100%;
                 z-index: 9;
+                top: 10px;
                 right: 0;
                 width: auto;
+                border-radius: 10px;
                 .user-menu {
                     span {
                         display: block;
@@ -161,7 +164,7 @@ header {
             }
             @media only screen and (max-width: 320px) {
                 width: 320px;
-                left: 0;
+                right: 0;
             }
 
             .right_navbar_header {
@@ -170,6 +173,7 @@ header {
                 z-index: 9;
                 position: relative;
                 padding: 15px;
+                border-radius: 10px 10px 0 0;
                 .user_name {
                     color: #616161;
                     font-weight: bold;
@@ -248,5 +252,25 @@ header {
         height: 790px;
         z-index: 9;
         top: 9%;
+        padding-bottom: 5px;
+        @media only screen and (max-width: 320px) {
+            top: 12%;
+        }
+        &::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-top: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 15px solid #fff;
+            position: absolute;
+            top: -15px;
+            right: 45px;
+            @media only screen and (max-width: 320px) {
+                top: 12%;
+                right: 15px;
+            }
+        }
     }
 }

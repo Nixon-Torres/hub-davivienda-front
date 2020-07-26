@@ -291,12 +291,14 @@
         width: 0;
         position: relative;
         z-index: 1;
-        top: 0;
+        top: 10px;
         left: 0;
         background-color: #f5f7fb;
         overflow-x: hidden;
         transition: 0.5s;
         z-index: 9;
+        border-radius: 10px;
+        width: 320px;
 
         .side_search {
             background-color: #ffffff;
@@ -373,6 +375,22 @@
     .sidenav_opacity {
         background-color: #9a9a9a82;
         width: 100vw;
-        max-height: 982px;
+        max-height: 1042px;
+        padding-bottom: 10px;
+        &::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-top: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 15px solid #fff;
+            position: absolute;
+            top: -15px;
+            left: 26px;
+            @media only screen and (max-width: 320px) {
+                left: 8px;
+            }
+        }
     }
 }
