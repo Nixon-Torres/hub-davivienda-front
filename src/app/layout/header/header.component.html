@@ -78,7 +78,9 @@
             <span class="fas fa-sign-out-alt"></span>
         </button>
 
-        <div class="mobile_header" *ngIf="isMobileLayout">
+        <div class="sidenav_notification" *ngIf="isMobileLayout">
+
+        <div class="mobile_header">
             <div class="right_navbar_header">
                 <div>
                     <span class="user_name">{{ user.name }}</span>
@@ -109,5 +111,8 @@
                     </footer>
             </div>
         </div>
+
+    </div>
+
 	</div>
 </header>

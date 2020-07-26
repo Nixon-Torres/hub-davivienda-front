@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
-                            <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 100px;">
+                            <ul class="report-list info_content" formArrayName="reports">
                                 <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
@@ -232,7 +232,7 @@
                             <p>{{getCheckboxesSelected().length}} de {{list.reports?.length + list.reviewed?.length}} Seleccionados</p>
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
-                            <ul class="report-list info_content" formArrayName="reports" style="margin-bottom: 50px">
+                            <ul class="report-list info_content" formArrayName="reports">
                                 <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
@@ -270,8 +270,7 @@
 
                             <!-- revised reports -->
                             <div class="revised_content" *ngIf="isShowingReviewedList()">
-                                <ul class="report-list info_content" formArrayName="reviewed"
-                                    style="margin-bottom: 100px">
+                                <ul class="report-list info_content" formArrayName="reviewed">
                                     <h1>Informes revisados</h1>
                                     <li *ngFor="let report of list.reviewed; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id) : null">
                                         <div class="row" [ngClass]="report.state?.color">

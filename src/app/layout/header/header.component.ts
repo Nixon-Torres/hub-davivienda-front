@@ -208,11 +208,11 @@ export class HeaderComponent implements OnInit {
     }
 
     openNav() {
-        document.getElementById("mySidenav").style.width = "320px",
+        document.getElementById("mySidenav").style.display = "block",
         document.getElementById("leftBar").style.zIndex = "9";
         }
      closeNav() {
-        document.getElementById("mySidenav").style.width = "0",
+        document.getElementById("mySidenav").style.display = "none",
         setTimeout(function(){ document.getElementById("leftBar").style.zIndex = "0"; }, 1000);
       }
 }

@@ -145,6 +145,9 @@
         flex-shrink: 0;
         width: 25%;
         padding: 0 0 0 41px;
+        @media only screen and (max-width: 1024px) {
+            padding-left: 25px;
+        }
         .modification {
 
             &__title, &__value {

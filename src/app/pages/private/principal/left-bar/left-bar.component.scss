@@ -29,7 +29,10 @@
 
      button  {
 		 border-radius: 0px;
-		 padding: 3px;
+         padding: 3px;
+         @media only screen and (max-width: 1024px) {
+            padding: 3px 5px;
+         }
      }
  }
 
@@ -69,6 +72,9 @@
              left: 4px;
              bottom: 0;
              margin: auto;
+             @media only screen and (max-width: 1024px) {
+                left: -10px;
+            }
          }
 
          .cnt  {
@@ -126,14 +132,17 @@
 		padding: 20px 10% 20px 7%;
         padding-top: 0px;
         padding-bottom: 0px;
-		border-top: solid 1px #E7EAF1;
+        border-top: solid 1px #E7EAF1;
+        @media only screen and (max-width: 1024px) {
+            padding: 20px 3% 20px 3%
+        }
 
 		li {
 			border-bottom: 1px solid #E7EAF1;
 			padding: 20px 0;
 			position: relative;
             cursor: pointer;
-            @media only screen and (max-width: 800px) {
+            @media only screen and (max-width: 1024px) {
                 padding-left: 12px;
             }
 
@@ -143,7 +152,7 @@
 				padding-left: 22px;
 				text-decoration: none;
                 cursor: pointer;
-                @media only screen and (max-width: 800px) {
+                @media only screen and (max-width: 1024px) {
                     padding-left: 0;
                 }
 			}
@@ -285,12 +294,14 @@
         width: 0;
         position: relative;
         z-index: 1;
-        top: 0;
+        top: 10px;
         left: 0;
         background-color: #f5f7fb;
         overflow-x: hidden;
         transition: 0.5s;
         z-index: 9;
+        border-radius: 10px;
+        width: 320px;
 
         .side_search {
             background-color: #ffffff;
@@ -361,6 +372,30 @@
         }
         .sidenav a {
             font-size: 18px;
+        }
+    }
+
+    .sidenav_opacity {
+        background-color: #9a9a9a82;
+        width: 100vw;
+        max-height: 1042px;
+        padding-bottom: 10px;
+        position: relative;
+        z-index: 9;
+        &::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-top: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 15px solid #fff;
+            position: absolute;
+            top: -15px;
+            left: 26px;
+            @media only screen and (max-width: 320px) {
+                left: 8px;
+            }
         }
     }
 }

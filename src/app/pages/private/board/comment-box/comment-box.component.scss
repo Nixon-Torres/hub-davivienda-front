@@ -149,6 +149,9 @@ section {
 					font-size: 14px;
 					font-family: 'Helvetica Neue', sans-serif;
 					overflow:auto;
+					@media only screen and (max-width: 1024px) {
+                       min-height: 51px;
+                    }
 
 					&.expand {
 						min-height: 51px;
@@ -165,6 +168,9 @@ section {
 					position: relative;
 					bottom: 25px;
 					right: 15px;
+					@media only screen and (max-width: 1024px) {
+                      right: 0;
+                    }
 
 					i {
 						color: #0080ff;

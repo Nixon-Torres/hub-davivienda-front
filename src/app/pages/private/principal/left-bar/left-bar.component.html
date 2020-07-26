@@ -1,56 +1,58 @@
-<div class="sidenav" id="mySidenav">
-    <div class="side_search search_input">
-        <input type="text" placeholder="¿Qué estas buscando?">
-    </div>
+<div class="sidenav_opacity"  id="mySidenav">
+    <div class="sidenav">
+        <div class="side_search search_input">
+            <input type="text" placeholder="¿Qué estas buscando?">
+        </div>
 
-    <div class="content-bar" *ngIf="!marketing">
-        <div class="options" (click)="changeViewFn({reports:true, editSite:false})">
-            <p class="options--name icon icon-copy">Mis informes</p>
-            <ul class="options--list">
-                <li *ngFor="let state of list.states" [className]="state.color" [ngClass]="{active: isItemActive(state.id)}" (click)="setCurrentState(state)">
-                    <a >{{state.name}}</a>
-                    <span class="cnt">{{state.reports ? state.reports.length : 0}}</span>
-                </li>
-            </ul>
-        </div>
-        <div class="options">
-            <p class="options--name icon icon-folder variation">Mis carpetas</p>
-            <ul class="options--list options-folder">
-                <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}"
-                    (click)="setCurrentFolder(folder)">
-                    <a>{{folder.name}}</a>
-                    <span class="cnt">{{folder.count}}</span></li>
-                <li class="edit-btn-item">
-                    <button mat-raised-button (click)="openDialog()"><span class="icon icon-cog cog_icon"></span> Editar y crear carpetas</button>
-                </li>
-            </ul>
-        </div>
-        <div class="last_option">
-            <div class="options" (click)="changeViewFn({multimedia: true})" *ngIf="showMultimediaMenu">
-                <p class="options--name icon icon-file-upload variation" [ngClass]="{'active': barActive === 'barActive1'}" (click)="barActive='barActive1'">Multimedia</p>
+        <div class="content-bar" *ngIf="!marketing">
+            <div class="options" (click)="changeViewFn({reports:true, editSite:false})">
+                <p class="options--name icon icon-copy">Mis informes</p>
+                <ul class="options--list">
+                    <li *ngFor="let state of list.states" [className]="state.color" [ngClass]="{active: isItemActive(state.id)}" (click)="setCurrentState(state)">
+                        <a >{{state.name}}</a>
+                        <span class="cnt">{{state.reports ? state.reports.length : 0}}</span>
+                    </li>
+                </ul>
             </div>
-            <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showEditSiteMenu">
-                <p class="options--name fas fa-laptop-code variation" [ngClass]="{'active': barActive === 'barActive2'}" (click)="barActive='barActive2'">Editar sitio</p>
+            <div class="options">
+                <p class="options--name icon icon-folder variation">Mis carpetas</p>
+                <ul class="options--list options-folder">
+                    <li *ngFor="let folder of list.folders" [ngClass]="{active: isFolderActive(folder.id)}"
+                        (click)="setCurrentFolder(folder)">
+                        <a>{{folder.name}}</a>
+                        <span class="cnt">{{folder.count}}</span></li>
+                    <li class="edit-btn-item">
+                        <button mat-raised-button (click)="openDialog()"><span class="icon icon-cog cog_icon"></span> Editar y crear carpetas</button>
+                    </li>
+                </ul>
             </div>
-            <div class="options delete-section-btn">
-                <p class="options--name icon icon-trash-alt variation" [ngClass]="{active: isDeleteActive()}"
-                (click)="setDeletedState()">Eliminados</p>
+            <div class="last_option">
+                <div class="options" (click)="changeViewFn({multimedia: true})" *ngIf="showMultimediaMenu">
+                    <p class="options--name icon icon-file-upload variation" [ngClass]="{'active': barActive === 'barActive1'}" (click)="barActive='barActive1'">Multimedia</p>
+                </div>
+                <div class="options" (click)="changeViewFn({reports:false, editSite:true})" *ngIf="showEditSiteMenu">
+                    <p class="options--name fas fa-laptop-code variation" [ngClass]="{'active': barActive === 'barActive2'}" (click)="barActive='barActive2'">Editar sitio</p>
+                </div>
+                <div class="options delete-section-btn">
+                    <p class="options--name icon icon-trash-alt variation" [ngClass]="{active: isDeleteActive()}"
+                    (click)="setDeletedState()">Eliminados</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="content-bar" *ngIf="marketing">
-        <div class="options">
-            <p class="options--name icon icon-folder variation">Categorías</p>
-        </div>
-        <div class="options">
-            <p class="options--name fas fa-home"><span></span>Home</p>
-            <ul class="options--list options-folder marketing">
-                <li *ngFor="let category of categories" [ngClass]="{active: isCategoryActive(category)}"
-                    (click)="setCurrentCategory(category)">
-                    <a>{{category.description}}</a>
-                    <span class="cnt">{{category.count}}</span></li>
-            </ul>
+        <div class="content-bar" *ngIf="marketing">
+            <div class="options">
+                <p class="options--name icon icon-folder variation">Categorías</p>
+            </div>
+            <div class="options">
+                <p class="options--name fas fa-home"><span></span>Home</p>
+                <ul class="options--list options-folder marketing">
+                    <li *ngFor="let category of categories" [ngClass]="{active: isCategoryActive(category)}"
+                        (click)="setCurrentCategory(category)">
+                        <a>{{category.description}}</a>
+                        <span class="cnt">{{category.count}}</span></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
