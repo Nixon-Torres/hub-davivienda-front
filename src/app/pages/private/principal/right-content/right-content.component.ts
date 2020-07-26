@@ -1038,18 +1038,6 @@ export class RightContentComponent implements OnInit {
             mobile: true,
             reportId: idReport
         });
-        /* const paramsDialog = {
-            width: '80vw',
-            height: '80vh',
-            data: {
-                reportId: idReport,
-                styles: '',
-                content: ''
-            }
-        };
-
-        this.dialog.open(PreviewDialogComponent, paramsDialog);
-         */
     }
 
     public openHighlightDialog(id) {
