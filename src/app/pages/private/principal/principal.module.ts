@@ -57,6 +57,7 @@ import { EditIndicatorsComponent } from './edit-indicators/edit-indicators.compo
 import { EditIndicatorsContentComponent } from './edit-indicators-content/edit-indicators-content.component';
 import { EditFooterComponent } from './edit-footer/edit-footer.component';
 import { ArraySortPipe } from 'src/app/pipes/array-sort.pipe';
+import { MobileDetailViewComponent } from './mobile-detail-view/mobile-detail-view.component';
 
 const routes: Routes = [
     {
@@ -110,7 +111,8 @@ const materialModules: any[] = [
         AddWordsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
-        ArraySortPipe
+        ArraySortPipe,
+        MobileDetailViewComponent
     ],
     imports: [
         CommonModule,

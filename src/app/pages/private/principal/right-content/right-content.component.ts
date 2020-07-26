@@ -28,6 +28,7 @@ import { forkJoin } from 'rxjs';
 export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
+    @Output() changeView = new EventEmitter();
 
     readonly DRAFT_KEY: string = environment.DRAFT_KEY;
 
@@ -1033,7 +1034,11 @@ export class RightContentComponent implements OnInit {
     }
 
     public openPreviewDialog(idReport: string): void {
-        const paramsDialog = {
+        this.changeView.emit({
+            mobile: true,
+            reportId: idReport
+        });
+        /* const paramsDialog = {
             width: '80vw',
             height: '80vh',
             data: {
@@ -1044,6 +1049,7 @@ export class RightContentComponent implements OnInit {
         };
 
         this.dialog.open(PreviewDialogComponent, paramsDialog);
+         */
     }
 
     public openHighlightDialog(id) {
