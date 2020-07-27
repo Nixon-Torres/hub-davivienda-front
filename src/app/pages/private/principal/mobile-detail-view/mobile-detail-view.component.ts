@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {HttpService} from '../../../../services/http.service';
+import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-mobile-detail-view',
@@ -19,6 +20,12 @@ export class MobileDetailViewComponent implements OnInit {
     constructor(
         private http: HttpService,
     ) {
+    }
+
+    back() {
+        this.changeView.emit({
+            reports: true
+        });
     }
 
     ngOnInit() {
