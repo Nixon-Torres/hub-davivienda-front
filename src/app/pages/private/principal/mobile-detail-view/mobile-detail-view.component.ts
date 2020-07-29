@@ -1,14 +1,14 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {HttpService} from '../../../../services/http.service';
-import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { HttpService } from '../../../../services/http.service';
 
 @Component({
-  selector: 'app-mobile-detail-view',
-  templateUrl: './mobile-detail-view.component.html',
-  styleUrls: ['./mobile-detail-view.component.scss']
+    selector: 'app-mobile-detail-view',
+    templateUrl: './mobile-detail-view.component.html',
+    styleUrls: ['./mobile-detail-view.component.scss']
 })
 export class MobileDetailViewComponent implements OnInit {
     @Input() reportId: string;
+    @Input() state: string;
     @Output() changeView = new EventEmitter();
 
     public report: any = {
@@ -35,8 +35,6 @@ export class MobileDetailViewComponent implements OnInit {
             return;
         }
 
-        // document.querySelector('.mat-dialog-container').classList.add('not-scrollable');
-
         this.http.get({
             path: `reports/view?id=${this.report.id}`
         }).subscribe((response: any) => {
@@ -48,27 +46,37 @@ export class MobileDetailViewComponent implements OnInit {
 
     public loadReport(): void {
         const iframe = document.getElementById('previewFrame');
-        const doc = (iframe as HTMLIFrameElement).contentWindow.document;
-        const regex = new RegExp('href="\/reports\/' + this.report.id, 'gi');
-        this.report.content = this.report.content.replace(
-            regex, () => {
-                return `href="`;
-            });
-        const reportTpl = `
-    		<html>
-    			<head>
-    				<style type="text/css">${this.report.styles}</style>
-    			</head>
-    			<body>${this.report.content}</body>
-    		</html>
-		`;
+        if (iframe) {
+            const doc = (iframe as HTMLIFrameElement).contentWindow.document;
+            const regex = new RegExp('href="\/reports\/' + this.report.id, 'gi');
+            this.report.content = this.report.content.replace(
+                regex, () => {
+                    return `href="`;
+                });
+            const reportTpl = `
+                <html>
+                    <head>
+                        <style type="text/css">${this.report.styles}</style>
+                    </head>
+                    <body>${this.report.content}</body>
+                </html>
+            `;
 
-        doc.open();
-        doc.write(reportTpl);
-        doc.close();
+            doc.open();
+            doc.write(reportTpl);
+            doc.close();
+        }
     }
 
     closeDialog(): void {
+    }
+
+    openCommentDialog(idReport: string): void {
+        this.changeView.emit({
+            mobile: true,
+            reportId: idReport,
+            comment: true
+        });
     }
 
 }

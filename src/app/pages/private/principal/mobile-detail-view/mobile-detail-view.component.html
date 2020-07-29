@@ -1,10 +1,10 @@
 <div class="preview-mobile">
     <div class="preview-mobile__back" (click)="back()">
         <span class="material-icons">arrow_back_ios</span>
-        <p>Por revisar</p>
+        <p>{{state && state.name ? state.name : 'Por revisar'}}</p>
     </div>
 
-    <div class="preview-mobile__comment">
+    <div class="preview-mobile__comment" (click)="openCommentDialog(reportId)" >
         <span class="material-icons-outlined">mode_comment</span>
         <p>Comentarios</p>
     </div>

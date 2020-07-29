@@ -1033,10 +1033,11 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    public openPreviewDialog(idReport: string): void {
+    public openPreviewDialog(idReport: string, reportState: string): void {
         this.changeView.emit({
             mobile: true,
-            reportId: idReport
+            reportId: idReport,
+            state: reportState
         });
     }
 
