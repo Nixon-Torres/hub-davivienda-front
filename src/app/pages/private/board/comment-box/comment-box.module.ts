@@ -36,6 +36,9 @@ const materialModules: any[] = [
         materialModules,
     ],
     declarations: [CommentBoxComponent],
+    exports: [
+        CommentBoxComponent,
+    ],
     entryComponents: [
         CommentBoxComponent
     ]

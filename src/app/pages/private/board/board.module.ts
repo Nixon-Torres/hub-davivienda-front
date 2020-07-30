@@ -32,7 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {MatAutocompleteModule, MatInputModule} from '@angular/material';
-import { CommentBoxComponent } from './comment-box/comment-box.component';
+import { CommentBoxModule } from './comment-box/comment-box.module';
 
 const routes: Routes = [
     {
@@ -73,8 +73,7 @@ const materialModules: any[] = [
         RevisionModalComponent,
         RelatedReportsComponent,
         PdfUploadComponent,
-        CreationModalComponent,
-        CommentBoxComponent
+        CreationModalComponent
     ],
     imports: [
         CKEditorModule,
@@ -91,7 +90,7 @@ const materialModules: any[] = [
         RouterModule.forChild(routes),
         MatInputModule,
         MatAutocompleteModule,
-        // CommentBoxComponentModule
+        CommentBoxModule
     ],
     exports: [
         materialModules

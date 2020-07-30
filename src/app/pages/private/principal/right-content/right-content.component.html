@@ -153,7 +153,7 @@
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports">
-                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id, report.state) : null">
+                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
                                             <span class="report--span report_name"
@@ -178,7 +178,7 @@
                                                 <li *ngIf="!marketing"><button class="icon icon-trash-alt"
                                                         (click)="onDeleteReport(i)">Eliminar</button></li>
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus"
-                                                        (click)="openPreviewDialog(report.id, report.state)">Vista previa</button>
+                                                        (click)="openPreviewDialog(report)">Vista previa</button>
                                                 </li>
                                                 <li *ngIf="showOptionMenu(report.state.id) && !marketing"><button
                                                         class="icong icong-crown"
@@ -233,7 +233,7 @@
                         </div>
                         <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
                             <ul class="report-list info_content" formArrayName="reports">
-                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id, report.state) : null">
+                                <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report) : null">
                                     <div class="row" [ngClass]="report.state?.color">
                                         <div class="report_status">
                                         <span class="report--span report_name"
@@ -257,7 +257,7 @@
                                                 <li><button class="icon icon-trash-alt"
                                                         (click)="onDeleteReport(i)">Eliminar</button></li>
                                                 <li><button class="icon icon-search-plus"
-                                                        (click)="openPreviewDialog(report.id, report.state)">Vista previa</button>
+                                                        (click)="openPreviewDialog(report)">Vista previa</button>
                                                 </li>
                                                 <li *ngIf="showOptionMenu(report.state.id)"><button
                                                         class="icong icong-crown"
@@ -272,7 +272,7 @@
                             <div class="revised_content" *ngIf="isShowingReviewedList()">
                                 <ul class="report-list info_content" formArrayName="reviewed">
                                     <h1>Informes revisados</h1>
-                                    <li *ngFor="let report of list.reviewed; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report.id, report.state) : null">
+                                    <li *ngFor="let report of list.reviewed; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report) : null">
                                         <div class="row" [ngClass]="report.state?.color">
                                             <div class="report_status">
                                                 <span class="report--span report_name">{{report.state.name}}</span>
@@ -297,7 +297,7 @@
                                                     <li><button class="icon icon-trash-alt"
                                                             (click)="onDeleteReport(i)">Eliminar</button></li>
                                                     <li><button class="icon icon-search-plus"
-                                                            (click)="openPreviewDialog(report.id, report.state)">Vista previa</button>
+                                                            (click)="openPreviewDialog(report)">Vista previa</button>
                                                     </li>
                                                 </ul>
                                             </div>

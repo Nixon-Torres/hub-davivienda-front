@@ -10,7 +10,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MobileCommentViewComponent } from './mobile-comment-view.component';
 import { CommentBoxModule } from '../../board/comment-box/comment-box.module';
-import { CommentBoxComponent } from '../../board/comment-box/comment-box.component';
 
 const materialModules: any[] = [
     MatCardModule,
@@ -39,6 +38,9 @@ const materialModules: any[] = [
         CommentBoxModule
     ],
     declarations: [
+        MobileCommentViewComponent,
+    ],
+    exports: [
         MobileCommentViewComponent,
     ],
     entryComponents: [

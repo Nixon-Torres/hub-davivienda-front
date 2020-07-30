@@ -4,13 +4,13 @@
         <p>{{state && state.name ? state.name : 'Por revisar'}}</p>
     </div>
 
-    <div class="preview-mobile__comment" (click)="openCommentDialog(reportId)" >
+    <div class="preview-mobile__comment" (click)="openCommentDialog(report)" >
         <span class="material-icons-outlined">mode_comment</span>
         <p>Comentarios</p>
     </div>
 
-    <div class="preview-mobile__post">
-        <button mat-flat-button class="bttn bttn-primary">Publicar</button>
+    <div class="preview-mobile__post" *ngIf="canPublish()">
+        <button mat-flat-button class="bttn bttn-primary" (click)="validateUnresolvedComments()">Publicar</button>
     </div>
 </div>
 

@@ -8,52 +8,27 @@ import {HttpService} from '../../../../services/http.service';
   encapsulation: ViewEncapsulation.None
 })
 export class MobileCommentViewComponent implements OnInit {
-    @Input() reportId: string;
-    @Input() state: string;
+    @Input() report: any;
     @Output() changeView = new EventEmitter();
-
-    public report: any = {
-        id: null,
-        styles: '',
-        content: ''
-    };
-
     constructor(
-        private http: HttpService,
     ) {
     }
 
     back() {
         this.changeView.emit({
             mobile: true,
-            reportId: this.reportId,
+            report: this.report,
             comment: false,
         });
     }
 
     ngOnInit() {
-        this.report.id = this.reportId;
         if (!this.report.id) {
             alert('¡Oops!\nNo encontramos el reporte');
             return;
         }
-
-        this.http.get({
-            path: `reports/${this.report.id}`
-        }).subscribe((response: any) => {
-            this.report.content = response.body.content ? response.body.content : '';
-        });
     }
 
     closeDialog(): void {
     }
-
-    openCommentDialog(idReport: string): void {
-        this.changeView.emit({
-            mobile: true,
-            reportId: idReport,
-            comment: true
-        });
-    }
-
 }

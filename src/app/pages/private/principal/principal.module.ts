@@ -144,8 +144,7 @@ const materialModules: any[] = [
         CreateReportDialogComponent,
         HighlightDialogComponent,
         TagsDialogComponent,
-        AddWordsDialogComponent,
-        MobileCommentViewComponent
+        AddWordsDialogComponent
     ]
 })
 export class PrincipalModule { }

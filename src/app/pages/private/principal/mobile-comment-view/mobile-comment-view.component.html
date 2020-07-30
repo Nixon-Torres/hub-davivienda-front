@@ -4,5 +4,5 @@
         <p>Comentarios</p>
     </div>
 </div>
-<!-- <app-comment-box (unresolved)="unresolvedComments=$event" *ngIf="reportId"
-    [reportId]="reportId"></app-comment-box> -->
+<app-comment-box (unresolved)="unresolvedComments=$event" *ngIf="report"
+    [report]="report" [showHeader]="false"></app-comment-box>
