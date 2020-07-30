@@ -13,7 +13,7 @@ import * as $ from "jquery/dist/jquery";
     encapsulation: ViewEncapsulation.None
 })
 export class CommentBoxComponent implements OnInit {
-    @Input('showHeader') private showHeader = true;
+    @Input('showHeader') showHeader = true;
     @Input('report') private report: any;
     @Output() propagate = new EventEmitter<string>();
     @Output() unresolved = new EventEmitter<object>();
