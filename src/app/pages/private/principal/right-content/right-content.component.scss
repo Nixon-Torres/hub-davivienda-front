@@ -107,7 +107,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
         display: flex;
         justify-content: flex-end;
 		align-items: center;
-		@media only screen and (max-width: 768px){
+		@media only screen and (max-width: 720px){
 			display: none;
 		}
         .button-reset {
@@ -590,7 +590,7 @@ section {
 		width: 180px;
 		display: inline-block;
 		@media only screen and (max-width: 991px){
-			width: 100px;
+			width: 135px;
 		}
 	}
 }

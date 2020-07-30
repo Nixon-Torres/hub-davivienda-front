@@ -45,6 +45,9 @@
 				display: flex;
 				justify-content: flex-end;
 				align-items: center;
+				@media only screen and (max-width: 768px) {
+					padding: 10px;
+				}
 		}
 		&__modification, &__edit {
 				border-left: 1px solid #F5F5F5;
