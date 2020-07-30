@@ -69,6 +69,9 @@
         @media only screen and (max-width: 1024px) {
             padding-left: 25px;
         }
+        @media only screen and (max-width: 768px) {
+            padding-left: 8px;
+        }
         .modification {
 
             &__title, &__value {
@@ -104,6 +107,9 @@
     }
     &__body {
         padding: 20px 30px;
+        @media only screen and (max-width: 768px) {
+            padding: 20px;
+        }
     }
     &__fields {
         width: 80%;
@@ -175,6 +181,9 @@
                     transform: translateY(-50%);
                     @media only screen and (max-width: 1024px) {
                         right: -34%;
+                    }
+                    @media only screen and (max-width: 768px) {
+                        right: -60%;
                     }
                 }
             }

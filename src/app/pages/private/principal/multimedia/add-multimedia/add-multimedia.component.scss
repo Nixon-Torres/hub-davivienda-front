@@ -205,6 +205,9 @@ app-add-multimedia{
         @media only screen and (max-width: 1024px) {
             left: 50%;
         }
+        @media only screen and (max-width: 1024px) {
+            left: 35%;
+        }
 
         span {
             float: left;
@@ -304,6 +307,11 @@ app-add-multimedia{
     .alert-danger-title{
         position: relative;
         right: 162px;
+        @media only screen and (max-width: 768px) {
+            right: 0;
+            width: 100%;
+            display: flex;
+        }
     }
 
 }

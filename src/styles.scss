@@ -744,6 +744,9 @@ $builder-bg: #f5f7fb;
 	position: relative;
 	right: 3%;
 	top: 5px;
+	@media only screen and (max-width: 768px) {
+		padding-left: 5%;
+	}
 	&.filter{
 		right: 5%;
 	}

@@ -31,7 +31,8 @@
 		 border-radius: 0px;
          padding: 3px;
          @media only screen and (max-width: 1024px) {
-            padding: 3px 5px;
+            padding: 3px 8px;
+            font-size: 0.82em;
          }
      }
  }
@@ -144,6 +145,9 @@
             cursor: pointer;
             @media only screen and (max-width: 1024px) {
                 padding-left: 12px;
+            }
+            @media only screen and (max-width: 768px) {
+                width: 80%;
             }
 
 			a {
