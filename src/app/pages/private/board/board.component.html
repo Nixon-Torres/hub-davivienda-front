@@ -435,8 +435,8 @@
 
         <!-- COMMENTS -->
         <mat-grid-tile [colspan]="grid.col.comments" [rowspan]="1" class="comments">
-            <app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report.id"
-                [reportId]="report.id"></app-comment-box>
+            <app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report"
+                [report]="report" [showHeader]="true"></app-comment-box>
         </mat-grid-tile>
 
         <!-- PANEL -->

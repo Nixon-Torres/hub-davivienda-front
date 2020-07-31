@@ -11,6 +11,8 @@
     <app-faq-content *ngIf="view.faq" (changeView)="changeView($event)"></app-faq-content>
     <app-faq-button (changeView)="changeView($event)" [ngClass]="{'active': view.faq}"></app-faq-button>
     <app-multimedia *ngIf="view.multimedia" (changeView)="changeView($event)"></app-multimedia>
-    <app-mobile-detail-view *ngIf="view.mobile && view.reportId" (changeView)="changeView($event)" [reportId]="view.reportId">
-    </app-mobile-detail-view>
+    <app-mobile-detail-view *ngIf="view.mobile && view.report && !view.comment" (changeView)="changeView($event)" [report]="view.report">
+	</app-mobile-detail-view>
+	<app-mobile-comment-view *ngIf="view.mobile && view.report && view.comment" (changeView)="changeView($event)" [report]="view.report">
+    </app-mobile-comment-view>
 </section>

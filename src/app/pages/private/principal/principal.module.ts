@@ -10,7 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { GalleryDialogModule } from '../gallery-dialog/gallery-dialog.module';
 // Form Controls
-import { MatIconModule, MatNativeDateModule } from '@angular/material';
+import { MatIconModule, MatNativeDateModule, MatCardModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -58,6 +58,8 @@ import { EditIndicatorsContentComponent } from './edit-indicators-content/edit-i
 import { EditFooterComponent } from './edit-footer/edit-footer.component';
 import { ArraySortPipe } from 'src/app/pipes/array-sort.pipe';
 import { MobileDetailViewComponent } from './mobile-detail-view/mobile-detail-view.component';
+import { MobileCommentViewComponent } from './mobile-comment-view/mobile-comment-view.component';
+import { MobileCommentViewModule } from './mobile-comment-view/mobile-comment-view.module';
 
 const routes: Routes = [
     {
@@ -67,6 +69,7 @@ const routes: Routes = [
 ];
 
 const materialModules: any[] = [
+    MatCardModule,
     MatTabsModule,
     MatDialogModule,
     MatAutocompleteModule,
@@ -112,7 +115,8 @@ const materialModules: any[] = [
         MultimediaComponent,
         AddMultimediaComponent,
         ArraySortPipe,
-        MobileDetailViewComponent
+        MobileDetailViewComponent,
+        // MobileCommentViewComponent
     ],
     imports: [
         CommonModule,
@@ -127,7 +131,8 @@ const materialModules: any[] = [
         NgSelectModule,
         GalleryDialogModule,
         VideoModalModule,
-        OutstandingVideosModule
+        OutstandingVideosModule,
+        MobileCommentViewModule,
     ],
     exports: [
         materialModules,

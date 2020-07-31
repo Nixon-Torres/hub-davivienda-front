@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation  } from '@angular/core';
 
 import { AuthService } from '../../../../services/auth.service';
 import { HttpService } from '../../../../services/http.service';
@@ -9,14 +9,14 @@ import * as $ from "jquery/dist/jquery";
 @Component({
     selector: 'app-comment-box',
     templateUrl: './comment-box.component.html',
-    styleUrls: ['./comment-box.component.scss']
+    styleUrls: ['./comment-box.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CommentBoxComponent implements OnInit {
-
-    @Input('reportId') private reportId: string;
+    @Input('showHeader') private showHeader = true;
+    @Input('report') private report: any;
     @Output() propagate = new EventEmitter<string>();
     @Output() unresolved = new EventEmitter<object>();
-
     public user: any = {};
     public comment: Comment = {
         id: null,
@@ -38,7 +38,7 @@ export class CommentBoxComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.comment.reportId = this.reportId;
+        this.comment.reportId = this.report.id;
         this.loadComments();
 
         $('textarea').on('click', function() {
@@ -47,9 +47,9 @@ export class CommentBoxComponent implements OnInit {
     }
 
     loadComments() {
-        var filter = {
+        const filter = {
             include: ['user'],
-            where: {reportId: this.reportId},
+            where: {reportId: this.report.id},
             order: 'createdAt ASC'
         };
         this.http.get({
@@ -63,10 +63,9 @@ export class CommentBoxComponent implements OnInit {
     }
 
     sendComment() {
-
         this.http.post({
-            'path': 'comments/',
-            'data': this.comment
+            path: 'comments/',
+            data: this.comment
         }).subscribe(
             () => {
                 this.comment.text = '';
@@ -80,18 +79,17 @@ export class CommentBoxComponent implements OnInit {
     }
 
     /** Delete a report comment from DOM and database
-    *
     * @param { idComment }
     */
     deleteComment(idComment) {
         this.http.delete({
-            'path': `comments/${idComment}`,
-            'data': this.comment
+            path: `comments/${idComment}`,
+            data: this.comment
         }).subscribe(
             (response) => {
                 if (response.ok) {
-                    var comment = document.getElementById(idComment);
-                    comment.className += " deleted";
+                    const comment = document.getElementById(idComment);
+                    comment.className += ' deleted';
                     setTimeout(function() {
                         comment.remove();
                     }, 500);
@@ -133,10 +131,10 @@ export class CommentBoxComponent implements OnInit {
     }
 
     hasUnresolvedComments(commentsList: any): object {
-        let unresolvedCount = commentsList.filter(comment => comment.resolved === false).length;
+        const unresolvedCount = commentsList.filter(comment => comment.resolved === false).length;
         return {
             count: unresolvedCount,
             state: unresolvedCount > 0 ? true : false
-        }
+        };
     }
 }

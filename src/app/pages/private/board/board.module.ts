@@ -21,7 +21,6 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
-import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { RelatedReportsComponent } from './related-reports/related-reports.component';
 import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
@@ -33,6 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {MatAutocompleteModule, MatInputModule} from '@angular/material';
+import { CommentBoxModule } from './comment-box/comment-box.module';
 
 const routes: Routes = [
     {
@@ -70,7 +70,6 @@ const materialModules: any[] = [
 @NgModule({
     declarations: [
         BoardComponent,
-        CommentBoxComponent,
         RevisionModalComponent,
         RelatedReportsComponent,
         PdfUploadComponent,
@@ -90,7 +89,8 @@ const materialModules: any[] = [
         MatListModule,
         RouterModule.forChild(routes),
         MatInputModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        CommentBoxModule
     ],
     exports: [
         materialModules
