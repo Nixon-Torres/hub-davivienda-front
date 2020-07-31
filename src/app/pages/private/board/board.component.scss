@@ -280,6 +280,9 @@ $default-font: "Helvetica Neue", Medium;
             padding: 0;
             height: 60px;
             border-bottom: solid 1px #EDEDED;
+            @media only screen and (max-width: 768px) {
+                height: auto;  
+            }
         }
 
         #export {
@@ -305,6 +308,9 @@ $default-font: "Helvetica Neue", Medium;
             button {
                 float: right;
                 margin-left: 10px;
+                @media only screen and (max-width: 768px) {
+                    margin-left: 5px;
+                }
 
                 &.add-comment {
                     img {
@@ -322,6 +328,11 @@ $default-font: "Helvetica Neue", Medium;
                 height: 100%;
                 display: flex;
                 align-items: center;
+                @media only screen and (max-width: 1024px) {
+                    flex-wrap: wrap; 
+                    width: 100% !important;
+                    margin: 0 10px;
+                }
             }
             .form-name {
                 padding-top: 2px;
@@ -347,7 +358,7 @@ $default-font: "Helvetica Neue", Medium;
                     max-width: 300px;
                     @media only screen and (max-width: 1024px) {
                         max-width: initial;
-                        width: 13vw;
+                        width: 12vw;
                       }
 
                     input {
@@ -470,6 +481,9 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
             overflow: visible;
             padding: 0 !important;
+            @media only screen and (max-width: 768px) {
+                width: 23% !important;
+            }
             .row {
                 margin: 0;
                 width: 100%;
@@ -538,7 +552,7 @@ $default-font: "Helvetica Neue", Medium;
 
                         & > .mat-expansion-panel-header {
                             height: 50px !important;
-                            padding: 0 18px;
+                            padding: 0 20px;
 
                             .mat-expansion-panel-header-title {
 
@@ -1560,6 +1574,9 @@ $default-font: "Helvetica Neue", Medium;
         border: 1px solid #eff1f6;
         @media only screen and (max-width: 1024px) {
             width: 190px;
+         }
+        @media only screen and (max-width: 768px) {
+            width: 120px;
          }
 
         input {
