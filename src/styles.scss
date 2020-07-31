@@ -427,6 +427,9 @@ $builder-bg: #f5f7fb;
 				position: absolute;
 				background-color:#0080ff;
 				will-change: left, right;
+				@media only screen and (max-width: 768px) {
+					background-color: transparent;
+				}
 			}
 		}
 
@@ -744,8 +747,11 @@ $builder-bg: #f5f7fb;
 	position: relative;
 	right: 3%;
 	top: 5px;
+	@media only screen and (max-width: 768px) {
+		padding-left: 5%;
+	}
 	&.filter{
-		right: 5%;
+		right: 0%;
 	}
 }
 
@@ -1282,6 +1288,12 @@ mat-expansion-panel {
 		}
 	}
 
+	.mat-toolbar #export .container {
+		@media only screen and (max-width: 768px) {
+			width: 100% !important;
+			margin: 0 10px;
+		}
+	}
 /* =========================================================== *\
     						NOTIFICATIONS
 \* =========================================================== */

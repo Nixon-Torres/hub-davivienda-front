@@ -49,6 +49,9 @@ app-comment-box{
 		padding: 12px;
 		overflow: auto;
 		transition: overflow .5s;
+		@media only screen and (max-width: 768px) {
+			padding: 0;
+		}
 
 		&::-webkit-scrollbar {
 			width: 6px;

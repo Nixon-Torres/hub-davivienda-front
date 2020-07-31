@@ -107,7 +107,7 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
         display: flex;
         justify-content: flex-end;
 		align-items: center;
-		@media only screen and (max-width: 768px){
+		@media only screen and (max-width: 720px){
 			display: none;
 		}
         .button-reset {
@@ -519,13 +519,25 @@ section {
 		position: absolute;
 		right: 4%;
 		top: 0;
+		@media only screen and (max-width: 768px) {
+			right: -2%;
+		}
 
 		ul{
 			display: flex;
 			align-items: flex-end;
 			justify-content: flex-end;
+			@media only screen and (max-width: 768px) {
+				flex-wrap: wrap;
+				justify-content: space-between;
+			}
 			li{
 				margin-right: 40px;
+				@media only screen and (max-width: 768px) {
+					width: 40%;
+					margin-bottom: 5px;
+					margin-right: 0px;
+				}
 				a{
 					color: #616161;
 					font-size: 12px;
@@ -578,7 +590,7 @@ section {
 		width: 180px;
 		display: inline-block;
 		@media only screen and (max-width: 991px){
-			width: 100px;
+			width: 135px;
 		}
 	}
 }
