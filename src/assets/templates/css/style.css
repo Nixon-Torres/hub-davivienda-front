@@ -502,6 +502,7 @@ p.left-arrow-paragraph::before{
     padding-bottom: 30px;
     color: #333333;
     font-weight: normal;
+    word-break: normal;
 }
 
 .doscolumn_section .graph_block .image_block,

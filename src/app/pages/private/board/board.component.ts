@@ -865,6 +865,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             clearInterval(this.timer.lastupdate);
         }
 
+        console.log('calling interval');
         this.timer.lastupdate = setInterval(() => {
             this.lastupdate = moment(lastupdate).fromNow();
         }, 30000);
@@ -872,6 +873,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.timer.lastupdate) {
+            console.log('clearing interval');
             clearInterval(this.timer.lastupdate);
         }
     }
@@ -1869,14 +1871,18 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     /* Tags */
     public fillTendenciesTags(): Array<string> {
-        return this.tendenciesList.split(',').map(tag => tag.trim());
+        return this.tendenciesList ? this.tendenciesList.split(',').map(tag => tag.trim()) : [];
     }
 
     public addCategoryTag(event): void {
         const tagName = event.target.innerText;
         this.tags.tendencies = this.fillTendenciesTags();
         if (!this.tags.tendencies.find(tag => tag === tagName)) {
-            this.tendenciesList += `, ${tagName}`;
+            if (this.tendenciesList) {
+                this.tendenciesList += `${this.tendenciesList !== '' ? ', ' : ''} ${tagName}`;
+            } else {
+                this.tendenciesList = tagName;
+            }
         }
     }
 

@@ -40,7 +40,7 @@ export class EditFooterComponent implements OnInit, AfterViewInit {
             placeholder: 'Escriba aquí el titulo',
             content: '',
             type: 'input',
-            class: 'title'
+            class: 'title',
         },
         {   id: 'link-conozcanos',
             title: 'URL enlace 1',
