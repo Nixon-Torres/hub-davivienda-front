@@ -1878,7 +1878,11 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
         const tagName = event.target.innerText;
         this.tags.tendencies = this.fillTendenciesTags();
         if (!this.tags.tendencies.find(tag => tag === tagName)) {
-            this.tendenciesList += `${this.tendenciesList && this.tendenciesList !== '' ? ', ' : ''} ${tagName}`;
+            if (this.tendenciesList) {
+                this.tendenciesList += `${this.tendenciesList !== '' ? ', ' : ''} ${tagName}`;
+            } else {
+                this.tendenciesList = tagName;
+            }
         }
     }
 
