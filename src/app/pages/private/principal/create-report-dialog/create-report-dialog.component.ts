@@ -184,7 +184,15 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             path: 'users/list'
         }).subscribe((response) => {
             this.originalUsers = response.body as unknown as any[];
-            let users = this.originalUsers;
+            let users = this.originalUsers.sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (b.name > a.name) {
+                    return -1;
+                }
+                return 0;
+            });
 
             users = users.filter((e) => this.isAuthorAddedAlready(e));
             this.list.users = users;
