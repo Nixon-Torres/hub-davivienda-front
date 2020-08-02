@@ -317,6 +317,10 @@ h2{
 
 }
 
+.p-b-10{
+    padding-bottom: 10px;
+}
+
 .company-legaltxt p{
     color: #90A1AC;
     font-family: 'Helvetica-Neue';
