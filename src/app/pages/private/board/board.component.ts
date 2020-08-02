@@ -1436,6 +1436,15 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             encode: true
         }).subscribe((resp) => {
             this.users = resp.body;
+            this.users = this.users.sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (b.name > a.name) {
+                    return -1;
+                }
+                return 0;
+            });
             const dialogRef = this.dialog.open(RevisionModalComponent, {
                 width: '450px',
                 data: {

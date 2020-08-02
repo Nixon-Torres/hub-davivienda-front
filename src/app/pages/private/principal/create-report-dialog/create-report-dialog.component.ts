@@ -250,7 +250,7 @@ export class CreateReportDialogComponent implements OnInit, AfterViewInit {
             return 0;
         });
         types.push(this.newReportObj);
-        this.list.typeSections = types;
+        this.list.typeSections = types.filter(e => e.code !== 'ELLIBRO');
         this.createReportForm.patchValue({sectionTypeKey: null});
     }
 

@@ -95,7 +95,7 @@ export class RightContentComponent implements OnInit {
                 }
             }
 
-            if (this.icurrentObj.currentFolder) {
+            if (this.icurrentObj.currentFolder || this.icurrentObj.currentState) {
                 this.tabIndex = 0;
             }
         }

@@ -4,8 +4,8 @@
 		<input type="hidden" formControlName="stateId">
 	</div>
 	<div class="two-columns">
-		<h3 class="title icon icon-list-alt">Sección</h3>
-		<p class="intro">Seleccione la sección para la cual desea hacer su informe</p>
+		<h3 class="title icon icon-list-alt">Compa&ntilde;&iacute;a</h3>
+		<p class="intro">Seleccione la compa&ntilde;&iacute;a para la cual desea hacer su informe</p>
 		<div class="group-radio">
 			<div class="group-radio--option" *ngFor="let section of list.sections; let indice=index">
 				<input type="radio" formControlName="sectionId" [value]="section.id" [id]="section.id" (change)="onUpdateTypes($event, indice)">
