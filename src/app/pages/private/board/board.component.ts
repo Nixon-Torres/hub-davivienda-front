@@ -264,7 +264,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         editor6: {
             removePlugins: ['SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
-                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'List', 'MediaEmbed',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'List',
                 'Table', 'TableToolbar', 'Table'],
             heading: {
                 options: [
