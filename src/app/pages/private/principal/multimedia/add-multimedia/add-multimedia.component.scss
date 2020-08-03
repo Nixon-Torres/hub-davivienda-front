@@ -184,6 +184,9 @@ app-add-multimedia{
                         border: 1px solid #0b86ff;
                         font-weight: bold;
                         cursor: pointer;
+                        @media only screen and (max-width: 991px){
+                            font-size: 0.8rem;
+                        }
                         &[type=submit]{
                             background-color: #0b86ff;
                             color: #ffffff;
