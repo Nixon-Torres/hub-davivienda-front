@@ -74,11 +74,18 @@ export class NotificationsComponent implements OnInit {
         }
 
         where.ownerId = this.user.id;
-        if (idx === 2) {
+        if (idx === 1) {
+            where.or = [
+                { type: 'report-comment' },
+                { type: 'report-edited'  },
+                { type: 'report-reviewer', reportStateId: '5e068c81d811c55eb40d14d0'  }
+            ];
+        } else if (idx === 2) {
             where.type = 'report-comment';
         } else if (idx === 3) {
             where.type = 'report-edited';
         } else if (idx === 4) {
+            where.type = 'report-reviewer';
             where.reportStateId = '5e068c81d811c55eb40d14d0';
         }
         return where;
@@ -93,7 +100,7 @@ export class NotificationsComponent implements OnInit {
                     {relation: 'emitter', scope: {fields: ['name']}},
                     {relation: 'report', scope: {fields: ['name', 'stateId']}}
                 ],
-                where: this.getWhere(this.currentTab),
+                where: this.getWhere(this.currentTab, false),
                 limit: 15,
                 skip: this.notifications.length
             },
@@ -122,10 +129,7 @@ export class NotificationsComponent implements OnInit {
     private getCountNotifications(): void {
         this.http.get({
             path: `notifications/count?where=`,
-            data: {
-                ownerId: this.user.id,
-                readed: false
-            }
+            data: this.getWhere(1, false)
         }).subscribe((response: any) => {
             this.ntfQty = response.body.count;
         });

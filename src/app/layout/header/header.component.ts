@@ -88,12 +88,17 @@ export class HeaderComponent implements OnInit {
     }
 
     private getCountNotifications(): void {
+        const where: any = {};
+        where.readed = false;
+        where.ownerId = this.user.id;
+        where.or = [
+            { type: 'report-comment' },
+            { type: 'report-edited'  },
+            { type: 'report-reviewer', reportStateId: '5e068c81d811c55eb40d14d0'  }
+        ];
         this.http.get({
             path: `notifications/count?where=`,
-            data: {
-                ownerId: this.user.id,
-                readed: false
-            }
+            data: where
         }).subscribe((response: any) => {
             if ('body' in response) {
                this.ntfQty = response.body.count;
