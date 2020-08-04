@@ -704,7 +704,7 @@ export class RightContentComponent implements OnInit {
         let result = [];
 
         this.http.get({
-            path: `users/${this.user.id}/reportsr`,
+            path: `users/${this.user && this.user.id ? this.user.id : ''}/reportsr`,
             data: { fields: 'id' },
             encode: true
         }).subscribe(
