@@ -194,6 +194,7 @@ export class HighlightDialogComponent implements OnInit {
             return '';
         }
 
+        this.imageSelected = true;
         if (this.photo) {
             return this.storageBase + this.photo;
         } else {
