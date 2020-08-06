@@ -1,6 +1,6 @@
 <div class="container">
     <mat-drawer-container class="example-container">
-        <mat-drawer mode="side" opened>
+        <mat-drawer mode="side" opened  [ngStyle]="{'width': isMobileVersion() ? '100%' : '23%'}">
             <a class="aside-back"><i class="material-icons">chevron_left</i>Volver</a>
             <ul>
                 <li class="mat-drawer-aside-title">

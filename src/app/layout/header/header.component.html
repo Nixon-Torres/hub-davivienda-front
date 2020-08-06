@@ -107,7 +107,7 @@
                         </button>
                     </section>
                     <footer>
-                        <a [routerLink]="['notifications']">Ver todas las notificaciones</a>
+                        <a (click)="isMobileLayout = !isMobileLayout"  [routerLink]="['notifications']">Ver todas las notificaciones</a>
                     </footer>
             </div>
         </div>
