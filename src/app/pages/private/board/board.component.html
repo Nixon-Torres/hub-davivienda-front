@@ -1,4 +1,4 @@
-<section class="grapes-container">
+<section class="grapes-container" *ngIf="!isMobileVersion()">
 
     <div class="fixed-action-btn invisible">
         <button class="btn-floating btn-large blue-hub" [disabled]="readonly">
@@ -608,3 +608,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 </section>
+<app-mobile-detail-view *ngIf="isMobileVersion() && !showCommentsView" (changeView)="changeView()" [report]="report">
+</app-mobile-detail-view>
+<app-mobile-comment-view *ngIf="isMobileVersion() && showCommentsView" (changeView)="changeView()" [report]="report">
+</app-mobile-comment-view>
