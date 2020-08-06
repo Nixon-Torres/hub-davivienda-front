@@ -84,6 +84,10 @@ export class NotificationsComponent implements OnInit {
         return where;
     }
 
+    public isMobileVersion() {
+        return(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+    }
+
     private getNotifications() {
         this.http.get({
             path: `notifications`,

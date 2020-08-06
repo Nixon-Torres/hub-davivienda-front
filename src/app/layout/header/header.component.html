@@ -78,7 +78,7 @@
             <span class="fas fa-sign-out-alt"></span>
         </button>
 
-        <div class="sidenav_notification" *ngIf="isMobileLayout">
+        <div class="sidenav_notification" *ngIf="isMobileLayout" (click)="isMobileLayout = !isMobileLayout">
 
         <div class="mobile_header">
             <div class="right_navbar_header">
@@ -107,12 +107,12 @@
                         </button>
                     </section>
                     <footer>
-                        <a [routerLink]="['notifications']">Ver todas las notificaciones</a>
+                        <a (click)="isMobileLayout = !isMobileLayout"  [routerLink]="['notifications']">Ver todas las notificaciones</a>
                     </footer>
             </div>
         </div>
 
     </div>
 
-	</div>
+    </div>
 </header>
