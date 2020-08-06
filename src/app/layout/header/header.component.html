@@ -78,7 +78,7 @@
             <span class="fas fa-sign-out-alt"></span>
         </button>
 
-        <div class="sidenav_notification" *ngIf="isMobileLayout">
+        <div class="sidenav_notification" *ngIf="isMobileLayout" (click)="isMobileLayout = !isMobileLayout">
 
         <div class="mobile_header">
             <div class="right_navbar_header">
@@ -96,7 +96,7 @@
                     <section>
                         <button mat-menu-item [ngClass]="{'to-check' : !notification.readed}"
                             *ngFor="let notification of notifications"
-                            (click)="openNotf(notification.reportId, notification.readed)">
+                            (click)="openNotf(notification, notification.readed)">
                             <img class="indicator" src="../assets/images/comments.png"
                                 *ngIf="notification.type === 'report-comment'">
                             <div class="indicator {{ notification.bgColor }}" *ngIf="notification.type !== 'report-comment'">
@@ -114,5 +114,5 @@
 
     </div>
 
-	</div>
+    </div>
 </header>
