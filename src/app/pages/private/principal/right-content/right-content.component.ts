@@ -704,7 +704,7 @@ export class RightContentComponent implements OnInit {
         let result = [];
 
         this.http.get({
-            path: `users/${this.user.id}/reportsr`,
+            path: `users/${this.user && this.user.id ? this.user.id : ''}/reportsr`,
             data: { fields: 'id' },
             encode: true
         }).subscribe(
@@ -879,7 +879,8 @@ export class RightContentComponent implements OnInit {
         }
         const report: any = reports[index];
         const type = report && report.type;
-        const data = type ? {
+        const reportTypeId = report && report.reportTypeId;
+        const data = type || reportTypeId ? {
             id: report.id,
             name: report.name,
             slug: report.slug,
@@ -894,7 +895,7 @@ export class RightContentComponent implements OnInit {
         } : report;
 
         this.http.patch({
-            path: `${type ? 'reports' : 'contents'}/${data.id}`,
+            path: `${type || reportTypeId ? 'reports' : 'contents'}/${data.id}`,
             data
         }).subscribe(
             () => {
@@ -976,9 +977,10 @@ export class RightContentComponent implements OnInit {
 
         const isOutTrash = (!this.icurrentObj.deletedFg);
         const type = this.list.reports[pos] && this.list.reports[pos].type;
+        const reportTypeId = this.list.reports[pos] && this.list.reports[pos].reportTypeId;
         const dialogTitle = isOutTrash
-            ? `¿Está seguro de enviar el ${type ? 'reporte' : 'contenido'} a la papelera?`
-            : `¿Está seguro de eliminar definitivamente el ${type ? 'reporte' : 'contenido'}?`;
+            ? `¿Está seguro de enviar el ${type || reportTypeId ? 'reporte' : 'contenido'} a la papelera?`
+            : `¿Está seguro de eliminar definitivamente el ${type || reportTypeId ? 'reporte' : 'contenido'}?`;
         const id = this.list.reports[pos].id;
         const name = this.list.reports[pos].name;
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -995,7 +997,7 @@ export class RightContentComponent implements OnInit {
             if (result) {
                 if (isOutTrash) {    // Move to trash
                     this.http.patch({
-                        path: `${type ? 'reports' : 'contents'}/${id}`,
+                        path: `${type || reportTypeId ? 'reports' : 'contents'}/${id}`,
                         data: {
                             trash: true
                         }
@@ -1004,7 +1006,7 @@ export class RightContentComponent implements OnInit {
                             width: '410px',
                             data: {
                                 config: {
-                                    title: `Ha sido eliminado exitosamente el ${type ? 'reporte' : 'contenido'}:`,
+                                    title: `Ha sido eliminado exitosamente el ${type || reportTypeId ? 'reporte' : 'contenido'}:`,
                                     subtitle: name
                                 }
                             }
@@ -1015,13 +1017,13 @@ export class RightContentComponent implements OnInit {
                     });
                 } else {    // Delete from database
                     this.http.delete({
-                        path: `${type ? 'reports' : 'contents'}/${id}`,
+                        path: `${type || reportTypeId ? 'reports' : 'contents'}/${id}`,
                     }).subscribe(() => {
                         this.dialog.open(ConfirmationDialogComponent, {
                             width: '410px',
                             data: {
                                 config: {
-                                    title: `Ha sido eliminado exitosamente ${type ? 'reporte' : 'contenido'}:`,
+                                    title: `Ha sido eliminado exitosamente ${type || reportTypeId ? 'reporte' : 'contenido'}:`,
                                     subtitle: name
                                 }
                             }

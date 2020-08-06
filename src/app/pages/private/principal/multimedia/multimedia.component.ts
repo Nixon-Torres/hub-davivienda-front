@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 import { VideoModalComponent } from '../faq-content/video-modal/video-modal.component';
 import { OutstandingVideosComponent } from '../outstanding-videos/outstanding-videos.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-multimedia',
@@ -13,6 +14,7 @@ import { OutstandingVideosComponent } from '../outstanding-videos/outstanding-vi
 })
 export class MultimediaComponent implements OnInit {
     @Output() changeView: EventEmitter<any>;
+    public storageBase: string = environment.STORAGE_FILES;
     public filterOptions: any;
     public marketing: boolean;
     public isAdding = false;
@@ -67,7 +69,7 @@ export class MultimediaComponent implements OnInit {
         this.http.get({
             path: 'contents',
             data: {
-                include: ['lastUpdater'],
+                include: ['lastUpdater', 'files'],
                 where: {
                     key: 'multimedia'
                 }
@@ -77,9 +79,20 @@ export class MultimediaComponent implements OnInit {
             if (resp && resp.body) {
                 this.lastUpdater = resp.body.lastUpdater ? resp.body.lastUpdater.name : '';
                 if (filter) {
-                    this.multimediaList = resp.body.filter(e => e.multimediaType.name === filter.name);
+                    this.multimediaList = resp.body.filter(e => e.multimediaType.name === filter.name)
+                        .map(mul => {
+                            mul.thumbnailImg = mul && mul.files
+                            ? `${this.storageBase}${mul.files.find(file => file.key === 'thumbnail').fileName}`
+                            : '';
+                            return mul;
+                        });
                 } else {
-                    this.multimediaList = resp.body.filter(e => !e.trash);
+                    this.multimediaList = resp.body.filter(e => !e.trash).map(mul => {
+                        mul.thumbnailImg = mul && mul.files
+                            ? `${this.storageBase}${mul.files.find(file => file.key === 'thumbnail').fileName}`
+                            : '';
+                        return mul;
+                    });
                 }
                 this.addIconClass();
             }

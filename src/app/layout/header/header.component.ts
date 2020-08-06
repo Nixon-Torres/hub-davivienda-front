@@ -30,8 +30,7 @@ export class HeaderComponent implements OnInit {
     public STORAGE_URL = environment.STORAGE_FILES;
     public marketing: boolean;
     public sidevarMenu = true;
-    public isMobileLayout = false
-
+    public isMobileLayout = false;
     constructor(
         private router: Router,
         private auth: AuthService,
@@ -186,7 +185,7 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    openNotf(notification) {
+    openNotf(notification, readed?) {
         const notificationId = notification.id;
         const reportId = notification.reportId;
 
@@ -203,6 +202,7 @@ export class HeaderComponent implements OnInit {
             if (notification.type === 'report-comment') {
                 queryParams.showComments = true;
             }
+            this.isMobileLayout = false;
             this.router.navigate(['app/board', reportId],  { queryParams });
         });
     }

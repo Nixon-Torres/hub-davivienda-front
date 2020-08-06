@@ -4,15 +4,15 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'arraySort'
 })
 export class ArraySortPipe  implements PipeTransform {
-  transform(array: any, field: string): any[] {
+  transform(array: any, field: string, orderType: boolean = false): any[] {
     if (!Array.isArray(array)) {
       return;
     }
     array.sort((a: any, b: any) => {
       if (a[field] > b[field]) {
-        return -1;
+        return !orderType ? -1 : 1;
       } else if (a[field] < b[field]) {
-        return 1;
+        return !orderType ? 1 : -1;
       } else {
         return 0;
       }

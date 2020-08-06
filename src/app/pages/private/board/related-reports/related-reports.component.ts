@@ -87,7 +87,7 @@ export class RelatedReportsComponent implements OnInit {
 
         this.timer.toRelated = setTimeout(() => {
             this.http.get({
-                path: 'reports',
+                path: 'reports/relates',
                 data: {
                     fields: ['id', 'name'],
                     where: {
