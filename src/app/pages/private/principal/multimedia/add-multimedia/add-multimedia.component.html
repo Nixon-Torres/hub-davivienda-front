@@ -62,8 +62,11 @@
                 <div class="form__item form__item--file">
                     <p class="form__label" >Miniatura</p>
                     <div class="file__wrapper">
-                        <label for="thumbnail" class="custom-file">
+                        <label for="thumbnail" class="custom-file" *ngIf="!thumbnailImg" >
                             <span class="fas fa-image"></span>
+                        </label>
+                        <label for="thumbnail" *ngIf="thumbnailImg" class="custom-file">
+                            <img class="custom-file" [src]="thumbnailImg"  (change)="click($event)">
                         </label>
                         <p class="info">Subir miniatura <span>(Peso máximo 25MB)</span></p>
                     </div>

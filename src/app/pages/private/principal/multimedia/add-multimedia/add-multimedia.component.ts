@@ -6,6 +6,7 @@ import {MatChipInputEvent} from '@angular/material';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmationDialogComponent} from '../../../board/confirmation-dialog/confirmation-dialog.component';
 import { forkJoin } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-add-multimedia',
@@ -25,11 +26,13 @@ export class AddMultimediaComponent implements OnInit {
     public currentFile: any;
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     categories: any;
+    thumbnailImg: any;
 
     constructor(
         public dialog: MatDialog,
         private http: HttpService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private domSanitizer: DomSanitizer
     ) {
         this.isAdding = new EventEmitter<boolean>();
     }
@@ -55,6 +58,7 @@ export class AddMultimediaComponent implements OnInit {
         this.uploadFileForm = this.formBuilder.group({
            thumbnail: ['']
         });
+        this.thumbnailImg = multimediaObj ? multimediaObj.thumbnailImg : '';
         this.tags = multimediaObj ? multimediaObj.params.tags : [];
     }
 
@@ -148,6 +152,7 @@ export class AddMultimediaComponent implements OnInit {
     public loadFile(event: any): void {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
+            this.thumbnailImg = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file));
             this.uploadFileForm.get('thumbnail').setValue(file);
         }
     }
