@@ -5,7 +5,7 @@
             <p class="text--small">Actualmente se muestran las siguiente empresas:</p>
             <mat-form-field class="example-chip-list">
                 <mat-chip-list #chipTopList aria-label="Fruit selection">
-                    <mat-chip *ngFor="let company of list.companies" [selectable]="selectable"
+                    <mat-chip *ngFor="let company of list.companies | arraySort:'name':true" [selectable]="selectable"
                               [removable]="showPanel" (removed)="removeTop(company)">
                         {{company.name}}
                         <mat-icon matChipRemove *ngIf="showPanel">clear</mat-icon>
