@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="list-wrapper">
-            <article class="multimedia-item" *ngFor="let item of multimediaList | arraySort:'createdAt'">
+            <article class="multimedia-item" *ngFor="let item of multimediaList | arraySort:'createdAt': false">
                 <div class="multimedia-item__icon">
                     <span class="fas" [ngClass]="item.multimediaType ? item.multimediaType.icon : ''"></span>
                     <span class="icon__title">{{item.multimediaType && item.multimediaType.name ? item.multimediaType.name : ''}}</span>
