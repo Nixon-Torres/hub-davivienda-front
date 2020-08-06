@@ -13,6 +13,4 @@
     <app-multimedia *ngIf="view.multimedia" (changeView)="changeView($event)"></app-multimedia>
     <app-mobile-detail-view *ngIf="view.mobile && view.report && !view.comment" (changeView)="changeView($event)" [report]="view.report">
 	</app-mobile-detail-view>
-	<app-mobile-comment-view *ngIf="view.mobile && view.report && view.comment" (changeView)="changeView($event)" [report]="view.report">
-    </app-mobile-comment-view>
 </section>

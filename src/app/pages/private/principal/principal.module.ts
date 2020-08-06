@@ -57,9 +57,8 @@ import { EditIndicatorsComponent } from './edit-indicators/edit-indicators.compo
 import { EditIndicatorsContentComponent } from './edit-indicators-content/edit-indicators-content.component';
 import { EditFooterComponent } from './edit-footer/edit-footer.component';
 import { ArraySortPipe } from 'src/app/pipes/array-sort.pipe';
-import { MobileDetailViewComponent } from './mobile-detail-view/mobile-detail-view.component';
-import { MobileCommentViewComponent } from './mobile-comment-view/mobile-comment-view.component';
 import { MobileCommentViewModule } from './mobile-comment-view/mobile-comment-view.module';
+import { MobileDetailViewModule } from './mobile-detail-view/mobile-detail-view.module';
 
 const routes: Routes = [
     {
@@ -114,9 +113,7 @@ const materialModules: any[] = [
         AddWordsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
-        ArraySortPipe,
-        MobileDetailViewComponent,
-        // MobileCommentViewComponent
+        ArraySortPipe
     ],
     imports: [
         CommonModule,
@@ -133,6 +130,7 @@ const materialModules: any[] = [
         VideoModalModule,
         OutstandingVideosModule,
         MobileCommentViewModule,
+        MobileDetailViewModule
     ],
     exports: [
         materialModules,
