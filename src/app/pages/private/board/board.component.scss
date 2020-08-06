@@ -281,7 +281,7 @@ $default-font: "Helvetica Neue", Medium;
             height: 60px;
             border-bottom: solid 1px #EDEDED;
             @media only screen and (max-width: 768px) {
-                height: auto;  
+                height: auto;
             }
         }
 
@@ -329,7 +329,7 @@ $default-font: "Helvetica Neue", Medium;
                 display: flex;
                 align-items: center;
                 @media only screen and (max-width: 1024px) {
-                    flex-wrap: wrap; 
+                    flex-wrap: wrap;
                     width: 100% !important;
                     margin: 0 10px;
                 }
@@ -1057,6 +1057,13 @@ $default-font: "Helvetica Neue", Medium;
             font-weight: bold;
             width: 360px;
             line-height: 24px;
+        }
+
+        .ck.ck-editor__editable > p {
+            display: block;
+            float: left;
+            margin-right: 15px;
+            width: 29%;
         }
     }
 
