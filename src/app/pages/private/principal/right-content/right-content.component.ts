@@ -47,6 +47,7 @@ export class RightContentComponent implements OnInit {
         currentFolder: null,
         currentState: null,
         currentCategory: null,
+        currentSearch: null,
         deletedFg: false,
         currentStateName: 'Todos Informes'
     };
@@ -89,7 +90,11 @@ export class RightContentComponent implements OnInit {
 
             if (this.user && this.user.id) {
                 if (!this.icurrentObj.currentCategory) {
-                    this.loadReports(this.ifilter);
+                    if (this.icurrentObj.currentSearch && this.isMobileVersion()) {
+                        this.filterReports(this.icurrentObj.currentSearch);
+                    } else {
+                        this.loadReports(this.ifilter);
+                    }
                 } else {
                     this.loadCategory();
                 }
@@ -140,7 +145,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public isMobileVersion() {
-        return(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+        return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
     }
 
     public onFileSelect(event: any): void {
@@ -713,7 +718,6 @@ export class RightContentComponent implements OnInit {
                 fn(result);
             },
             () => {
-                alert('Oops!!! \nNo cargamos tus datos. Intenta más tarde');
             }
         );
     }

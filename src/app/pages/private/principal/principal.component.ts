@@ -31,7 +31,8 @@ export class PrincipalComponent implements OnInit {
             currentState: value ? value.state : null,
             deletedFg: value ? value.deleted : false,
             currentStateName: value ? value.stateName : 'Todos Informes',
-            currentCategory: value ? value.category : null
+            currentCategory: value ? value.category : null,
+            currentSearch: value ? value.search : null,
         };
     }
 

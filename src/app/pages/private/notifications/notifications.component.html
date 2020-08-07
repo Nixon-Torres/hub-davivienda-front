@@ -1,7 +1,7 @@
 <div class="container">
     <mat-drawer-container class="example-container">
-        <mat-drawer mode="side" opened>
-            <a class="aside-back"><i class="material-icons">chevron_left</i>Volver</a>
+        <mat-drawer mode="side" opened  [ngStyle]="{'width': isMobileVersion() ? '100%' : '23%'}">
+            <a class="aside-back" [routerLink]="['/app/principal']" ><i class="material-icons">chevron_left</i>Volver</a>
             <ul>
                 <li class="mat-drawer-aside-title">
                     <i class="material-icons notifications_icon">notifications</i>

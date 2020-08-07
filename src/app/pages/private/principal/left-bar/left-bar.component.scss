@@ -17,6 +17,29 @@
      }
 }
 
+.search_menu{
+    display: flex;
+    .header_search{
+        width: 100%;
+        padding: 15px;
+        background: #E3E3E3;
+        margin: 0;
+        input{
+            border: none;
+        }
+        button{
+            top: 15px;
+            right: 15px;
+            height: 30px;
+            background: #fff;
+            position: absolute;
+            border: 0;
+            outline: none;
+            background-color: transparent;
+        }
+    }
+}
+
  li.edit-btn-item {
      padding-bottom: 0px !important;
 	 padding-top: 10px !important;

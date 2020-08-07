@@ -334,6 +334,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     public foundWordsObservable: Observable<any>;
     editorContentTable: string;
     allowContentTable = false;
+    showCommentsView = false;
 
     constructor(
         public dialog: MatDialog,
@@ -359,7 +360,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.glossaryForm = this.fb.group({
             searchInput: new FormControl('')
-        })
+        });
 
         this.foundWordsObservable = this.glossaryForm.get('searchInput').valueChanges
             .pipe(
@@ -367,15 +368,14 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                 switchMap(value => this.searchWordO(value))
             );
 
-
         this.activatedRoute.queryParams.subscribe((params: any) => {
-            if (params.showComments === 'true') {
+            this.showCommentsView = params && params.showComments;
+            if (this.showCommentsView) {
                 this.showComments();
             }
         });
 
         this.activatedRoute.paramMap.subscribe((params: any) => {
-
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get('id')) {
                 this.report.id = params.get('id');
@@ -494,7 +494,8 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
         };
 
         let previousData = null;
-        InlineEditor
+        if (!this.isMobileVersion()) {
+            InlineEditor
             .create(element, editorOptions)
             .then(editor => {
                 window.editor = editor;
@@ -524,6 +525,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             .catch(error => {
                 console.error('There was a problem initializing the editor.', error);
             });
+        }
     }
 
     enableGrapeEditor() {
@@ -1624,10 +1626,12 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public showComments() {
-        this.grid.col.builder = 8;
-        this.grid.col.comments = 2;
-        this.grid.col.panel = 2;
-        document.querySelector('mat-grid-tile.comments').classList.add('show');
+        setTimeout(() => {
+            this.grid.col.builder = 8;
+            this.grid.col.comments = 2;
+            this.grid.col.panel = 2;
+            document.querySelector('mat-grid-tile.comments').classList.add('show');
+        }, 100);
     }
 
     public hideComments() {
@@ -2136,5 +2140,13 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
         const len = this.getChars(html);
         const perc = Math.floor(len / max * 10);
         return Math.min(perc * 10, 100);
+    }
+
+    public isMobileVersion() {
+        return(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+    }
+
+    changeView() {
+        this.router.navigate(['/app/notifications']);
     }
 }

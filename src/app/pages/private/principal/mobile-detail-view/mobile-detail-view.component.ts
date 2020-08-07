@@ -3,6 +3,7 @@ import { HttpService } from '../../../../services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-mobile-detail-view',
@@ -10,7 +11,7 @@ import { MatDialog } from '@angular/material';
     styleUrls: ['./mobile-detail-view.component.scss']
 })
 export class MobileDetailViewComponent implements OnInit {
-    @Input() report: any;
+    @Input() report: any = [];
     @Output() changeView = new EventEmitter();
     public user: any = {};
     private states: any = {
@@ -22,10 +23,13 @@ export class MobileDetailViewComponent implements OnInit {
     };
     public isAdvancedUser = false;
     public unresolvedComments: any;
+    showComments = false;
+    listComments: any;
     constructor(
         private http: HttpService,
         private auth: AuthService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private router: Router
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -34,12 +38,16 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     back() {
+        this.router.navigate(['app/principal']);
         this.changeView.emit({
-            report: this.report,
             mobile: true,
             comment: false,
             reports: true
         });
+    }
+
+    changeViewComments() {
+        this.showComments = false;
     }
 
     ngOnInit() {
@@ -47,6 +55,8 @@ export class MobileDetailViewComponent implements OnInit {
             alert('¡Oops!\nNo encontramos el reporte');
             return;
         }
+
+        this.loadComments();
 
         this.http.get({
             path: `reports/view?id=${this.report.id}`
@@ -85,15 +95,35 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     openCommentDialog(report: any): void {
-        this.changeView.emit({
-            mobile: true,
-            report,
-            comment: true
-        });
+        this.showComments = true;
     }
 
     public canPublish(): boolean {
         return this.isAdvancedUser && this.report.stateId === this.states.approved;
+    }
+
+    loadComments() {
+        const filter = {
+            include: ['user'],
+            where: {reportId: this.report.id},
+            order: 'createdAt ASC'
+        };
+        this.http.get({
+            path: `comments?filter=${JSON.stringify(filter)}`
+        }).subscribe(
+            (response) => {
+                this.listComments = response.body;
+                this.unresolvedComments = this.hasUnresolvedComments(this.listComments);
+            }
+        );
+    }
+
+    hasUnresolvedComments(commentsList: any): object {
+        const unresolvedCount = commentsList.filter(comment => comment.resolved === false).length;
+        return {
+            count: unresolvedCount,
+            state: unresolvedCount > 0 ? true : false
+        };
     }
 
     public validateUnresolvedComments() {

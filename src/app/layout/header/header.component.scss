@@ -32,8 +32,10 @@ header {
             height: 70px;
             margin-left: -15px;
             @media only screen and (max-width: 720px) {
-                height: 55px;
-                margin-left: 15px;
+                height: 48px;
+                margin-left: 0;
+                // margin-left: 15px;
+                padding-left: 15px;
             }
         }
 
@@ -230,6 +232,7 @@ header {
         display: none;
         .icon_menu {
             display: block;
+            padding-left: 15px;
         }
         .side_search {
             display: block;
