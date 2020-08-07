@@ -309,11 +309,11 @@ export class EditFooterComponent implements OnInit, AfterViewInit {
             class: 'title' },
         {
             id: 'logo1',
-            title: 'Logo 1',
+            title: 'Logo 3',
             subtitle: 'Actualmente se muestra la siguiente información:',
             placeholder: '',
             content: '',
-            order: 35,
+            order: 36,
             type: 'image',
             class: 'image'
         },
@@ -323,16 +323,16 @@ export class EditFooterComponent implements OnInit, AfterViewInit {
             subtitle: 'Actualmente se muestra la siguiente información:',
             placeholder: '',
             content: '',
-            order: 36,
+            order: 37,
             type: 'image',
             class: 'image'
         }, {
             id: 'logo3',
-            title: 'Logo 3',
+            title: 'Logo 1',
             subtitle: 'Actualmente se muestra la siguiente información:',
             placeholder: '',
             content: '',
-            order: 37,
+            order: 35,
             type: 'image',
             class: 'image'
         }];
