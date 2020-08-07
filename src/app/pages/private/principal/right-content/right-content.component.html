@@ -60,6 +60,7 @@
 
     <div class="block-wrapper">
         <section class="tabs">
+            <button class="button-reset-mobile" (click)="cleanFilters()" *ngIf="canClearFilters && isMobileVersion()">Limpiar filtros</button>
             <mat-tab-group (selectedTabChange)="tabClick($event)" [(selectedIndex)]="tabIndex">
                 <mat-tab label="{{marketing ? 'Informes' : 'Mis informes'}}">
                     <div>

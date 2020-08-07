@@ -4,6 +4,19 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
     background: #f5f7fb !important;
 }
 
+.button-reset-mobile {
+	font-family: "Helvetica Neue", sans-serif;
+    border: 0;
+    outline: none;
+    background-color: transparent;
+    font-size: 1.0rem;
+    color: #A5ABB1;
+    margin-right: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+}
+
 .calendar-container--info {
 	font-weight: bolder;
 	color: black;
