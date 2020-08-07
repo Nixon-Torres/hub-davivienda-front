@@ -1078,6 +1078,15 @@ $default-font: "Helvetica Neue", Medium;
             transform: translate(-50%, -50%);
             position: absolute;
         }
+
+        .ck.ck-editor__editable > h2 {
+            margin-bottom: 20px;
+            font-weight: bold !important;
+            color: #EC2023 !important;
+            font-size: 20px !important;
+            font-weight: 500;
+            font-family: "Helvetica-Neue";
+        }
     }
 
     .onecolumn-content {

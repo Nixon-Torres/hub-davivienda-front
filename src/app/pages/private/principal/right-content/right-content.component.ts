@@ -954,23 +954,15 @@ export class RightContentComponent implements OnInit {
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
 
-        const newReport: any = {
-            name: clone.name,
-            slug: clone.slug,
-            trash: false,
-            content: clone.content,
-            styles: clone.styles,
-            sectionTypeKey: clone.sectionTypeKey,
-            templateId: clone.templateId,
-            userId: clone.userId,
-            stateId: this.DRAFT_KEY,
-            sectionId: clone.sectionId,
-            folderId: clone.folderId,
-            reportTypeId: clone.reportTypeId,
-            companyId: clone.companyId
-        };
+        clone.stateId = this.DRAFT_KEY;
+        clone.trash = false;
+        delete clone.id;
+        delete clone.section;
+        delete clone.state;
+        delete clone.user;
+        delete clone.ownerId;
 
-        this.saveReport(newReport);
+        this.saveReport(clone);
     }
 
     public onDeleteReport(pos: number) {
