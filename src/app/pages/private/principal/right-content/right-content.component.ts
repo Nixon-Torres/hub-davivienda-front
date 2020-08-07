@@ -713,7 +713,6 @@ export class RightContentComponent implements OnInit {
                 fn(result);
             },
             () => {
-                alert('Oops!!! \nNo cargamos tus datos. Intenta más tarde');
             }
         );
     }
