@@ -88,8 +88,9 @@ export class MultimediaComponent implements OnInit {
                         });
                 } else {
                     this.multimediaList = resp.body.filter(e => !e.trash).map(mul => {
-                        mul.thumbnailImg = mul && mul.files
-                            ? `${this.storageBase}${mul.files.find(file => file.key === 'thumbnail').fileName}`
+                        const tfile = mul.files.find(file => file.key === 'thumbnail');
+                        mul.thumbnailImg = mul && mul.files && tfile
+                            ? `${this.storageBase}${tfile.fileName}`
                             : '';
                         return mul;
                     });
