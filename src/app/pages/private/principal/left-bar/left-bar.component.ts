@@ -156,6 +156,8 @@ export class LeftBarComponent implements OnInit {
             state: state.id, deleted: false, folder: this.currentFolder ?
                 this.currentFolder.id : null, stateName: state.name
         });
+        document.getElementById('mySidenav').style.display = 'none',
+        setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
     }
 
     setCurrentFolder(folder: any) {
@@ -174,6 +176,10 @@ export class LeftBarComponent implements OnInit {
             state: null, deleted: false, folder: null,
             stateName: this.currentCategory.name, category: this.currentCategory.id
         });
+    }
+
+    public filterReports(text: string) {
+        this.loadReports(text);
     }
 
     isItemActive(state: string) {
