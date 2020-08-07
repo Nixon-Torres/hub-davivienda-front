@@ -74,6 +74,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     public searchWordText = '';
     public foundWords = [];
     public wordsVisible = false;
+    public editTimer;
 
     public list: any = {
         users: [],
@@ -559,7 +560,11 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             this.readonly = !editable.editable;
 
             if (!this.readonly) {
-                setTimeout(() => {
+                if (this.editTimer) {
+                    clearInterval(this.editTimer);
+                }
+
+                this.editTimer = setTimeout(() => {
                     this.checkIfEditable();
                 }, 30000);
             }
@@ -867,16 +872,25 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             clearInterval(this.timer.lastupdate);
         }
 
-        console.log('calling interval');
-        this.timer.lastupdate = setInterval(() => {
-            this.lastupdate = moment(lastupdate).fromNow();
-        }, 30000);
+        // this.timer.lastupdate = setInterval(() => {
+        //     this.lastupdate = moment(lastupdate).fromNow();
+        // }, 30000);
     }
 
     ngOnDestroy() {
         if (this.timer.lastupdate) {
-            console.log('clearing interval');
             clearInterval(this.timer.lastupdate);
+        }
+
+        if (this.editTimer) {
+            clearInterval(this.editTimer);
+        }
+
+        if (!this.readonly) {
+            this.http.delete({
+                path: '/reports/' + this.report.id + '/edition'
+            }).subscribe(() => {
+            });
         }
     }
 
