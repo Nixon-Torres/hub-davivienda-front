@@ -38,11 +38,15 @@ export class LeftBarComponent implements OnInit {
         categories: []
     };
     barActive: any;
+    searchText: any;
 
     @Input()
     set currentObj(value: any) {
         if (value) {
             return;
+        }
+        if (this.isMobile()) {
+            this.searchText = '';
         }
         this.currentState = null;
         this.currentFolder = null;
@@ -72,7 +76,7 @@ export class LeftBarComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result: any) => {
             if (result) {
                 this.foldersService.loadFolders();
-            };
+            }
         });
     }
 
@@ -156,8 +160,14 @@ export class LeftBarComponent implements OnInit {
             state: state.id, deleted: false, folder: this.currentFolder ?
                 this.currentFolder.id : null, stateName: state.name
         });
-        document.getElementById('mySidenav').style.display = 'none',
-        setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+        if (this.isMobile()) {
+            document.getElementById('mySidenav').style.display = 'none',
+            setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+        }
+    }
+
+    isMobile() {
+        return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
     }
 
     setCurrentFolder(folder: any) {
@@ -178,8 +188,19 @@ export class LeftBarComponent implements OnInit {
         });
     }
 
-    public filterReports(text: string) {
-        this.loadReports(text);
+    filterReports() {
+        this.valueChange.emit({
+            state: null,
+            category: null,
+            deleted: false,
+            search: this.searchText,
+            folder: null,
+            stateName: null
+        });
+        if (this.isMobile()) {
+            document.getElementById('mySidenav').style.display = 'none',
+            setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+        }
     }
 
     isItemActive(state: string) {
