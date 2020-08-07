@@ -5,6 +5,7 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
 import { HttpService } from '../../../../services/http.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
     selector: 'app-left-bar',
@@ -12,7 +13,7 @@ import { HttpService } from '../../../../services/http.service';
     styleUrls: ['./left-bar.component.scss']
 })
 export class LeftBarComponent implements OnInit {
-
+ 
     @Output() valueChange = new EventEmitter();
     @Output() folderChange = new EventEmitter();
     @Output() deleteChange = new EventEmitter();
@@ -38,6 +39,8 @@ export class LeftBarComponent implements OnInit {
         categories: []
     };
     barActive: any;
+    sideBarOpenMenu: any;
+    sideBarCloseMenu: any;
 
     @Input()
     set currentObj(value: any) {
@@ -53,7 +56,8 @@ export class LeftBarComponent implements OnInit {
         public dialog: MatDialog,
         private foldersService: AsideFoldersService,
         private auth: AuthService,
-        private http: HttpService
+        private http: HttpService,
+        private sharedService: SharedService
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -77,6 +81,13 @@ export class LeftBarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.sharedService.sharedMessage.subscribe(res => {
+            if(res != "") {
+                let message = JSON.parse(res);
+                this.sideBarOpenMenu =  message.sideBarOpenMenu;
+                this.sideBarCloseMenu = message.sideBarCloseMenu;
+            }
+        })
         this.loadFolders();
         this.loadStates();
         this.foldersService.$listenActiveFolder.subscribe((folder: string) => {
@@ -156,8 +167,13 @@ export class LeftBarComponent implements OnInit {
             state: state.id, deleted: false, folder: this.currentFolder ?
                 this.currentFolder.id : null, stateName: state.name
         });
-        document.getElementById('mySidenav').style.display = 'none',
-        setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+        let message = {
+            sideBarOpenMenu : true,
+            sideBarCloseMenu : false
+        }
+        this.sharedService.nextMessage(JSON.stringify(message));
+        // document.getElementById('mySidenav').style.display = 'none',
+        // setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
     }
 
     setCurrentFolder(folder: any) {
@@ -167,6 +183,11 @@ export class LeftBarComponent implements OnInit {
             state: this.currentState ?
                 this.currentState.id : null, deleted: false, folder: folder.id, stateName: folder.name
         });
+        let message = {
+            sideBarOpenMenu : true,
+            sideBarCloseMenu : false
+        }
+        this.sharedService.nextMessage(JSON.stringify(message));
     }
 
     setCurrentCategory(category: any) {
@@ -179,7 +200,7 @@ export class LeftBarComponent implements OnInit {
     }
 
     public filterReports(text: string) {
-        this.loadReports(text);
+        // this.loadReports(text);
     }
 
     isItemActive(state: string) {

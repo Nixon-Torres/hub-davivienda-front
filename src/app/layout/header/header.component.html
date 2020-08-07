@@ -3,14 +3,14 @@
 
         <div class="mobile_menu">
 
-            <div class="icon_menu">
-                <div (click)=" sidevarMenu = !sidevarMenu" class="">
-                    <span *ngIf="sidevarMenu" class="material-icons" (click)="openNav()">menu</span>
-                    <p *ngIf="sidevarMenu">Menú</p>
+            <div class="icon_menu"> 
+                <div *ngIf="sideBarOpenMenu">
+                    <span  class="material-icons" (click)="openNav()">menu</span>
+                    <p >Menú</p>
                 </div>
-                <div (click)="sidevarMenu = !sidevarMenu" class="">
-                    <span *ngIf="!sidevarMenu" class="material-icons" (click)="closeNav()">close</span>
-                    <p *ngIf="!sidevarMenu">Cerrar</p>
+                <div *ngIf="sideBarCloseMenu">
+                    <span  class="material-icons" (click)="closeNav()">close</span>
+                    <p>Cerrar</p>
                 </div>
             </div>
         </div>

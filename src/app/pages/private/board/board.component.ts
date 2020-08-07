@@ -30,6 +30,7 @@ import { environment } from '../../../../environments/environment';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import { SharedService } from 'src/app/services/shared.service';
 
 declare var grapesjs: any;
 declare global {
@@ -344,7 +345,8 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
         private auth: AuthService,
         private renderer: Renderer2,
         private ref: ElementRef,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private sharedService: SharedService
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -356,6 +358,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => { return false; };
         moment.locale('es'); // Set locale lang for momentJs
 
         this.glossaryForm = this.fb.group({

@@ -1308,3 +1308,19 @@ mat-expansion-panel {
 .modal .header .content .buttons-section .download .icon {
     margin-top: 21px;
 }
+
+/* =========================================================== *\
+    						Hide Show Menu
+\* =========================================================== */
+.show-topleftSideNav {
+	display: block !important;
+}
+.show-topleftBar {
+	z-index: 9 !important;
+}
+.close-topleftSideNav {
+	display: none !important;
+}
+.close-topleftBar {
+	z-index: 0 !important;
+}

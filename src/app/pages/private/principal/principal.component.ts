@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
     selector: 'app-principal',
@@ -8,17 +9,26 @@ import {Component, OnInit} from '@angular/core';
 export class PrincipalComponent implements OnInit {
     currentObj = {};
     cleanObj = true;
+    sideBarOpenMenu = false;
+    sideBarCloseMenu = false;
     public view: any = {
         reports: true,
         editSite: false,
         faq: false,
         multimedia: false
     };
-
-    constructor() {
+ 
+    constructor(private sharedService: SharedService) {
     }
 
     ngOnInit() {
+        this.sharedService.sharedMessage.subscribe(res => {
+            if(res != "") {
+                let message = JSON.parse(res);
+                this.sideBarOpenMenu =  message.sideBarOpenMenu;
+                this.sideBarCloseMenu = message.sideBarCloseMenu;
+            }
+        })
     }
 
     setCurrentState(value: any) {

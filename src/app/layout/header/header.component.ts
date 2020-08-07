@@ -8,6 +8,7 @@ import { SocketService } from '../../services/socket.service';
 
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
     selector: 'app-header',
@@ -31,11 +32,14 @@ export class HeaderComponent implements OnInit {
     public marketing: boolean;
     public sidevarMenu = true;
     public isMobileLayout = false;
+    sideBarOpenMenu = true;
+    sideBarCloseMenu = false;
     constructor(
         private router: Router,
         private auth: AuthService,
         private http: HttpService,
-        private socket: SocketService
+        private socket: SocketService,
+        private sharedService: SharedService
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -53,6 +57,13 @@ export class HeaderComponent implements OnInit {
         this.auth.user.subscribe((user) => {
             this.user = user;
         });
+        this.sharedService.sharedMessage.subscribe(res => {
+            if(res != "") {
+                let message = JSON.parse(res);
+                this.sideBarOpenMenu =  message.sideBarOpenMenu;
+                this.sideBarCloseMenu = message.sideBarCloseMenu;
+            }
+        })
     }
 
     public getUserImage() {
@@ -208,11 +219,26 @@ export class HeaderComponent implements OnInit {
     }
 
     openNav() {
-        document.getElementById("mySidenav").style.display = "block",
-        document.getElementById("leftBar").style.zIndex = "9";
+        this.sideBarOpenMenu = false;
+        this.sideBarCloseMenu = true;
+        let message = {
+            sideBarOpenMenu : false,
+            sideBarCloseMenu : true
         }
+        this.sharedService.nextMessage(JSON.stringify(message));
+        // document.getElementById("mySidenav").style.display = "block",
+        // document.getElementById("leftBar").style.zIndex = "9";
+        }
+
      closeNav() {
-        document.getElementById("mySidenav").style.display = "none",
-        setTimeout(function(){ document.getElementById("leftBar").style.zIndex = "0"; }, 1000);
+        let message = {
+            sideBarOpenMenu : true,
+            sideBarCloseMenu : false
+        }
+        this.sharedService.nextMessage(JSON.stringify(message));
+        this.sideBarOpenMenu = true;
+        this.sideBarCloseMenu = false;
+        // document.getElementById("mySidenav").style.display = "none",
+        // setTimeout(function(){ document.getElementById("leftBar").style.zIndex = "0"; }, 100);
       }
 }
