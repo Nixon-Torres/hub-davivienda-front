@@ -24,6 +24,7 @@ export class MobileDetailViewComponent implements OnInit {
     public isAdvancedUser = false;
     public unresolvedComments: any;
     showComments = false;
+    listComments: any;
     constructor(
         private http: HttpService,
         private auth: AuthService,
@@ -54,6 +55,8 @@ export class MobileDetailViewComponent implements OnInit {
             alert('¡Oops!\nNo encontramos el reporte');
             return;
         }
+
+        this.loadComments();
 
         this.http.get({
             path: `reports/view?id=${this.report.id}`
@@ -97,6 +100,30 @@ export class MobileDetailViewComponent implements OnInit {
 
     public canPublish(): boolean {
         return this.isAdvancedUser && this.report.stateId === this.states.approved;
+    }
+
+    loadComments() {
+        const filter = {
+            include: ['user'],
+            where: {reportId: this.report.id},
+            order: 'createdAt ASC'
+        };
+        this.http.get({
+            path: `comments?filter=${JSON.stringify(filter)}`
+        }).subscribe(
+            (response) => {
+                this.listComments = response.body;
+                this.unresolvedComments = this.hasUnresolvedComments(this.listComments);
+            }
+        );
+    }
+
+    hasUnresolvedComments(commentsList: any): object {
+        const unresolvedCount = commentsList.filter(comment => comment.resolved === false).length;
+        return {
+            count: unresolvedCount,
+            state: unresolvedCount > 0 ? true : false
+        };
     }
 
     public validateUnresolvedComments() {
