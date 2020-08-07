@@ -156,8 +156,10 @@ export class LeftBarComponent implements OnInit {
             state: state.id, deleted: false, folder: this.currentFolder ?
                 this.currentFolder.id : null, stateName: state.name
         });
-        document.getElementById('mySidenav').style.display = 'none',
-        setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+        if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent))) {
+            document.getElementById('mySidenav').style.display = 'none',
+            setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+        }
     }
 
     setCurrentFolder(folder: any) {
