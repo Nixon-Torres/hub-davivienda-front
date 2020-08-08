@@ -268,12 +268,11 @@ export class RightContentComponent implements OnInit {
         }];
     }
 
-    private saveReport(clone: any, type: any): void {
-        let resource = 'reports';
-        if (type && type === 'contents')
-          resource = 'contents';
+    private saveReport(clone: any): void {
+        const type = clone && clone.type;
+        const reportTypeId = clone && clone.reportTypeId;
         this.http.post({
-            path: resource,
+            path: `${type || reportTypeId ? 'reports' : 'contents'}`,
             data: clone
         }).subscribe(() => {
             this.loadReports();
@@ -611,7 +610,6 @@ export class RightContentComponent implements OnInit {
                             color: 'gray',
                             name: 'Multimedia'
                         };
-                        con.__type: 'contents';
                         return con;
                     });
                     this.list.reports = this.list.reports.concat(contents);
@@ -970,10 +968,7 @@ export class RightContentComponent implements OnInit {
         delete clone.user;
         delete clone.ownerId;
         
-        const type = clone.__type;
-        delete clone.__type;
-        
-        this.saveReport(clone, type);
+        this.saveReport(clone);
     }
 
     public onDeleteReport(pos: number) {
