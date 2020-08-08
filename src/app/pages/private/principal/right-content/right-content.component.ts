@@ -593,7 +593,6 @@ export class RightContentComponent implements OnInit {
                 : [];
             this.startDate = null;
             this.endDate = null;
-            this.addCheckboxes(reports);
             let finisher = null;
             clearTimeout(finisher);
             setTimeout(() => {
@@ -614,6 +613,7 @@ export class RightContentComponent implements OnInit {
                     });
                     this.list.reports = this.list.reports.concat(contents);
                 }
+                this.addCheckboxes(this.list.reports);
                 if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
                     this.list.reviewed = this.getNotReviewed(this.list.reports);
                 }
