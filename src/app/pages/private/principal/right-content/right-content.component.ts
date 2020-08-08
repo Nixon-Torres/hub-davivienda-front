@@ -959,6 +959,11 @@ export class RightContentComponent implements OnInit {
         const clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
+        
+        const type = clone && clone.type;
+        const reportTypeId = clone && clone.reportTypeId;
+        if (!(type || reportTypeId))
+          clone.title = `Duplicado ${clone.title}`;
 
         clone.stateId = this.DRAFT_KEY;
         clone.trash = false;
