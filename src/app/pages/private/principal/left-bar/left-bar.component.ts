@@ -5,6 +5,7 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { UsersService } from '../../../../services/users.service';
 import { AuthService } from '../../../../services/auth.service';
 import { HttpService } from '../../../../services/http.service';
+import {MenuService} from '../../../../services/menu.service';
 
 @Component({
     selector: 'app-left-bar',
@@ -57,7 +58,8 @@ export class LeftBarComponent implements OnInit {
         public dialog: MatDialog,
         private foldersService: AsideFoldersService,
         private auth: AuthService,
-        private http: HttpService
+        private http: HttpService,
+        private menuService: MenuService,
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -161,8 +163,9 @@ export class LeftBarComponent implements OnInit {
                 this.currentFolder.id : null, stateName: state.name
         });
         if (this.isMobile()) {
-            document.getElementById('mySidenav').style.display = 'none',
-            setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+            // document.getElementById('mySidenav').style.display = 'none',
+            // setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+            this.menuService.emit('hide');
         }
     }
 

@@ -1,13 +1,13 @@
+import {Component, OnInit} from '@angular/core';
+import {Router, NavigationEnd} from '@angular/router';
 
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+import {HttpService} from '../../services/http.service';
+import {SocketService} from '../../services/socket.service';
 
-import { AuthService } from '../../services/auth.service';
-import { HttpService } from '../../services/http.service';
-import { SocketService } from '../../services/socket.service';
-
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import * as moment from 'moment';
+import {MenuService} from '../../services/menu.service';
 
 @Component({
     selector: 'app-header',
@@ -31,11 +31,13 @@ export class HeaderComponent implements OnInit {
     public marketing: boolean;
     public sidevarMenu = true;
     public isMobileLayout = false;
+
     constructor(
         private router: Router,
         private auth: AuthService,
         private http: HttpService,
-        private socket: SocketService
+        private socket: SocketService,
+        private menuService: MenuService,
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -43,6 +45,13 @@ export class HeaderComponent implements OnInit {
         this.startToListenRouter(this.router);
         this.startToListenSockets();
         this.marketing = this.auth.isMarketing();
+
+        this.menuService.$listenActions.subscribe((event) => {
+            if (event.action === 'hide') {
+                this.sidevarMenu = true;
+                this.closeNav();
+            }
+        });
     }
 
     ngOnInit() {
@@ -67,21 +76,23 @@ export class HeaderComponent implements OnInit {
     }
 
     private getNotifications(): void {
-     this.http.get({
+        this.http.get({
             path: `notifications`,
             data: {
                 order: 'id DESC',
                 include: [
-                    { relation: 'emitter', scope: { fields: ['name'] } },
-                    { relation: 'report', scope: { fields: ['name', 'stateId'] } }
+                    {relation: 'emitter', scope: {fields: ['name']}},
+                    {relation: 'report', scope: {fields: ['name', 'stateId']}}
                 ],
-                where: { ownerId: this.user.id },
+                where: {ownerId: this.user.id},
                 limit: 10
             },
             encode: true
         }).subscribe((response: any) => {
             if ('body' in response) {
-                response.body.map( notification => { this.processNotification(notification); });
+                response.body.map(notification => {
+                    this.processNotification(notification);
+                });
             }
         });
     }
@@ -95,7 +106,7 @@ export class HeaderComponent implements OnInit {
             }
         }).subscribe((response: any) => {
             if ('body' in response) {
-               this.ntfQty = response.body.count;
+                this.ntfQty = response.body.count;
             }
         });
     }
@@ -123,8 +134,8 @@ export class HeaderComponent implements OnInit {
         }
         const timeFromNow: string = moment(item.updatedAt).fromNow();
         const txtDescription: string = item.text
-                                    .replace(/{{emitter_name}}/, item.emitter.name)
-                                    .replace(/{{report_name}}/, item.report.name);
+            .replace(/{{emitter_name}}/, item.emitter.name)
+            .replace(/{{report_name}}/, item.report.name);
         const notf: any = {
             id: item.id,
             type: item.type,
@@ -198,7 +209,7 @@ export class HeaderComponent implements OnInit {
                 queryParams.showComments = true;
             }
             this.isMobileLayout = false;
-            this.router.navigate(['app/board', reportId],  { queryParams });
+            this.router.navigate(['app/board', reportId], {queryParams});
         });
     }
 
@@ -208,11 +219,14 @@ export class HeaderComponent implements OnInit {
     }
 
     openNav() {
-        document.getElementById("mySidenav").style.display = "block",
-        document.getElementById("leftBar").style.zIndex = "9";
-        }
-     closeNav() {
-        document.getElementById("mySidenav").style.display = "none",
-        setTimeout(function(){ document.getElementById("leftBar").style.zIndex = "0"; }, 1000);
-      }
+        document.getElementById('mySidenav').style.display = 'block';
+        document.getElementById('leftBar').style.zIndex = '9';
+    }
+
+    closeNav() {
+        document.getElementById('mySidenav').style.display = 'none';
+        setTimeout(() => {
+            document.getElementById('leftBar').style.zIndex = '0';
+        }, 1000);
+    }
 }
