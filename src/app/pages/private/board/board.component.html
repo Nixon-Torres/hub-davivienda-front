@@ -351,10 +351,10 @@
                         </div>
                         <div class="image-block">
                             <textarea [(ngModel)]="block.externalImageUrl" [ngModelOptions]="{standalone: true}"
-                                class="external-source-input" type="text" placeholder="URL externa"
+                                class="external-source-input" type="text" placeholder="URL imagen externa"
                                 *ngIf="block.externalImage">
                             </textarea>
-                            <div class="cont" *ngIf="block.externalImage" style="top: 75%">
+                            <div class="cont" *ngIf="block.externalImage" style="top: 66%">
                                 <span class="select-img" (click)="block.externalImage = false" *ngIf="!readonly">Borrar
                                     imagen</span>
                             </div>
@@ -385,6 +385,9 @@
                                 </div>
                             </div>
                             <div class="source-section">
+                                <div class="divider"></div>
+                                <input [(ngModel)]="block.link" [ngModelOptions]="{standalone: true}" class="source"
+                                       type="text" placeholder="Escriba Url Link">
                                 <div class="divider"></div>
                                 <input [(ngModel)]="block.source" [ngModelOptions]="{standalone: true}" class="source"
                                     type="text" placeholder="Escriba fuente">

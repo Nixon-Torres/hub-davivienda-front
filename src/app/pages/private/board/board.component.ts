@@ -1045,6 +1045,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: block.title,
                 content: block.content,
                 source: block.source,
+                link: block.link,
                 fileName: block.fileName,
                 type: block.type
             };
@@ -1056,6 +1057,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: block.title,
                 content: block.content,
                 source: block.source,
+                link: block.link,
                 fileName: block.fileName,
                 type: block.type,
                 externalImage: block.externalImage,
@@ -1063,7 +1065,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             };
         });
 
-        let imgsToCreate = this.blocks.filter(e => e.file && (e.isNew || (!e.isNew && !e.imageId))).map((block) => {
+        let imgsToCreate = this.blocks.filter(e => e.file && (e.isNew || (!e.isNew && !e.imageId) || e.isUpdate)).map((block) => {
             return {
                 isNew: block.isNew,
                 id: block.isNew ? block.id : block.id.substr(1),
@@ -2079,6 +2081,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
         block.fileName = file.name;
         block.file = file;
+        block.isUpdate = !!block.imageId;
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
