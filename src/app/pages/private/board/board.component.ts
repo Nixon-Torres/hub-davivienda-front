@@ -228,7 +228,19 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                             classes: 'box-title-h3'
                         },
                     },
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_heading2' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'p',
+                            classes: 'box-title-fake',
+                        },
+                        title: 'Heading 4',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
+                    }
                 ]
             }
         },

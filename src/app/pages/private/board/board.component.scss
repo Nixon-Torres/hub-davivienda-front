@@ -1734,7 +1734,14 @@ $default-font: "Helvetica Neue", Medium;
         font-family: 'Helvetica-Neue';
     }
 
-    .box-title-h3{
+    .box-title-fake {
+        color: #EC2023 !important;
+        font-size: 17px !important;
+        font-weight: 500;
+        font-family: "Helvetica-Neue";
+    }
+
+    .box-title-h3 {
         color: #EC2023 !important;
         font-size: 17px !important;
         font-weight: 500;
