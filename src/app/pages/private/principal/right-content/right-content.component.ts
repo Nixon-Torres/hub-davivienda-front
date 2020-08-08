@@ -269,8 +269,10 @@ export class RightContentComponent implements OnInit {
     }
 
     private saveReport(clone: any): void {
+        const type = clone && clone.type;
+        const reportTypeId = clone && clone.reportTypeId;
         this.http.post({
-            path: 'reports',
+            path: `${type || reportTypeId ? 'reports' : 'contents'}`,
             data: clone
         }).subscribe(() => {
             this.loadReports();
@@ -591,7 +593,6 @@ export class RightContentComponent implements OnInit {
                 : [];
             this.startDate = null;
             this.endDate = null;
-            this.addCheckboxes(reports);
             let finisher = null;
             clearTimeout(finisher);
             setTimeout(() => {
@@ -612,6 +613,7 @@ export class RightContentComponent implements OnInit {
                     });
                     this.list.reports = this.list.reports.concat(contents);
                 }
+                this.addCheckboxes(this.list.reports);
                 if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
                     this.list.reviewed = this.getNotReviewed(this.list.reports);
                 }
@@ -957,6 +959,11 @@ export class RightContentComponent implements OnInit {
         const clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
+        
+        const type = clone && clone.type;
+        const reportTypeId = clone && clone.reportTypeId;
+        if (!(type || reportTypeId))
+          clone.title = `Duplicado ${clone.title}`;
 
         clone.stateId = this.DRAFT_KEY;
         clone.trash = false;
@@ -965,7 +972,7 @@ export class RightContentComponent implements OnInit {
         delete clone.state;
         delete clone.user;
         delete clone.ownerId;
-
+        
         this.saveReport(clone);
     }
 
