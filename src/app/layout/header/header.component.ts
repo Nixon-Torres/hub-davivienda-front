@@ -219,11 +219,13 @@ export class HeaderComponent implements OnInit {
     }
 
     openNav() {
+        this.sidevarMenu = false;
         document.getElementById('mySidenav').style.display = 'block';
         document.getElementById('leftBar').style.zIndex = '9';
     }
 
     closeNav() {
+        this.sidevarMenu = true;
         document.getElementById('mySidenav').style.display = 'none';
         setTimeout(() => {
             document.getElementById('leftBar').style.zIndex = '0';
