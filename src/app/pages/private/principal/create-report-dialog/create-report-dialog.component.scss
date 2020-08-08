@@ -33,6 +33,12 @@
     }
 }
 
+::ng-deep .ng-select.custom-select {
+    &.ng-select-opened .ng-select-container .ng-value-container .ng-placeholder {
+        display: none;
+    }
+}
+
 .input-field {
 	width: 20vw;
 	display: inline-block;
