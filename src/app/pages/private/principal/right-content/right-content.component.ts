@@ -678,7 +678,7 @@ export class RightContentComponent implements OnInit {
         });
 
         this.rcPutReport(toUpdate, 0, () => {
-            const folder = this.list.folders.filter((a: any) => a.id == event.value)[0];
+            const folder = this.list.folders.filter((a: any) => a.id === event.value)[0];
             if (!folder) {
                 return;
             }
@@ -970,7 +970,6 @@ export class RightContentComponent implements OnInit {
     }
 
     public onDeleteReport(pos: number) {
-
         const isOutTrash = (!this.icurrentObj.deletedFg);
         const type = this.list.reports[pos] && this.list.reports[pos].type;
         const reportTypeId = this.list.reports[pos] && this.list.reports[pos].reportTypeId;
