@@ -6,7 +6,7 @@
         <span class="message" *ngIf="marketing">
             {{category ? category.description : 'Todos Informes'}}
         </span>
-        <div class="insert_btn" *ngIf="!marketing">
+        <div class="insert_btn" *ngIf="!marketing && !isBasicUser">
             <button mat-raised-button class="insert_icon" [matMenuTriggerFor]="insert">
                 <span class="insert_text">Insertar</span><span class="icon_insert">&nbsp;</span>
             </button>

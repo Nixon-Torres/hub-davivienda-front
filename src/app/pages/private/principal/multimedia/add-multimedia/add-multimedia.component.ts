@@ -200,6 +200,7 @@ export class AddMultimediaComponent implements OnInit {
         const method = this.multimediaObj ? 'patch' : 'post';
         const path = this.multimediaObj ? `contents/${this.multimediaObj.id}` : 'contents' ;
         const formControls = this.multimediaForm.controls;
+        const category = formControls.category.value ? this.categories.find(e => e.id === formControls.category.value) : {};
         if (this.multimediaFormIsValid()) {
             this.http[method]({
                 path,
@@ -211,6 +212,7 @@ export class AddMultimediaComponent implements OnInit {
                     params: {
                         url: formControls.url.value,
                         category: formControls.category.value,
+                        categoryName: category.description ? category.description : category.name,
                         tags: this.tags,
                         relatedReports: [
                             formControls.firstRelated.value,
