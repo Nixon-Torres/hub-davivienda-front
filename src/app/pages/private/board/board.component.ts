@@ -235,7 +235,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                             name: 'p',
                             classes: 'box-title-fake',
                         },
-                        title: 'Heading 4',
+                        title: 'Heading 4 (No aplica tabla de contenido)',
                         class: 'ck-heading_heading2_fancy',
 
                         // It needs to be converted before the standard 'heading2'.
