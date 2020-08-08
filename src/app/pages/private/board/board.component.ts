@@ -1481,7 +1481,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                 width: '450px',
                 data: {
                     title: '¿Quien quiere que revise su informe?',
-                    users: this.users
+                    users: this.users.filter(e => e.id !== this.user.id)
                 }
             });
 
