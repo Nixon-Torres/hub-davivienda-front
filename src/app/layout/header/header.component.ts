@@ -227,8 +227,6 @@ export class HeaderComponent implements OnInit {
     closeNav() {
         this.sidevarMenu = true;
         document.getElementById('mySidenav').style.display = 'none';
-        setTimeout(() => {
-            document.getElementById('leftBar').style.zIndex = '0';
-        }, 1000);
+        document.getElementById('leftBar').style.zIndex = '0';
     }
 }
