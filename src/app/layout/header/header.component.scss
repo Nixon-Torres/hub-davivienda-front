@@ -151,7 +151,7 @@ header {
                 display: block;
                 position: absolute;
                 background: #ffffff;
-                height: 100%;
+                max-height: 1024px;
                 z-index: 9;
                 top: 10px;
                 right: 0;
@@ -252,7 +252,7 @@ header {
         width: 720px;
         position: absolute;
         right: 0;
-        height: 790px;
+        height: 170vh;
         z-index: 9;
         top: 9%;
         padding-bottom: 5px;
