@@ -32,6 +32,7 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@ng-select/ng-option-highlight": "0.0.4",
     "@ng-select/ng-select": "^3.7.1",
+    "@ngstack/code-editor": "^1.0.0",
     "@types/materialize-css": "^1.0.7",
     "font-awesome": "^4.7.0",
     "grapesjs": "^0.15.10",

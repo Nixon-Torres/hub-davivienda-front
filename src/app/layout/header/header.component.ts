@@ -176,7 +176,11 @@ export class HeaderComponent implements OnInit {
     }
 
     isOpened(evt: any) {
-        const ntContainer = document.getElementById('notificationHeader').parentElement;
+        const headerEl = document.getElementById('notificationHeader2');
+        if (!headerEl) {
+            return;
+        }
+        const ntContainer = headerEl.parentElement;
         ntContainer.classList.add('notifications');
     }
 

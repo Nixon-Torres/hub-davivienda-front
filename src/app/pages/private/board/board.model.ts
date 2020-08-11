@@ -36,4 +36,5 @@ export interface Report {
     fastContentEnabled?: any;
     preContentEnabled?: any;
     type?: any;
+    marketingCode?: any;
 }

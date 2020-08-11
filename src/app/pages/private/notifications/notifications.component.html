@@ -11,10 +11,10 @@
                     (click)="setActive(1)">Todas las notificaciones
                     <span *ngIf="ntfQty > 0">{{ ntfQty }}</span></li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(2)}"
-                    (click)="setActive(2)">Comentarios
+                    (click)="setActive(2)">Informes en revisi&oacute;n
                     <span *ngIf="commentsQty > 0">{{ commentsQty }}</span></li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(3)}"
-                    (click)="setActive(3)">Informes editados por otros
+                    (click)="setActive(3)">Informes aprobados sin publicar
                     <span *ngIf="othersQty > 0"> {{ othersQty }}</span></li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(4)}"
                     (click)="setActive(4)">Informes publicados por otros
