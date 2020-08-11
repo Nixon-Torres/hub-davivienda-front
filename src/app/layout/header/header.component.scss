@@ -23,10 +23,7 @@ header {
         align-items: center;
         @media only screen and (max-width: 720px) {
             justify-content: space-between;
-
-            @media screen and (max-width: 320px) {
-                width: 100%;
-            }
+            width: 100%;
         }
         img.logo-principal {
             height: 70px;
@@ -98,6 +95,10 @@ header {
                 height: 45px;
                 margin: 12.5px 15px;
                 border-radius: 22.5px;
+                @media only screen and (max-width: 720px) {
+                    position: relative;
+                    left: 15%;
+                }
             }
 
             span {
@@ -215,6 +216,12 @@ header {
     }
     .all-right {
         margin-left: auto;
+        &.marketing_user {
+            cursor: pointer;
+            @media only screen and (max-width: 600px) {
+                margin: auto;
+            }
+        }
     }
 }
 
@@ -274,6 +281,31 @@ header {
                 top: 12%;
                 right: 15px;
             }
+        }
+    }
+}
+
+.marketing_out {
+    position: absolute;
+    right: 4%;
+    top: 4.4em;
+    z-index: 9;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 1px 1px 3px 1px silver;
+    @media only screen and (min-width: 1920px) {
+        right: 10%;
+    }
+    @media only screen and (max-width: 400px) {
+        right: 0%;
+    }
+
+    button {
+        border: 0;
+        background: none; 
+        span {
+            font-size: 12px;
+            color: #a5abb1;
         }
     }
 }
