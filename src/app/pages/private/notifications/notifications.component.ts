@@ -75,11 +75,14 @@ export class NotificationsComponent implements OnInit {
 
         where.ownerId = this.user.id;
         if (idx === 2) {
-            where.type = 'report-comment';
+            where.type = 'report-reviewer';
+            where.action = {inq: ['created', 'refused']};
         } else if (idx === 3) {
-            where.type = 'report-edited';
+            where.type = 'report-reviewer';
+            where.action = 'approved';
         } else if (idx === 4) {
-            where.reportStateId = '5e068c81d811c55eb40d14d0';
+            where.type = 'report-reviewer';
+            where.action = 'published';
         }
         return where;
     }
