@@ -606,7 +606,7 @@
                                     <span>Activar tabla de contenido</span>
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    <label class="switch-table">
+                                    <label class="switch-table" [ngClass]="{'noevents': isMarketing}">
                                         <input type="checkbox" [(ngModel)]="allowContentTable">
                                         <span class="slider round"></span>
                                     </label>
