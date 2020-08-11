@@ -35,6 +35,7 @@ import {MatAutocompleteModule, MatInputModule} from '@angular/material';
 import { CommentBoxModule } from './comment-box/comment-box.module';
 import { MobileCommentViewModule } from '../principal/mobile-comment-view/mobile-comment-view.module';
 import { MobileDetailViewModule } from '../principal/mobile-detail-view/mobile-detail-view.module';
+import {CodeEditorModule} from '@ngstack/code-editor';
 
 const routes: Routes = [
     {
@@ -94,7 +95,8 @@ const materialModules: any[] = [
         MatAutocompleteModule,
         CommentBoxModule,
         MobileCommentViewModule,
-        MobileDetailViewModule
+        MobileDetailViewModule,
+        CodeEditorModule
     ],
     exports: [
         materialModules

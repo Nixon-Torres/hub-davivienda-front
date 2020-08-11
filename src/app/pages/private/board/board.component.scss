@@ -1952,3 +1952,11 @@ input:checked + .slider:before {
         width: 410px;
     }
 }
+
+ngs-code-editor {
+    height: 100%;
+}
+
+.noevents {
+   pointer-events: none;
+}

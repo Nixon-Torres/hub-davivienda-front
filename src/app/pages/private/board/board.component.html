@@ -198,7 +198,7 @@
                 <p class="pdf__max">Tamaño máximo hasta 1GB</p>
             </div>
 
-            <div class="report-banner-selection" *ngIf="!readonly">
+            <div class="report-banner-selection" *ngIf="!readonly && !isMarketing">
                 <div id="banner" class="banner">
                     <label for="reportBannerImg">
                         <div class="btn">
@@ -222,9 +222,17 @@
                 </div>
             </div>
 
-            <div *ngIf="grapeEnabled" id="gjs" [ngClass]="getEditorClasses()"></div>
-            <div *ngIf="!grapeEnabled" class="native-editor-section">
-
+<!--            <div *ngIf="grapeEnabled" id="gjs" [ngClass]="getEditorClasses()"></div>-->
+            <div *ngIf="grapeEnabled" style="width: 90%; margin: 50px auto; height: 350px;">
+                <ngs-code-editor
+                    [theme]="codeTheme"
+                    [codeModel]="codeModel"
+                    [options]="codeOptions"
+                    (valueChanged)="onCodeChanged($event)"
+                >
+                </ngs-code-editor>
+            </div>
+            <div *ngIf="!grapeEnabled" class="native-editor-section" [ngClass]="{'noevents': isMarketing}">
                 <div id="actions" class="control-wrapper thumb-section" *ngIf="(thumb?.id && !thumb.toDelete) || newThumb.imageUrl">
                     <div class="inline-editor-block">
                         <div class="report-banner-selection">
@@ -325,7 +333,7 @@
                 </div>
             </div>
 
-            <div *ngIf="!grapeEnabled" class="inline-editor-additional-sections">
+            <div *ngIf="!grapeEnabled" class="inline-editor-additional-sections" [ngClass]="{'noevents': isMarketing}">
                 <div class="native-editor-section new-block" *ngFor="let block of blocks">
                     <div class="control-wrapper onecolumn-content" *ngIf="block.type === 'onecolumn'">
                         <div class="remove-section" (click)="removeEditorSection(block)" *ngIf="!readonly">

@@ -30,6 +30,7 @@ import { environment } from '../../../../environments/environment';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, switchMap } from 'rxjs/operators';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import {CodeModel} from '@ngstack/code-editor';
 
 declare var grapesjs: any;
 declare global {
@@ -75,6 +76,27 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     public foundWords = [];
     public wordsVisible = false;
     public editTimer;
+
+    codeTheme = 'vs-dark';
+
+    codeModel: CodeModel = {
+        language: 'html',
+        uri: 'main.html',
+        value: '<!-- Agrega codigo requerido aqui -->\n' +
+            '<script type="text/javascript">\n' +
+            '</script>',
+    };
+
+    codeOptions = {
+        contextmenu: false,
+        minimap: {
+            enabled: false,
+        },
+    };
+
+    onCodeChanged(value) {
+        this.report.marketingCode = value;
+    }
 
     public list: any = {
         users: [],
@@ -134,7 +156,8 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
         rReferences: null,
         fastContentEnabled: null,
         preContentEnabled: null,
-        type: null
+        type: null,
+        marketingCode: null,
     };
 
     public tags = {
@@ -543,10 +566,11 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     enableGrapeEditor() {
         this.grapeEnabled = true;
-        const instance = this;
-        setTimeout(() => {
-            instance.initGrapes();
-        }, 2000);
+        // this.grapeEnabled = true;
+        // const instance = this;
+        // setTimeout(() => {
+        //     instance.initGrapes();
+        // }, 2000);
     }
 
     enableInlineEditor() {
