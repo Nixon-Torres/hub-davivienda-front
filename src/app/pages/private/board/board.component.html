@@ -183,7 +183,7 @@
 
             <div class="editorModeSection" *ngIf="isMarketing">
                 <button mat-flat-button class="bttn bttn-default" [ngClass]="{'bttn-primary': !grapeEnabled}"
-                    (click)="enableInlineEditor()">Formulario</button>
+                    (click)="grapeEnabled = false">Formulario</button>
                 <button mat-flat-button class="bttn bttn-default html" [ngClass]="{'bttn-primary': grapeEnabled}"
                     (click)="enableGrapeEditor()">HTML</button>
             </div>
@@ -232,7 +232,7 @@
                 >
                 </ngs-code-editor>
             </div>
-            <div *ngIf="!grapeEnabled" class="native-editor-section" [ngClass]="{'noevents': isMarketing}">
+            <div [hidden]="grapeEnabled" class="native-editor-section" [ngClass]="{'noevents': isMarketing}">
                 <div id="actions" class="control-wrapper thumb-section" *ngIf="(thumb?.id && !thumb.toDelete) || newThumb.imageUrl">
                     <div class="inline-editor-block">
                         <div class="report-banner-selection">
@@ -333,7 +333,7 @@
                 </div>
             </div>
 
-            <div *ngIf="!grapeEnabled" class="inline-editor-additional-sections" [ngClass]="{'noevents': isMarketing}">
+            <div [hidden]="grapeEnabled" class="inline-editor-additional-sections" [ngClass]="{'noevents': isMarketing}">
                 <div class="native-editor-section new-block" *ngFor="let block of blocks">
                     <div class="control-wrapper onecolumn-content" *ngIf="block.type === 'onecolumn'">
                         <div class="remove-section" (click)="removeEditorSection(block)" *ngIf="!readonly">
