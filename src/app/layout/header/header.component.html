@@ -69,14 +69,16 @@
 		</mat-menu>
 
         <!-- USER MARKETING MENU -->
-        <div class="user-menu all-right" *ngIf="marketing">
+        <div class="user-menu all-right marketing_user" *ngIf="marketing" (click)="marketingToggle = !marketingToggle">
             <img *ngIf="!user.photo" src="/assets/images/user/user.png"/>
             <img *ngIf="user.photo" src="{{STORAGE_URL}}{{user.photo}}">
         </div>
-        <button mat-button matRipple class="logout" *ngIf="marketing" (click)="logout()">
-            <span>Cerrar sesión</span>
-            <span class="fas fa-sign-out-alt"></span>
-        </button>
+        <div class="marketing_out" *ngIf="marketingToggle">
+            <button mat-button matRipple class="logout" *ngIf="marketing" (click)="logout()">
+                <span>Cerrar sesión</span>
+                <span class="fas fa-sign-out-alt"></span>
+            </button>
+        </div>
 
         <div class="sidenav_notification" *ngIf="isMobileLayout" (click)="isMobileLayout = !isMobileLayout">
 
@@ -106,9 +108,6 @@
                             <small>{{ notification.timeAgo }}</small>
                         </button>
                     </section>
-                    <footer>
-                        <a (click)="isMobileLayout = !isMobileLayout"  [routerLink]="['notifications']">Ver todas las notificaciones</a>
-                    </footer>
             </div>
         </div>
 
