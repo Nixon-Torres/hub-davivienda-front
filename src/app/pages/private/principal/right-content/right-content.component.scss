@@ -1191,3 +1191,10 @@ section {
 		margin-bottom: 30px;
 	}
 }
+
+.paginator_numbers.noclick {
+    cursor: default;
+    &:hover {
+        background: none !important;
+    }
+}
