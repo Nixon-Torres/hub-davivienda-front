@@ -317,7 +317,7 @@
 
 @media screen and (max-width: 720px) {
     .sidenav {
-        height: 100%;
+        max-height: 1042px;
         width: 0;
         position: relative;
         z-index: 1;
@@ -405,7 +405,7 @@
     .sidenav_opacity {
         background-color: #9a9a9a82;
         width: 100vw;
-        max-height: 1042px;
+        height: 170vh;
         padding-bottom: 10px;
         position: relative;
         z-index: 9;
