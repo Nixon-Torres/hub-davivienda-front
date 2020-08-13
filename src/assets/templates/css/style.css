@@ -31,10 +31,6 @@ sub {
   bottom: -.25em;
 }
 
-sup {
-  top: 0 !important;
-}
-
 h2{
     font-size: 42px;
     line-height: 44px;
