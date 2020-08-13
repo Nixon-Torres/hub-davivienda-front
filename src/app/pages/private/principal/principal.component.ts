@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {MenuService} from '../../../services/menu.service';
 
 @Component({
     selector: 'app-principal',
@@ -14,8 +15,12 @@ export class PrincipalComponent implements OnInit {
         faq: false,
         multimedia: false
     };
+    sidebarMenuOpen: string;
 
-    constructor() {
+    constructor(private menuService: MenuService) {
+        this.menuService.$listenActions.subscribe((event) => {
+            this.sidebarMenuOpen = event.action;
+        });
     }
 
     ngOnInit() {
