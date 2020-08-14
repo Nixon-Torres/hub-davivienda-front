@@ -50,7 +50,6 @@ export class HeaderComponent implements OnInit {
         this.menuService.$listenActions.subscribe((event) => {
             if (event.action === 'hide') {
                 this.sidevarMenu = true;
-                this.closeNav();
             }
         });
     }
@@ -225,12 +224,14 @@ export class HeaderComponent implements OnInit {
 
     openNav() {
         this.sidevarMenu = false;
+        this.menuService.emit('show');
         document.getElementById('mySidenav').style.display = 'block';
         document.getElementById('leftBar').style.zIndex = '9';
     }
 
     closeNav() {
         this.sidevarMenu = true;
+        this.menuService.emit('hide');
         document.getElementById('mySidenav').style.display = 'none';
         document.getElementById('leftBar').style.zIndex = '0';
     }

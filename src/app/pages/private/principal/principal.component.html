@@ -2,7 +2,8 @@
 	<div class="top-bar" *ngIf="view?.reports || view?.faq || view?.multimedia"></div>
 	<app-left-bar (valueChange)="setCurrentState($event)"
 				  (changeView)="changeView($event)"
-				  [currentObj]="cleanObj" id="leftBar"></app-left-bar>
+				  [currentObj]="cleanObj" id="leftBar"
+                  [ngClass]="{'mobile-opened': sidebarMenuOpen === 'show', 'mobile-closed': sidebarMenuOpen !== 'show'}"></app-left-bar>
 	<app-right-content *ngIf="view.reports"
 					   [currentObj]="currentObj"
                        (changeView)="changeView($event)"
