@@ -1294,6 +1294,15 @@ mat-expansion-panel {
 			margin: 0 10px;
 		}
 	}
+
+	@media only screen and (max-width: 720px) {
+		.mobile-opened {
+			z-index: 9;
+			.sidenav_opacity {
+				display: block;
+			}
+		}
+	}
 /* =========================================================== *\
     						NOTIFICATIONS
 \* =========================================================== */
