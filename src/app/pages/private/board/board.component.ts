@@ -326,7 +326,6 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             removePlugins: ['Table'],
             heading: {
                 options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     {
                         model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
                         view: {
@@ -340,6 +339,19 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                             name: 'h3',
                             classes: 'box-title-h3'
                         },
+                    },
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_heading2' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'p',
+                            classes: 'box-title-fake',
+                        },
+                        title: 'Heading 4 (No aplica tabla de contenido)',
+                        class: 'ck-heading_heading2_fancy',
+
+                        // It needs to be converted before the standard 'heading2'.
+                        converterPriority: 'high'
                     }
                 ]
             }
