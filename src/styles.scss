@@ -1295,10 +1295,12 @@ mat-expansion-panel {
 		}
 	}
 
-	.mobile-opened {
-		z-index: 9;
-		.sidenav_opacity {
-			display: block;
+	@media only screen and (max-width: 720px) {
+		.mobile-opened {
+			z-index: 9;
+			.sidenav_opacity {
+				display: block;
+			}
 		}
 	}
 /* =========================================================== *\
