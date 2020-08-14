@@ -61,6 +61,8 @@ app-mobile-detail-view {
     height: 1200px;
 }
 
-.mobile-closed {
-	display: none;
+@media only screen and (max-width: 720px) {
+	.mobile-closed {
+		display: none;
+	}
 }
