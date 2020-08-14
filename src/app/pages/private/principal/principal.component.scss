@@ -36,7 +36,6 @@
 app-left-bar {
 	position: relative;
 	width: 24%;
-	z-index: 1;
 	@media only screen and (max-width: 720px) {
 		position: absolute;
 		left: 0;
@@ -60,4 +59,8 @@ app-right-content{
 app-mobile-detail-view {
     width: 100%;
     height: 1200px;
+}
+
+.mobile-closed {
+	display: none;
 }
