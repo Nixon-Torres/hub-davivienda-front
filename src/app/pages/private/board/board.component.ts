@@ -49,6 +49,7 @@ window.editor = window.editor || {};
 })
 export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     public STORAGE_URL = environment.STORAGE_FILES;
+    public STORAGE_URL_BASE = environment.STORAGE_URL;
 
     public owner: any;
     public editor: any;
@@ -2082,7 +2083,9 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
             const elementId = 'uploadPicture';
             const element = this.ref.nativeElement.querySelector('#' + elementId);
-            element.value = '';
+            if (element) {
+                element.value = '';
+            }
             return;
         }
 

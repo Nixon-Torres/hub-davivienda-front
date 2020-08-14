@@ -239,7 +239,9 @@
                             <div id="thumb" class="banner thumb">
                                 <div class="row thumb-row" id="actionsThumb">
                                     <div class="col s3 text-center col-thumb">
-                                        <img class="thumb-image" src="./../../../../assets/images/imagen.png" alt="">
+                                        <img *ngIf="!thumb.clientPath && newThumb && !newThumb.imageUrl" class="thumb-image" src="./../../../../assets/images/imagen.png" alt="">
+                                        <img *ngIf="!thumb.clientPath && newThumb && newThumb.imageUrl" class="thumb-image" [src]="newThumb.imageUrl" alt="">
+                                        <img *ngIf="thumb && !newThumb.imageUrl" class="thumb-image" [src]="STORAGE_URL_BASE + thumb.clientPath" alt="">
                                     </div>
                                     <div class="col s4 text-left col-thumb m-l-0">
                                         <p class="thumb-text">
