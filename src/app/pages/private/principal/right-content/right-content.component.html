@@ -189,7 +189,7 @@
                                                 <li *ngIf="!icurrentObj.deletedFg"><button class="icon icon-search-plus"
                                                         (click)="openPreviewDialog(report)">Vista previa</button>
                                                 </li>
-                                                <li *ngIf="showOptionMenu(report.state.id) && !marketing"><button
+                                                <li *ngIf="showOptionMenu(report.state.id) && !marketing && isAdvancedUser && !isMediumUser"><button
                                                         class="icong icong-crown"
                                                         (click)="openHighlightDialog(report.id)">Destacar</button></li>
                                             </ul>
@@ -277,9 +277,9 @@
                                                 <li><button class="icon icon-search-plus"
                                                         (click)="openPreviewDialog(report)">Vista previa</button>
                                                 </li>
-                                                <li *ngIf="showOptionMenu(report.state.id)"><button
-                                                        class="icong icong-crown"
-                                                        (click)="openHighlightDialog(report.id)">Destacar</button></li>
+                                                <li *ngIf="showOptionMenu(report.state.id) && !marketing && isAdvancedUser && !isMediumUser"><button
+                                                    class="icong icong-crown"
+                                                    (click)="openHighlightDialog(report.id)">Destacar</button></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -317,6 +317,9 @@
                                                     <li><button class="icon icon-search-plus"
                                                             (click)="openPreviewDialog(report)">Vista previa</button>
                                                     </li>
+                                                    <li *ngIf="showOptionMenu(report.state.id) && !marketing && isAdvancedUser && !isMediumUser"><button
+                                                        class="icong icong-crown"
+                                                        (click)="openHighlightDialog(report.id)">Destacar</button></li>
                                                 </ul>
                                             </div>
                                         </div>

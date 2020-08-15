@@ -76,6 +76,8 @@ export class RightContentComponent implements OnInit {
     public filterOptions: any;
     public marketing: boolean;
     public isBasicUser: boolean;
+    public isAdvancedUser: boolean;
+    public isMediumUser: boolean;
     public selects: FormGroup;
     public tabIndex = 0;
     public canClearFilters: boolean;
@@ -141,6 +143,8 @@ export class RightContentComponent implements OnInit {
         });
         this.marketing = this.auth.isMarketing();
         this.isBasicUser = this.auth.isBasicUser();
+        this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
         this.selectsFn();
     }
 
@@ -1093,7 +1097,16 @@ export class RightContentComponent implements OnInit {
             const selecteds: Array<string> = this.getCheckboxesSelected();
             id = selecteds[0];
         }
-        const found = this.list.reports.find(element => element.id === id);
+        let found = this.list.reports.find(element => element.id === id);
+
+        if (!found) {
+            found = this.list.reviewed.find(element => element.id === id);
+        }
+
+        if (!found) {
+            found = this.list.notReviewed.find(element => element.id === id);
+        }
+
         const dialogRef = this.dialog.open(HighlightDialogComponent, {
             width: '760px',
             height: '900px',
@@ -1124,8 +1137,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public showOptionMenu(state): boolean {
-        const found = this.user.roles.findIndex(element => element === 'Admin');
-        return state === '5e068c81d811c55eb40d14d0' && found >= 0;
+        return state === '5e068c81d811c55eb40d14d0';
     }
 
     public isHighlighted(id): boolean {
