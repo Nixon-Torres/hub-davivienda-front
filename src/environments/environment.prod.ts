@@ -4,5 +4,5 @@ export const environment = {
     URL_SOCKET:  'https://stg-hub.qdata.io/',
     DRAFT_KEY: '5e068d1cb81d1c5f29b62977',
     STORAGE_FILES: 'https://stg-hub.qdata.io/public/assets/',
-    STORAGE_URL_BASE: 'https://stg-hub.qdata.io/',
+    STORAGE_URL: 'https://stg-hub.qdata.io/',
 };
