@@ -24,6 +24,7 @@ export class HighlightDialogComponent implements OnInit {
     public report: any = null;
     public file: any = null;
     public remarkableReports: any = null;
+    public remarkableMultimedia: any = null;
 
     constructor(
         public dialog: MatDialog,
@@ -142,6 +143,14 @@ export class HighlightDialogComponent implements OnInit {
         }, (error: any) => {
             console.error(error);
         });
+
+        this.http.get({
+            path: 'contents/',
+            data: {where: {outstandingMainHome: true}},
+            encode: true,
+        }).subscribe((response: any) => {
+            this.remarkableMultimedia = response.body;
+        });
     }
 
     public calculateTime(): boolean {
@@ -170,6 +179,18 @@ export class HighlightDialogComponent implements OnInit {
                     report.outstandingArea = '';
                     report.outstanding = false;
                     this.updateReport(report, false);
+                }
+
+                const multimedia = this.remarkableMultimedia.find(element => element.outstandingMainHomeArea === this.sectionSelect);
+                if (multimedia) {
+                    this.http.patch({
+                        path: 'contents/' + multimedia.id,
+                        data: {
+                            outstandingMainHome: false,
+                            outstandingMainHomeArea: '',
+                        },
+                    }).subscribe(() => {
+                    });
                 }
                 this.updateReport(this.report, true);
             }

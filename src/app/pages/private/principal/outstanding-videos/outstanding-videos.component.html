@@ -7,7 +7,74 @@
         </header>
     </div>
     <mat-tab-group (selectedTabChange)="setOutstandingHome($event)" class="tabs">
-        <mat-tab label="Home" class="tab">
+        <mat-tab label="Destacados Home" class="tab">
+            <div class="tab__content">
+                <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
+                <div class="highlight_content">
+                    <div (click)="onCheckSection('header')" [ngClass]="{'activeColor': isActive('header')}">
+                        <p class="highlight_picture" >destacado principal</p>
+                        <div class="hr_content">
+                            <hr class="first-hr">
+                            <hr class="middle-hr">
+                            <hr class="last-hr">
+                        </div>
+                    </div>
+
+                    <div class="double-frame">
+                        <div class="box" (click)="onCheckSection('area1')" [ngClass]="{'activeColor': isActive('area1')}">
+                            <p class="highlight_picture">cuadro 01</p>
+                            <div class="hr_content hr-second">
+                                <hr class="first-hr">
+                                <hr class="middle-hr">
+                                <hr class="last-hr">
+                            </div>
+                        </div>
+
+                        <div class="box" (click)="onCheckSection('area2')" [ngClass]="{'activeColor': isActive('area2')}">
+                            <p class="highlight_picture">cuadro 02</p>
+                            <div class="hr_content hr-second">
+                                <hr class="first-hr">
+                                <hr class="middle-hr">
+                                <hr class="last-hr">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="double-frame">
+                        <div class="box" (click)="onCheckSection('area3')" [ngClass]="{'activeColor': isActive('area3')}">
+                            <p class="highlight_picture">cuadro 03</p>
+                            <div class="hr_content hr-second">
+                                <hr class="first-hr">
+                                <hr class="middle-hr">
+                                <hr class="last-hr">
+                            </div>
+                        </div>
+
+                        <div class="box" (click)="onCheckSection('area4')" [ngClass]="{'activeColor': isActive('area4')}">
+                            <p class="highlight_picture">cuadro 04</p>
+                            <div class="hr_content hr-second">
+                                <hr class="first-hr">
+                                <hr class="middle-hr">
+                                <hr class="last-hr">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <ng-select [items]="multimediaList"
+                           placeholder="-Seleccione Contenido multimedia a destacar-"
+                           bindValue="id"
+                           bindLabel="title" class="custom-select"
+                           (change)="selectOutstanding($event)"
+                           [(ngModel)]="multimedia"
+                ></ng-select>
+                <div class="tab__buttons">
+                    <button class="" (click)="closeDialog()">Cancelar</button>
+                    <button class="confirm" (click)="onSave()">Aceptar</button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Home Multimedia" class="tab">
             <div class="tab__content">
                 <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
                 <article class="tab__outstanding">
@@ -38,7 +105,7 @@
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Interna multimedia" class="tab">
+        <mat-tab label="Multimedia" class="tab">
             <div class="tab__content">
                 <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
                 <article class="tab__outstanding--header">
