@@ -1272,6 +1272,7 @@ $default-font: "Helvetica Neue", Medium;
     ul {
         list-style-type: disc !important;
         list-style-position: inside !important;
+        margin-bottom: 15px;
     }
     ul > li {
         list-style-type: disc  !important;
@@ -1279,6 +1280,7 @@ $default-font: "Helvetica Neue", Medium;
     ol {
         list-style-type: decimal;
         list-style-position: inside;
+        margin-bottom: 15px;
     }
     ul ul, ol ul {
         list-style-type: circle;
