@@ -129,7 +129,23 @@ export class EditBookComponent implements OnInit, AfterViewInit {
         content: '',
         type: 'html',
         class: 'html atencion-table'
-    } ];
+    },  {
+        id: 'link-text-fin',
+        title: 'Link Proyecciones Descripción',
+        subtitle: 'Actualmente se muestra la siguiente información:',
+        placeholder: '',
+        content: '',
+        type: 'input',
+        class: 'title'
+    }, {
+        id: 'link-text-file',
+        title: 'Archivo proyecciones',
+        subtitle: 'Actualmente se muestra la siguiente información:',
+        placeholder: '',
+        content: '',
+        type: 'image',
+        class: 'image'
+    }];
 
     private editorOptions = {
         default: {
