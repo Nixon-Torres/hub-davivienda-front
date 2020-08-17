@@ -324,7 +324,8 @@ export class RightContentComponent implements OnInit {
         if (!this.isFiltered) {
             this.list.reports = this.reviewredFilter(reportList, false);
         }
-        return this.reviewredFilter(reportList, true);
+        const res = this.reviewredFilter(reportList, true);
+        return res;
     }
 
     private loadPager(where: any, path?: any): void {

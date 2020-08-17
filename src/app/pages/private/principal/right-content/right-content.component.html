@@ -249,7 +249,7 @@
                         <div class="selected-count" *ngIf="getCheckboxesSelected().length">
                             <p>{{getCheckboxesSelected().length}} de {{list.reports?.length + list.reviewed?.length}} Seleccionados</p>
                         </div>
-                        <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length">
+                        <form class="reports_form" [formGroup]="listForm" *ngIf="list.reports.length || (list.reviewed && list.reviewed.length)">
                             <ul class="report-list info_content" formArrayName="reports">
                                 <li *ngFor="let report of list.reports; let i = index" (click)="isMobileVersion() ? openPreviewDialog(report) : null">
                                     <div class="row" [ngClass]="report.state?.color">
