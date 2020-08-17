@@ -2211,7 +2211,10 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public isMobileVersion() {
-        return(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+        let res = (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+        const tablet = (/iPad|tablet/i.test(navigator.userAgent));
+        res = res && !tablet;
+        return res;
     }
 
     changeView() {

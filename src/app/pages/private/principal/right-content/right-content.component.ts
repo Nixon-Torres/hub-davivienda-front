@@ -152,6 +152,11 @@ export class RightContentComponent implements OnInit {
         return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
     }
 
+    public isTabletVersion() {
+        const res = (/iPad|tablet/i.test(navigator.userAgent));
+        return res;
+    }
+
     public onFileSelect(event: any): void {
         if (event.target.files.length > 0) {
             const image = event.target.files[0];
@@ -1086,6 +1091,9 @@ export class RightContentComponent implements OnInit {
     }
 
     public openPreviewDialog(report: any): void {
+        if (this.isTabletVersion()) {
+            return this.gotoPage(report.id);
+        }
         this.changeView.emit({
             mobile: true,
             report,

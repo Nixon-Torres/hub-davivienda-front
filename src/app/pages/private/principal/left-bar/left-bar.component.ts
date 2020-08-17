@@ -201,8 +201,9 @@ export class LeftBarComponent implements OnInit {
             stateName: null
         });
         if (this.isMobile()) {
-            document.getElementById('mySidenav').style.display = 'none',
-            setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
+            this.menuService.emit('hide');
+            // document.getElementById('mySidenav').style.display = 'none',
+            // setTimeout(() => { document.getElementById('leftBar').style.zIndex = '0'; }, 1000);
         }
     }
 
