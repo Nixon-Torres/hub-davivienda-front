@@ -1014,9 +1014,9 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                         twoButtons: true,
                         icon: 'icon-exclamation',
                         iconColor: '#FF003B',
-                        title: 'Está seguro que desea publicar el informe:',
+                        title: 'Está seguro que desea actualizar el informe:',
                         subtitle: this.report.name,
-                        mainButton: 'Si, publicar',
+                        mainButton: 'Si, actualizar',
                         secondButton: 'Cancelar'
                     }
                 }
@@ -1409,7 +1409,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                         data: {
                             config: {
                                 title: this.isMarketing ?
-                                    'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
+                                    'Se ha actualizado exitosamente el informe' : 'Su informe fue guardado con éxito en',
                                 subtitle: this.isMarketing ? this.report.name :
                                     (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
                             }
