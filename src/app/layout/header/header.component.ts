@@ -84,7 +84,11 @@ export class HeaderComponent implements OnInit {
                     {relation: 'emitter', scope: {fields: ['name']}},
                     {relation: 'report', scope: {fields: ['name', 'stateId']}}
                 ],
-                where: {ownerId: this.user.id},
+                where: {
+                    ownerId: this.user.id,
+                    type: 'report-reviewer',
+                    action: {inq: ['created', 'refused', 'approved', 'published']},
+                },
                 limit: 10
             },
             encode: true
@@ -102,7 +106,9 @@ export class HeaderComponent implements OnInit {
             path: `notifications/count?where=`,
             data: {
                 ownerId: this.user.id,
-                readed: false
+                readed: false,
+                type: 'report-reviewer',
+                action: {inq: ['created', 'refused', 'approved', 'published']},
             }
         }).subscribe((response: any) => {
             if ('body' in response) {

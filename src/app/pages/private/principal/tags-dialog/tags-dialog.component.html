@@ -5,7 +5,8 @@
             class="icon icon-times"></span></a>
     </header>
     <div class="tags-dialog__body">
-        <input class="tags-dialog__label" placeholder="Escriba cada tag separado por enter" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="false"
+        <input class="tags-dialog__label" placeholder="Por favor escriba aquí cada tag de tendencia separado por Enter"
+               [matChipInputFor]="chipList" [matChipInputAddOnBlur]="false"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" id="inputTag"
             [(ngModel)]="input">
         <div class="tags-dialog__input">

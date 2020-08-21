@@ -47,10 +47,12 @@
 
         <div class="content-bar" *ngIf="marketing">
             <div class="options">
-                <p class="options--name icon icon-folder variation">Categorías</p>
-            </div>
-            <div class="options">
-                <p class="options--name fas fa-home"><span></span>Home</p>
+                <p class="options--name fas fa-home" (click)="setCurrentCategory({id: null})"><span></span>
+                    <span class="menu-font">Home</span>
+                </p>
+                <div class="options">
+                    <p class="options--name icon icon-folder variation">Categorías</p>
+                </div>
                 <ul class="options--list options-folder marketing">
                     <li *ngFor="let category of categories" [ngClass]="{active: isCategoryActive(category)}"
                         (click)="setCurrentCategory(category)">

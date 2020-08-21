@@ -92,6 +92,7 @@ export class RightContentComponent implements OnInit {
 
             if (this.user && this.user.id) {
                 if (!this.icurrentObj.currentCategory) {
+                    this.category = null;
                     if (this.icurrentObj.currentSearch && this.isMobileVersion()) {
                         this.filterReports(this.icurrentObj.currentSearch);
                     } else {

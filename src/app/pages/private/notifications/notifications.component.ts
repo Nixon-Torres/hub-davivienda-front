@@ -74,7 +74,10 @@ export class NotificationsComponent implements OnInit {
         }
 
         where.ownerId = this.user.id;
-        if (idx === 2) {
+        if (idx === 1) {
+            where.type = 'report-reviewer';
+            where.action = {inq: ['created', 'refused', 'approved', 'published']};
+        } else if (idx === 2) {
             where.type = 'report-reviewer';
             where.action = {inq: ['created', 'refused']};
         } else if (idx === 3) {
@@ -129,10 +132,7 @@ export class NotificationsComponent implements OnInit {
     private getCountNotifications(): void {
         this.http.get({
             path: `notifications/count?where=`,
-            data: {
-                ownerId: this.user.id,
-                readed: false
-            }
+            data: this.getWhere(1, false)
         }).subscribe((response: any) => {
             this.ntfQty = response.body.count;
         });
