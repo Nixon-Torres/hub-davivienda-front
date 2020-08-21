@@ -138,6 +138,12 @@ export class HeaderComponent implements OnInit {
         if (!item.report || !item.emitter) {
             return;
         }
+
+        const actions = ['created', 'refused', 'approved', 'published'];
+        if (item.type !== 'report-reviewer' && actions.indexOf(item.action) === -1) {
+            return;
+        }
+
         const timeFromNow: string = moment(item.updatedAt).fromNow();
         const txtDescription: string = item.text
             .replace(/{{emitter_name}}/, item.emitter.name)
