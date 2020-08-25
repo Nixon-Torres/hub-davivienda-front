@@ -1962,3 +1962,11 @@ ngs-code-editor {
 .noevents {
    pointer-events: none;
 }
+
+.grapes-container .crossreference {
+    top: -0.5em;
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
