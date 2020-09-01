@@ -21,9 +21,19 @@ header {
         max-width: 1440px;
         display: flex;
         align-items: center;
+        @media only screen and (max-width: 720px) {
+            justify-content: space-between;
+            width: 100%;
+        }
         img.logo-principal {
             height: 70px;
             margin-left: -15px;
+            @media only screen and (max-width: 720px) {
+                height: 48px;
+                margin-left: 0;
+                // margin-left: 15px;
+                padding-left: 15px;
+            }
         }
 
         a {
@@ -35,6 +45,9 @@ header {
             text-decoration: none;
             border-left: 1px solid #EDEDED;
             border-right: 1px solid #EDEDED;
+            @media only screen and (max-width: 720px) {
+                height: 25px;
+            }
 
             img.logo-board {
                 height: 24px;
@@ -46,6 +59,7 @@ header {
                 position: relative;
                 vertical-align: unset;
                 margin-right: 15px;
+                text-decoration: underline;
             }
         }
 
@@ -81,6 +95,10 @@ header {
                 height: 45px;
                 margin: 12.5px 15px;
                 border-radius: 22.5px;
+                @media only screen and (max-width: 720px) {
+                    position: relative;
+                    left: 15%;
+                }
             }
 
             span {
@@ -89,6 +107,9 @@ header {
                 margin-right: 15px;
                 color: #616161;
                 font-size: 13px;
+                @media only screen and (max-width: 720px) {
+                    display: none;
+                }
                 &:after {
                     top: 12px;
                     left: 15px;
@@ -103,8 +124,76 @@ header {
 
         .notifications {
             outline: none;
+            @media only screen and (max-width: 720px) {
+                display: none;
+                background-color: #F5F7FB;
+                width: 100%;
+                padding-top: 15px !important;
+                border-radius: 0 0 10px 10px;
+                &.notification_mobile {
+                    display: block;
+                    section {
+                        max-height: 85vh;
+                        width: 78vw;
+                        @media only screen and (max-width: 320px) {
+                            width: auto;
+                        }
+                    }
+                }
+            }
             .notifications_icon{
                 color: silver;
+            }
+        }
+
+        .mobile_header {
+            display: none;
+            @media only screen and (max-width: 720px) {
+                display: block;
+                position: absolute;
+                background: #ffffff;
+                max-height: 1024px;
+                z-index: 9;
+                top: 10px;
+                right: 0;
+                width: auto;
+                border-radius: 10px;
+                .user-menu {
+                    span {
+                        display: block;
+                        position: initial;
+                    }
+                }
+            }
+            @media only screen and (max-width: 320px) {
+                width: 320px;
+                right: 0;
+            }
+
+            .right_navbar_header {
+                background-color: #ffffff;
+                box-shadow: 0px 4px 5px -2px #00000029;
+                z-index: 9;
+                position: relative;
+                padding: 15px;
+                border-radius: 10px 10px 0 0;
+                .user_name {
+                    color: #616161;
+                    font-weight: bold;
+                }
+                .mobile_social_content{
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    margin-top: 15px;
+                    &--logout{
+                        p{
+                            color: #A5ABB1;
+                            font-size: 0.75em;
+                            text-decoration: underline;
+                        }
+                    }
+                }
             }
         }
     }
@@ -127,5 +216,96 @@ header {
     }
     .all-right {
         margin-left: auto;
+        &.marketing_user {
+            cursor: pointer;
+            @media only screen and (max-width: 600px) {
+                margin: auto;
+            }
+        }
+    }
+}
+
+.mobile_menu {
+    .icon_menu {
+        display: none;
+    }
+    .side_search {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .mobile_menu {
+        display: none;
+        .icon_menu {
+            display: block;
+            padding-left: 15px;
+        }
+        .side_search {
+            display: block;
+        }
+        display: block;
+        color: #a0a0a0;
+        span {
+            font-size: 2em;
+        }
+        p {
+            font-size: 0.8em;
+        }
+    }
+
+    .sidenav_notification {
+        background-color: #9a9a9a82;
+        width: 720px;
+        position: absolute;
+        right: 0;
+        height: 170vh;
+        z-index: 9;
+        top: 9%;
+        padding-bottom: 5px;
+        @media only screen and (max-width: 320px) {
+            top: 12%;
+        }
+        &::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-top: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 15px solid #fff;
+            position: absolute;
+            top: -15px;
+            right: 45px;
+            @media only screen and (max-width: 320px) {
+                top: 12%;
+                right: 15px;
+            }
+        }
+    }
+}
+
+.marketing_out {
+    position: absolute;
+    right: 4%;
+    top: 4.4em;
+    z-index: 9;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 1px 1px 3px 1px silver;
+    @media only screen and (min-width: 1920px) {
+        right: 10%;
+    }
+    @media only screen and (max-width: 400px) {
+        right: 0%;
+    }
+
+    button {
+        border: 0;
+        background: none; 
+        span {
+            font-size: 12px;
+            color: #a5abb1;
+        }
     }
 }

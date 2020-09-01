@@ -65,9 +65,13 @@
 
     .mat-standard-chip .mat-chip-remove.mat-icon {
         width: 10px;
-        height: 13px;
-        font-size: 13px;
-        opacity: 0.18;
+        height: 100%;
+        font-size: 11px;
+        opacity: 0.4;
+        border-left: solid 1px #E2EAF1;
+        padding-left: 4px;
+        display: flex;
+        align-items: center;
     }
 }
 
@@ -99,6 +103,9 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        @media only screen and (max-width: 768px) {
+            padding: 10px;
+        }
     }
     &__modification, &__edit {
         border-left: 1px solid #F5F5F5;
@@ -141,6 +148,9 @@
         flex-shrink: 0;
         width: 25%;
         padding: 0 0 0 41px;
+        @media only screen and (max-width: 1024px) {
+            padding-left: 25px;
+        }
         .modification {
 
             &__title, &__value {
@@ -167,7 +177,7 @@
         align-self: stretch;
         button {
 
-            color: #0080FF;
+            color: #A5ABB1;
             font-size: 14px;
             padding: 0;
             margin: 0;
@@ -245,6 +255,9 @@
                 }
             }
         }
+        input {
+            height: 33px;
+        }
     }
     &__buttons {
         display: flex;
@@ -303,3 +316,21 @@
     margin: 0;
 }
 
+.companies_add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: solid 1px #F3F4F8;
+    border-bottom: solid 1px #F3F4F8;
+    padding: 13px 0;
+    cursor: pointer;
+    span, p {
+        color: #0080FF;
+    }
+    span {
+        font-size: 24px;
+    }
+    p {
+        font-size: 0.875em;
+    }
+}

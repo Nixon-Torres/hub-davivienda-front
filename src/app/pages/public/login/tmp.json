@@ -1,0 +1,12 @@
+{
+    "name": {
+        "type": "input",
+        "validations": ["required", {
+            "MaxLength": 20
+        }]
+    },
+    "email": {
+        "type": "input",
+        "validations": ["required", "email"]
+    }
+}

@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
 import io from 'socket.io-client';
+import {HttpService} from './http.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,10 +13,16 @@ import io from 'socket.io-client';
 export class SocketService {
     private _URL_SOCKET = environment.URL_SOCKET;
     private socket: any = null;
+    public user: any;
 
     constructor(
-        private auth: AuthService
-    ) { }
+        private auth: AuthService,
+        private http: HttpService
+    ) {
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
+    }
 
     public on(nsp: string): Observable<any> {
         return new Observable((observer: Observer<any>) => {
@@ -37,10 +44,10 @@ export class SocketService {
     public start(): Observable<any> {
         return new Observable((observer: Observer<any>) => {
             if (!this.auth.isLoggedin()) {
-                observer.error('Error: forbiden');
+                observer.error('Error: forbidden');
                 observer.complete();
                 return;
-            };
+            }
             this.connect((isConnected: boolean) => {
                 this.authenticate();
                 this.on('authenticated').subscribe(
@@ -58,24 +65,27 @@ export class SocketService {
         });
     }
 
-    private connect(fn: Function): void {
+    private connect(fn: (param: boolean) => void): void {
         if (!this.socket) {
             this.socket = io(this._URL_SOCKET);
             this.socket.on('connect', () => fn(true));
         } else if (this.socket && !this.socket.connected) {
-            if (this.socket.off) this.socket.off();
-            if (this.socket.destroy) this.socket.destroy();
+            if (this.socket.off) { this.socket.off(); }
+            if (this.socket.destroy) { this.socket.destroy(); }
             delete this.socket;
             this.connect(fn);
         }
     }
 
     private authenticate(): void {
-        let authorization = this.auth.getAuthorization();
-        let userId = this.auth.getUserData('id');
-        this.socket.emit('authentication', {
-            id: authorization,
-            userId: userId
-        });
+        const userId = this.user.id;
+        const payload: any = {
+            userId
+        };
+
+        if (isDevMode()) {
+            payload.id = this.http.getAuthorization();
+        }
+        this.socket.emit('authentication', payload);
     }
 }

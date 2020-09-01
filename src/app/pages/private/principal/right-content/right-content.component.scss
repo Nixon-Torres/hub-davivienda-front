@@ -4,6 +4,32 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
     background: #f5f7fb !important;
 }
 
+.button-reset-mobile {
+	font-family: "Helvetica Neue", sans-serif;
+    border: 0;
+    outline: none;
+    background-color: transparent;
+    font-size: 1.0rem;
+    color: #A5ABB1;
+    margin-right: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.calendar-container--info {
+	font-weight: bolder;
+	color: black;
+     font-size: 0.8rem;
+	span {
+		color: red;
+	}
+}
+
+.mat-raised-button[disabled] {
+	background-color: rgba(0,0,0,.12) !important;
+}
+
 .category-container {
     margin: 3vh 4% 0;
 
@@ -80,6 +106,9 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
         font-size: 12px;
         color: #939393;
 		cursor: pointer;
+		@media only screen and (max-width: 768px) {
+			margin: 0 0 15px 23px;
+		}
 		a{
 			font-family: "Helvetica Neue",sans-serif;
 			color: #616161;
@@ -93,7 +122,10 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		margin-top: 20px;
         display: flex;
         justify-content: flex-end;
-        align-items: center;
+		align-items: center;
+		@media only screen and (max-width: 720px){
+			display: none;
+		}
         .button-reset {
             font-family: 'Helvetica Neue', sans-serif;
             border: 0;
@@ -168,6 +200,10 @@ app-right-content.tabs.mat-tab-group.mat-tab-header {
 		font-size: 1.125em;
 		font-weight: 600;
 		width: 100%;
+		@media only screen and (max-width: 600px) {
+			font-size: 1em;
+			margin-left: 20px;
+		}
 	}
 }
 
@@ -193,6 +229,12 @@ section {
 					height: 8px;
 					background-color: #FF003B;
 					border-radius: 50%;
+					@media only screen and (max-width: 720px) {
+						left: -15px;
+						top: 3px;
+						width: 10px;
+						height: 10px;
+					}
 				}
 			}
 		}
@@ -204,6 +246,9 @@ section {
 	box-shadow: none;
 	color: #FFFFFF;
 	padding: 0 40px;
+	@media only screen and (max-width: 600px) {
+        display: none;
+    }
 
 	.mat-button-wrapper {
 		font-size: 0.875em;
@@ -224,6 +269,9 @@ section {
 		min-height: 76px;
 		padding: 0 3%;
 		position: relative;
+		@media only screen and (max-width: 600px) {
+			flex-wrap: wrap;
+		}
 
 		&.yellow {
 			&:after {
@@ -347,6 +395,7 @@ section {
 			right: 0;
 			width: 130px;
 			z-index: 100;
+			text-align: initial;
 
 			&:after {
 					border-right: 1px solid #0080FF;
@@ -464,14 +513,21 @@ section {
 	.report-user-name{
 		width: 15%;
 	}
-	.group-menu{
-		width: 4%;
+	.group-menu {
+		width: 8%;
+    	text-align: end;
+		@media only screen and (max-width: 600px){
+			display: none;
+		}
 	}
 }
 
 .folder_container{
 	padding-bottom: 3%;
 	position: relative;
+	@media only screen and (max-width: 720px){
+		display: none;
+	}
 
 	.operation-cta{
 		bottom: 0;
@@ -479,13 +535,25 @@ section {
 		position: absolute;
 		right: 4%;
 		top: 0;
+		@media only screen and (max-width: 768px) {
+			right: -2%;
+		}
 
 		ul{
 			display: flex;
 			align-items: flex-end;
 			justify-content: flex-end;
+			@media only screen and (max-width: 768px) {
+				flex-wrap: wrap;
+				justify-content: space-between;
+			}
 			li{
 				margin-right: 40px;
+				@media only screen and (max-width: 768px) {
+					width: 40%;
+					margin-bottom: 5px;
+					margin-right: 0px;
+				}
 				a{
 					color: #616161;
 					font-size: 12px;
@@ -537,6 +605,9 @@ section {
 	.filter-wrapper {
 		width: 180px;
 		display: inline-block;
+		@media only screen and (max-width: 991px){
+			width: 135px;
+		}
 	}
 }
 
@@ -803,7 +874,10 @@ section {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-    top: 11em;
+	top: 11em;
+	@media only screen and (max-width: 720px) {
+		padding: 0 10%;
+	}
 	}
 	p{
 		padding-left: 15px;
@@ -1093,4 +1167,40 @@ section {
 
 .fulldesc {
     margin-bottom: 9px;
+}
+
+.report_status {
+	max-width: 7%;
+}
+
+.report_class {
+	display: flex;
+	flex-wrap: wrap;
+	width: 69%;
+	justify-content: space-between;
+	align-items: center;
+	@media only screen and (max-width: 600px) {
+		width: 60%;
+	}
+	h2 {
+		text-align: initial;
+	}
+	span {
+		margin: 0;
+		text-align: initial;
+	}
+}
+
+.info_content {
+	margin-bottom: 100px;
+	@media only screen and (max-width: 720px) {
+		margin-bottom: 30px;
+	}
+}
+
+.paginator_numbers.noclick {
+    cursor: default;
+    &:hover {
+        background: none !important;
+    }
 }

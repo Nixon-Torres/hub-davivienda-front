@@ -15,11 +15,14 @@
 		top: 0;
 		width: 150%;
 		z-index: 0;
+		@media only screen and (max-width: 1024px) {
+			width: 94vw;
+		}
 	}
 }
 
 
-app-left-bar{
+app-left-bar {
 	position: relative;
 	width: 24%;
 	z-index: 1;

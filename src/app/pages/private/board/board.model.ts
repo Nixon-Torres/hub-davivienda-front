@@ -22,6 +22,7 @@ export interface Report {
     rFastContent?: string;
     rSmartContent?: string;
     rDeepContent?: string;
+    rContentTable?: boolean;
     rPreContent?: string;
     rSmartContentVideo?: string;
     blocks?: any;
@@ -31,4 +32,9 @@ export interface Report {
     metaTitle?: any;
     metaDescription?: any;
     glossary?: any;
+    rReferences?: any;
+    fastContentEnabled?: any;
+    preContentEnabled?: any;
+    type?: any;
+    marketingCode?: any;
 }

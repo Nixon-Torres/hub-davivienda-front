@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot,
+         RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
+import {map, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +23,15 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.isActive();
+        const isLoggedin = this.auth.isLoggedin();
+
+        if (isLoggedin) {
+            return true;
+        }
+
+        return this.auth.user.pipe(map((user: any) => {
+            return !!(user && user.id);
+        }), take(1));
     }
 
     canActivateChild(
@@ -39,7 +49,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     private isActive(): boolean {
-        let isLoggedin = this.auth.isLoggedin();
+        const isLoggedin = this.auth.isLoggedin();
         if (!isLoggedin) {
             this.router.navigate(['/login']);
         }

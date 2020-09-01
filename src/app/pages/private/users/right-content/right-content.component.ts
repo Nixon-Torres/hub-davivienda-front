@@ -15,22 +15,27 @@ import {UserFormComponent} from '../user-form/user-form.component';
 
 export class RightContentComponent implements OnInit {
 
-    private collapse: boolean = true;
-    public profile: boolean = true;
+    private collapse = true;
+    public profile = true;
     private profileSuscription: any;
-    public nameGroup: String = 'Perfil';
+    public nameGroup = 'Perfil';
     private nameGroupSuscription: any;
     public currentUsersGroup: any = [];
     private currentUsersGroupSuscription: any;
     public user: any = [];
     private imageProfile: any;
+    public canEdit = false;
 
     constructor(
         private auth: AuthService,
         private users: UsersService,
         public dialog: MatDialog
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+
+            this.canEdit = this.user.roles.find(e => e === 'Admin') && !this.user.roles.find(e => e === 'medium');
+        });
     }
 
     ngOnInit() {

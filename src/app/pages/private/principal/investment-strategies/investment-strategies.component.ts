@@ -37,6 +37,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     public reportThree: string;
     public reportFour: string;
     public showPanel: boolean;
+    categories: any;
 
     constructor(
         private http: HttpService,
@@ -45,7 +46,7 @@ export class InvestmentStrategiesComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getReports();
+        this.getCategories();
         this.getOutstandingReports();
         this.getCurrentReports();
         this.getContent();
@@ -63,10 +64,59 @@ export class InvestmentStrategiesComponent implements OnInit {
         });
     }
 
-    public getReports() {
+    private getCategories() {
+        const filter = {
+            where: {
+                code: { inq: ['ESTARACTUALIZADO', 'ANLISISDECOMPAAS', 'ENQUINVERTIR'] }
+            },
+            include: [{
+                relation: 'childrenMainReportTypes',
+                scope: {
+                    include: [
+                        'subCategory'
+                    ]
+                }
+            }, 'childrenSubReportTypes', {
+                relation: 'children',
+                scope: {
+                    include: ['childrenMainReportTypes', 'childrenSubReportTypes'],
+                    order: 'description ASC'
+                }
+            }],
+            order: 'updatedAt DESC',
+            limit: 8
+        };
+        this.http.get({
+            path: `categories/`,
+            data: filter,
+            encode: true
+        }).subscribe((res: any) => {
+            this.categories = res.body;
+            const reportTypeIds = this.categories.flatMap(x => x.childrenMainReportTypes).map(e => e.id);
+
+            if (reportTypeIds && reportTypeIds.length) {
+                this.getReports(reportTypeIds);
+            }
+        });
+    }
+
+    public getReports(reportTypeIds) {
         this.http.get({
             path: 'reports/',
-            data: {where: {stateId: '5e068c81d811c55eb40d14d0'}},
+            data: {
+                where: {
+                    reportTypeId: { inq: reportTypeIds },
+                    stateId: '5e068c81d811c55eb40d14d0'
+                },
+                fields: ['id', 'name', 'smartContent', 'rTitle', 'reportTypeId', 'publishedAt'],
+                include: [{
+                    relation: 'reportType',
+                    scope: {
+                        include: ['mainCategory', 'subCategory']
+                    }
+                }],
+                order: 'updatedAt DESC',
+            },
             encode: true
         }).subscribe((response: any) => {
             this.list.reports = response.body.sort((a, b) => {

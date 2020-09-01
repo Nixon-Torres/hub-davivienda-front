@@ -1,0 +1,22 @@
+<div [hidden]="showComments">
+    <div class="preview-mobile">
+        <div class="preview-mobile__back" (click)="back()">
+            <span class="material-icons">arrow_back_ios</span>
+            <p>{{report && report.state && report.state.name ? report.state.name : 'Por revisar'}}</p>
+        </div>
+    
+        <div class="preview-mobile__comment" (click)="openCommentDialog(report)" >
+            <i class="far fa-comment-alt"></i>
+            <p>Comentarios</p>
+        </div>
+    
+        <div class="preview-mobile__post" *ngIf="canPublish()">
+            <button mat-flat-button class="bttn bttn-primary" (click)="validateUnresolvedComments()">Publicar</button>
+        </div>
+    </div>
+    
+    <iframe id="previewFrame" src="about:blank"></iframe>
+</div>
+
+<app-mobile-comment-view [hidden]="!showComments" (changeView)="changeViewComments()" [report]="report">
+</app-mobile-comment-view>

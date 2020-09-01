@@ -2,12 +2,16 @@
 	<div class="top-bar" *ngIf="view?.reports || view?.faq || view?.multimedia"></div>
 	<app-left-bar (valueChange)="setCurrentState($event)"
 				  (changeView)="changeView($event)"
-				  [currentObj]="cleanObj"></app-left-bar>
+				  [currentObj]="cleanObj" id="leftBar"
+                  [ngClass]="{'mobile-opened': sidebarMenuOpen === 'show', 'mobile-closed': sidebarMenuOpen !== 'show'}"></app-left-bar>
 	<app-right-content *ngIf="view.reports"
 					   [currentObj]="currentObj"
+                       (changeView)="changeView($event)"
 					   (valueChange)="setCurrentState($event)"></app-right-content>
 	<app-edit-site *ngIf="view.editSite" (changeView)="changeView($event)"></app-edit-site>
     <app-faq-content *ngIf="view.faq" (changeView)="changeView($event)"></app-faq-content>
     <app-faq-button (changeView)="changeView($event)" [ngClass]="{'active': view.faq}"></app-faq-button>
     <app-multimedia *ngIf="view.multimedia" (changeView)="changeView($event)"></app-multimedia>
+    <app-mobile-detail-view *ngIf="view.mobile && view.report && !view.comment" (changeView)="changeView($event)" [report]="view.report">
+	</app-mobile-detail-view>
 </section>

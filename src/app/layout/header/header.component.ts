@@ -1,13 +1,13 @@
+import {Component, OnInit} from '@angular/core';
+import {Router, NavigationEnd} from '@angular/router';
 
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+import {HttpService} from '../../services/http.service';
+import {SocketService} from '../../services/socket.service';
 
-import { AuthService } from '../../services/auth.service';
-import { HttpService } from '../../services/http.service';
-import { SocketService } from '../../services/socket.service';
-
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import * as moment from 'moment';
+import {MenuService} from '../../services/menu.service';
 
 @Component({
     selector: 'app-header',
@@ -29,17 +29,29 @@ export class HeaderComponent implements OnInit {
     };
     public STORAGE_URL = environment.STORAGE_FILES;
     public marketing: boolean;
+    public sidevarMenu = true;
+    public isMobileLayout = false;
+    public marketingToggle = false;
 
     constructor(
         private router: Router,
         private auth: AuthService,
         private http: HttpService,
-        private socket: SocketService
+        private socket: SocketService,
+        private menuService: MenuService,
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
         this.startToListenRouter(this.router);
         this.startToListenSockets();
         this.marketing = this.auth.isMarketing();
+
+        this.menuService.$listenActions.subscribe((event) => {
+            if (event.action === 'hide') {
+                this.sidevarMenu = true;
+            }
+        });
     }
 
     ngOnInit() {
@@ -48,7 +60,6 @@ export class HeaderComponent implements OnInit {
         this.getCountNotifications();
 
         this.auth.user.subscribe((user) => {
-            console.log(user);
             this.user = user;
         });
     }
@@ -65,21 +76,27 @@ export class HeaderComponent implements OnInit {
     }
 
     private getNotifications(): void {
-     this.http.get({
+        this.http.get({
             path: `notifications`,
             data: {
                 order: 'id DESC',
                 include: [
-                    { relation: 'emitter', scope: { fields: ['name'] } },
-                    { relation: 'report', scope: { fields: ['name', 'stateId'] } }
+                    {relation: 'emitter', scope: {fields: ['name']}},
+                    {relation: 'report', scope: {fields: ['name', 'stateId']}}
                 ],
-                where: { ownerId: this.user.id },
+                where: {
+                    ownerId: this.user.id,
+                    type: 'report-reviewer',
+                    action: {inq: ['created', 'refused', 'approved', 'published']},
+                },
                 limit: 10
             },
             encode: true
         }).subscribe((response: any) => {
             if ('body' in response) {
-                response.body.map( notification => { this.processNotification(notification); });
+                response.body.map(notification => {
+                    this.processNotification(notification);
+                });
             }
         });
     }
@@ -89,11 +106,13 @@ export class HeaderComponent implements OnInit {
             path: `notifications/count?where=`,
             data: {
                 ownerId: this.user.id,
-                readed: false
+                readed: false,
+                type: 'report-reviewer',
+                action: {inq: ['created', 'refused', 'approved', 'published']},
             }
         }).subscribe((response: any) => {
             if ('body' in response) {
-               this.ntfQty = response.body.count;
+                this.ntfQty = response.body.count;
             }
         });
     }
@@ -119,10 +138,16 @@ export class HeaderComponent implements OnInit {
         if (!item.report || !item.emitter) {
             return;
         }
+
+        const actions = ['created', 'refused', 'approved', 'published'];
+        if (item.type !== 'report-reviewer' && actions.indexOf(item.action) === -1) {
+            return;
+        }
+
         const timeFromNow: string = moment(item.updatedAt).fromNow();
         const txtDescription: string = item.text
-                                    .replace(/{{emitter_name}}/, item.emitter.name)
-                                    .replace(/{{report_name}}/, item.report.name);
+            .replace(/{{emitter_name}}/, item.emitter.name)
+            .replace(/{{report_name}}/, item.report.name);
         const notf: any = {
             id: item.id,
             type: item.type,
@@ -162,11 +187,30 @@ export class HeaderComponent implements OnInit {
     }
 
     isOpened(evt: any) {
-        const ntContainer = document.getElementById('notificationHeader').parentElement;
+        const headerEl = document.getElementById('notificationHeader2');
+        if (!headerEl) {
+            return;
+        }
+        const ntContainer = headerEl.parentElement;
         ntContainer.classList.add('notifications');
     }
 
-    openNotf(reportId: number, readed: boolean) {
+    public checkNotifications(notificationId: string, cb: any) {
+        const dataFilter = encodeURI(JSON.stringify({id: notificationId}));
+        this.http.patch({
+            path: `notifications/read?filter=${dataFilter}`,
+            data: {readed: true}
+        }).subscribe(() => {
+            if (cb) {
+                cb();
+            }
+        });
+    }
+
+    openNotf(notification, readed?) {
+        const notificationId = notification.id;
+        const reportId = notification.reportId;
+
         this.getCountNotifications();
         this.notifications.filter((a) => {
             if (a.reportId === reportId) {
@@ -174,11 +218,29 @@ export class HeaderComponent implements OnInit {
             }
             return true;
         });
-        this.router.navigate(['app/board', reportId]);
+
+        this.checkNotifications(notificationId, () => {
+            const queryParams: any = {};
+            if (notification.type === 'report-comment') {
+                queryParams.showComments = true;
+            }
+            this.isMobileLayout = false;
+            this.router.navigate(['app/board', reportId], {queryParams});
+        });
     }
 
     public gotoTo() {
         this.router.navigate(['app/users']);
 
+    }
+
+    openNav() {
+        this.sidevarMenu = false;
+        this.menuService.emit('show');
+    }
+
+    closeNav() {
+        this.sidevarMenu = true;
+        this.menuService.emit('hide');
     }
 }

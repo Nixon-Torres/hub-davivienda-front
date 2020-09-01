@@ -1,15 +1,15 @@
-import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import {Component, OnInit, AfterViewInit, Renderer2, ViewChild, ElementRef, ViewEncapsulation, OnDestroy} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
-import {loopback} from '../../../models/common/loopback.model';
-import {HttpService} from '../../../services/http.service';
-import {AuthService} from '../../../services/auth.service';
-import {PreviewDialogComponent} from '../preview-dialog/preview-dialog.component';
-import {ConfirmationDialogComponent} from './confirmation-dialog/confirmation-dialog.component';
-import {PdfUploadComponent} from './pdf-upload/pdf-upload.component';
-import {Grapes} from './grapes/grape.config';
-import {CodeMirror} from './grapes/code-mirror.config';
+import { loopback } from '../../../models/common/loopback.model';
+import { HttpService } from '../../../services/http.service';
+import { AuthService } from '../../../services/auth.service';
+import { PreviewDialogComponent } from '../preview-dialog/preview-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
+import { Grapes } from './grapes/grape.config';
+import { CodeMirror } from './grapes/code-mirror.config';
 
 import * as M from 'materialize-css/dist/js/materialize';
 import * as $ from 'jquery/dist/jquery';
@@ -19,16 +19,18 @@ import * as tabs from 'grapesjs-tabs/dist/grapesjs-tabs.min.js';
 import * as slider from 'grapesjs-lory-slider/dist/grapesjs-lory-slider.min.js';
 import * as customCode from 'grapesjs-custom-code/dist/grapesjs-custom-code.min.js';
 
-import {Report} from './board.model';
-import {RevisionModalComponent} from './revision-modal/revision-modal.component';
-import {CreationModalComponent} from './creation-modal/creation-modal.component';
+import { Report } from './board.model';
+import { RevisionModalComponent } from './revision-modal/revision-modal.component';
+import { CreationModalComponent } from './creation-modal/creation-modal.component';
 
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 // import InlineEditor from '/home/omnigroupit/workspace/angular/ckeditor5-build-inline';
-import {forkJoin, Observable} from 'rxjs';
-import {environment} from '../../../../environments/environment';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {debounceTime, map, switchMap} from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import {CodeModel} from '@ngstack/code-editor';
 
 declare var grapesjs: any;
 declare global {
@@ -45,8 +47,9 @@ window.editor = window.editor || {};
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class BoardComponent implements OnInit, AfterViewInit {
+export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     public STORAGE_URL = environment.STORAGE_FILES;
+    public STORAGE_URL_BASE = environment.STORAGE_URL;
 
     public owner: any;
     public editor: any;
@@ -66,12 +69,35 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public showAsMobile = false;
     public isFullscreen = false;
     public isAdvancedUser = false;
+    public isMediumUser = false;
     public grapeEnabled = false;
     public addMenuVisible = false;
 
     public searchWordText = '';
     public foundWords = [];
     public wordsVisible = false;
+    public editTimer;
+
+    codeTheme = 'vs-dark';
+
+    codeModel: CodeModel = {
+        language: 'html',
+        uri: 'main.html',
+        value: '<!-- Agrega codigo requerido aqui -->\n' +
+            '<script type="text/javascript">\n' +
+            '</script>',
+    };
+
+    codeOptions = {
+        contextmenu: false,
+        minimap: {
+            enabled: false,
+        },
+    };
+
+    onCodeChanged(value) {
+        this.report.marketingCode = value;
+    }
 
     public list: any = {
         users: [],
@@ -120,13 +146,19 @@ export class BoardComponent implements OnInit, AfterViewInit {
         rFastContent: null,
         rSmartContent: null,
         rDeepContent: null,
+        rContentTable: false,
         template: null,
         files: null,
         rSmartContentVideo: null,
         presentationUrl: null,
         metaTitle: null,
         metaDescription: null,
-        glossary: null
+        glossary: null,
+        rReferences: null,
+        fastContentEnabled: null,
+        preContentEnabled: null,
+        type: null,
+        marketingCode: null,
     };
 
     public tags = {
@@ -156,18 +188,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public unresolvedComments: any;
     public tendenciesList: any;
 
-    @ViewChild('authorsParent', {static: false}) authorsParent?: ElementRef;
-    @ViewChild('editorsParent', {static: false}) editorsParent?: ElementRef;
+    @ViewChild('authorsParent', { static: false }) authorsParent?: ElementRef;
+    @ViewChild('editorsParent', { static: false }) editorsParent?: ElementRef;
 
-    @ViewChild('editor1', {static: false}) editor1?: ElementRef;
-    @ViewChild('editor2', {static: false}) editor2?: ElementRef;
-    @ViewChild('editor3', {static: false}) editor3?: ElementRef;
-    @ViewChild('editor4', {static: false}) editor4?: ElementRef;
-    @ViewChild('editor5', {static: false}) editor5?: ElementRef;
+    @ViewChild('editor1', { static: false }) editor1?: ElementRef;
+    @ViewChild('editor2', { static: false }) editor2?: ElementRef;
+    @ViewChild('editor3', { static: false }) editor3?: ElementRef;
+    @ViewChild('editor4', { static: false }) editor4?: ElementRef;
+    @ViewChild('editor5', { static: false }) editor5?: ElementRef;
+    @ViewChild('editor6', { static: false }) editor6?: ElementRef;
 
     private editorOptions = {
         editor1: {
-            removePlugins: [ 'Link' ],
+            removePlugins: ['Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage', 'Bold',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
+                'Table', 'TableToolbar'],
             heading: {
                 options: [
                     { model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' }
@@ -175,43 +210,56 @@ export class BoardComponent implements OnInit, AfterViewInit {
             },
             initialData: '<h2></h2>'
         },
-        editor3: {
+        editor2: {
+            removePlugins: ['Link', 'SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'Link', 'List', 'MediaEmbed',
+                'Table', 'TableToolbar', 'Table'],
+            wordcount: {
+                showCharCount: true,
+                charLimit: 200
+            },
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    {
-                        model: 'headingFancy',
-                        view: {
-                            name: 'p',
-                            classes: 'box-title',
-                            styles: {
-                                'font-weight': 'bold'
-                            }
-                        },
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2_fancy',
-
-                        // It needs to be converted before the standard 'heading2'.
-                        converterPriority: 'high'
-                    }
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                ]
+            }
+        },
+        editor3: {
+            removePlugins: ['Table'],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
                 ]
             }
         },
         editor4: {
+            removePlugins: ['Table'],
             heading: {
                 options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title'
+                        },
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
+                    },
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_heading2' },
                     {
                         model: 'headingFancy',
                         view: {
-                            name: 'h2',
-                            classes: 'box-title',
-                            styles: {
-                                'font-weight': 'bold',
-                                'margin-bottom': '5px'
-                            }
+                            name: 'p',
+                            classes: 'box-title-fake',
                         },
-                        title: 'Heading 2',
+                        title: 'Heading 4 (No aplica tabla de contenido)',
                         class: 'ck-heading_heading2_fancy',
 
                         // It needs to be converted before the standard 'heading2'.
@@ -220,21 +268,87 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 ]
             }
         },
-        blocks: {
+        editor5: {
+            removePlugins: ['Table'],
+            wordcount: {
+                showParagraphs: false,
+                showWordCount: true,
+                showCharCount: true,
+                countSpacesAsChars: false,
+                countHTML: false,
+                maxWordCount: -1,
+                maxCharCount: 2000
+            },
             heading: {
                 options: [
                     { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                     {
-                        model: 'headingFancy',
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
                         view: {
                             name: 'h2',
-                            classes: 'box-title',
-                            styles: {
-                                'font-weight': 'bold',
-                                'margin-bottom': '5px'
-                            }
+                            classes: 'box-title'
                         },
-                        title: 'Heading 2',
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
+                    }
+                ]
+            },
+        },
+        editor6: {
+            removePlugins: ['SimpleUploadAdapter', 'BlockQuote', 'CKFinder', 'EasyImage',
+                'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'Indent', 'List',
+                'Table', 'TableToolbar', 'Table'],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    {
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title'
+                        },
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
+                    }
+                ]
+            },
+        },
+        blocks: {
+            removePlugins: ['Table'],
+            heading: {
+                options: [
+                    {
+                        model: 'heading2', title: 'Heading 2', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h2',
+                            classes: 'box-title'
+                        },
+                    },
+                    {
+                        model: 'heading3', title: 'Heading 3', class: 'ck-heading_heading2',
+                        view: {
+                            name: 'h3',
+                            classes: 'box-title-h3'
+                        },
+                    },
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_heading2' },
+                    {
+                        model: 'headingFancy',
+                        view: {
+                            name: 'p',
+                            classes: 'box-title-fake',
+                        },
+                        title: 'Heading 4 (No aplica tabla de contenido)',
                         class: 'ck-heading_heading2_fancy',
 
                         // It needs to be converted before the standard 'heading2'.
@@ -253,13 +367,23 @@ export class BoardComponent implements OnInit, AfterViewInit {
     public editor3Data = '';
     public editor4Data = '';
     public editor5Data = '';
+    public editor6Data = '';
+
+    public editor5Instance: any;
 
     public blocks: any = [];
     public banner: any = {};
+    public thumb: any = {};
     public newBanner: any = {};
+    public newThumb: any = {};
+    public bannerFileSizeExceeded = false;
+    public thumbFileSizeExceeded = false;
 
     public glossaryForm: FormGroup;
     public foundWordsObservable: Observable<any>;
+    editorContentTable: string;
+    allowContentTable = false;
+    showCommentsView = false;
 
     constructor(
         public dialog: MatDialog,
@@ -271,9 +395,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
         private ref: ElementRef,
         private fb: FormBuilder
     ) {
-        this.user = this.auth.getUserData();
-        this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
-        this.isMarketing = this.auth.isMarketing();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+            this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
+            this.isMarketing = this.auth.isMarketing();
+        });
         // this.closeToggleLists();
     }
 
@@ -282,7 +409,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         this.glossaryForm = this.fb.group({
             searchInput: new FormControl('')
-        })
+        });
 
         this.foundWordsObservable = this.glossaryForm.get('searchInput').valueChanges
             .pipe(
@@ -290,18 +417,21 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 switchMap(value => this.searchWordO(value))
             );
 
-        this.activatedRoute.paramMap.subscribe((params: any) => {
+        this.activatedRoute.queryParams.subscribe((params: any) => {
+            this.showCommentsView = params && params.showComments;
+            if (this.showCommentsView) {
+                this.showComments();
+            }
+        });
 
+        this.activatedRoute.paramMap.subscribe((params: any) => {
             // Load report for edit, but if is a new report load basic data from URI
             if (params.get('id')) {
-
                 this.report.id = params.get('id');
                 this.loadReport(this.report.id);
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
-                this.checkNotifications(this.report.id);
                 this.checkIfEditable();
-
             } else if (params.get('stateId')) {
                 const folderId = params.get('folderId');
                 const companyId = params.get('companyId');
@@ -340,9 +470,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
         M.Tabs.init(tabsEl); // Initialize the tabs materialize function
 
         const elems = document.querySelectorAll('.fixed-action-btn');
-        M.FloatingActionButton.init(elems, {direction: 'top', hoverEnabled: false});
+        M.FloatingActionButton.init(elems, { direction: 'top', hoverEnabled: false });
 
         this.enableInlineEditor();
+    }
+
+    setPrecontent() {
+        this.editor5Data = !this.report.preContentEnabled ? '' :
+            // tslint:disable-next-line:max-line-length
+            '<h2 class="box-title"><strong>P.O. 2020 FA: 29,600 / SOBREPONDERAR</strong></h2><p><strong>Potencial:</strong> 20%</p><p><strong>P/VL actual:</strong> 1.1x</p><p><strong>Max 52 Semanas (COP): </strong>29,000</p><p><strong>Cierre:</strong> 28,500</p><p><strong>P/E actual:</strong> 12.4x</p><p><strong>Min 52 Semanas (COP): </strong>40,000</p><p><strong>Market Cap (COP): </strong>28.4 bn</p><p><strong>Diviendo anual (COP):</strong> 1,100</p><p><strong>#acciones:</strong> 598 mm</p><p>PFBCOLO CB</p><p><strong>Riesgo: </strong>Alto</p><p><strong>Bloomberg: </strong>COAR GO</p>';
+        this.editor5Instance.setData(this.editor5Data);
     }
 
     setDataInInlineEditor() {
@@ -351,19 +488,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.editor3Data = this.report.rSmartContent ? this.report.rSmartContent : '';
         this.editor4Data = this.report.rDeepContent ? this.report.rDeepContent : '';
         this.editor5Data = this.report.rPreContent ? this.report.rPreContent : '';
+        this.editor6Data = this.report.rReferences ? this.report.rReferences : '';
 
-        const ids = ['editor1', 'editor2', 'editor3', 'editor4', 'editor5'];
+        const ids = ['editor1', 'editor2', 'editor3', 'editor4', 'editor5', 'editor6'];
         ids.forEach((elementId) => {
-            if (elementId !== 'editor5' || (elementId === 'editor5' && this.report.template.key === 'html')) {
-                if (this[elementId]) {
-                    this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
-                }
+            if (this[elementId]) {
+                this[elementId].nativeElement.innerHTML = this[elementId + 'Data'];
             }
         });
 
         setTimeout(() => {
             this.blocks.forEach((block) => {
-                const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                const element = this.ref.nativeElement.querySelector('#' + block.id);
                 if (element) {
                     element.innerHTML = block.content;
                 }
@@ -375,10 +511,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     addInlineEditor(elementId: string, placeholder?: string) {
-        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        const element = this.ref.nativeElement.querySelector('#' + elementId);
         let options = this.editorOptions[elementId] || this.editorOptions.default;
 
-        if (elementId.startsWith('r')) {
+        if (elementId.startsWith('r') || elementId.startsWith('block')) {
             options = this.editorOptions.blocks;
         }
         const editorOptions = options ? options : {};
@@ -389,7 +525,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
 
         const headers = this.http.headers();
-        editorOptions.simpleUpload =  {
+        editorOptions.simpleUpload = {
             uploadUrl: this.http.path('/reports/' + this.report.id + '/upload'),
             headers
         };
@@ -406,33 +542,48 @@ export class BoardComponent implements OnInit, AfterViewInit {
             ]
         };
 
-        InlineEditor
-            .create( element, editorOptions)
-            .then( editor => {
+        let previousData = null;
+        if (!this.isMobileVersion()) {
+            InlineEditor
+            .create(element, editorOptions)
+            .then(editor => {
                 window.editor = editor;
-
-                editor.model.document.on( 'change:data', () => {
+                if (elementId === 'editor5') {
+                    this.editor5Instance = editor;
+                }
+                editor.model.document.on('change:data', () => {
                     const block = this.blocks.find(e => e.id === elementId);
+                    const prevData = editor.getData();
                     const data = editor.getData();
+                    const total = this.getChars(data);
+                    if (elementId === 'editor2') {
+                        if (total > 2000) {
+                            editor.setData(previousData);
+                        } else {
+                            previousData = prevData;
+                        }
+                    }
 
                     if (block) {
                         block.content = data;
                     } else {
                         this[elementId + 'Data'] = data;
                     }
-                } );
-            } )
-            .catch( error => {
-                console.error( 'There was a problem initializing the editor.', error );
-            } );
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem initializing the editor.', error);
+            });
+        }
     }
 
     enableGrapeEditor() {
         this.grapeEnabled = true;
-        const instance = this;
-        setTimeout(() => {
-            instance.initGrapes();
-        }, 2000);
+        // this.grapeEnabled = true;
+        // const instance = this;
+        // setTimeout(() => {
+        //     instance.initGrapes();
+        // }, 2000);
     }
 
     enableInlineEditor() {
@@ -440,14 +591,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         const instance = this;
         setTimeout(() => {
-            instance.addInlineEditor('editor1', 'Escriba aquí el subtitulo con el que empieza su informe');
-            instance.addInlineEditor('editor2', 'Escriba aca texto destacado si es necesario (fast content)');
+            instance.addInlineEditor('editor1', 'Escriba aquí el titulo de su informe');
+            // tslint:disable-next-line:max-line-length
+            instance.addInlineEditor('editor2', 'Escriba aquí el destacado si es necesario que contenga un máximo de 2000 caracteres (Fast content)');
             instance.addInlineEditor('editor3', 'SMART CONTENT');
             instance.addInlineEditor('editor4', 'DEEP CONTENT');
-
-            if (this.report && this.report.template && this.report.template.key === 'html') {
-                instance.addInlineEditor('editor5', 'Escriba aquí el seguimientos de las acciones de las empresas');
-            }
+            instance.addInlineEditor('editor6', 'PIE DE PÁGINA');
+            instance.addInlineEditor('editor5', 'Escriba la información de la lista del destacado corredores, sin alterar el orden y la estructura');
         }, 500);
     }
 
@@ -459,7 +609,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.readonly = !editable.editable;
 
             if (!this.readonly) {
-                setTimeout(() => {
+                if (this.editTimer) {
+                    clearInterval(this.editTimer);
+                }
+
+                this.editTimer = setTimeout(() => {
                     this.checkIfEditable();
                 }, 30000);
             }
@@ -491,9 +645,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 }
             });
             dialogRef.afterClosed().subscribe(resp => {
-               if (resp) {
+                if (resp) {
                     this.router.navigate(['app/principal']);
-               }
+                }
             });
         }
     }
@@ -546,7 +700,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }, {
             relation: 'files',
             scope: {
-                fields: ['id', 'name', 'key', 'size']
+                fields: ['id', 'name', 'key', 'size', 'clientPath']
             }
         }, {
             relation: 'template',
@@ -576,8 +730,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             this.report = response.body;
             const banner = this.report.files.find(e => e.key === 'bannerImage');
+            const thumb = this.report.files.find(e => e.key === 'thumbImage');
 
             this.banner = banner ? banner : {};
+            this.thumb = thumb ? thumb : {};
             this.blocks = this.report.blocks.map(e => {
                 const img = e.files && e.files.length ? e.files[0] : {};
                 return {
@@ -593,6 +749,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             this.onLoadTendenciesTags();
             this.onLoadCategoriesTags();
 
+            this.allowContentTable = this.report.rContentTable ? this.report.rContentTable : false;
             this.setDataInInlineEditor();
 
             this.files = response.body.files;
@@ -764,9 +921,26 @@ export class BoardComponent implements OnInit, AfterViewInit {
             clearInterval(this.timer.lastupdate);
         }
 
-        this.timer.lastupdate = setInterval(() => {
-            this.lastupdate = moment(lastupdate).fromNow();
-        }, 30000);
+        // this.timer.lastupdate = setInterval(() => {
+        //     this.lastupdate = moment(lastupdate).fromNow();
+        // }, 30000);
+    }
+
+    ngOnDestroy() {
+        if (this.timer.lastupdate) {
+            clearInterval(this.timer.lastupdate);
+        }
+
+        if (this.editTimer) {
+            clearInterval(this.editTimer);
+        }
+
+        if (!this.readonly) {
+            this.http.delete({
+                path: '/reports/' + this.report.id + '/edition'
+            }).subscribe(() => {
+            });
+        }
     }
 
     /** Load a template for report if exist template ID else load an empty report
@@ -786,6 +960,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }).subscribe((response: any) => {
             this.report.content = response.body.content ? response.body.content : '';
             this.report.styles = response.body.styles ? response.body.styles : '';
+            this.report.type = response.body.key ? response.body.key : '';
+            this.report.template = {
+                key: response.body.key
+            };
 
             setTimeout(() => {
                 this.initGrapes();
@@ -808,7 +986,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public canApprove(): boolean {
-        return this.isAdvancedUser && this.report.ownerId !== this.user.id && this.report.stateId === this.states.toReview;
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+            this.report.stateId === this.states.toReview;
     }
 
     public canPublish(): boolean {
@@ -835,9 +1014,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
                         twoButtons: true,
                         icon: 'icon-exclamation',
                         iconColor: '#FF003B',
-                        title: 'Está seguro que desea publicar el informe:',
+                        title: 'Está seguro que desea actualizar el informe:',
                         subtitle: this.report.name,
-                        mainButton: 'Si, publicar',
+                        mainButton: 'Si, actualizar',
                         secondButton: 'Cancelar'
                     }
                 }
@@ -885,8 +1064,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.report.rTitle = this.editor1Data;
         this.report.rFastContent = this.editor2Data;
         this.report.rSmartContent = this.editor3Data;
+        this.report.rContentTable = this.allowContentTable;
         this.report.rDeepContent = this.editor4Data;
         this.report.rPreContent = this.editor5Data;
+        this.report.rReferences = this.editor6Data;
     }
 
     public onSaveBlocks(): void {
@@ -901,6 +1082,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 title: block.title,
                 content: block.content,
                 source: block.source,
+                link: block.link,
                 fileName: block.fileName,
                 type: block.type
             };
@@ -912,6 +1094,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                 title: block.title,
                 content: block.content,
                 source: block.source,
+                link: block.link,
                 fileName: block.fileName,
                 type: block.type,
                 externalImage: block.externalImage,
@@ -919,7 +1102,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
             };
         });
 
-        let imgsToCreate = this.blocks.filter(e => e.file && (e.isNew || (!e.isNew && !e.imageId))).map((block) => {
+        let imgsToCreate = this.blocks.filter(e => e.file && (e.isNew || (!e.isNew && !e.imageId) || e.isUpdate)).map((block) => {
             return {
                 isNew: block.isNew,
                 id: block.isNew ? block.id : block.id.substr(1),
@@ -990,7 +1173,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
             setTimeout(() => {
                 this.blocks.forEach((block) => {
-                    const element = this.ref.nativeElement.querySelector( '#' + block.id);
+                    const element = this.ref.nativeElement.querySelector('#' + block.id);
                     if (element) {
                         element.innerHTML = block.content;
                     }
@@ -1048,6 +1231,37 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const banner = res.body as any;
             this.banner = banner.file;
             this.newBanner = {};
+        });
+    }
+
+    private saveThumbImage() {
+        if (this.thumb.toDelete && !this.newThumb.imageUrl) {
+            return this.http.delete({
+                path: 'media/' + this.thumb.id
+            }).subscribe((res) => {
+                this.thumb = {};
+            });
+        }
+
+        if (!this.newThumb.imageUrl) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('types', encodeURI(JSON.stringify(['jpg', 'png', 'gif', 'webp', 'jpeg'])));
+        formData.append('file', this.newThumb.file);
+        formData.append('key', 'thumbImage');
+        formData.append('resourceId', this.report.id);
+        if (this.thumb.id) {
+            formData.append('id', this.thumb.id);
+        }
+        return this.http.post({
+            path: 'media/upload',
+            data: formData
+        }).subscribe((res) => {
+            const thumb = res.body as any;
+            this.thumb = thumb.file;
+            this.newThumb = {};
         });
     }
 
@@ -1174,9 +1388,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             (response: any) => {
                 this.onSaveBlocks();
                 this.saveBannerImage();
+                this.saveThumbImage();
                 if (method === 'post' && this.authorsId && this.authorsId.length) {
                     const authorsData = this.authorsId.map((a: string) => {
-                        return {authorId: a, reportId: response.body.id};
+                        return { authorId: a, reportId: response.body.id };
                     });
                     this.http.post({
                         path: 'reports/authors',
@@ -1194,7 +1409,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
                         data: {
                             config: {
                                 title: this.isMarketing ?
-                                    'Se ha publicado exitosamente el informe' : 'Su informe fue guardado con éxito en',
+                                    'Se ha actualizado exitosamente el informe' : 'Su informe fue guardado con éxito en',
                                 subtitle: this.isMarketing ? this.report.name :
                                     (this.report.state ? this.report.state.name : 'Borradores').toUpperCase()
                             }
@@ -1251,7 +1466,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public getReviewers(reviewers: Array<object>) {
         return reviewers.map((reviewer: any) => {
-            return {reportId: this.report.id, reviewerId: reviewer.id};
+            return { reportId: this.report.id, reviewerId: reviewer.id };
         });
     }
 
@@ -1290,11 +1505,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
             encode: true
         }).subscribe((resp) => {
             this.users = resp.body;
+            this.users = this.users.sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (b.name > a.name) {
+                    return -1;
+                }
+                return 0;
+            });
             const dialogRef = this.dialog.open(RevisionModalComponent, {
                 width: '450px',
                 data: {
                     title: '¿Quien quiere que revise su informe?',
-                    users: this.users
+                    users: this.users.filter(e => e.id !== this.user.id)
                 }
             });
 
@@ -1382,6 +1606,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public openUploadDialog(): void {
+        if (!this.report || (this.report && !this.report.id)) {
+            return;
+        }
+
         const dialogRef = this.dialog.open(PdfUploadComponent, {
             width: '470px',
             data: {
@@ -1463,10 +1691,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     public showComments() {
-        this.grid.col.builder = 8;
-        this.grid.col.comments = 2;
-        this.grid.col.panel = 2;
-        document.querySelector('mat-grid-tile.comments').classList.add('show');
+        setTimeout(() => {
+            this.grid.col.builder = 8;
+            this.grid.col.comments = 2;
+            this.grid.col.panel = 2;
+            document.querySelector('mat-grid-tile.comments').classList.add('show');
+        }, 100);
     }
 
     public hideComments() {
@@ -1704,28 +1934,24 @@ export class BoardComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public checkNotifications(reportId: string) {
-        const dataFilter = encodeURI(JSON.stringify({reportId}));
-        this.http.patch({
-            path: `notifications/read?filter=${dataFilter}`,
-            data: {readed: true}
-        }).subscribe();
-    }
-
     private goToPrincipalPage(): void {
         this.router.navigate(['app/principal']);
     }
 
     /* Tags */
     public fillTendenciesTags(): Array<string> {
-        return this.tendenciesList.split(',').map(tag => tag.trim());
+        return this.tendenciesList ? this.tendenciesList.split(',').map(tag => tag.trim()) : [];
     }
 
     public addCategoryTag(event): void {
         const tagName = event.target.innerText;
         this.tags.tendencies = this.fillTendenciesTags();
         if (!this.tags.tendencies.find(tag => tag === tagName)) {
-            this.tendenciesList += `, ${tagName}`;
+            if (this.tendenciesList) {
+                this.tendenciesList += `${this.tendenciesList !== '' ? ', ' : ''} ${tagName}`;
+            } else {
+                this.tendenciesList = tagName;
+            }
         }
     }
 
@@ -1746,14 +1972,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public onLoadTendenciesTags(): void {
         if (this.report.tags && this.report.tags.length) {
-           this.tendenciesList = this.report.tags.join(', ');
+            this.tendenciesList = this.report.tags.join(', ');
         }
     }
 
     public onLoadCategoriesTags(): any {
         this.tags.categories = this.report.reportType && this.report.reportType.mainCategory
             && this.report.reportType.mainCategory.length
-                ? this.report.reportType.mainCategory[0].tags : null;
+            ? this.report.reportType.mainCategory[0].tags : null;
         return this.tags.categories;
     }
 
@@ -1803,7 +2029,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     public removeImageSelected(block: any) {
         const elementId = 'ImgInput' + block.id;
-        const element = this.ref.nativeElement.querySelector( '#' + elementId );
+        const element = this.ref.nativeElement.querySelector('#' + elementId);
         element.value = '';
     }
 
@@ -1812,8 +2038,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
             event.target.files[0] : null;
 
         if (!file) {
-            this.newBanner.fileName =  null;
-            this.newBanner.file =  null;
+            this.newBanner.fileName = null;
+            this.newBanner.file = null;
             this.newBanner.imageUrl = null;
             this.newBanner.assetUrl = null;
             if (this.banner) {
@@ -1821,11 +2047,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
             }
 
             const elementId = 'reportBannerImg';
-            const element = this.ref.nativeElement.querySelector( '#' + elementId );
+            const element = this.ref.nativeElement.querySelector('#' + elementId);
             element.value = '';
             return;
         }
 
+        const size = file.size / 1024 / 1024;
+        if (size > 10) {
+            return this.bannerFileSizeExceeded = true;
+        }
+        this.bannerFileSizeExceeded = false;
         this.newBanner.fileName = file.name;
         this.newBanner.file = file;
 
@@ -1837,13 +2068,50 @@ export class BoardComponent implements OnInit, AfterViewInit {
         };
     }
 
+    public onThumbImageSelected(event: any) {
+        const file: File = event && event.target && event.target.files && event.target.files.length ?
+            event.target.files[0] : null;
+
+        if (!file) {
+            this.newThumb.fileName = null;
+            this.newThumb.file = null;
+            this.newThumb.imageUrl = null;
+            this.newThumb.assetUrl = null;
+            if (this.thumb) {
+                this.thumb.toDelete = true;
+            }
+
+            const elementId = 'uploadPicture';
+            const element = this.ref.nativeElement.querySelector('#' + elementId);
+            if (element) {
+                element.value = '';
+            }
+            return;
+        }
+
+        const size = file.size / 1024 / 1024;
+        if (size > 10) {
+            return this.thumbFileSizeExceeded = true;
+        }
+        this.thumbFileSizeExceeded = false;
+        this.newThumb.fileName = file.name;
+        this.newThumb.file = file;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            this.newThumb.imageUrl = reader.result;
+        };
+    }
+
     public onBlockImageSelected(block: any, event: any) {
         const file: File = event && event.target && event.target.files && event.target.files.length ?
             event.target.files[0] : null;
 
         if (!file) {
-            block.fileName =  null;
-            block.file =  null;
+            block.fileName = null;
+            block.file = null;
             block.imageUrl = null;
             block.assetUrl = null;
             this.removeImageSelected(block);
@@ -1852,6 +2120,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
         block.fileName = file.name;
         block.file = file;
+        block.isUpdate = !!block.imageId;
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -1919,5 +2188,36 @@ export class BoardComponent implements OnInit, AfterViewInit {
             const foundWords = words.filter(e => !this.report.glossary.find(j => j.id === e.id));
             return foundWords;
         }));
+    }
+
+    public getMaxChars(html: string) {
+        html = html.replace(/&nbsp;/g, '');
+        html = html.replace(/<(?:.|\n)*?>/gm, ' ');
+        html = html.trimLeft().trimRight().replace(/\s+/g, ' ');
+        return Math.min(2000, html.length);
+    }
+
+    public getChars(html: string) {
+        html = html.replace(/&nbsp;/g, '');
+        html = html.replace(/<(?:.|\n)*?>/gm, ' ');
+        html = html.trimLeft().trimRight().replace(/\s+/g, ' ');
+        return html.length;
+    }
+
+    public getCharsPercentage(html: string, max: number) {
+        const len = this.getChars(html);
+        const perc = Math.floor(len / max * 10);
+        return Math.min(perc * 10, 100);
+    }
+
+    public isMobileVersion() {
+        let res = (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+        const tablet = (/iPad|tablet/i.test(navigator.userAgent));
+        res = res && !tablet;
+        return res;
+    }
+
+    changeView() {
+        this.router.navigate(['/app/notifications']);
     }
 }

@@ -16,7 +16,7 @@
                     <label class="small-label" for="css">Mantener mi cuenta abierta</label>
                 </div>
                 <div>
-                    <p *ngIf="showErrorMsg" class="form-error">Usuario o contraseña invalido, intente mas tarde</p>
+                    <p *ngIf="showErrorMsg" class="form-error">Usuario o contraseña invalido, por favor contactar al administrador para gestionar el acceso</p>
                 </div>
                 <button type="submit" class="btn login margin" [disabled]="!loginForm.valid">Iniciar sesión > </button>
             </form>

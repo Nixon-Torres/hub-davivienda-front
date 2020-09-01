@@ -5,10 +5,10 @@
             <p class="text--small">Actualmente se muestran las siguiente empresas:</p>
             <mat-form-field class="example-chip-list">
                 <mat-chip-list #chipTopList aria-label="Fruit selection">
-                    <mat-chip *ngFor="let company of list.companies" [selectable]="selectable"
+                    <mat-chip *ngFor="let company of list.companies | arraySort:'name':true" [selectable]="selectable"
                               [removable]="showPanel" (removed)="removeTop(company)">
                         {{company.name}}
-                        <mat-icon matChipRemove *ngIf="showPanel">cancel</mat-icon>
+                        <mat-icon matChipRemove *ngIf="showPanel">clear</mat-icon>
                     </mat-chip>
                 </mat-chip-list>
             </mat-form-field>
@@ -28,7 +28,7 @@
     </header>
     <section class="outstanding__body" *ngIf="showPanel">
         <form action="">
-            <div class="outstanding__fields">
+            <div class="outstanding__fields" *ngIf="showForm">
                 <mat-form-field class="example-chip-list">
                     <mat-chip-list #chipList aria-label="Fruit selection">
                         <mat-chip *ngFor="let company of newCompanies" [selectable]="selectable"
@@ -36,7 +36,7 @@
                             {{company.name}}
                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                         </mat-chip>
-                        <input placeholder="Nombre de la compañia"
+                        <input placeholder="Nombre de la compañía"
                                [matChipInputFor]="chipList"
                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                [matChipInputAddOnBlur]="addOnBlur"
@@ -44,6 +44,14 @@
                     </mat-chip-list>
                 </mat-form-field>
                 <small class="add-company-subtitle">Escriba el nombre de la compa&ntilde;&iacute;a y finalice con un enter</small>
+            </div>
+            <div class="companies_add" *ngIf="!showForm" (click)="showForm = !showForm">
+                <div>
+                    <span class="icon icon-plus-circle"></span>
+                </div>
+                <div>
+                    <p>Agregar compañía</p>
+                </div>
             </div>
             <div class="outstanding__buttons">
                 <button class="btn btn--border" (click)="showPanel = !showPanel">Cancelar</button>

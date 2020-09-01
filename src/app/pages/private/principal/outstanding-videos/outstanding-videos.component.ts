@@ -12,11 +12,13 @@ export class OutstandingVideosComponent implements OnInit {
     public multimediaList: Array<any>;
     public multimedia: any;
     public multimediaNoHome: any;
-    public outstandingHomeTabSelected: boolean;
     public outstandingArea: string;
     public outstandingList: Array<any>;
-    public previousItem: any;
+    public previousItems: any;
     public outstandingAreaList = [1, 2, 3];
+    public sectionSelect: string;
+    public remarkableReports: any = null;
+    public selectedTab = 0;
 
     constructor(
         public dialogRef: MatDialogRef<OutstandingVideosComponent>,
@@ -24,10 +26,72 @@ export class OutstandingVideosComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         private http: HttpService
     ) {
+        this.getRemarkablesReports();
     }
 
     ngOnInit() {
         this.onReset();
+    }
+
+    public getRemarkablesReports() {
+        this.http.get({
+            path: 'reports/',
+            data: {where: {outstanding: true}},
+            encode: true
+        }).subscribe((response: any) => {
+            this.remarkableReports = response.body;
+        }, (error: any) => {
+            console.error(error);
+        });
+    }
+
+    onCheckSection(section) {
+        this.sectionSelect = section;
+        // this.pictureSelect = true;
+    }
+
+    isActive(section): boolean {
+        return this.sectionSelect === section;
+    }
+
+    public openConfirmation(): void {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '410px',
+            data: {
+                isAlert: true,
+                config: {
+                    title: '¿Esta seguro que desea destacar un nuevo informe?',
+                    isWarning: true,
+                    warningText: 'Recientemente alguien ha destacado un informe en este módulo',
+                    mainButton: 'Si, destacarlo',
+                }
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: any) => {
+            if (result) {
+                const report = this.remarkableReports.find(element => element.outstandingArea === this.sectionSelect);
+                if (report) {
+                    report.outstandingArea = '';
+                    report.outstanding = false;
+                    this.updateReport(report, {outstandingArea: '', outstanding: false}, false);
+                }
+                // this.updateReport(this.report, {outstandingArea: this.sectionSelect, outstanding: true}, true);
+            }
+        });
+    }
+
+    public updateReport(report, data, updateImage) {
+        this.http.patch({
+            path: 'reports/' + report.id,
+            data,
+        }).subscribe((response: any) => {
+            /*if (updateImage) {
+                this.cloneImage(this.idImage, this.report.id, this.file ? this.file.id : null);
+            }*/
+        }, (error: any) => {
+            console.error(error);
+        });
     }
 
     private onReset(): void {
@@ -35,8 +99,8 @@ export class OutstandingVideosComponent implements OnInit {
         this.onLoadOutstandingList();
         this.multimedia = this.data.id;
         this.multimediaNoHome = this.data.id;
-        this.outstandingHomeTabSelected = true;
-        this.previousItem = null;
+        this.selectedTab = 0;
+        this.previousItems = null;
     }
 
     public selectOutstanding(event): void {
@@ -44,7 +108,7 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     public setOutstandingHome(event) {
-        this.outstandingHomeTabSelected = event.index === 0;
+        this.selectedTab = event.index;
         this.onLoadOutstandingList();
     }
 
@@ -58,7 +122,7 @@ export class OutstandingVideosComponent implements OnInit {
 
     public setOutstandingArea(event, area: string) {
         this.outstandingArea = area;
-        this.previousItem = this.checkIfAreaIsTaken();
+        this.previousItems = this.checkIfAreaIsTaken();
         this.selectArea(event);
     }
 
@@ -66,12 +130,15 @@ export class OutstandingVideosComponent implements OnInit {
         const removingOutstandingItem = !!id;
         const data: any = {};
 
-        if (this.outstandingHomeTabSelected) {
+        if (this.selectedTab === 1) {
             data.outstandingHome = !removingOutstandingItem;
             data.outstandingHomeArea = removingOutstandingItem ? '' : this.outstandingArea;
-        } else {
+        } else if (this.selectedTab === 2) {
             data.outstanding = !removingOutstandingItem;
             data.outstandingArea = removingOutstandingItem ? '' : this.outstandingArea;
+        } else if (this.selectedTab === 0) {
+            data.outstandingMainHome = !removingOutstandingItem;
+            data.outstandingMainHomeArea = removingOutstandingItem ? '' : this.sectionSelect;
         }
 
         this.http.patch({
@@ -79,7 +146,7 @@ export class OutstandingVideosComponent implements OnInit {
             data
         }).subscribe((resp: any) => {
             if (resp) {
-                this.previousItem = null;
+                this.previousItems = null;
                 if (modal) {
                     const dialog = this.dialog.open(ConfirmationDialogComponent, {
                         width: '410px',
@@ -96,12 +163,22 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     public onSave(): void {
-        if (this.previousItem && (!this.multimedia || (this.previousItem.id !== this.multimedia))) {
-            this.onSaveOutstanding(this.previousItem.id);
-            this.onSaveOutstanding(null, true);
-        } else {
-            this.onSaveOutstanding(null, true);
+        const isSet = this.previousItems && this.previousItems.length === 1 ? this.previousItems[0].id === this.multimedia : false;
+        this.previousItems = this.previousItems ? this.previousItems.filter(e => e.id !== this.multimedia) : [];
+
+        if (this.previousItems && this.previousItems.length && (!this.multimedia || !isSet)) {
+            this.previousItems.forEach((item) => {
+                this.onSaveOutstanding(item.id, false);
+            });
         }
+        const report = this.remarkableReports.find(element => element.outstandingArea === this.sectionSelect);
+        if (report) {
+            report.outstandingArea = '';
+            report.outstanding = false;
+            this.updateReport(report, {outstandingArea: '', outstanding: false}, false);
+        }
+
+        this.onSaveOutstanding(null, true);
     }
 
     private onLoadMultimediaList(): void {
@@ -121,14 +198,22 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     private onLoadOutstandingList(): void {
+        const where: any = {
+            key: 'multimedia'
+        };
+
+        if (this.selectedTab === 1) {
+            where.outstandingHome = true;
+        } else if (this.selectedTab === 2) {
+            where.outstanding = true;
+        } else {
+            where.outstandingMainHome = true;
+        }
+
         this.http.get({
             path: 'contents',
             data: {
-                where: {
-                    key: 'multimedia',
-                    outstanding: true,
-                    outstandingHome: this.outstandingHomeTabSelected
-                }
+                where
             },
             encode: true
         }).subscribe((resp: any) => {
@@ -139,8 +224,13 @@ export class OutstandingVideosComponent implements OnInit {
     }
 
     private checkIfAreaIsTaken() {
-        const item = this.outstandingList.find(e => e.outstandingArea === this.outstandingArea);
-        return item;
+        if (this.selectedTab === 1) {
+            return this.outstandingList.filter(e => e.outstandingHomeArea === this.outstandingArea);
+        } else if (this.selectedTab === 2) {
+            return this.outstandingList.filter(e => e.outstandingArea === this.outstandingArea);
+        }  else if (this.selectedTab === 0) {
+            return this.outstandingList.filter(e => e.outstandingMainHomeArea === this.sectionSelect);
+        }
     }
 
     public closeDialog(): void {

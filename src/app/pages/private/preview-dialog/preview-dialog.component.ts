@@ -44,9 +44,14 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     public loadReport(): void {
-        let iframe = document.getElementById('previewFrame');
-        let doc = (<HTMLIFrameElement>iframe).contentWindow.document;
-        let reportTpl = `
+        const iframe = document.getElementById('previewFrame');
+        const doc = (iframe as HTMLIFrameElement).contentWindow.document;
+        const regex = new RegExp('href="\/reports\/' + this.report.id, 'gi');
+        this.report.content = this.report.content.replace(
+            regex, () => {
+                return `href="`;
+            });
+        const reportTpl = `
     		<html>
     			<head>
     				<style type="text/css">${this.report.styles}</style>

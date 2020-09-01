@@ -32,7 +32,9 @@ export class GalleryDialogComponent implements OnInit {
         private http: HttpService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-        this.user = this.auth.getUserData();
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+        });
     }
 
     ngOnInit() {

@@ -2,18 +2,18 @@
 	<div class="top">
 		<div class="column--small">
             <img style="width: 50px" [src]="getUserImage(user)">
-			<button type="" class="simple icong-camera" (click)="openDialog()">Subir foto</button>
+			<button type="" class="simple icong-camera" (click)="openDialog()" *ngIf="canEdit">Subir foto</button>
 		</div>
 		<div class="column">
-			<input formControlName="name" class="bolder" type="text" value="{{user.name}}">
-			<input formControlName="charge" class="regular" type="text" value="{{user.charge}}">
-			<input formControlName="email" class="regular" type="text" value="{{user.email}}" disabled="disabled">
+			<input formControlName="name" class="bolder" type="text" value="{{user.name}}" [attr.disabled]="!canEdit ? '' : null">
+			<input formControlName="charge" class="regular" type="text" disabled="disabled" value="{{user.charge}}">
+			<input formControlName="email" class="regular" type="text" value="{{user.email}}" [attr.disabled]="!canEdit ? '' : null">
 		</div>
-		<button type="button" class="icon icon-edit edit" (click)="setHide()">Editar</button>
+		<button type="button" class="icon icon-edit edit" (click)="setHide()" *ngIf="canEdit">Editar</button>
 	</div>
 	<div class="content" [ngClass]="{hide: isHide()}">
 		<div class="description">
-			<textarea formControlName="leyend">{{user.leyend}}</textarea>
+			<textarea formControlName="leyend" placeholder="Ingrese leyenda">{{user.leyend}}</textarea>
 		</div>
 		<div class="box">
 			<button type="button" class="form-button mat-button mat-raised-button" (click)="onSave()">Guardar</button>

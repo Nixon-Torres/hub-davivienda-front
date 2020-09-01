@@ -4,8 +4,8 @@
 		<input type="hidden" formControlName="stateId">
 	</div>
 	<div class="two-columns">
-		<h3 class="title icon icon-list-alt">Sección</h3>
-		<p class="intro">Seleccione la sección para la cual desea hacer su informe</p>
+		<h3 class="title icon icon-list-alt">Compa&ntilde;&iacute;a</h3>
+		<p class="intro">Seleccione la compa&ntilde;&iacute;a para la cual desea hacer su informe</p>
 		<div class="group-radio">
 			<div class="group-radio--option" *ngFor="let section of list.sections; let indice=index">
 				<input type="radio" formControlName="sectionId" [value]="section.id" [id]="section.id" (change)="onUpdateTypes($event, indice)">
@@ -28,7 +28,7 @@
                  *ngIf="typeObjSelected && typeObjSelected.mainCategory && typeObjSelected.mainCategory.length &&
                  typeObjSelected.mainCategory[0].code === 'ANLISISDECOMPAAS'">
                 <ng-select [items]="list.companies" bindValue="id" bindLabel="name"
-                           placeholder="Seleccione compañia" [virtualScroll]="true"
+                           placeholder="Seleccione compañía" [virtualScroll]="true"
                            [clearable]="false" class="custom-select"
                            [(ngModel)]="companySelected" [ngModelOptions]="{standalone: true}">
                 </ng-select>
@@ -55,6 +55,7 @@
 						<input id="newSectionName" type="text" placeholder="Escriba el nombre del informe"
                                (keydown)="createNewSection($event)"
 						        [(ngModel)]="newSectionName" [ngModelOptions]="{standalone: true}">
+                        <div class="label-copy-new-report-type">Presione enter para guardar</div>
 					</div>
 				</div>
 			</div>

@@ -16,7 +16,13 @@ export class LoginComponent implements OnInit {
     constructor(
         private router: Router,
         private auth: AuthService
-    ) { }
+    ) {
+        this.auth.user.subscribe((user) => {
+            if (user && user.id) {
+                this.router.navigate(['/app/principal']);
+            }
+        });
+    }
 
     ngOnInit() {
         this.initFormLogin();
@@ -34,7 +40,7 @@ export class LoginComponent implements OnInit {
         this.showErrorMsg = false;
         this.auth.login(this.loginForm.value).subscribe(
             (response: boolean) => {
-                if(response) {
+                if (response) {
                     setTimeout(() => {
                         this.router.navigate(['app/principal']);
                     }, 100);
