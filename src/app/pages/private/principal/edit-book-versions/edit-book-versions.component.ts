@@ -72,6 +72,30 @@ export class EditBookVersionsComponent implements OnInit, AfterViewInit {
 
     private editorOptions = {
         default: {
+            removePlugins: ['Crossreference'],
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'superscript',
+                    'subscript',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'indent',
+                    'outdent',
+                    '|',
+                    'imageUpload',
+                    'blockQuote',
+                    'insertTable',
+                    'mediaEmbed',
+                    'undo',
+                    'redo'
+                ]
+            },
         }
     };
 
