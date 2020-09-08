@@ -12,7 +12,8 @@
                 <p class="tab__title">Elija la ubicación donde quiere que este el video a destacar</p>
                 <div class="highlight_content">
                     <div>
-                        <p class="highlight_picture" style="cursor: default">destacado principal</p>
+                        <p class="highlight_picture" (click)="onCheckSection('header')"
+                           [ngClass]="{'activeColor': isActive('header')}">destacado principal</p>
                         <div class="hr_content">
                             <hr class="first-hr">
                             <hr class="middle-hr">
@@ -61,6 +62,20 @@
                     </div>
 
                 </div>
+                <div class="highlight_image" *ngIf="isActive('header')">
+                    <div class="controls" *ngIf="!imageSelected">
+                        <button (click)="openGallery()">
+                            <span class="icon icon-plus-circle"></span>
+                            <span class="info"> Agregar imagen al destacado</span>
+                        </button>
+                        <p>Tamaño máximo de imagen 1MB</p>
+                    </div>
+                    <div class="list" *ngIf="imageSelected">
+                        <img [src]="getReportImage()">
+                        <p>{{file ? file?.fileName : photo}}</p>
+                        <button class="del icon icon-times" (click)="onRemoveImage()"></button>
+                    </div>
+                </div>
                 <ng-select [items]="multimediaList"
                            placeholder="-Seleccione Contenido multimedia a destacar-"
                            bindValue="id"
@@ -70,7 +85,7 @@
                 ></ng-select>
                 <div class="tab__buttons">
                     <button class="" (click)="closeDialog()">Cancelar</button>
-                    <button class="confirm" (click)="onSave()">Aceptar</button>
+                    <button class="confirm" (click)="onSave()" [disabled]="sectionSelect === 'header' && !photo && !file">Aceptar</button>
                 </div>
             </div>
         </mat-tab>
@@ -138,6 +153,7 @@
                         </article>
                     </section>
                 </article>
+
                 <ng-select [items]="multimediaList"
                            placeholder="-Seleccione Contenido multimedia a destacar-"
                            bindValue="id"

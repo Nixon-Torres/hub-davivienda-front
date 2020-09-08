@@ -269,21 +269,22 @@
     }
 }
 
-.highlight_image{
+.highlight_image {
     text-align: center;
     padding: 26px 35px;
-    margin-top: 15px;
     background-color: #e7ecf4;
-    button{
+    margin: 15px -57px 14px;
+
+    button {
         font-size: 1.2em;
         border: none;
         background: none;
         color: #389bfd;
         cursor: pointer;
-        .info{
+        .info {
             text-decoration: underline;
         }
-        &:focus{
+        &:focus {
             outline: none;
         }
     }
