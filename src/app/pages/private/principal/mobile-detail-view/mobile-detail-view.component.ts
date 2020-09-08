@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import { RevisionModalComponent } from '../../board/revision-modal/revision-modal.component';
 
 @Component({
     selector: 'app-mobile-detail-view',
@@ -21,7 +22,9 @@ export class MobileDetailViewComponent implements OnInit {
         approved: '5e068d1cb81d1c5f29b62974',
         published: '5e068c81d811c55eb40d14d0'
     };
+    public isMediumUser = false;
     public isAdvancedUser = false;
+    public users: any = [];
     public unresolvedComments: any;
     showComments = false;
     listComments: any;
@@ -33,6 +36,7 @@ export class MobileDetailViewComponent implements OnInit {
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
+            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
             this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
         });
     }
@@ -98,6 +102,19 @@ export class MobileDetailViewComponent implements OnInit {
         this.showComments = true;
     }
 
+    public canSendToRevision(): boolean {
+        return this.report.stateId === this.states.draft || this.report.stateId === this.states.toCorrect;
+    }
+
+    public canReturnToEdit(): boolean {
+        return this.report.stateId === this.states.toReview;
+    }
+
+    public canApprove(): boolean {
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+            this.report.stateId === this.states.toReview;
+    }
+
     public canPublish(): boolean {
         return this.isAdvancedUser && this.report.stateId === this.states.approved;
     }
@@ -156,7 +173,7 @@ export class MobileDetailViewComponent implements OnInit {
 
     public publishConfirmation() {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            width: '410px',
+            width: '350px',
             data: {
                 isAlert: true,
                 config: {
@@ -175,12 +192,116 @@ export class MobileDetailViewComponent implements OnInit {
         });
     }
 
+    public getReviewers(reviewers: Array<object>) {
+        return reviewers.map((reviewer: any) => {
+            return { reportId: this.report.id, reviewerId: reviewer.id };
+        });
+    }
+
+    public sendReview(reviewers: Array<object>) {
+        this.http.post({
+            path: 'reports/reviewers',
+            data: {
+                reportId: this.report.id,
+                reviewers: this.getReviewers(reviewers)
+            }
+        }).subscribe((resp: any) => {
+            if (resp) {
+                this.dialog.open(ConfirmationDialogComponent, {
+                    width: '350px',
+                    data: {
+                        config: {
+                            title: 'Tu informe ha sido enviado a revisión:',
+                            subtitle: this.report.name
+                        }
+                    }
+                });
+            }
+            this.report.state = resp.body.report.state;
+            this.report.stateId = resp.body.report.stateId;
+        });
+    }
+
+    public onSendToRevisionAction(): void {
+        this.http.get({
+            path: 'users',
+            data: {
+                where: {
+                    roles: 'Admin'
+                }
+            },
+            encode: true
+        }).subscribe((resp) => {
+            this.users = resp.body;
+            this.users = this.users.sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (b.name > a.name) {
+                    return -1;
+                }
+                return 0;
+            });
+            const dialogRef = this.dialog.open(RevisionModalComponent, {
+                width: '350px',
+                data: {
+                    title: '¿Quien quiere que revise su informe?',
+                    users: this.users.filter(e => e.id !== this.user.id)
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this.sendReview(result);
+                }
+            });
+        });
+    }
+
+    public returnToEdit(): void {
+        this.http.patch({
+            path: `reports/${this.report.id}`,
+            data: {
+                reviewed: false,
+                stateId: '5e068d1cb81d1c5f29b62975'
+            }
+        }).subscribe((response: any) => {
+            this.report.stateId = response.body.stateId;
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '350px',
+                data: {
+                    config: {
+                        title: 'Tu informe ha sido enviado a revisión con ajustes:',
+                        subtitle: this.report.name
+                    }
+                }
+            });
+        });
+    }
+
+    public approve() {
+        this.report.reviewed = true;
+        this.report.stateId = '5e068d1cb81d1c5f29b62974';
+        this.onSave(false, () => {
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '350px',
+                data: {
+                    config: {
+                        title: 'Tu informe ha sido aprobado:',
+                        subtitle: this.report.name
+                    }
+                }
+            });
+            this.loadReport();
+        });
+    }
+
     public publish() {
         this.report.reviewed = true;
         this.report.stateId = '5e068c81d811c55eb40d14d0';
         this.onSave(false, () => {
             this.dialog.open(ConfirmationDialogComponent, {
-                width: '410px',
+                width: '350px',
                 data: {
                     config: {
                         title: 'Tu informe ha sido publicado:',

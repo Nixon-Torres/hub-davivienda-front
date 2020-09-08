@@ -22,7 +22,6 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { BoardComponent } from './board.component';
 import { PreviewDialogModule } from '../preview-dialog/preview-dialog.module';
 import { RelatedReportsComponent } from './related-reports/related-reports.component';
-import { RevisionModalComponent } from './revision-modal/revision-modal.component';
 import { ConfirmationDialogModule } from './confirmation-dialog/confirmation-dialog.module';
 import { PdfUploadComponent } from './pdf-upload/pdf-upload.component';
 import { CreationModalComponent } from './creation-modal/creation-modal.component';
@@ -36,6 +35,7 @@ import { CommentBoxModule } from './comment-box/comment-box.module';
 import { MobileCommentViewModule } from '../principal/mobile-comment-view/mobile-comment-view.module';
 import { MobileDetailViewModule } from '../principal/mobile-detail-view/mobile-detail-view.module';
 import {CodeEditorModule} from '@ngstack/code-editor';
+import {PrincipalModule} from '../principal/principal.module';
 
 const routes: Routes = [
     {
@@ -73,7 +73,6 @@ const materialModules: any[] = [
 @NgModule({
     declarations: [
         BoardComponent,
-        RevisionModalComponent,
         RelatedReportsComponent,
         PdfUploadComponent,
         CreationModalComponent
@@ -96,13 +95,13 @@ const materialModules: any[] = [
         CommentBoxModule,
         MobileCommentViewModule,
         MobileDetailViewModule,
-        CodeEditorModule
+        CodeEditorModule,
+        PrincipalModule
     ],
     exports: [
         materialModules
     ],
     entryComponents: [
-        RevisionModalComponent,
         CreationModalComponent,
         PdfUploadComponent
     ]

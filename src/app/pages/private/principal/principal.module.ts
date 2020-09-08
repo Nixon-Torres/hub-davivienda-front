@@ -59,6 +59,7 @@ import { EditFooterComponent } from './edit-footer/edit-footer.component';
 import { ArraySortPipe } from 'src/app/pipes/array-sort.pipe';
 import { MobileCommentViewModule } from './mobile-comment-view/mobile-comment-view.module';
 import { MobileDetailViewModule } from './mobile-detail-view/mobile-detail-view.module';
+import {RevisionModalComponent} from '../board/revision-modal/revision-modal.component';
 
 const routes: Routes = [
     {
@@ -113,7 +114,8 @@ const materialModules: any[] = [
         AddWordsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
-        ArraySortPipe
+        ArraySortPipe,
+        RevisionModalComponent
     ],
     imports: [
         CommonModule,
@@ -142,7 +144,8 @@ const materialModules: any[] = [
         CreateReportDialogComponent,
         HighlightDialogComponent,
         TagsDialogComponent,
-        AddWordsDialogComponent
+        AddWordsDialogComponent,
+        RevisionModalComponent
     ]
 })
 export class PrincipalModule { }

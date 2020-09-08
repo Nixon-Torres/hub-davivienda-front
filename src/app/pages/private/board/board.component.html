@@ -132,7 +132,7 @@
                 <!-- TODO refactor to material components -->
                 <article class="editors" *ngIf="report.id" #editorsParent>
                     <span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por
-                        {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}
+                        {{ (editorsList && editorsList.length ? editorsList[0].name : '') | slice:0:8 }}
                         ...
                         <span class="editors__count" *ngIf="editorsList?.length > 1">+
                             {{ editorsList ? editorsList?.length - 1 : 0}}</span>
