@@ -176,6 +176,7 @@ export class MultimediaComponent implements OnInit {
     public openOutstandingDialog(item): void {
         this.dialog.open(OutstandingVideosComponent, {
             width: '602px',
+            height: (window.innerHeight - 100) + 'px',
             data: item
         });
     }
