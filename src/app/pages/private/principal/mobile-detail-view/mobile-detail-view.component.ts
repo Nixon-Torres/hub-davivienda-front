@@ -224,7 +224,7 @@ export class MobileDetailViewComponent implements OnInit {
 
     public onSendToRevisionAction(): void {
         this.http.get({
-            path: 'users',
+            path: 'users/list',
             data: {
                 where: {
                     roles: 'Admin'
@@ -232,7 +232,9 @@ export class MobileDetailViewComponent implements OnInit {
             },
             encode: true
         }).subscribe((resp) => {
-            this.users = resp.body;
+            this.users = (resp.body as any).filter(e => {
+                return e.roles && e.roles.indexOf('Admin') > -1;
+            });
             this.users = this.users.sort((a, b) => {
                 if (a.name > b.name) {
                     return 1;
