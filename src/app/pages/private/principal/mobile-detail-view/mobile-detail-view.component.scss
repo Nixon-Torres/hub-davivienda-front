@@ -7,9 +7,10 @@ iframe {
 
 .preview-mobile {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
+    padding: 15px;
     background-color: #fff;
     box-shadow: 0px 10px 10px -7px #e8e8e8;
     position: relative;
@@ -35,9 +36,20 @@ iframe {
     }
 
     &__post {
+        margin: 0 2%;
         button {
             background-color: #0080FF;
             color: #ffffff;
+        }
+    }
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        width: auto;
+        @media only screen and (max-width: 600px) {
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 10px;
         }
     }
 }

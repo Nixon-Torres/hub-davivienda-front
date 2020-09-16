@@ -1297,7 +1297,7 @@ mat-expansion-panel {
 
 	@media only screen and (max-width: 720px) {
 		.mobile-opened {
-			z-index: 9;
+			z-index: 9999;
 			.sidenav_opacity {
 				display: block;
 			}
