@@ -681,6 +681,9 @@ section {
 		display: flex;
 		justify-content: center;
 		margin: 30px 0;
+		.paginator_button {
+			cursor: pointer;
+		}
 		a {
 			color: #BCBCBC;
 			text-decoration: none;

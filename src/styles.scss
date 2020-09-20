@@ -1263,7 +1263,7 @@ mat-expansion-panel {
 	}
 
 	@media only screen and (max-width: 991px) {
-		div#cdk-overlay-1 {
+		div.cdk-overlay-pane {
 			max-width: 100% !important;
 		}
 	}

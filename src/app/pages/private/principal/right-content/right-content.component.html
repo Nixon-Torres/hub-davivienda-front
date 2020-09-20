@@ -332,14 +332,16 @@
             </mat-tab-group>
         </section>
         <div class="paginations" *ngIf="pager.pages.length">
-            <a *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])"
-                class="arrow_left">&#x3c;</a>
+            <div class="paginator_button" *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])">
+                <a class="arrow_left">&#x3c;</a>                
+            </div>
             <a class="label paginator_label">Página</a>
             <a class="paginator_numbers" *ngFor="let item of pager.filterPages; index as i"
                 [ngClass]="{'active': (pager.selected == item.index), 'noclick': item.index === '...'}"
                (click)="item.index !== '...' ? loadReports(ifilter, item) : null">{{item.index}}</a>
-            <a *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])"
-                class="arrow_right">&#x3e;</a>
+            <div class="paginator_button" *ngIf="pager.selected < pager.totalPages" (click)="loadReports(ifilter, pager.pages[pager.selected])">
+                <a class="arrow_right">&#x3e;</a>
+            </div>
         </div>
     </div>
 
