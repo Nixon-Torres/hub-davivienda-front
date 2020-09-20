@@ -355,14 +355,13 @@ section {
 
 			&:hover {
 				color: #0080FF;
-
-				+ .report--menu-list {
-					display: block;
-				}
 			}
 
 			&:focus {
 				outline: none;
+				+ .report--menu-list {
+					display: block;
+				}
 			}
 
 			&:after {
