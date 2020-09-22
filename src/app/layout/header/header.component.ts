@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit {
                     type: 'report-reviewer',
                     action: {inq: ['created', 'refused', 'approved', 'published']},
                 },
-                limit: 10
+                limit: 50
             },
             encode: true
         }).subscribe((response: any) => {
