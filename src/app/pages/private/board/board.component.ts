@@ -478,7 +478,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     setPrecontent() {
         this.editor5Data = !this.report.preContentEnabled ? '' :
             // tslint:disable-next-line:max-line-length
-            '<h2 class="box-title"><strong>P.O. 2020 FA: 29,600 / SOBREPONDERAR</strong></h2><p><strong>Potencial:</strong> 20%</p><p><strong>P/VL actual:</strong> 1.1x</p><p><strong>Max 52 Semanas (COP): </strong>29,000</p><p><strong>Cierre:</strong> 28,500</p><p><strong>P/E actual:</strong> 12.4x</p><p><strong>Min 52 Semanas (COP): </strong>40,000</p><p><strong>Market Cap (COP): </strong>28.4 bn</p><p><strong>Diviendo anual (COP):</strong> 1,100</p><p><strong>#acciones:</strong> 598 mm</p><p>PFBCOLO CB</p><p><strong>Riesgo: </strong>Alto</p><p><strong>Bloomberg: </strong>COAR GO</p>';
+            '<h2 class="box-title"><strong>P.O. 2020 FA: 29,600 / SOBREPONDERAR</strong></h2><p><strong>Potencial:</strong> 20%</p><p><strong>P/VL actual:</strong> 1.1x</p><p><strong>Max 52 Semanas (COP): </strong>29,000</p><p><strong>Cierre:</strong> 28,500</p><p><strong>P/E actual:</strong> 12.4x</p><p><strong>Min 52 Semanas (COP): </strong>40,000</p><p><strong>Market Cap (COP): </strong>28.4 bn</p><p><strong>Dividendo anual (COP):</strong> 1,100</p><p><strong>#acciones:</strong> 598 mm</p><p><strong>PFBCOLO CB</strong></p><p><strong>Riesgo: </strong>Alto</p><p><strong>Bloomberg: </strong>COAR GO</p>';
         this.editor5Instance.setData(this.editor5Data);
     }
 
