@@ -107,6 +107,31 @@
         @media only screen and (max-width: 768px) {
             padding: 10px;
         }
+
+        ol {
+            list-style: decimal;
+            &:nth-child(1n) {
+              ol {
+                list-style: none;
+              }
+            }
+            &:last-child {
+              li {
+                &::before {
+                  counter-increment: start;
+                  visibility: initial;
+                  position: initial;
+                }
+              }
+            }
+            li {
+              &::before {
+                content: counter(start, lower-alpha) ". ";
+                visibility: hidden;
+                position: absolute;
+              }
+            }
+          }
     }
 
     &__modification, &__edit {
