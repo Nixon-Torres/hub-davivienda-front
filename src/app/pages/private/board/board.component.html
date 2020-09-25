@@ -418,12 +418,14 @@
                                     columna</button>
                             </li>
                             <li class="ng-star-inserted"
-                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns'">
+                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns' ||
+                                       report?.template?.key === 'pdf' || report?.type === 'pdf'">
                                 <button class="icon" (click)="addEditorSection(true, 'left')">M&oacute;dulo dos
                                     columnas</button>
                             </li>
                             <li class="ng-star-inserted"
-                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns'">
+                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns' ||
+                                       report?.template?.key === 'pdf' || report?.type === 'pdf'">
                                 <button class="icon" (click)="addEditorSection(true, 'right')">M&oacute;dulo dos
                                     columnas B</button>
                             </li>
