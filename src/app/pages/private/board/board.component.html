@@ -132,7 +132,7 @@
                 <!-- TODO refactor to material components -->
                 <article class="editors" *ngIf="report.id" #editorsParent>
                     <span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por
-                        {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}
+                        {{ (editorsList && editorsList.length ? editorsList[0].name : '') | slice:0:8 }}
                         ...
                         <span class="editors__count" *ngIf="editorsList?.length > 1">+
                             {{ editorsList ? editorsList?.length - 1 : 0}}</span>
@@ -418,12 +418,14 @@
                                     columna</button>
                             </li>
                             <li class="ng-star-inserted"
-                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns'">
+                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns' ||
+                                       report?.template?.key === 'pdf' || report?.type === 'pdf'">
                                 <button class="icon" (click)="addEditorSection(true, 'left')">M&oacute;dulo dos
                                     columnas</button>
                             </li>
                             <li class="ng-star-inserted"
-                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns'">
+                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns' ||
+                                       report?.template?.key === 'pdf' || report?.type === 'pdf'">
                                 <button class="icon" (click)="addEditorSection(true, 'right')">M&oacute;dulo dos
                                     columnas B</button>
                             </li>

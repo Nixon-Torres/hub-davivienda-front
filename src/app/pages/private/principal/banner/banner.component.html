@@ -1,11 +1,11 @@
 <article class="outstanding">
     <header class="outstanding__header" (click)="showPanel = !showPanel">
         <div class="outstanding__texts">
-            <p class="text--blue">Banner destacado 1</p>
+            <p class="text--blue">{{outstandingKeyTitle}}</p>
             <p class="text--main">{{ outstandingElement?.title }}</p>
             <p class="text--second">{{ outstandingElement?.description }}</p>
         </div>
-        
+
         <div class="outstanding__modification">
             <p class="modification__title">Ultima modificación</p>
             <p class="modification__value">{{outstandingElement?.updatedAt | date:'hh:mm a dd LLLL'}}</p>

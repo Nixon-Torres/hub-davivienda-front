@@ -18,6 +18,7 @@ export class BannerComponent implements OnInit {
     public currentImage: any;
     public showPanel = false;
     @Input() outstandingKey: string;
+    @Input() outstandingKeyTitle: string;
 
     constructor(
         private http: HttpService,
