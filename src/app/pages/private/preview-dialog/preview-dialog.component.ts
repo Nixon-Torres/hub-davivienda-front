@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 import { HttpService } from '../../../services/http.service';
 
 
@@ -26,7 +25,6 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-
         if (!this.report.id) {
             alert('¡Oops!\nNo encontramos el reporte');
             return;
@@ -37,6 +35,9 @@ export class PreviewDialogComponent implements OnInit {
         this.http.get({
             'path': `reports/view?id=${this.report.id}`
         }).subscribe((response: any) => {
+            console.group('Report');
+            console.log(response);
+            console.groupEnd();
             this.report.styles = response.body.view.styles ? response.body.view.styles : '';
             this.report.content = response.body.view.content ? response.body.view.content : '';
             this.loadReport();

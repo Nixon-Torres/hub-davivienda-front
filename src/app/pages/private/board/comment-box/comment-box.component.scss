@@ -249,4 +249,44 @@ app-comment-box{
 	.hide {
 		display: none;
 	}
+
+}
+
+
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px !important;
+}
+
+.slider.round:before {
+	border-radius: 50% !important;
+}
+
+.slider.round {
+	width: 17px !important;
+}
+
+input:checked + .slider {
+	background-color: #2196F3 !important;
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px #2196F3 !important;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px) !important;
+	-ms-transform: translateX(26px) !important;
+	transform: translateX(26px) !important;
+}
+
+.switch [type=checkbox] + span:not(.lever) {
+	position: relative;
+	padding-left: 35px;
+	cursor: pointer;
+	display: inline-block;
+	height: 25px;
+	line-height: 25px;
+	font-size: 1rem;
+	user-select: none;
 }

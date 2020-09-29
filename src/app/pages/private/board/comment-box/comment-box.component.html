@@ -2,6 +2,11 @@
     <button class="close-btn" (click)="hideComments()">
         <i class="material-icons">close</i>
     </button>
+    <!-- Rounded switch -->
+    <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+    </label>
     <h1>Comentarios</h1>
 </header>
 
@@ -29,7 +34,7 @@
         </mat-card-content>
     </mat-card>
 
-    <mat-card class="comment-form hide">
+    <mat-card class="comment-form" *ngIf="flagAdd">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
@@ -42,14 +47,14 @@
             </button>
         </mat-card-header>
         <mat-card-content class="form">
-            <textarea class="autoExpand" placeholder="Escriba aquí..." [(ngModel)]="comment.text"></textarea>
+            <textarea placeholder="Escriba aquí..." [(ngModel)]="comment.text" (click)="expandArea()" [ngClass]="expandStyle"></textarea>
             <button type="button" name="button" class="send-btn" (click)="sendComment()">
                 <i class="material-icons">arrow_forward</i>
             </button>
         </mat-card-content>
     </mat-card>
 
-    <div class="add-action">
+    <div class="add-action" *ngIf="!flagAdd">
         <p>
             <button (click)="displayCommentForm()">
                 <i class="material-icons">add</i>

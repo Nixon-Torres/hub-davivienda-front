@@ -1,2 +1,9 @@
-<a class="preview-icon" (click)="closeDialog()"><span class="icon icon-times"></span></a>
-<iframe id="previewFrame" src="about:blank"></iframe>
+<div class="dialog">
+    <div class="dialog__iframe">
+        <a class="preview-icon" (click)="closeDialog()"><span class="icon icon-times"></span></a>
+        <iframe id="previewFrame" src="about:blank"></iframe>
+    </div>
+    <div class="dialog__comments">
+        <app-comment-box *ngIf="report" [report]="report" [showHeader]="true"></app-comment-box>
+    </div>
+</div>

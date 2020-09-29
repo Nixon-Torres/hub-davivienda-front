@@ -1,10 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation  } from '@angular/core';
-
 import { AuthService } from '../../../../services/auth.service';
 import { HttpService } from '../../../../services/http.service';
-
 import { Comment } from './comment-box.model';
-import * as $ from "jquery/dist/jquery";
 
 @Component({
     selector: 'app-comment-box',
@@ -17,6 +14,10 @@ export class CommentBoxComponent implements OnInit {
     @Input('report') private report: any;
     @Output() propagate = new EventEmitter<string>();
     @Output() unresolved = new EventEmitter<object>();
+    
+    flagAdd: boolean = false;
+    expandStyle: string = '';
+    
     public user: any = {};
     public comment: Comment = {
         id: null,
@@ -27,6 +28,7 @@ export class CommentBoxComponent implements OnInit {
     public list: any = {
         comments: []
     };
+
 
     constructor(
         private http: HttpService,
@@ -40,10 +42,10 @@ export class CommentBoxComponent implements OnInit {
     ngOnInit() {
         this.comment.reportId = this.report.id;
         this.loadComments();
+    }
 
-        $('textarea').on('click', function() {
-            document.querySelector('textarea').classList.add('expand');
-        });
+    expandArea(): void {
+        this.expandStyle = 'expand';
     }
 
     loadComments() {
@@ -101,14 +103,12 @@ export class CommentBoxComponent implements OnInit {
     }
 
     displayCommentForm() {
-        document.querySelector('.add-action').classList.add('hide');
-        document.querySelector('.comment-form').classList.remove('hide');
+        this.flagAdd = true;
     }
 
     hideCommentForm() {
-        document.querySelector('.comment-form').classList.add('hide');
-        document.querySelector('.add-action').classList.remove('hide');
-        document.querySelector('textarea').classList.remove('expand');
+        this.flagAdd = false;
+        this.expandStyle = '';
     }
 
     hideComments() {

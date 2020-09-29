@@ -49,7 +49,7 @@
                     <span class="icon icon-trash-alt"></span>Descartar
                 </button>
                 <button mat-flat-button class="bttn bttn-default" [disabled]="!report.id" (click)="openPreviewDialog()">
-                    <span class="icon icon-search-plus"></span>Vista Previa
+                    <span class="icon icon-search-plus"></span>Vista previa
                 </button>
                 <button mat-flat-button class="bttn bttn-default" *ngIf="canSendToRevision()"
                     [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
