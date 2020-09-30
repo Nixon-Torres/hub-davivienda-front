@@ -1,0 +1,93 @@
+.report_page {
+    font-family: 'PT Serif', serif;
+}
+.pr-full-bg {
+    background-color: #F5F5F5;
+}
+.pr-full-bg .container .brief-section {
+    background-color: #F5F5F5;
+    padding-top: 72px;
+    padding-bottom: 46px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.brief-head .box-title::first-letter {
+    font-size: 20px !important;
+    float: none !important;
+    line-height: auto !important;
+    margin: auto !important;
+    font-weight: bold !important;
+}
+.brief-head p:nth-child(2)::first-letter {
+    font-size: 70px;
+    float: left;
+    line-height: .2;
+    margin: 17px 10px 0 0;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+blockquote {
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+    quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+    color: #ccc;
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+}
+blockquote p {
+    font-style: italic;
+    display: inline;
+    font-size: 1.6rem;
+}
+.report_page ul li{
+    list-style-image: url(images/arrow_dav.svg);
+    vertical-align: middle;
+    min-height: 22px;
+    margin-left: 30px;
+    height: auto;
+}
+
+.report_page ul.d-flex li{
+    list-style-image:none;
+}
+
+.report_page ol li{
+    list-style-type:  decimal;
+    vertical-align: middle;
+    min-height: 22px;
+    margin-left: 30px;
+    height: auto;
+}
+
+.da-ponderar{
+    overflow:hidden;
+}
+
+.da-ponderar p{
+    display: block;
+    float: left;
+    margin-right: 15px;
+    width: 31.5%;
+}
+
+.da-ponderar p:last-child{
+    margin-right: 0px;
+}
+
+.video-section img{
+    max-width: 174px;
+    padding-bottom: 15px; 
+}
+
+.presentation-slider iframe{
+    width: 100%;
+    padding: 20px;
+    border: 0px !important;
+}
