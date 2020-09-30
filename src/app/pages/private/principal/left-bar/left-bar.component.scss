@@ -1,8 +1,5 @@
  .content-bar {
 	width: 100%;
-	@media only screen and (max-width: 1000px){
-		display: none;
-	}
 
 	a, p {
 		font-weight: 400;
@@ -13,17 +10,53 @@
          }
      }
      .options--name {
-         font-weight: 600;
+		 font-weight: 600;
+		 &.active{
+			 color: #0080ff;
+		 }
      }
+}
+
+.search_menu{
+    display: flex;
+    .header_search{
+        width: 100%;
+        padding: 15px;
+        background: #E3E3E3;
+        margin: 0;
+        input{
+            border: none;
+        }
+        button{
+            top: 15px;
+            right: 15px;
+            height: 30px;
+            background: #fff;
+            position: absolute;
+            border: 0;
+            outline: none;
+            background-color: transparent;
+        }
+    }
 }
 
  li.edit-btn-item {
      padding-bottom: 0px !important;
-     padding-top: 10px !important;
+	 padding-top: 10px !important;
+	 @media only screen and (max-width: 800px) {
+       padding-left: 0;
+    }
+	 @media only screen and (max-width: 720px) {
+        display: none;
+    }
 
      button  {
 		 border-radius: 0px;
-		 padding: 3px;
+         padding: 3px;
+         @media only screen and (max-width: 1024px) {
+            padding: 3px 8px;
+            font-size: 0.82em;
+         }
      }
  }
 
@@ -63,6 +96,9 @@
              left: 4px;
              bottom: 0;
              margin: auto;
+             @media only screen and (max-width: 1024px) {
+                left: -10px;
+            }
          }
 
          .cnt  {
@@ -83,6 +119,9 @@
 	border: solid 1px #E7EAF1;
 	border-bottom: none;
 	font-size: 1em;
+	@media only screen and (max-width: 768px) {
+        background: none;
+    }
 
 	&--name {
 		color: #616161;
@@ -117,13 +156,22 @@
 		padding: 20px 10% 20px 7%;
         padding-top: 0px;
         padding-bottom: 0px;
-		border-top: solid 1px #E7EAF1;
+        border-top: solid 1px #E7EAF1;
+        @media only screen and (max-width: 1024px) {
+            padding: 20px 3% 20px 3%
+        }
 
 		li {
 			border-bottom: 1px solid #E7EAF1;
 			padding: 20px 0;
 			position: relative;
-			cursor: pointer;
+            cursor: pointer;
+            @media only screen and (max-width: 1024px) {
+                padding-left: 12px;
+            }
+            @media only screen and (max-width: 768px) {
+                width: 80%;
+            }
 
 			a {
 				color: #616161;
@@ -131,6 +179,9 @@
 				padding-left: 22px;
 				text-decoration: none;
                 cursor: pointer;
+                @media only screen and (max-width: 1024px) {
+                    padding-left: 0;
+                }
 			}
 
 			&:before {
@@ -235,7 +286,10 @@
 	background: #0080FF;
 	box-shadow: none;
 	color: #FFFFFF;
-	width: 100%;
+    width: 100%;
+    @media only screen and (max-width: 991px){
+        width: auto;
+    }
 
 	.mat-button-wrapper {
 		font-size: 0.875em;
@@ -244,5 +298,140 @@
 
 .cog_icon{
 	position: relative;
-	top: 3px;
+    top: 3px;
+    @media only screen and (max-width: 800px) {
+        display: none;
+    }
+}
+
+/* .bar_name.active{
+	color: #0080ff;
+} */
+
+.side_search{
+    display: none;
+}
+.questions_mobile{
+    display: none;
+}
+
+.menu-font {
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+@media screen and (max-width: 720px) {
+    .sidenav {
+        max-height: 1042px;
+        width: 0;
+        position: relative;
+        z-index: 1;
+        top: 10px;
+        left: 5px;
+        background-color: #f5f7fb;
+        overflow-x: hidden;
+        transition: 0.5s;
+        z-index: 9;
+        border-radius: 10px;
+        width: 320px;
+
+        .side_search {
+            background-color: #ffffff;
+            padding: 20px;
+            display: block;
+            &.search_input {
+                background-position: 94% 50%;
+            }
+            input {
+                width: 100%;
+                line-height: 11px;
+                padding: 5px 5px;
+                font-style: italic;
+                color: #757575;
+                font-size: 14px;
+                font-weight: 200;
+                border: none;
+                border-bottom: 1px solid #bec5d0;
+                font-family: "Helvetica Neue", sans-serif;
+                background-color: transparent;
+            }
+        }
+
+        .sidenav_content {
+            padding: 20px;
+            .options {
+                &--folder_menu {
+                    display: flex;
+                    justify-content: space-between;
+                    .options--name {
+                        font-size: 1em;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .last_option {
+            display: none !important;
+        }
+
+        .folder_name {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 11% 0px 3%;
+            span {
+                display: block;
+            }
+            p{
+                background: none;
+            }
+        }
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    @media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+        .sidenav a {
+            font-size: 18px;
+        }
+    }
+
+    .sidenav_opacity {
+        background-color: #9a9a9a82;
+        width: 100vw;
+        height: 170vh;
+        padding-bottom: 10px;
+        position: relative;
+        z-index: 9;
+        &::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 15px solid transparent;
+            border-top: 15px solid transparent;
+            border-left: 15px solid transparent;
+            border-bottom: 15px solid #fff;
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            @media only screen and (max-width: 320px) {
+                left: 8px;
+            }
+        }
+
+        @media only screen and (max-width: 375px) {
+            height: 100%;
+            max-height: 100%;
+        }
+    }
 }

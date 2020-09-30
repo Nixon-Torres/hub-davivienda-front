@@ -1,0 +1,55 @@
+
+iframe {
+    width: 100%;
+    height: 1200px;
+    overflow-x: hidden;
+}
+
+.preview-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0px 10px 10px -7px #e8e8e8;
+    position: relative;
+    &__back {
+        display: flex;
+        align-items: center;
+        color: #616161;
+        p {
+            font-size: 0.875em;
+            font-weight: bold;
+        }
+    }
+
+    &__comment {
+     text-align: center;   
+     color: #616161;
+     p {
+        font-size: 0.875em;
+     }
+     i {
+         font-size: 20px;
+     }
+    }
+
+    &__post {
+        margin: 0 2%;
+        button {
+            background-color: #0080FF;
+            color: #ffffff;
+        }
+    }
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        width: auto;
+        @media only screen and (max-width: 600px) {
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+}

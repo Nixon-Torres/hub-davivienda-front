@@ -3,7 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { HttpService } from '../../../../services/http.service';
-import {createBrowserLoggingCallback} from '@angular-devkit/build-angular/src/browser';
+import { createBrowserLoggingCallback } from '@angular-devkit/build-angular/src/browser';
 
 @Component({
     selector: 'app-pdf-upload',
@@ -30,7 +30,7 @@ export class PdfUploadComponent implements OnInit {
         this.uploadForm = this.formBuilder.group({
             file: ['']
         });
-        this.files =  this.data.files.filter(e => e.key === 'pdffile');
+        this.files = this.data.files.filter(e => e.key === 'pdffile');
         this.currentFile = this.files && this.files.length > 0 ? this.files[0] : null;
     }
 
@@ -47,6 +47,7 @@ export class PdfUploadComponent implements OnInit {
         formData.append('types', encodeURI(JSON.stringify(['pdf'])));
         formData.append('file', this.uploadForm.get('file').value);
         formData.append('key', 'pdffile');
+        formData.append('maxSize', (1000 * 1000000).toString());
         formData.append('resourceId', this.data.reportId);
         if (this.currentFile) {
             formData.append('id', this.currentFile.id);
@@ -60,10 +61,12 @@ export class PdfUploadComponent implements OnInit {
         }).subscribe(
             (response: any) => {
                 this.spinner = false;
-                this.files =  this.data.files;
-                if (response.body.name && (response.body.statusCode || response.body.code)) {
-                    const err = response.body.name;
-                    this.errorMsg = (err === 'ValidationError') ? 'Solo se permite archivos PDFS' : 'Ha superado del tamaño maximo del archivo';
+                this.files = this.data.files;
+                if (response.body && (response.body.file.statusCode || response.body.file.code)) {
+                    const err = response.body.file.name;
+                    this.errorMsg = (err === 'ValidationError')
+                        ? 'Solo se permite archivos PDFS'
+                        : 'Ha superado del tamaño maximo del archivo';
                     document.querySelector('#iFile')['value'] = '';
                     return;
                 }
@@ -71,7 +74,8 @@ export class PdfUploadComponent implements OnInit {
                 this.currentFile = this.fileData.file;
                 this.workMsg = this.currentFile ? 'Ha subido el siguiente archivo:' : '';
             },
-            () => {
+            (err) => {
+                console.log(err);
                 this.spinner = false;
                 this.fileData = null;
                 document.querySelector('#iFile')['value'] = '';

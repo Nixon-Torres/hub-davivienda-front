@@ -1,0 +1,8 @@
+<div class="preview-mobile">
+    <div class="preview-mobile__back" (click)="back()">
+        <span class="material-icons">arrow_back_ios</span>
+        <p>Comentarios</p>
+    </div>
+</div>
+<app-comment-box (unresolved)="unresolvedComments=$event" *ngIf="report"
+    [report]="report" [showHeader]="false"></app-comment-box>

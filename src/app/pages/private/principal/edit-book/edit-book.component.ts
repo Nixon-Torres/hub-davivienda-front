@@ -66,6 +66,14 @@ export class EditBookComponent implements OnInit, AfterViewInit {
         type: 'image',
         class: 'image'
     }, {
+        id: 'pdfPreviewSrc',
+        title: 'Pdf Preview',
+        subtitle: 'Actualmente se muestra la siguiente información:',
+        placeholder: '',
+        content: '',
+        type: 'image',
+        class: 'image'
+    }, {
         id: 'second',
         title: 'Segunda sección',
         subtitle: 'Actualmente se muestra la siguiente información:',
@@ -98,6 +106,22 @@ export class EditBookComponent implements OnInit, AfterViewInit {
         type: 'html',
         class: 'html fifth'
     }, {
+        id: 'link-text-fin',
+        title: 'Link Proyecciones Descripción',
+        subtitle: 'Actualmente se muestra la siguiente información:',
+        placeholder: '',
+        content: '',
+        type: 'input',
+        class: 'title'
+    }, {
+        id: 'link-text-file',
+        title: 'Archivo proyecciones',
+        subtitle: 'Actualmente se muestra la siguiente información:',
+        placeholder: '',
+        content: '',
+        type: 'image',
+        class: 'image'
+    }, {
         id: 'sixth',
         title: 'Sexta sección',
         subtitle: 'Actualmente se muestra la siguiente información:',
@@ -121,10 +145,34 @@ export class EditBookComponent implements OnInit, AfterViewInit {
         content: '',
         type: 'html',
         class: 'html atencion-table'
-    } ];
+    }];
 
     private editorOptions = {
         default: {
+            removePlugins: ['Crossreference'],
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'superscript',
+                    'subscript',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'indent',
+                    'outdent',
+                    '|',
+                    'imageUpload',
+                    'blockQuote',
+                    'insertTable',
+                    'mediaEmbed',
+                    'undo',
+                    'redo'
+                ]
+            },
         }
     };
 
@@ -225,7 +273,7 @@ export class EditBookComponent implements OnInit, AfterViewInit {
     }
 
     public saveImages() {
-        const imgsToCreate = this.blocks.filter(e => e.type === 'image' && e.file && !e.imageId).map((block) => {
+        const imgsToCreate = this.blocks.filter(e => e.type === 'image' && e.file && (!e.imageId  || e.isUpdate)).map((block) => {
             return {
                 id: block.id,
                 file: block.file,
@@ -357,6 +405,7 @@ export class EditBookComponent implements OnInit, AfterViewInit {
 
         block.fileName = file.name;
         block.file = file;
+        block.isUpdate = !!block.imageId;
 
         const reader = new FileReader();
         reader.readAsDataURL(file);

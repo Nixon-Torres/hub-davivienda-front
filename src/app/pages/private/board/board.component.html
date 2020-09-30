@@ -1,4 +1,4 @@
-<section class="grapes-container">
+<section class="grapes-container" *ngIf="!isMobileVersion()">
 
     <div class="fixed-action-btn invisible">
         <button class="btn-floating btn-large blue-hub" [disabled]="readonly">
@@ -52,27 +52,27 @@
                     <span class="icon icon-search-plus"></span>Vista Previa
                 </button>
                 <button mat-flat-button class="bttn bttn-default" *ngIf="canSendToRevision()"
-                        [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
+                    [disabled]="!report.id || readonly" (click)="onSendToRevisionAction()">
                     <span class="icon icon-clipboard-check"></span>Enviar a revisión
                 </button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canReturnToEdit()"
-                        [disabled]="!report.id || readonly" (click)="returnToEdit()">
+                <button mat-flat-button class="bttn bttn-primary" *ngIf="canReturnToEdit()"
+                    [disabled]="!report.id || readonly" (click)="returnToEdit()">
                     <span class="icon icon-clipboard-check"></span>Devolver a revisión
                 </button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canApprove()" (click)="approve()"
-                        [disabled]="readonly">
+                <button mat-flat-button class="bttn bttn-primary" *ngIf="canApprove()" (click)="approve()"
+                    [disabled]="readonly">
                     <span class="icon icon-clipboard-check"></span>Aprobar
                 </button>
-                <button mat-flat-button class="bttn bttn-default" *ngIf="canPublish()"
-                        (click)="validateUnresolvedComments()" [disabled]="readonly">
+                <button mat-flat-button class="bttn bttn-primary" *ngIf="canPublish()"
+                    (click)="validateUnresolvedComments()" [disabled]="readonly">
                     <span class="icon icon-check"></span>Publicar
                 </button>
                 <button mat-flat-button class="bttn bttn-primary add-comment" (click)="showComments()"
-                        [disabled]="readonly">
+                    [disabled]="readonly">
                     <img src="/assets/images/comment-plus.png">Añadir comentario
                 </button>
                 <button mat-flat-button class="bttn bttn-primary" (click)="validateMarketingOnSave()"
-                        [disabled]="readonly">
+                    [disabled]="readonly">
                     <span class="icon icon-save"></span>Guardar
                 </button>
                 <small>Autoguardado {{lastupdate}}</small>
@@ -85,7 +85,7 @@
                     <label for="reportName">Nombre informe:</label>
                     <div class="input-field">
                         <input id="reportName" type="text" placeholder="Escriba aquí" [(ngModel)]="report.name"
-                               [disabled]="readonly">
+                            [disabled]="readonly">
                     </div>
                 </div>
                 <button mat-button (click)="focusOnReportName()" [disabled]="readonly">
@@ -96,8 +96,8 @@
                 </button>
 
                 <div class="authors"
-                     [ngClass]="{'authors--list-authors': flags.authorsList, 'authors--list-users': flags.usersList}"
-                     #authorsParent>
+                    [ngClass]="{'authors--list-authors': flags.authorsList, 'authors--list-users': flags.usersList}"
+                    #authorsParent>
 
                     <button mat-button [disabled]="!report.name" (click)="toggleAuthorsList($event)">
                         <span class="icon icon icon-user-alt"></span>Ver autores
@@ -105,10 +105,9 @@
 
                     <div class="select-authors" (click)="$event.stopPropagation()">
                         <ng-select [items]="list.users" bindValue="name" bindLabel="name"
-                                   placeholder="Escriba nombre para agregar" (change)="onAddAuthor($event)"
-                                   [virtualScroll]="true"
-                                   [clearable]="false" [loading]="isAdding"
-                                   class="custom-select custom-select--authors">
+                            placeholder="Escriba nombre para agregar" (change)="onAddAuthor($event)"
+                            [virtualScroll]="true" [clearable]="false" [loading]="isAdding"
+                            class="custom-select custom-select--authors">
                         </ng-select>
                     </div>
 
@@ -119,8 +118,8 @@
                         <li class="author" *ngFor="let author of list.authors">
                             <span class="author__name">{{ author.author.name }}</span>
                             <button class="author__remove icon icon-times" *ngIf="isOwner"
-                                    (click)="onDeleteAuthor($event, author.id)"
-                                    [disabled]="isDeleting && readonly"></button>
+                                (click)="onDeleteAuthor($event, author.id)"
+                                [disabled]="isDeleting && readonly"></button>
                         </li>
                         <li class="authors__add" *ngIf="!maxAuthors && isOwner && !readonly"
                             (click)="toggleUsersList($event)">Añadir autor
@@ -132,21 +131,46 @@
 
                 <!-- TODO refactor to material components -->
                 <article class="editors" *ngIf="report.id" #editorsParent>
-					<span class="editors__placeholder" id="lastEditors"
-                          (click)="toggleEditorsList($event)">Editado por {{ (editorsList ? editorsList[0].name : '') | slice:0:8 }}
+                    <span class="editors__placeholder" id="lastEditors" (click)="toggleEditorsList($event)">Editado por
+                        {{ (editorsList && editorsList.length ? editorsList[0].name : '') | slice:0:8 }}
                         ...
-						<span class="editors__count"
-                              *ngIf="editorsList?.length > 1">+ {{ editorsList ? editorsList?.length - 1 : 0}}</span>
-						<i class="fa "
-                           [ngClass]="{'fa-chevron-up': flags.editorsList, 'fa-chevron-down': !flags.editorsList}"
-                           aria-hidden="true"></i>
-					</span>
+                        <span class="editors__count" *ngIf="editorsList?.length > 1">+
+                            {{ editorsList ? editorsList?.length - 1 : 0}}</span>
+                        <i class="fa "
+                            [ngClass]="{'fa-chevron-up': flags.editorsList, 'fa-chevron-down': !flags.editorsList}"
+                            aria-hidden="true"></i>
+                    </span>
 
                     <ul class="editors__list" *ngIf="flags.editorsList">
                         <li class="editors__item" *ngFor="let editor of editorsList">{{ editor.name }}</li>
                     </ul>
                 </article>
 
+                <div class="divider" *ngIf="report.id"></div>
+
+                <button for="reportThumbImg2" class="file-input file-input-align" type="file" name="file" mat-button
+                    (click)="fileInput.click()">
+                    <span class="icon icong-upload upload-icon"></span>Imagen relacionados
+                    <input id="reportThumbImg2" #fileInput type="file"
+                        accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
+                        (change)="onThumbImageSelected($event)" class="file-input invisible" />
+                </button>
+                <div class="group-menu upload-thumb-icon">
+                    <button class="info-button report--menu">
+                        <i class="fas fa fa-info-circle"></i>
+                    </button>
+                    <div class="report--menu-list">
+                        <div class="row row-tooltip tooltip-container">
+                            <div class="col s2 text-center col-thumb">
+                                <span class="icon icon-exclamation-triangle"></span>
+                            </div>
+                            <div class="col s10">
+                                <p class="title">¡Tenga en cuenta!</p>
+                                <p class="subtitle">Esta imagen quedará fija en el home y en los destacados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </mat-toolbar-row>
 
@@ -159,18 +183,22 @@
 
             <div class="editorModeSection" *ngIf="isMarketing">
                 <button mat-flat-button class="bttn bttn-default" [ngClass]="{'bttn-primary': !grapeEnabled}"
-                        (click)="enableInlineEditor()">Formulario</button>
+                    (click)="grapeEnabled = false">Formulario</button>
                 <button mat-flat-button class="bttn bttn-default html" [ngClass]="{'bttn-primary': grapeEnabled}"
-                        (click)="enableGrapeEditor()">HTML</button>
-            </div>
-            <div id="pdf" class="pdf" *ngIf="templateType === 'pdf' || templateType === 'presentation'">
-                <button class="pdf__btn" (click)="openUploadDialog()" [disabled]="readonly">
-                    <span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo pdf</span>
-                </button>
-                <p class="pdf__max">Tamaño máximo hasta 10GB</p>
+                    (click)="enableGrapeEditor()">HTML</button>
             </div>
 
-            <div class="report-banner-selection" *ngIf="!readonly">
+            <div id="pdf" class="pdf"
+                *ngIf="templateType === 'pdf' || templateType === 'presentation' || report?.type === 'pdf' || report?.type === 'presentation'">
+                <button class="pdf__btn" (click)="openUploadDialog()" [disabled]="readonly"
+                    [ngClass]="{'disabled': !report?.id}">
+                    <span class="icon icong-upload"></span> <span>{{ files?.length > 0 ? 'Editar' : 'Subir' }} archivo
+                        pdf</span>
+                </button>
+                <p class="pdf__max">Tamaño máximo hasta 1GB</p>
+            </div>
+
+            <div class="report-banner-selection" *ngIf="!readonly && !isMarketing">
                 <div id="banner" class="banner">
                     <label for="reportBannerImg">
                         <div class="btn">
@@ -178,13 +206,11 @@
                             || newBanner.imageUrl ? 'Editar' : 'Subir' }} banner</span>
                         </div>
                     </label>
-                    <input
-                        class="file-input invisible"
-                        type="file"
-                        name="file"
-                        (change)="onBannerImageSelected($event)"
-                        id="reportBannerImg"/>
-                    <p class="banner-max">Tamaño máximo hasta 1MB</p>
+                    <input class="file-input invisible" type="file" name="file" (change)="onBannerImageSelected($event)"
+                        id="reportBannerImg" />
+                    <p class="banner-max error" *ngIf="bannerFileSizeExceeded">La imagen cargada supera el límite de
+                        peso.<br /> Tamaño máximo hasta 10 MB</p>
+                    <p class="banner-max" *ngIf="!bannerFileSizeExceeded">Tamaño máximo hasta 10MB</p>
 
                     <div class="delete" *ngIf="(banner?.id && !banner.toDelete)
                             || newBanner.imageUrl" (click)="onBannerImageSelected(null)">
@@ -196,78 +222,120 @@
                 </div>
             </div>
 
-            <div *ngIf="grapeEnabled" id="gjs" [ngClass]="getEditorClasses()"></div>
-            <div *ngIf="!grapeEnabled" class="native-editor-section">
-
-                <div class="control-wrapper title" (click)="editor1.focus()">
+<!--            <div *ngIf="grapeEnabled" id="gjs" [ngClass]="getEditorClasses()"></div>-->
+            <div *ngIf="grapeEnabled" style="width: 90%; margin: 50px auto; height: 350px;">
+                <ngs-code-editor
+                    [theme]="codeTheme"
+                    [codeModel]="codeModel"
+                    [options]="codeOptions"
+                    (valueChanged)="onCodeChanged($event)"
+                >
+                </ngs-code-editor>
+            </div>
+            <div [hidden]="grapeEnabled" class="native-editor-section" [ngClass]="{'noevents': isMarketing}">
+                <div id="actions" class="control-wrapper thumb-section" *ngIf="(thumb?.id && !thumb.toDelete) || newThumb.imageUrl">
+                    <div class="inline-editor-block">
+                        <div class="report-banner-selection">
+                            <div id="thumb" class="banner thumb">
+                                <div class="row thumb-row" id="actionsThumb">
+                                    <div class="col s3 text-center col-thumb">
+                                        <img *ngIf="!thumb.clientPath && newThumb && !newThumb.imageUrl" class="thumb-image" src="./../../../../assets/images/imagen.png" alt="">
+                                        <img *ngIf="!thumb.clientPath && newThumb && newThumb.imageUrl" class="thumb-image" [src]="newThumb.imageUrl" alt="">
+                                        <img *ngIf="thumb && !newThumb.imageUrl" class="thumb-image" [src]="STORAGE_URL_BASE + thumb.clientPath" alt="">
+                                    </div>
+                                    <div class="col s4 text-left col-thumb m-l-0">
+                                        <p class="thumb-text">
+                                            {{newThumb && newThumb.fileName ? newThumb.fileName : thumb.name }}</p>
+                                    </div>
+                                    <div class="col s4 text-left col-thumb button-thumb">
+                                        <button for="reportThumbImg" class="file-input thumb-text" type="file"
+                                            name="file" mat-button (click)="fileInput.click()">
+                                            <span class="icon icon-edit thumb-icon"></span>Editar
+                                            <input id="reportThumbImg" #fileInput type="file"
+                                                accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
+                                                (change)="onThumbImageSelected($event)" class="file-input invisible" />
+                                        </button>
+                                        <button for="reportThumbImg" class="file-input thumb-text" mat-button
+                                            (click)="onThumbImageSelected(null)">
+                                            <span class="icon icon-trash-alt thumb-icon"></span>Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <p class="banner-max error thumb-text text-center" *ngIf="thumbFileSizeExceeded">La
+                                        imagen cargada supera el límite de peso.
+                                        <br /> Tamaño máximo hasta 10 MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider" *ngIf="(thumb?.id && !thumb.toDelete) || newThumb.imageUrl"></div>
+                <div class="control-wrapper title">
                     <div class="inline-editor-block" id="editor1" #editor1>
                     </div>
-                    <span [ngClass]="{'invisible': editor1Data !== ''}"
-                        class="placeholder" unselectable="on">
+                    <span [ngClass]="{'invisible': editor1Data !== ''}" class="placeholder" unselectable="on">
                         Escriba aquí el subtitulo con el que empieza su informe</span>
                 </div>
                 <div class="divider"></div>
                 <div class="control-wrapper fast-content" #editor2Cont>
                     <div class="inline-editor-block" id="editor2" #editor2>
                     </div>
-                    <span [ngClass]="{'invisible': editor2Data !== ''}"
-                        class="placeholder" unselectable="on">
+                    <span [ngClass]="{'invisible': editor2Data !== ''}" class="placeholder" unselectable="on">
                         Escriba aca texto destacado si es necesario (fast content)</span>
                     <!-- Rounded switch -->
                     <label class="switch">
                         <input type="checkbox" [(ngModel)]="report.fastContentEnabled"
-                               (click)="report.fastContentEnabled ? editor1.focus() : editor2.focus()">
+                            (click)="report.fastContentEnabled ? editor1.focus() : editor2.focus()">
                         <span class="slider round"></span>
                     </label>
                     <div class="chars-counter">
-                        <span>{{getChars(editor2Data)}} Caracteres de 2000</span>
+                        <span>{{getMaxChars(editor2Data)}} Caracteres de 2000</span>
                         <div class="radialProgressBar" [ngClass]="'progress-' + getCharsPercentage(editor2Data, 2000)">
                             <div class="overlay">100</div>
                         </div>
                     </div>
                     <div class="fast-content-mask" *ngIf="!report.fastContentEnabled"></div>
                 </div>
-                <div *ngIf="report?.template?.key === 'html'"  class="divider"></div>
-                <div [ngClass]="{'invisible': report?.template?.key !== 'html'}" class="control-wrapper pre-content">
+                <div class="divider"></div>
+                <div class="control-wrapper pre-content">
                     <div class="inline-editor-block" id="editor5" #editor5>
                     </div>
-                    <span [ngClass]="{'invisible': editor5Data !== ''}"
-                          class="placeholder" unselectable="on">
+                    <span [ngClass]="{'invisible': editor5Data !== ''}" class="placeholder" unselectable="on">
                         Escriba aquí el seguimientos de las acciones de las empresas</span>
                     <!-- Rounded switch -->
                     <label class="switch">
                         <input type="checkbox" [(ngModel)]="report.preContentEnabled" (change)="setPrecontent()"
-                               (click)="report.preContentEnabled ? editor3.focus() : editor5.focus()">
+                            (click)="report.preContentEnabled ? editor3.focus() : editor5.focus()">
                         <span class="slider round"></span>
                     </label>
                     <div class="fast-content-mask" *ngIf="!report.preContentEnabled"></div>
                 </div>
                 <div class="divider"></div>
-                <input [(ngModel)]="report.rSmartContentVideo" [ngModelOptions]="{standalone: true}"
-                       class="source" type="text" placeholder="Video Smart Content (URL)">
+                <input [(ngModel)]="report.rSmartContentVideo" [ngModelOptions]="{standalone: true}" class="source"
+                    type="text" placeholder="Formato enganche: URL Youtube, Spotify o Soundcloud">
                 <div class="divider"></div>
-                <div class="control-wrapper smart-content" (click)="editor3.focus()">
+                <div class="control-wrapper smart-content">
                     <div class="inline-editor-block" id="editor3" #editor3>
                     </div>
-                    <span [ngClass]="{'invisible': editor3Data !== ''}"
-                          class="placeholder" unselectable="on">
+                    <span [ngClass]="{'invisible': editor3Data !== ''}" class="placeholder" unselectable="on">
                         SMART CONTENT</span>
                 </div>
-                <div class="divider" *ngIf="report?.template?.key === 'presentation'"></div>
-                <input [(ngModel)]="report.presentationUrl" [ngModelOptions]="{standalone: true}"
-                       class="source" type="text" placeholder="Presentación Slideshare (URL)"
-                       *ngIf="report?.template?.key === 'presentation'">
-                <div class="divider"></div>
-                <div class="control-wrapper deep-content" (click)="editor4.focus()">
+                <div class="divider" *ngIf="false && report?.template?.key === 'presentation'"></div>
+                <input [(ngModel)]="report.presentationUrl" [ngModelOptions]="{standalone: true}" class="source"
+                    type="text" placeholder="Presentación Slideshare (URL)"
+                    *ngIf="false && report?.template?.key === 'presentation'">
+                <div class="divider" [ngClass]="{'invisible': report?.template?.key === 'presentation'}"></div>
+                <div class="control-wrapper deep-content"
+                    [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
                     <div class="inline-editor-block" id="editor4" #editor4>
                     </div>
-                    <span [ngClass]="{'invisible': editor4Data !== ''}"
-                          class="placeholder" unselectable="on">
+                    <span [ngClass]="{'invisible': editor4Data !== ''}" class="placeholder" unselectable="on">
                         DEEP CONTENT</span>
                 </div>
             </div>
 
-            <div *ngIf="!grapeEnabled" class="inline-editor-additional-sections">
+            <div [hidden]="grapeEnabled" class="inline-editor-additional-sections" [ngClass]="{'noevents': isMarketing}">
                 <div class="native-editor-section new-block" *ngFor="let block of blocks">
                     <div class="control-wrapper onecolumn-content" *ngIf="block.type === 'onecolumn'">
                         <div class="remove-section" (click)="removeEditorSection(block)" *ngIf="!readonly">
@@ -278,76 +346,88 @@
                         </div>
                     </div>
                     <div class="control-wrapper twocolumns-content"
-                         [ngClass]="{'twocolumnsb-content': block.type === 'twocolumnsb'}"
-                         *ngIf="block.type !== 'onecolumn'">
+                        [ngClass]="{'twocolumnsb-content': block.type === 'twocolumnsb'}"
+                        *ngIf="block.type !== 'onecolumn'">
                         <div class="remove-section" (click)="removeEditorSection(block)" *ngIf="!readonly">
                             <i class="material-icons">delete</i>
                             Eliminar
                         </div>
                         <div class="text-block">
-                            <input [(ngModel)]="block.title" [ngModelOptions]="{standalone: true}"
-                                   class="source" type="text" placeholder="Escriba titulo">
+                            <input [(ngModel)]="block.title" [ngModelOptions]="{standalone: true}" class="source"
+                                type="text" placeholder="Escriba titulo (Aplica para tabla de contenido)">
                             <div class="divider"></div>
                             <div class="inline-editor-block" [id]="block.id">
                             </div>
                         </div>
                         <div class="image-block">
                             <textarea [(ngModel)]="block.externalImageUrl" [ngModelOptions]="{standalone: true}"
-                               class="external-source-input" type="text" placeholder="URL externa" *ngIf="block.externalImage">
+                                class="external-source-input" type="text" placeholder="URL imagen externa"
+                                *ngIf="block.externalImage">
                             </textarea>
-                            <div class="cont" *ngIf="block.externalImage" style="top: 75%">
-                                <span class="select-img" (click)="block.externalImage = false" *ngIf="!readonly">Borrar imagen</span>
+                            <div class="cont" *ngIf="block.externalImage" style="top: 66%">
+                                <span class="select-img" (click)="block.externalImage = false" *ngIf="!readonly">Borrar
+                                    imagen</span>
                             </div>
 
                             <div class="cont">
-                                <label class="select-img" [for]="'ImgInput' + block.id" *ngIf="!block.assetUrl && !block.imageUrl && !block.externalImage">
+                                <label class="select-img" [for]="'ImgInput' + block.id"
+                                    *ngIf="!block.assetUrl && !block.imageUrl && !block.externalImage">
                                     <img src="../../../../assets/images/image-placeholder.png">
                                     <span class="select-img">Subir imagen</span>
                                 </label>
-                                <input
-                                    class="file-input"
-                                    type="file"
-                                    name="file"
-                                    (change)="onBlockImageSelected(block, $event)"
-                                    [id]="'ImgInput' + block.id"
-                                />
+                                <input class="file-input" type="file" name="file"
+                                    (change)="onBlockImageSelected(block, $event)" [id]="'ImgInput' + block.id" />
                                 <div *ngIf="!block.assetUrl && !block.imageUrl &&!block.externalImage">
-                                    <span>&oacute;</span><br/>
-                                    <span class="select-img" (click)="block.externalImage = true">Cargar imagen externa</span>
+                                    <span>&oacute;</span><br />
+                                    <span class="select-img" (click)="block.externalImage = true">Cargar imagen
+                                        externa</span>
                                 </div>
 
                                 <div *ngIf="!block.assetUrl && block.imageUrl">
                                     <img [src]="block.imageUrl" class="selected-image">
-                                    <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
+                                    <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar
+                                        imagen</span>
                                 </div>
                                 <div *ngIf="block.assetUrl">
                                     <img [src]="block.assetUrl" class="selected-image">
-                                    <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar imagen</span>
+                                    <span class="select-img" (click)="onBlockImageSelected(block, null)">Borrar
+                                        imagen</span>
                                 </div>
                             </div>
                             <div class="source-section">
                                 <div class="divider"></div>
-                                <input [(ngModel)]="block.source" [ngModelOptions]="{standalone: true}"
-                                       class="source" type="text" placeholder="Escriba fuente">
+                                <input [(ngModel)]="block.link" [ngModelOptions]="{standalone: true}" class="source"
+                                       type="text" placeholder="Escriba Url Link">
+                                <div class="divider"></div>
+                                <input [(ngModel)]="block.source" [ngModelOptions]="{standalone: true}" class="source"
+                                    type="text" placeholder="Escriba fuente">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="add-new-editor-block" *ngIf="!readonly">
+                <div class="add-new-editor-block" *ngIf="!readonly"
+                    [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
                     <div class="btn-section">
-                        <button (click)="addMenuVisible = !addMenuVisible"
-                                mat-flat-button class="bttn bttn-default btn-circle" [ngClass]="{'close' : addMenuVisible}">
+                        <button (click)="addMenuVisible = !addMenuVisible" mat-flat-button
+                            class="bttn bttn-default btn-circle" [ngClass]="{'close' : addMenuVisible}">
                             <i class="material-icons">{{addMenuVisible ? 'close' : 'add'}}</i></button>
                         <ul class="add-menu-list" [ngClass]="{'visible': addMenuVisible}">
                             <li class="ng-star-inserted">
-                                <button class="icon" (click)="addEditorSection(false)">M&oacute;dulo una columna</button>
+                                <button class="icon" (click)="addEditorSection(false)">M&oacute;dulo una
+                                    columna</button>
                             </li>
-                            <li class="ng-star-inserted">
-                                <button class="icon" (click)="addEditorSection(true, 'left')">M&oacute;dulo dos columnas</button>
+                            <li class="ng-star-inserted"
+                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns' ||
+                                       report?.template?.key === 'pdf' || report?.type === 'pdf'">
+                                <button class="icon" (click)="addEditorSection(true, 'left')">M&oacute;dulo dos
+                                    columnas</button>
                             </li>
-                            <li class="ng-star-inserted">
-                                <button class="icon" (click)="addEditorSection(true, 'right')">M&oacute;dulo dos columnas B</button>
+                            <li class="ng-star-inserted"
+                                *ngIf="report?.template?.key === 'html_two_columns' || report?.type === 'html_two_columns' ||
+                                       report?.template?.key === 'pdf' || report?.type === 'pdf'">
+                                <button class="icon" (click)="addEditorSection(true, 'right')">M&oacute;dulo dos
+                                    columnas B</button>
                             </li>
                         </ul>
                     </div>
@@ -356,13 +436,12 @@
                     </div>
                 </div>
 
-                <div class="native-editor-section new-block footer">
-                    <div class="control-wrapper deep-content" (click)="editor6.focus()">
+                <div class="native-editor-section new-block footer" [hidden]="true">
+                    <div class="control-wrapper deep-content">
                         <div class="inline-editor-block" id="editor6" #editor6>
                         </div>
-                        <span [ngClass]="{'invisible': editor6Data !== ''}"
-                              class="placeholder" unselectable="on">
-                        DEEP CONTENT</span>
+                        <span [ngClass]="{'invisible': editor6Data !== ''}" class="placeholder" unselectable="on">
+                            DEEP CONTENT</span>
                     </div>
                 </div>
             </div>
@@ -371,8 +450,8 @@
 
         <!-- COMMENTS -->
         <mat-grid-tile [colspan]="grid.col.comments" [rowspan]="1" class="comments">
-            <app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report.id"
-                             [reportId]="report.id"></app-comment-box>
+            <app-comment-box (propagate)="hideComments()" (unresolved)="unresolvedComments=$event" *ngIf="report"
+                [report]="report" [showHeader]="true"></app-comment-box>
         </mat-grid-tile>
 
         <!-- PANEL -->
@@ -421,15 +500,16 @@
                             <div class="panel-body">
                                 <section class="tags">
                                     <section class="tags--categories" *ngIf="onLoadCategoriesTags()?.length">
-                                        <p class="tags__text">Estos son los tags que son tendencia, puedes usarlos dándoles clic.</p>
+                                        <p class="tags__text">Estos son los tags que son tendencia, puedes usarlos
+                                            dándoles clic.</p>
                                         <div class="tags__list">
-                                            <button class="tags__item"
-                                                    (click)="addCategoryTag($event)"
-                                                    *ngFor="let tag of tags.categories">{{tag}}</button>
+                                            <button class="tags__item" (click)="addCategoryTag($event)"
+                                                *ngFor="let tag of tags.categories">{{tag}}</button>
                                         </div>
                                     </section>
                                     <section class="tags--tendencies">
-                                        <textarea [(ngModel)]="tendenciesList" name="list" id="" cols="" rows=""></textarea>
+                                        <textarea [(ngModel)]="tendenciesList" name="list" id="" cols=""
+                                            rows=""></textarea>
                                     </section>
                                 </section>
                                 <p class="tags__info">Separa las etiquetas con comas (ej. prueba1, prueba2)</p>
@@ -449,8 +529,10 @@
                                 <p class="tags__info first">Meta titulo de la URL</p>
                                 <textarea [(ngModel)]="report.metaTitle" placeholder="Ejemplo: Nombre/"></textarea>
                                 <p class="tags__info">Meta descripci&oacute;n de la URL</p>
-                                <textarea [(ngModel)]="report.metaDescription" placeholder="Ejemplo: Nombre/"></textarea>
-                                <button class="tags__save" (click)="validateMarketingOnSave()" [disabled]="readonly">Guardar</button>
+                                <textarea [(ngModel)]="report.metaDescription"
+                                    placeholder="Ejemplo: Nombre/"></textarea>
+                                <button class="tags__save" (click)="validateMarketingOnSave()"
+                                    [disabled]="readonly">Guardar</button>
                             </div>
 
                         </mat-expansion-panel>
@@ -463,10 +545,11 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div class="related">
-                                <p>Seleccione entre 1 y 4 informes relacionados con su contenido</p>
+                                <p>Seleccione 3 informes relacionados con su contenido</p>
 
                                 <div class="filter">
-                                    <app-related-reports [readOnly]="readonly" [reportId]="report.id"></app-related-reports>
+                                    <app-related-reports [readOnly]="readonly" [reportId]="report.id">
+                                    </app-related-reports>
                                 </div>
                             </div>
 
@@ -483,12 +566,12 @@
                             <div id="searchWords2">
                                 <form [formGroup]="glossaryForm" *ngIf="!readonly">
                                     <mat-form-field class="example-full-width" floatLabel="never">
-                                        <input matInput placeholder="Escriba la palabra que desea encontrar" [matAutocomplete]="auto"
-                                               formControlName="searchInput">
+                                        <input matInput placeholder="Escriba la palabra que desea encontrar"
+                                            [matAutocomplete]="auto" formControlName="searchInput">
                                     </mat-form-field>
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                        <mat-option class="glossary_options" *ngFor="let word of (foundWordsObservable | async)"
-                                            (click)="addWord(word)">
+                                        <mat-option class="glossary_options"
+                                            *ngFor="let word of (foundWordsObservable | async)" (click)="addWord(word)">
                                             <span>{{ word.word }}</span>
                                         </mat-option>
                                     </mat-autocomplete>
@@ -510,7 +593,7 @@
                                 <mat-form-field class="word-chip-list">
                                     <mat-chip-list #chipWordList aria-label="Fruit selection">
                                         <mat-chip *ngFor="let word of report.glossary" [selectable]="false"
-                                                  [removable]="!readonly" (removed)="removeWord(word)">
+                                            [removable]="!readonly" (removed)="removeWord(word)">
                                             {{word.word}}
                                             <mat-icon *ngIf="!readonly" matChipRemove>cancel</mat-icon>
                                         </mat-chip>
@@ -519,9 +602,28 @@
                             </div>
 
                         </mat-expansion-panel>
+
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="icon icon-book"></span>
+                                    <span>Activar tabla de contenido</span>
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    <label class="switch-table" [ngClass]="{'noevents': isMarketing}">
+                                        <input type="checkbox" [(ngModel)]="allowContentTable">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                        </mat-expansion-panel>
                     </mat-accordion>
                 </div>
             </div>
         </mat-grid-tile>
     </mat-grid-list>
 </section>
+<app-mobile-detail-view *ngIf="isMobileVersion() && !showCommentsView" (changeView)="changeView()" [report]="report">
+</app-mobile-detail-view>
+<app-mobile-comment-view *ngIf="isMobileVersion() && showCommentsView" (changeView)="changeView()" [report]="report">
+</app-mobile-comment-view>

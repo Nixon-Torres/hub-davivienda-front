@@ -1,10 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AuthService} from '../../../../services/auth.service';
-import {HttpService} from '../../../../services/http.service';
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
-import {VideoModalComponent} from '../faq-content/video-modal/video-modal.component';
-import {OutstandingVideosComponent} from '../outstanding-videos/outstanding-videos.component';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AuthService } from '../../../../services/auth.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { VideoModalComponent } from '../faq-content/video-modal/video-modal.component';
+import { OutstandingVideosComponent } from '../outstanding-videos/outstanding-videos.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-multimedia',
@@ -13,6 +14,7 @@ import {OutstandingVideosComponent} from '../outstanding-videos/outstanding-vide
 })
 export class MultimediaComponent implements OnInit {
     @Output() changeView: EventEmitter<any>;
+    public storageBase: string = environment.STORAGE_FILES;
     public filterOptions: any;
     public marketing: boolean;
     public isAdding = false;
@@ -67,7 +69,7 @@ export class MultimediaComponent implements OnInit {
         this.http.get({
             path: 'contents',
             data: {
-                include: ['lastUpdater'],
+                include: ['lastUpdater', 'files'],
                 where: {
                     key: 'multimedia'
                 }
@@ -77,9 +79,21 @@ export class MultimediaComponent implements OnInit {
             if (resp && resp.body) {
                 this.lastUpdater = resp.body.lastUpdater ? resp.body.lastUpdater.name : '';
                 if (filter) {
-                    this.multimediaList = resp.body.filter(e => e.multimediaType.name === filter.name);
+                    this.multimediaList = resp.body.filter(e => e.multimediaType.name === filter.name)
+                        .map(mul => {
+                            mul.thumbnailImg = mul && mul.files
+                            ? `${this.storageBase}${mul.files.find(file => file.key === 'thumbnail').fileName}`
+                            : '';
+                            return mul;
+                        });
                 } else {
-                    this.multimediaList = resp.body;
+                    this.multimediaList = resp.body.filter(e => !e.trash).map(mul => {
+                        const tfile = mul.files.find(file => file.key === 'thumbnail');
+                        mul.thumbnailImg = mul && mul.files && tfile
+                            ? `${this.storageBase}${tfile.fileName}`
+                            : '';
+                        return mul;
+                    });
                 }
                 this.addIconClass();
             }
@@ -122,21 +136,22 @@ export class MultimediaComponent implements OnInit {
     }
 
     public onDeleteMultimedia(multimedia: any): void {
-        this.http.delete({
-            path: `contents/${multimedia.id}`
-        }).subscribe((resp: any) => {
-            if (resp) {
-                this.onLoadMultimedia();
-                this.dialog.open(ConfirmationDialogComponent, {
-                    width: '410px',
-                    data: {
-                        config: {
-                            title: 'Se ha eliminado el contenido',
-                            subtitle: multimedia.title
-                        }
-                    }
-                });
+        this.http.patch({
+            path: `contents/${multimedia.id}`,
+            data: {
+                trash: true
             }
+        }).subscribe(() => {
+            this.onLoadMultimedia();
+            this.dialog.open(ConfirmationDialogComponent, {
+                width: '410px',
+                data: {
+                    config: {
+                        title: 'Se ha eliminado el contenido',
+                        subtitle: multimedia.title
+                    }
+                }
+            });
         });
     }
 
@@ -161,6 +176,7 @@ export class MultimediaComponent implements OnInit {
     public openOutstandingDialog(item): void {
         this.dialog.open(OutstandingVideosComponent, {
             width: '602px',
+            height: (window.innerHeight - 100) + 'px',
             data: item
         });
     }

@@ -80,6 +80,10 @@ export class HttpService {
         this.authorization = token;
     }
 
+    public getAuthorization() {
+        return this.authorization;
+    }
+
     public headers() {
         const headers: any = {};
         if(this.authorization) {

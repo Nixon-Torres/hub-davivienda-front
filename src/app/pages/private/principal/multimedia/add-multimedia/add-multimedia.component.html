@@ -3,19 +3,42 @@
         <a (click)="updateView()"><span>&#60;</span> Volver </a>
     </div>
     <div class="form">
-        <form class="form__wrapper" [formGroup]="multimediaForm" (ngSubmit)="onSaveMultimedia()">
+        <form class="form__wrapper" [formGroup]="multimediaForm" (ngSubmit)="onSaveMultimedia()" #myform="ngForm">
             <div class="form__container">
-                <div class="form__item">
+                <div class="form__item form__item--txtarea">
                     <label for="title">Titulo</label>
                     <textarea name="" id="title"
                               formControlName="title"
-                              placeholder="Escriba el nombre del video"></textarea>
+                              placeholder="Escriba el nombre del video" maxlength="70"></textarea>
+                    <div class="chars-counter">
+                        <span>{{getMaxChars(multimediaForm.controls.title.value)}} Caracteres de 70</span>
+                        <div class="radialProgressBar" [ngClass]="'progress-' + getCharsPercentage(multimediaForm.controls.title.value, 70)">
+                            <div class="overlay">100</div>
+                        </div>
+                    </div>
+                    <div *ngIf="myform.submitted || (multimediaForm?.controls?.title?.invalid && (multimediaForm?.controls?.title?.dirty || multimediaForm?.controls?.title?.touched))"
+                         class="alert alert-danger alert-danger-title">
+
+                        <div *ngIf="multimediaForm?.controls?.title?.errors?.required">
+                            Nombre del video es requerido.
+                        </div>
+                        <div *ngIf="multimediaForm?.controls?.title?.errors?.maxlength">
+                            Nombre del video debe tener máximo 70 caracteres de longitud.
+                        </div>
+                    </div>
                 </div>
                 <div class="form__item form__item--txtarea">
                     <label for="description">Descripción</label>
                     <textarea name="" id="description"
                               formControlName="description"
                               placeholder="Escribe de que se trata este video"></textarea>
+                    <div *ngIf="myform.submitted || (multimediaForm?.controls?.description?.invalid && (multimediaForm?.controls?.description?.dirty || multimediaForm?.controls?.description?.touched))"
+                         class="alert alert-danger">
+
+                        <div *ngIf="multimediaForm?.controls?.description?.errors?.required">
+                            Descripci&oacute;n del video es requerida.
+                        </div>
+                    </div>
                 </div>
                 <div class="form__item">
                     <label for="url">URL del {{multimediaType.name}}</label>
@@ -27,16 +50,35 @@
                     <input [placeholder]="'Escribe la URL del ' + multimediaType.name"
                               type="text" name="" id="url2" formControlName="url"
                               *ngIf="multimediaType.name !== 'Podcast'">
+
+                    <div *ngIf="myform.submitted || (multimediaForm?.controls?.url?.invalid && (multimediaForm?.controls?.url?.dirty || multimediaForm?.controls?.url?.touched))"
+                         class="alert alert-danger">
+
+                        <div *ngIf="multimediaForm?.controls?.url?.errors?.required">
+                            URL del video es requerida.
+                        </div>
+                    </div>
                 </div>
                 <div class="form__item form__item--file">
                     <p class="form__label" >Miniatura</p>
                     <div class="file__wrapper">
-                        <label for="thumbnail" class="custom-file">
+                        <label for="thumbnail" class="custom-file" *ngIf="!thumbnailImg" >
                             <span class="fas fa-image"></span>
                         </label>
-                        <p class="info">Subir miniatura</p>
+                        <label for="thumbnail" *ngIf="thumbnailImg" class="custom-file">
+                            <img class="custom-file" [src]="thumbnailImg"  (change)="click($event)">
+                        </label>
+                        <p class="info">Subir miniatura <span>(Peso máximo 25MB)</span></p>
                     </div>
                     <input type="file" name="" id="thumbnail" (change)="loadFile($event)">
+
+                    <div *ngIf="myform.submitted"
+                         class="alert alert-danger">
+
+                        <div *ngIf="!((!multimediaObj && uploadFileForm.get('thumbnail').value !== '') || multimediaObj?.id)">
+                            Miniatura es requerida.
+                        </div>
+                    </div>
                 </div>
                 <div class="form__item form__item--tags">
                     <label for="tags">Tags</label>
@@ -55,41 +97,105 @@
                             </mat-chip>
                         </mat-chip-list>
                     </div>
+                    <div *ngIf="myform.submitted"
+                         class="alert alert-danger">
+
+                        <div *ngIf="tags?.length === 0">
+                            Tags son requeridos.
+                        </div>
+                    </div>
+                </div>
+                <div class="form__item form__item--related ">
+                    <label for="">Lista de categoría</label>
+                    <div class="wrapper">
+                        <div class="item">
+                            <ng-select [items]="categories"
+                                       [hideSelected]="true"
+                                       [searchable]="true"
+                                       [clearable]="false"
+                                       formControlName="category"
+                                       bindLabel="description"
+                                       bindValue="id"
+                                       class="custom-select"
+                                       (change)="removeSelected($event)"
+                                       placeholder="-Seleccione categoría-"></ng-select>
+                            <div *ngIf="myform.submitted || (multimediaForm?.controls?.category?.invalid && (multimediaForm?.controls?.category?.dirty ||
+                            multimediaForm?.controls?.category?.touched))"
+                                 class="alert alert-danger">
+
+                                <div *ngIf="multimediaForm?.controls?.category?.errors?.required">
+                                    Categoría es requerida.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form__item form__item--related ">
                     <label for="">Informes relacionados</label>
                     <div class="wrapper">
-                        <ng-select [items]="relatedReports"
-                                   [hideSelected]="true"
-                                   [searchable]="true"
-                                   [clearable]="false"
-                                   formControlName="firstRelated"
-                                   bindLabel="name"
-                                   bindValue="id"
-                                   class="custom-select custom-select--search"
-                                   (change)="removeSelected($event)"
-                                   placeholder="Escriba el nombre del informe"></ng-select>
-                        <ng-select [items]="relatedReports"
-                                   [hideSelected]="true"
-                                   [searchable]="true"
-                                   [clearable]="false"
-                                   formControlName="secondRelated"
-                                   bindLabel="name"
-                                   bindValue="id"
-                                   class="custom-select custom-select--search"
-                                   (change)="removeSelected($event)"
-                                   placeholder="Escriba el nombre del informe"></ng-select>
-                        <ng-select [items]="relatedReports"
-                                   [hideSelected]="true"
-                                   [searchable]="true"
-                                   [clearable]="false"
-                                   [virtualScroll]="true"
-                                   formControlName="thirdRelated"
-                                   bindLabel="name"
-                                   bindValue="id"
-                                   class="custom-select custom-select--search"
-                                   (change)="removeSelected($event)"
-                                   placeholder="Escriba el nombre del informe"></ng-select>
+                        <div class="item">
+                            <ng-select [items]="relatedReports"
+                                       [hideSelected]="true"
+                                       [searchable]="true"
+                                       [clearable]="false"
+                                       formControlName="firstRelated"
+                                       bindLabel="name"
+                                       bindValue="id"
+                                       class="custom-select custom-select--search"
+                                       (change)="removeSelected($event)"
+                                       placeholder="Escriba el nombre del informe"></ng-select>
+                            <div *ngIf="myform.submitted || (multimediaForm?.controls?.firstRelated?.invalid && (multimediaForm?.controls?.firstRelated?.dirty ||
+                            multimediaForm?.controls?.firstRelated?.touched))"
+                                 class="alert alert-danger">
+
+                                <div *ngIf="multimediaForm?.controls?.firstRelated?.errors?.required">
+                                    Informe relacionado es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <ng-select [items]="relatedReports"
+                                       [hideSelected]="true"
+                                       [searchable]="true"
+                                       [clearable]="false"
+                                       formControlName="secondRelated"
+                                       bindLabel="name"
+                                       bindValue="id"
+                                       class="custom-select custom-select--search"
+                                       (change)="removeSelected($event)"
+                                       placeholder="Escriba el nombre del informe"></ng-select>
+                            <div *ngIf="myform.submitted || (multimediaForm?.controls?.secondRelated?.invalid && (multimediaForm?.controls?.secondRelated?.dirty ||
+                        multimediaForm?.controls?.secondRelated?.touched))"
+                                 class="alert alert-danger">
+
+                                <div *ngIf="multimediaForm?.controls?.secondRelated?.errors?.required">
+                                    Informe relacionado es requerido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <ng-select [items]="relatedReports"
+                                       [hideSelected]="true"
+                                       [searchable]="true"
+                                       [clearable]="false"
+                                       [virtualScroll]="true"
+                                       formControlName="thirdRelated"
+                                       bindLabel="name"
+                                       bindValue="id"
+                                       class="custom-select custom-select--search"
+                                       (change)="removeSelected($event)"
+                                       placeholder="Escriba el nombre del informe"></ng-select>
+                            <div *ngIf="myform.submitted || (multimediaForm?.controls?.thirdRelated?.invalid && (multimediaForm?.controls?.thirdRelated?.dirty ||
+                        multimediaForm?.controls?.thirdRelated?.touched))"
+                                 class="alert alert-danger">
+
+                                <div *ngIf="multimediaForm?.controls?.thirdRelated?.errors?.required">
+                                    Informe relacionado es requerido.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form__item form__item--buttons">

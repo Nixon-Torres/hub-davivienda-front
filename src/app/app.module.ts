@@ -15,6 +15,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { GalleryDialogModule } from './pages/private/gallery-dialog/gallery-dialog.module';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CodeEditorModule } from '@ngstack/code-editor';
 
 import localeCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from '@angular/common';
@@ -35,7 +36,8 @@ registerLocaleData(localeCo, 'es-CO');
     MatRippleModule,
     MatBadgeModule,
     GalleryDialogModule,
-    CKEditorModule
+    CKEditorModule,
+    CodeEditorModule.forRoot(),
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-CO' }],
   bootstrap: [AppComponent]

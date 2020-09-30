@@ -104,6 +104,34 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        @media only screen and (max-width: 768px) {
+            padding: 10px;
+        }
+
+        ol {
+            list-style: decimal;
+            &:nth-child(1n) {
+              ol {
+                list-style: none;
+              }
+            }
+            &:last-child {
+              li {
+                &::before {
+                  counter-increment: start;
+                  visibility: initial;
+                  position: initial;
+                }
+              }
+            }
+            li {
+              &::before {
+                content: counter(start, lower-alpha) ". ";
+                visibility: hidden;
+                position: absolute;
+              }
+            }
+          }
     }
 
     &__modification, &__edit {
@@ -136,6 +164,7 @@
                 font-size: 15px;
                 line-height: 16px;
                 font-weight: 600;
+                margin: 5px 0;
             }
 
             &--second {
@@ -146,6 +175,8 @@
             &--small {
                 color: #616161;
                 font-size: 0.750em;
+                margin-top: 10px;
+                margin-bottom: 15px;
             }
         }
     }
@@ -184,7 +215,7 @@
         align-self: stretch;
 
         button {
-
+            cursor: pointer;
             color: #0080FF;
             font-size: 14px;
             padding: 0;
@@ -453,10 +484,19 @@ input.mat-input-element {
 
     ul {
         list-style: inside;
+
+        ul, ol {
+            margin-left: 0;
+            padding-left: 40px;
+        }
     }
 
     ol {
         list-style-type: decimal;
+        ul, ol {
+            margin-left: 0;
+            padding-left: 40px;
+        }
 
         li {
             list-style-position: inside;
@@ -471,3 +511,41 @@ input.mat-input-element {
     }
 }
 
+.delete-cta {
+    text-decoration: underline;
+    color: black !important;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.native-editor-section {
+    strong {
+        font-weight: bold !important;
+    }
+
+    i {
+        font-style: italic !important;
+    }
+
+    ul {
+        list-style-type: disc !important;
+        list-style-position: inside !important;
+    }
+    ul > li {
+        list-style-type: disc  !important;
+    }
+    ol {
+        list-style-type: decimal;
+        list-style-position: inside;
+    }
+    ul ul, ol ul {
+        list-style-type: circle;
+        list-style-position: inside;
+        margin-left: 15px;
+    }
+    ol ol, ul ol {
+        list-style-type: lower-latin;
+        list-style-position: inside;
+        margin-left: 15px;
+    }
+}

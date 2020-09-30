@@ -19,6 +19,18 @@ html{
     font-family: 'Helvetica-Neue';
 }
 
+sub,
+sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 10px !important;
+  vertical-align: super !important;
+}
+
+sub {
+  bottom: -.25em;
+}
+
 h2{
     font-size: 42px;
     line-height: 44px;
@@ -27,9 +39,18 @@ h2{
     font-weight: bold;
     margin-bottom: 30px;
 }
+
 .box-title{
-    color: #EC2023;
-    font-size: 20px;
+    font-weight: bold !important;
+    color: #EC2023 !important;
+    font-size: 20px !important;
+    font-weight: 500;
+    font-family: 'Helvetica-Neue';
+}
+
+.box-title-h3{
+    color: #EC2023 !important;
+    font-size: 17px !important;
     font-weight: 500;
     font-family: 'Helvetica-Neue';
 }
@@ -46,10 +67,9 @@ h2{
     font-style: normal;
 }
 
-
-
 .da-lead-section{
     max-width: 720px;
+    width: 100%;
     margin: 0 auto;
     padding: 40px 71px;
     border-bottom: 1px solid #E3E3E3;
@@ -60,7 +80,7 @@ h2{
 .da-lead-section p{
     font-size: 12px;
     color: #5F5F5F;
-    
+
 }
 .da-lead-section .dl-icon a{
     color: #363636;
@@ -72,7 +92,7 @@ h2{
 
 .da-ponderar{
     max-width: 855px;
-    margin: 57px auto;
+    margin: 20px auto;
 }
 .da-ponderar .box-title{
     margin-bottom: 31px;
@@ -91,8 +111,7 @@ h2{
 
 .brief-section{
     background-color: #F7F7F7;
-    margin-top: 72px;
-    margin-bottom: 46px;
+    margin: 46px;
 }
 
 .brief-section.white{
@@ -138,7 +157,7 @@ h2{
 }
 
 .podcast-video .video-desc p{
-    font-size: 13px;  
+    font-size: 13px;
     color: #505050;
     font-family: 'Helvetica-Neue';
 }
@@ -294,6 +313,10 @@ h2{
 
 }
 
+.p-b-10{
+    padding-bottom: 10px;
+}
+
 .company-legaltxt p{
     color: #90A1AC;
     font-family: 'Helvetica-Neue';
@@ -396,7 +419,7 @@ p.left-arrow-paragraph::before{
 
 .carousel-indicators{
     bottom: -50px;
- 
+
     position: initial;
 }
 
@@ -475,18 +498,23 @@ p.left-arrow-paragraph::before{
     padding-bottom: 30px;
     color: #333333;
     font-weight: normal;
+    word-break: normal;
 }
 
-.doscolumn_section .graph_block .image_block {
+.doscolumn_section .graph_block .image_block,
+.doscolumn_section figure .image_block {
     position: relative;
     padding-top: 5%;
 }
 
-.doscolumn_section .graph_block .image_block img {
+.doscolumn_section .graph_block .image_block img,
+.doscolumn_section figure .image_block img {
     width: 100%;
 }
 
-.doscolumn_section .graph_block .image_block .zoom_btn {
+.doscolumn_section .graph_block .image_block .zoom_btn,
+.doscolumn_section figure .image_block .zoom_btn
+{
     position: absolute;
     background-image: url("../images/zoom_icon.png");
     width: 45px;
@@ -594,3 +622,34 @@ p.left-arrow-paragraph::before{
         padding: 15px;
     }
   }
+
+
+.pr-full-bg .container .brief-section.smart-content-section {
+    padding: 20px 0;
+  }
+
+section .pr-full-bg .container .brief-section,
+.presentation .container .brief-section {
+    padding: 20px 0;
+}
+
+.company-legaltxt .brief-content {
+    max-width: 720px;
+    padding: 0;
+}
+
+.doscolumn_section {
+    margin-top: 20px;
+}
+
+.container-fluid .smart-content-section .doscolumn-container.bottom {
+    min-width: 570px;
+}
+
+.person-portfolio .img-block {
+    height: auto;
+}
+
+.brief-section .brief-content {
+    padding: 0;
+}

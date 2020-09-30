@@ -7,6 +7,10 @@
 
 }
 
+.multimedia-item__name {
+    word-wrap: break-word;
+}
+
 .mat-raised-button {
     background-color: #FF003B;
     box-shadow: none;
@@ -110,6 +114,9 @@
         justify-content: space-between;
         padding-left: 32px;
         margin-bottom: 30px;
+        @media only screen and (max-width: 768px) {
+            padding-left: 15px;
+        }
     }
     &__filter {
         display: flex;
@@ -147,7 +154,7 @@
         background-color: #e7ecf3;
         width: 100%;
         box-sizing: border-box;
-        padding: 3.46% 2.89% 1.73% 4.04%;
+        padding: 3.46% 2.89% 7.73% 4.04%;
         height: 54vh;
         overflow: scroll;
         overflow-x: hidden;
@@ -204,9 +211,15 @@
         }
         &__date {
             width: 16.43%;
+            @media only screen and (max-width: 1024px) {
+                padding: 0 10px;
+            }
         }
         &__owner {
             width: 17.72%;
+            @media only screen and (max-width: 1024px) {
+                padding: 0 10px;
+            }
         }
         .group-menu {
             width: 8.09%;

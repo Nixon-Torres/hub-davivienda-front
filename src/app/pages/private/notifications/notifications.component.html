@@ -1,7 +1,7 @@
 <div class="container">
     <mat-drawer-container class="example-container">
-        <mat-drawer mode="side" opened>
-            <a class="aside-back"><i class="material-icons">chevron_left</i>Volver</a>
+        <mat-drawer mode="side" opened  [ngStyle]="{'width': isMobileVersion() ? '100%' : '23%'}">
+            <a class="aside-back" [routerLink]="['/app/principal']" ><i class="material-icons">chevron_left</i>Volver</a>
             <ul>
                 <li class="mat-drawer-aside-title">
                     <i class="material-icons notifications_icon">notifications</i>
@@ -9,16 +9,16 @@
                 </li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(1)}"
                     (click)="setActive(1)">Todas las notificaciones
-                    <span>{{ ntfQty }}</span></li>
+                    <span *ngIf="ntfQty > 0">{{ ntfQty }}</span></li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(2)}"
-                    (click)="setActive(2)">Comentarios
-                    <span>{{ commentsQty }}</span></li>
+                    (click)="setActive(2)">Informes en revisi&oacute;n
+                    <span *ngIf="commentsQty > 0">{{ commentsQty }}</span></li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(3)}"
-                    (click)="setActive(3)">Informes editados por otros
-                    <span> {{ othersQty }}</span></li>
+                    (click)="setActive(3)">Informes aprobados sin publicar
+                    <span *ngIf="othersQty > 0"> {{ othersQty }}</span></li>
                 <li class="mat-drawer-aside-item" [ngClass]="{'active': isActive(4)}"
                     (click)="setActive(4)">Informes publicados por otros
-                    <span> {{ publishedOthersQty }}</span></li>
+                    <span *ngIf="publishedOthersQty > 0"> {{ publishedOthersQty }}</span></li>
             </ul>
         </mat-drawer>
 
@@ -31,7 +31,7 @@
                 <mat-card>
                     <div class="notification_info" matRipple
                          *ngFor="let notification of notifications"
-                         (click)="openNotification(notification.reportId)"
+                         (click)="openNotification(notification)"
                          [ngClass]="{'to-check' : !notification.readed}">
 
                         <img *ngIf="notification.type === 'report-comment'"

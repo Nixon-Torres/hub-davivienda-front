@@ -10,7 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { GalleryDialogModule } from '../gallery-dialog/gallery-dialog.module';
 // Form Controls
-import { MatIconModule, MatNativeDateModule } from '@angular/material';
+import { MatIconModule, MatNativeDateModule, MatCardModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -53,6 +53,13 @@ import { AddMultimediaComponent } from './multimedia/add-multimedia/add-multimed
 import { OutstandingVideosModule } from './outstanding-videos/outstanding-videos.module';
 import { EditBookComponent } from './edit-book/edit-book.component';
 import { EditBookVersionsComponent } from './edit-book-versions/edit-book-versions.component';
+import { EditIndicatorsComponent } from './edit-indicators/edit-indicators.component';
+import { EditIndicatorsContentComponent } from './edit-indicators-content/edit-indicators-content.component';
+import { EditFooterComponent } from './edit-footer/edit-footer.component';
+import { ArraySortPipe } from 'src/app/pipes/array-sort.pipe';
+import { MobileCommentViewModule } from './mobile-comment-view/mobile-comment-view.module';
+import { MobileDetailViewModule } from './mobile-detail-view/mobile-detail-view.module';
+import {RevisionModalComponent} from '../board/revision-modal/revision-modal.component';
 
 const routes: Routes = [
     {
@@ -62,6 +69,7 @@ const routes: Routes = [
 ];
 
 const materialModules: any[] = [
+    MatCardModule,
     MatTabsModule,
     MatDialogModule,
     MatAutocompleteModule,
@@ -99,10 +107,15 @@ const materialModules: any[] = [
         EditCompaniesComponent,
         EditBookComponent,
         EditBookVersionsComponent,
+        EditIndicatorsComponent,
+        EditIndicatorsContentComponent,
+        EditFooterComponent,
         TagsDialogComponent,
         AddWordsDialogComponent,
         MultimediaComponent,
         AddMultimediaComponent,
+        ArraySortPipe,
+        RevisionModalComponent
     ],
     imports: [
         CommonModule,
@@ -117,10 +130,13 @@ const materialModules: any[] = [
         NgSelectModule,
         GalleryDialogModule,
         VideoModalModule,
-        OutstandingVideosModule
+        OutstandingVideosModule,
+        MobileCommentViewModule,
+        MobileDetailViewModule
     ],
     exports: [
-        materialModules
+        materialModules,
+        ArraySortPipe
     ],
     entryComponents: [
         DialogBoxComponent,
@@ -128,7 +144,8 @@ const materialModules: any[] = [
         CreateReportDialogComponent,
         HighlightDialogComponent,
         TagsDialogComponent,
-        AddWordsDialogComponent
+        AddWordsDialogComponent,
+        RevisionModalComponent
     ]
 })
 export class PrincipalModule { }

@@ -26,7 +26,9 @@ export class RelatedReportsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getRelatedReports();
+        if (this.reportId) {
+            this.getRelatedReports();
+        }
     }
 
     public drop(event: CdkDragDrop<string[]>) {
@@ -85,7 +87,7 @@ export class RelatedReportsComponent implements OnInit {
 
         this.timer.toRelated = setTimeout(() => {
             this.http.get({
-                path: 'reports',
+                path: 'reports/relates',
                 data: {
                     fields: ['id', 'name'],
                     where: {

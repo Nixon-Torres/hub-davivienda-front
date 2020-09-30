@@ -66,18 +66,32 @@ export class NotificationsComponent implements OnInit {
         this.getNotifications();
     }
 
-    getWhere(idx) {
+    getWhere(idx: number, readed?: boolean) {
         const where: any = {};
 
+        if (readed === false) {
+            where.readed = false;
+        }
+
         where.ownerId = this.user.id;
-        if (idx === 2) {
-            where.type = 'report-comment';
+        if (idx === 1) {
+            where.type = 'report-reviewer';
+            where.action = {inq: ['created', 'refused', 'approved', 'published']};
+        } else if (idx === 2) {
+            where.type = 'report-reviewer';
+            where.action = {inq: ['created', 'refused']};
         } else if (idx === 3) {
-            where.type = 'report-edited';
+            where.type = 'report-reviewer';
+            where.action = 'approved';
         } else if (idx === 4) {
-            where.reportStateId = '5e068c81d811c55eb40d14d0';
+            where.type = 'report-reviewer';
+            where.action = 'published';
         }
         return where;
+    }
+
+    public isMobileVersion() {
+        return(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
     }
 
     private getNotifications() {
@@ -103,34 +117,43 @@ export class NotificationsComponent implements OnInit {
         });
     }
 
+    public checkNotifications(notificationId: string, cb: any) {
+        const dataFilter = encodeURI(JSON.stringify({id: notificationId}));
+        this.http.patch({
+            path: `notifications/read?filter=${dataFilter}`,
+            data: {readed: true}
+        }).subscribe(() => {
+            if (cb) {
+                cb();
+            }
+        });
+    }
+
     private getCountNotifications(): void {
         this.http.get({
             path: `notifications/count?where=`,
-            data: {
-                ownerId: this.user.id,
-                readed: false
-            }
+            data: this.getWhere(1, false)
         }).subscribe((response: any) => {
             this.ntfQty = response.body.count;
         });
 
         this.http.get({
             path: `notifications/count?where=`,
-            data: this.getWhere(2)
+            data: this.getWhere(2, false)
         }).subscribe((response: any) => {
             this.commentsQty = response.body.count;
         });
 
         this.http.get({
             path: `notifications/count?where=`,
-            data: this.getWhere(3)
+            data: this.getWhere(3, false)
         }).subscribe((response: any) => {
             this.othersQty = response.body.count;
         });
 
         this.http.get({
             path: `notifications/count?where=`,
-            data: this.getWhere(4)
+            data: this.getWhere(4, false)
         }).subscribe((response: any) => {
             this.publishedOthersQty = response.body.count;
         });
@@ -167,8 +190,14 @@ export class NotificationsComponent implements OnInit {
         });
     }
 
-    public openNotification(reportId) {
-        this.router.navigate(['app/board', reportId]);
+    public openNotification(notification: any) {
+        this.checkNotifications(notification.id, () => {
+            const queryParams: any = {};
+            if (notification.type === 'report-comment') {
+                queryParams.showComments = true;
+            }
+            this.router.navigate(['app/board', notification.reportId], { queryParams });
+        });
     }
 
     public goBack() {

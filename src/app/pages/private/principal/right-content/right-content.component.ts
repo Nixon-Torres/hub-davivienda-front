@@ -1,23 +1,24 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {FormGroup, FormArray, FormControl, Form, Validators, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FormGroup, FormArray, FormControl, Form, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import {environment} from '../../../../../environments/environment';
-import {Report} from '../../board/board.model';
-import {loopback} from '../../../../models/common/loopback.model';
-import {PreviewDialogComponent} from '../../preview-dialog/preview-dialog.component';
-import {HighlightDialogComponent} from '../highlight-dialog/highlight-dialog.component';
-import {CreateReportDialogComponent} from '../create-report-dialog/create-report-dialog.component';
-import {ConfirmationDialogComponent} from '../../board/confirmation-dialog/confirmation-dialog.component';
+import { environment } from '../../../../../environments/environment';
+import { Report } from '../../board/board.model';
+import { loopback } from '../../../../models/common/loopback.model';
+import { PreviewDialogComponent } from '../../preview-dialog/preview-dialog.component';
+import { HighlightDialogComponent } from '../highlight-dialog/highlight-dialog.component';
+import { CreateReportDialogComponent } from '../create-report-dialog/create-report-dialog.component';
+import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 
 import * as moment from 'moment';
-import {AuthService} from '../../../../services/auth.service';
-import {HttpService} from '../../../../services/http.service';
-import {AsideFoldersService} from 'src/app/services/aside-folders.service';
-import {TagsDialogComponent} from '../tags-dialog/tags-dialog.component';
-import {AddWordsDialogComponent} from '../add-words-dialog/add-words-dialog.component';
-import {start} from 'repl';
+import { AuthService } from '../../../../services/auth.service';
+import { HttpService } from '../../../../services/http.service';
+import { AsideFoldersService } from 'src/app/services/aside-folders.service';
+import { TagsDialogComponent } from '../tags-dialog/tags-dialog.component';
+import { AddWordsDialogComponent } from '../add-words-dialog/add-words-dialog.component';
+import { start } from 'repl';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-right-content',
@@ -27,6 +28,7 @@ import {start} from 'repl';
 export class RightContentComponent implements OnInit {
 
     @Output() valueChange = new EventEmitter();
+    @Output() changeView = new EventEmitter();
 
     readonly DRAFT_KEY: string = environment.DRAFT_KEY;
 
@@ -45,6 +47,7 @@ export class RightContentComponent implements OnInit {
         currentFolder: null,
         currentState: null,
         currentCategory: null,
+        currentSearch: null,
         deletedFg: false,
         currentStateName: 'Todos Informes'
     };
@@ -73,6 +76,8 @@ export class RightContentComponent implements OnInit {
     public filterOptions: any;
     public marketing: boolean;
     public isBasicUser: boolean;
+    public isAdvancedUser: boolean;
+    public isMediumUser: boolean;
     public selects: FormGroup;
     public tabIndex = 0;
     public canClearFilters: boolean;
@@ -87,13 +92,18 @@ export class RightContentComponent implements OnInit {
 
             if (this.user && this.user.id) {
                 if (!this.icurrentObj.currentCategory) {
-                    this.loadReports(this.ifilter);
+                    this.category = null;
+                    if (this.icurrentObj.currentSearch && this.isMobileVersion()) {
+                        this.filterReports(this.icurrentObj.currentSearch);
+                    } else {
+                        this.loadReports(this.ifilter);
+                    }
                 } else {
                     this.loadCategory();
                 }
             }
 
-            if (this.icurrentObj.currentFolder) {
+            if (this.icurrentObj.currentFolder || this.icurrentObj.currentState) {
                 this.tabIndex = 0;
             }
         }
@@ -134,7 +144,18 @@ export class RightContentComponent implements OnInit {
         });
         this.marketing = this.auth.isMarketing();
         this.isBasicUser = this.auth.isBasicUser();
+        this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+        this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
         this.selectsFn();
+    }
+
+    public isMobileVersion() {
+        return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent));
+    }
+
+    public isTabletVersion() {
+        const res = (/iPad|tablet/i.test(navigator.userAgent));
+        return res;
     }
 
     public onFileSelect(event: any): void {
@@ -201,7 +222,7 @@ export class RightContentComponent implements OnInit {
             path: 'media/upload',
             data: formData
         }).subscribe((resp: any) => {
-            if (resp) {}
+            if (resp) { }
 
             this.showDialogCategory();
         });
@@ -258,8 +279,10 @@ export class RightContentComponent implements OnInit {
     }
 
     private saveReport(clone: any): void {
+        const type = clone && clone.type;
+        const reportTypeId = clone && clone.reportTypeId;
         this.http.post({
-            path: 'reports',
+            path: `${type || reportTypeId ? 'reports' : 'contents'}`,
             data: clone
         }).subscribe(() => {
             this.loadReports();
@@ -270,7 +293,7 @@ export class RightContentComponent implements OnInit {
 
     private getFolders(): void {
         this.folderService.$listenFolders.subscribe((data: any) => {
-            this.list.folders = data;
+            this.list.folders = data.filter((a: any) => a.id !== 'shared');
         });
     }
 
@@ -302,7 +325,8 @@ export class RightContentComponent implements OnInit {
         if (!this.isFiltered) {
             this.list.reports = this.reviewredFilter(reportList, false);
         }
-        return this.reviewredFilter(reportList, true);
+        const res = this.reviewredFilter(reportList, true);
+        return res;
     }
 
     private loadPager(where: any, path?: any): void {
@@ -320,7 +344,49 @@ export class RightContentComponent implements OnInit {
                     index: i
                 });
             }
+            this.refreshPager();
         });
+    }
+
+    refreshPager() {
+        const max = this.isMobileVersion() ? 6 : 10;
+        const list = this.getPageList(this.pager.totalPages, this.pager.selected, max);
+        this.pager.filterPages = list.map(e => {
+          const item = this.pager.pages.find((j, idx) => e === (idx + 1));
+          return item ? item : {index: '...'};
+        });
+    }
+
+    getPageList(totalPages, page, maxLength) {
+        if (maxLength < 5) {
+            throw new Error('maxLength must be at least 5');
+        }
+
+        const range = (istart, iend) => {
+            return Array.from(Array(iend - istart + 1), (_, i) => i + istart);
+        }
+
+        const sideWidth = maxLength < 9 ? 1 : 2;
+        const leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+        const rightWidth = (maxLength - sideWidth * 2 - 2) >> 1;
+        if (totalPages <= maxLength) {
+            // no breaks in list
+            return range(1, totalPages);
+        }
+        if (page <= maxLength - sideWidth - 1 - rightWidth) {
+            // no break on left of page
+            return range(1, maxLength - sideWidth - 1)
+                .concat(0, range(totalPages - sideWidth + 1, totalPages));
+        }
+        if (page >= totalPages - sideWidth - 1 - rightWidth) {
+            // no break on right of page
+            return range(1, sideWidth)
+                .concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+        }
+        // Breaks on both sides
+        return range(1, sideWidth)
+            .concat(0, range(page - leftWidth, page + rightWidth),
+                0, range(totalPages - sideWidth + 1, totalPages));
     }
 
     public getIFilterIdsPromise(endpoint: string, property: string): Promise<any> {
@@ -330,8 +396,8 @@ export class RightContentComponent implements OnInit {
                 return res(result);
             }
             const query = new loopback();
-            query.filter.where = {name: {like: this.ifilter, options: 'i'}};
-            query.filter.fields = {id: true};
+            query.filter.where = { name: { like: this.ifilter, options: 'i' } };
+            query.filter.fields = { id: true };
             this.http.get({
                 path: endpoint,
                 data: query.filter,
@@ -353,8 +419,8 @@ export class RightContentComponent implements OnInit {
             return fn(result);
         }
         const query = new loopback();
-        query.filter.where.name = {like: this.ifilter, options: 'i'};
-        query.filter.fields = {id: true};
+        query.filter.where.name = { like: this.ifilter, options: 'i' };
+        query.filter.fields = { id: true };
         this.http.get({
             path: endpoint,
             data: query.filter,
@@ -395,19 +461,19 @@ export class RightContentComponent implements OnInit {
     public loadReports(filter?: string | null, pager?: any): void {
         this.ifilter = filter;
         const query = new loopback();
-        query.filter.where = {and: []};
-        query.filter.where.and.push({trash: typeof this.icurrentObj.deletedFg !== 'undefined' ? this.icurrentObj.deletedFg : false});
+        query.filter.where = { and: [] };
+        query.filter.where.and.push({ trash: typeof this.icurrentObj.deletedFg !== 'undefined' ? this.icurrentObj.deletedFg : false });
         query.filter.include.push(
-            {relation: 'folder'},
-            {relation: 'user'},
-            {relation: 'state'},
-            {relation: 'section'}
+            { relation: 'folder' },
+            { relation: 'user' },
+            { relation: 'state' },
+            { relation: 'section' }
         );
 
         if (this.ifilterdate) {
             const start = moment(this.ifilterdate.start).subtract(5, 'hours').toISOString();
             const end = moment(this.ifilterdate.end).subtract(5, 'hours').toISOString();
-            query.filter.where.and.push({updatedAt: {between: [start, end]}});
+            query.filter.where.and.push({ updatedAt: { between: [start, end] } });
         }
 
         if (this.marketing) {
@@ -425,19 +491,19 @@ export class RightContentComponent implements OnInit {
                 if (this.ifilter) {
                     // First filter is used to search by report name, then it adds the others
                     let orWhere: Array<any> = [
-                        {name: {like: this.ifilter, options: 'i'}}
+                        { name: { like: this.ifilter, options: 'i' } }
                     ].concat(users, sections);
 
                     // Only insert state condition if its not filtering by state already
                     if (!this.icurrentObj.currentState) {
                         orWhere = orWhere.concat(states);
                     }
-                    query.filter.where.and.push({or: orWhere});
+                    query.filter.where.and.push({ or: orWhere });
                 }
 
                 // Include the folderId filter, only if we are not searching in the shared folder
                 if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder !== 'shared') {
-                    query.filter.where.and.push({folderId: this.icurrentObj.currentFolder});
+                    query.filter.where.and.push({ folderId: this.icurrentObj.currentFolder });
                 }
 
                 if (this.category) {
@@ -451,29 +517,29 @@ export class RightContentComponent implements OnInit {
                 // If currentState is set (filtering by state), include it
                 if (this.icurrentObj.currentState) {
                     this.resetSelect();
-                    query.filter.where.and.push({stateId: this.icurrentObj.currentState});
+                    query.filter.where.and.push({ stateId: this.icurrentObj.currentState });
                 }
 
                 let pendingWhere;
                 if (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') {
-                    query.filter.include.push({relation: 'authors'});
+                    query.filter.include.push({ relation: 'authors' });
                 } else {
                     if (this.icurrentObj.currentState === '5e068d1cb81d1c5f29b62976' && this.ifilterreviewed) {
                         const iFilterReviewed = false;
-                        query.filter.where.and.push({reviewed: iFilterReviewed});
+                        query.filter.where.and.push({ reviewed: iFilterReviewed });
                     }
                     pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
                     if (this.ifilterreviewed) {
-                        pendingWhere.and.push({id: {inq: reportsAsReviewer}});
-                        pendingWhere.and.push({reviewed: false});
+                        pendingWhere.and.push({ id: { inq: reportsAsReviewer } });
+                        pendingWhere.and.push({ reviewed: false });
                         this.pendignForReview(pendingWhere);
                         if (!this.marketing) {
-                            query.filter.where.and.push({ownerId: this.user.id});
+                            query.filter.where.and.push({ ownerId: this.user.id });
                         }
                     } else {
-                        query.filter.where.and.push({id: {inq: reportsAsReviewer}});
+                        query.filter.where.and.push({ id: { inq: reportsAsReviewer } });
                         if (this.isFiltered) {
-                            query.filter.where.and.push({reviewed: this.isReviewed});
+                            query.filter.where.and.push({ reviewed: this.isReviewed });
                         }
                     }
                 }
@@ -482,6 +548,7 @@ export class RightContentComponent implements OnInit {
                     query.filter.limit = this.pager.limit;
                     query.filter.skip = pager.skip;
                     this.pager.selected = pager.index;
+                    this.refreshPager();
                 } else {
                     this.loadPager(query.filter.where, this.icurrentObj.currentFolder === 'shared');
                     query.filter.limit = this.pager.limit;
@@ -551,17 +618,56 @@ export class RightContentComponent implements OnInit {
         this.finishFilter = false;
         const path = (this.icurrentObj.currentFolder && this.icurrentObj.currentFolder === 'shared') ?
             `users/${this.user.id}/reportsa` : 'reports';
+
+        const pathContents = `contents`;
         this.list.reports = [];
-        this.http.get({
-            path,
-            data: query.filter,
+
+        const observables = this.http.get({ path, data: query.filter, encode: true });
+        const observables2 = this.http.get({
+            path: pathContents,
+            data: {
+                include: ['lastUpdater'],
+                limit: query.filter.limit,
+                order: query.filter.order,
+                skip: query.filter.skip,
+                where: {
+                    key: 'multimedia',
+                    trash: typeof this.icurrentObj.deletedFg !== 'undefined' ? this.icurrentObj.deletedFg : false,
+                },
+            },
             encode: true
-        }).subscribe((response: any) => {
-            this.addCheckboxes(response.body);
+        });
+
+        forkJoin([observables, observables2]).subscribe((results: any) => {
+            const reports = results && results[0] && results[0].body
+                ? results[0].body
+                : [];
+            const contents = results && results[1] && results[1].body
+                ? results[1].body
+                : [];
+            this.startDate = null;
+            this.endDate = null;
             let finisher = null;
-            clearTimeout(finisher)
+            clearTimeout(finisher);
             setTimeout(() => {
-                this.list.reports = response.body;
+                this.list.reports = reports;
+                if (this.icurrentObj.deletedFg) {
+                    contents.map(con => {
+                        con.name = con.title || '';
+                        con.user = {
+                            name: con.lastUpdater && con.lastUpdater.name
+                                ? con.lastUpdater.name
+                                : ''
+                        };
+                        con.state = {
+                            color: 'gray',
+                            name: 'Multimedia'
+                        };
+                        return con;
+                    });
+                    this.list.reports = this.list.reports.concat(contents);
+                }
+                this.addCheckboxes(this.list.reports);
                 if (!this.ifilterreviewed && !this.icurrentObj.currentState) {
                     this.list.reviewed = this.getNotReviewed(this.list.reports);
                 }
@@ -585,7 +691,7 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    private addCheckboxes(reports: Array<any>): void {
+    private addCheckboxes(reports: any): void {
         for (const iReport in reports) {
             if (reports.hasOwnProperty(iReport)) {
                 const control = new FormControl(false);
@@ -628,7 +734,7 @@ export class RightContentComponent implements OnInit {
         });
 
         this.rcPutReport(toUpdate, 0, () => {
-            const folder = this.list.folders.filter((a: any) => a.id == event.value)[0];
+            const folder = this.list.folders.filter((a: any) => a.id === event.value)[0];
             if (!folder) {
                 return;
             }
@@ -659,8 +765,8 @@ export class RightContentComponent implements OnInit {
         let result = [];
 
         this.http.get({
-            path: `users/${this.user.id}/reportsr`,
-            data: {fields: 'id'},
+            path: `users/${this.user && this.user.id ? this.user.id : ''}/reportsr`,
+            data: { fields: 'id' },
             encode: true
         }).subscribe(
             (response: any) => {
@@ -668,7 +774,6 @@ export class RightContentComponent implements OnInit {
                 fn(result);
             },
             () => {
-                alert('Oops!!! \nNo cargamos tus datos. Intenta más tarde');
             }
         );
     }
@@ -740,24 +845,46 @@ export class RightContentComponent implements OnInit {
             if (!result) {
                 return;
             }
-            this.http.get({
+
+            const observables = this.http.get({
                 path: 'reports/',
                 data: {
                     where: {
                         ownerId: this.user.id,
                         trash: true
                     },
-                    fields: ['id']
+                    fields: ['id', 'type']
                 },
                 encode: true
-            }).subscribe((response: any) => {
-                if (!response || !response.body || !response.body.length) {
+            });
+            const observables2 = this.http.get({
+                path: 'contents',
+                data: {
+                    include: ['lastUpdater'],
+                    where: {
+                        key: 'multimedia',
+                        trash: true
+                    },
+                    fields: ['id', 'type']
+                },
+                encode: true
+            });
+
+            forkJoin([observables, observables2]).subscribe((results: any) => {
+                const reportsBody = results && results[0] && results[0].body
+                    ? results[0].body
+                    : [];
+                const contents = results && results[1] && results[1].body
+                    ? results[1].body
+                    : [];
+                if ((!reportsBody || !reportsBody.length) && (!contents || !contents.length)) {
                     return;
                 }
-                const toDelete = response.body.map((a: any) => a.id);
+                const reports = reportsBody.concat(contents);
+                const toDelete = reports.map((a: any) => a.id);
                 this.rcDeeplyDeleteReport(toDelete, 0, () => {
                     this.loadReports(this.ifilter);
-                });
+                }, reports);
             }, (error: any) => {
                 console.error(error);
             });
@@ -770,7 +897,7 @@ export class RightContentComponent implements OnInit {
             data: {
                 isAlert: true,
                 config: {
-                    title: '¿Esta seguro que desea eliminar el reporte?',
+                    title: '¿Esta seguro que desea eliminar el contenido?',
                     titleStyle: {
                         'font-weight': 'bold'
                     }
@@ -789,16 +916,17 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    public rcDeeplyDeleteReport(reports: Array<any>, index: number, fn: any) {
-        if (index == reports.length) {
+    public rcDeeplyDeleteReport(reportsId: Array<any>, index: number, fn: any, reports?: any) {
+        if (index === reportsId.length) {
             return fn();
         }
-        const report = reports[index];
+        const report = reportsId[index];
+        const type = reports[index] && reports[index].type;
         this.http.delete({
-            path: `reports/${report}`
+            path: `${type ? 'reports' : 'contents'}/${report}`
         }).subscribe(() => {
             index++;
-            this.rcDeeplyDeleteReport(reports, index, fn);
+            this.rcDeeplyDeleteReport(reportsId, index, fn, reports);
         }, (error: any) => {
             console.error(error);
         });
@@ -810,7 +938,9 @@ export class RightContentComponent implements OnInit {
             return;
         }
         const report: any = reports[index];
-        const data: Report = {
+        const type = report && report.type;
+        const reportTypeId = report && report.reportTypeId;
+        const data = type || reportTypeId ? {
             id: report.id,
             name: report.name,
             slug: report.slug,
@@ -822,9 +952,10 @@ export class RightContentComponent implements OnInit {
             stateId: report.stateId,
             sectionId: report.sectionId,
             folderId: report.folderId
-        };
+        } : report;
+
         this.http.patch({
-            path: `reports/${data.id}`,
+            path: `${type || reportTypeId ? 'reports' : 'contents'}/${data.id}`,
             data
         }).subscribe(
             () => {
@@ -838,14 +969,14 @@ export class RightContentComponent implements OnInit {
     }
 
     public filterReports(text: string) {
-        this.canClearFilters =  text.length > 0;
+        this.canClearFilters = text.length > 0;
         this.loadReports(text);
     }
 
     public filterDateReports() {
         this.ifilterdate = {
             start: this.startDate,
-            end: this.endDate
+            end: this.endDate ? this.endDate : this.startDate.toString().replace('00:00:00', '23:59:59')
         };
         this.calendarOpen = false;
         this.loadReports(this.ifilter);
@@ -883,31 +1014,32 @@ export class RightContentComponent implements OnInit {
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
 
-        const newReport: any = {
-            name: clone.name,
-            slug: clone.slug,
-            trash: false,
-            content: clone.content,
-            styles: clone.styles,
-            sectionTypeKey: clone.sectionTypeKey,
-            templateId: clone.templateId,
-            userId: clone.userId,
-            stateId: this.DRAFT_KEY,
-            sectionId: clone.sectionId,
-            folderId: clone.folderId,
-            reportTypeId: clone.reportTypeId,
-            companyId: clone.companyId
-        };
+        const type = clone && clone.type;
+        const reportTypeId = clone && clone.reportTypeId;
+        if (!(type || reportTypeId)) {
+          clone.title = `Duplicado ${clone.title}`;
+        }
 
-        this.saveReport(newReport);
+        clone.stateId = this.DRAFT_KEY;
+        clone.trash = false;
+        delete clone.id;
+        delete clone.section;
+        delete clone.state;
+        delete clone.user;
+        delete clone.ownerId;
+
+        this.saveReport(clone);
     }
 
     public onDeleteReport(pos: number) {
-
         const isOutTrash = (!this.icurrentObj.deletedFg);
-        const dialogTitle = isOutTrash ? '¿Está seguro de enviar el reporte a la papelera?' : '¿Está seguro de eliminar definitivamente el reporte?';
-        const reportId = this.list.reports[pos].id;
-        const reportName = this.list.reports[pos].name;
+        const type = this.list.reports[pos] && this.list.reports[pos].type;
+        const reportTypeId = this.list.reports[pos] && this.list.reports[pos].reportTypeId;
+        const dialogTitle = isOutTrash
+            ? `¿Está seguro de enviar el ${type || reportTypeId ? 'reporte' : 'contenido'} a la papelera?`
+            : `¿Está seguro de eliminar definitivamente el ${type || reportTypeId ? 'reporte' : 'contenido'}?`;
+        const id = this.list.reports[pos].id;
+        const name = this.list.reports[pos].name;
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             width: '410px',
             data: {
@@ -922,7 +1054,7 @@ export class RightContentComponent implements OnInit {
             if (result) {
                 if (isOutTrash) {    // Move to trash
                     this.http.patch({
-                        path: 'reports/' + reportId,
+                        path: `${type || reportTypeId ? 'reports' : 'contents'}/${id}`,
                         data: {
                             trash: true
                         }
@@ -931,8 +1063,8 @@ export class RightContentComponent implements OnInit {
                             width: '410px',
                             data: {
                                 config: {
-                                    title: 'Ha sido eliminado exitosamente el informe:',
-                                    subtitle: reportName
+                                    title: `Ha sido eliminado exitosamente el ${type || reportTypeId ? 'reporte' : 'contenido'}:`,
+                                    subtitle: name
                                 }
                             }
                         });
@@ -942,14 +1074,14 @@ export class RightContentComponent implements OnInit {
                     });
                 } else {    // Delete from database
                     this.http.delete({
-                        path: 'reports/' + reportId
+                        path: `${type || reportTypeId ? 'reports' : 'contents'}/${id}`,
                     }).subscribe(() => {
                         this.dialog.open(ConfirmationDialogComponent, {
                             width: '410px',
                             data: {
                                 config: {
-                                    title: 'Ha sido eliminado exitosamente el informe:',
-                                    subtitle: reportName
+                                    title: `Ha sido eliminado exitosamente ${type || reportTypeId ? 'reporte' : 'contenido'}:`,
+                                    subtitle: name
                                 }
                             }
                         });
@@ -960,18 +1092,14 @@ export class RightContentComponent implements OnInit {
         });
     }
 
-    public openPreviewDialog(idReport: string): void {
-        const paramsDialog = {
-            width: '80vw',
-            height: '80vh',
-            data: {
-                reportId: idReport,
-                styles: '',
-                content: ''
-            }
-        };
-
-        this.dialog.open(PreviewDialogComponent, paramsDialog);
+    public openPreviewDialog(report: any): void {
+        if (this.isTabletVersion()) {
+            return this.gotoPage(report.id);
+        }
+        this.changeView.emit({
+            mobile: true,
+            report,
+        });
     }
 
     public openHighlightDialog(id) {
@@ -979,11 +1107,20 @@ export class RightContentComponent implements OnInit {
             const selecteds: Array<string> = this.getCheckboxesSelected();
             id = selecteds[0];
         }
-        const found = this.list.reports.find(element => element.id === id);
+        let found = this.list.reports.find(element => element.id === id);
+
+        if (!found) {
+            found = this.list.reviewed.find(element => element.id === id);
+        }
+
+        if (!found) {
+            found = this.list.notReviewed.find(element => element.id === id);
+        }
+
         const dialogRef = this.dialog.open(HighlightDialogComponent, {
             width: '760px',
             height: '900px',
-            data: {report: found}
+            data: { report: found }
         });
 
         dialogRef.afterClosed().subscribe((result: any) => {
@@ -1010,8 +1147,7 @@ export class RightContentComponent implements OnInit {
     }
 
     public showOptionMenu(state): boolean {
-        const found = this.user.roles.findIndex(element => element === 'Admin');
-        return state === '5e068c81d811c55eb40d14d0' && found >= 0;
+        return state === '5e068c81d811c55eb40d14d0';
     }
 
     public isHighlighted(id): boolean {

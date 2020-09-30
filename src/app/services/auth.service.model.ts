@@ -14,6 +14,7 @@ export interface AccessTokenInterface {
 }
 
 export interface UserInterface {
+    roles?: any;
     id?: string,
     email?: string,
     name?: string,
