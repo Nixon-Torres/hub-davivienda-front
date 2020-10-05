@@ -4,14 +4,14 @@
     </button>
     <!-- Rounded switch -->
     <label class="switch">
-        <input type="checkbox">
+        <input type="checkbox" [(ngModel)]="switchState" (change)="switchToggled()">
         <span class="slider round"></span>
     </label>
     <h1>Comentarios</h1>
 </header>
 
 <section>
-    <mat-card id="{{ comment.id }}" class="comment" *ngFor="let comment of list.comments">
+    <mat-card id="{{ comment.id }}" class="comment" *ngFor="let comment of list.comments; let idx = index">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
@@ -27,7 +27,7 @@
         <mat-card-content>
             <p>{{ comment.text }}</p>
             <div class="actions">
-                <button (click)="resolveComment(comment)" mat-stroked-button class="btn-resolve" [disabled]="comment.resolved">
+                <button *ngIf="showResolveButton(idx)" (click)="resolveComment(comment)" mat-stroked-button class="btn-resolve" [disabled]="comment.resolved">
                     {{comment.resolved ? 'Resuelto': 'Resolver'}}
                 </button>
             </div>
