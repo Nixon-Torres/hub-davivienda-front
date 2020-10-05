@@ -7,7 +7,7 @@ import {
 } from 'src/app/directives/text-select.directive';
 import { DomSanitizer } from '@angular/platform-browser';
 
-const COMMENT_ATTRIBUTE_NAME = 'threadId';
+const COMMENT_ATTRIBUTE_NAME = 'comment-id';
 
 @Component({
     selector: 'app-preview-dialog',
@@ -23,6 +23,7 @@ export class PreviewDialogComponent implements OnInit {
     };
 
     public myhtml: any = '';
+    public threadId: string|number = null;
 
     constructor(
         public dialogRef: MatDialogRef<PreviewDialogComponent>,
@@ -106,7 +107,19 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     public contentOnClick(event: CustomClickEvent): void {
-        if (event.target.attributes[COMMENT_ATTRIBUTE_NAME])
-            console.log('Test', event.target.attributes[COMMENT_ATTRIBUTE_NAME].value);
+        if (event.target.attributes[COMMENT_ATTRIBUTE_NAME] &&
+            this.threadId !== event.target.attributes[COMMENT_ATTRIBUTE_NAME].value) {
+            this.threadId = event.target.attributes[COMMENT_ATTRIBUTE_NAME].value;
+        }
+    }
+
+    public onCommentResolved(commentId: string): void {
+        this.http.get({
+            'path': `reports/view?id=${this.report.id}`
+        }).subscribe((response: any) => {
+            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
+            this.report.content = response.body.view.content ? response.body.view.content : '';
+            this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
+        });
     }
 }
