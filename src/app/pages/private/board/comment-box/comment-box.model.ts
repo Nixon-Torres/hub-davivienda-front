@@ -6,4 +6,5 @@ export interface Comment {
     resolved: boolean;
     type: string;
     threadId: string;
+    textSelection: any;
 }

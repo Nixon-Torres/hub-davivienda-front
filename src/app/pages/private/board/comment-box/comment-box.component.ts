@@ -24,6 +24,7 @@ const TYPE_THREAD = 'THREAD';
 export class CommentBoxComponent implements OnInit, OnChanges {
     @Input('showHeader') showHeader = true;
     @Input('report') private report: any;
+    @Input('textSelection') private textSelection: any = null;
     _threadId: string|number;
     @Input()
     set threadId(val: string|number) {
@@ -51,6 +52,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
         resolved: false,
         type: TYPE_GENERAL,
         threadId: null,
+        textSelection: null,
     };
     public list: any = {
         comments: []
@@ -116,14 +118,20 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     sendComment() {
+        this.comment.textSelection = this.textSelection;
         this.http.post({
             path: 'comments/',
             data: this.comment
         }).subscribe(
-            () => {
+            (response) => {
+                if (this.threadId === 'CREATE_NEW')
+                    this.threadId = response.body['id'];
                 this.comment.text = '';
                 this.loadComments();
                 this.hideCommentForm();
+                this.commentAction.emit({
+                    action: 'created',
+                });
             },
             () => {
                 alert('Oops!!! \nAlgo Salio Mal.');
@@ -209,7 +217,13 @@ export class CommentBoxComponent implements OnInit, OnChanges {
             this.comment.type = !!!this.threadId ? TYPE_GENERAL : TYPE_THREAD;
             this.comment.threadId = !!!this.threadId ? null : String(this.threadId);
             this.switchState = !!this.threadId;
-            this.loadComments();
+            if (this.threadId === 'CREATE_NEW') {
+                this.comment.threadId = null;
+                this.list.comments = [];
+                this.displayCommentForm();
+            } else {
+                this.loadComments();
+            }
         }
     }
 
