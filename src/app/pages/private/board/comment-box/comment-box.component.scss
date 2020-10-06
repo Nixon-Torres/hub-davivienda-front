@@ -201,6 +201,54 @@ app-comment-box{
 						font-size: 0.7rem;
 						line-height: 20px;
 					}
+
+					.resolved-icon {
+						display: flex;
+						justify-content: space-between;
+						.check {
+							font-size: 20px;
+							color: #aed6ff;
+						}
+						.eye {
+							font-size: 15px;
+							color: #0080FF;
+						}
+						.btn-answer {
+							color: #616161;
+							padding: 0px 8px;
+							font-size: 0.7rem;
+							line-height: 20px;
+							background-color: #fff;
+							border: solid 1px;
+							&:focus {
+								outline: none;
+							}
+						}
+					}
+				}
+				.reply_comment {
+					padding: 12px 0px 12px 20px;
+					textarea {
+						width: 96%;
+						height: 35px;
+						padding: 6px;
+						resize: none;
+						border-radius: 5px;
+						border: solid 1px #E2EAF1;
+						font-size: 14px;
+						font-family: "Helvetica Neue", sans-serif;
+						overflow: auto;
+						&:focus {
+							outline: none;
+						}
+					}
+					mat-card-header {
+						div {
+							.avatar {
+								background-color: #FF003B;
+							}
+						}
+					}
 				}
 
 			}
@@ -208,7 +256,6 @@ app-comment-box{
 
 		.add-action {
 			margin-top: 20px;
-			margin-bottom: 100%;
 
 			p {
 				text-align: center;
