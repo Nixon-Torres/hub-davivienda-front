@@ -11,6 +11,7 @@
 			top: 15px;
 			color: #616161;
 			cursor: pointer;
+			display: none;
 		}
 		iframe {
 			width: 100%;
@@ -96,7 +97,7 @@
 			}
 		}
 		.switch {
-			display: none;
+			display: none !important;
 		}
 	}
 }
