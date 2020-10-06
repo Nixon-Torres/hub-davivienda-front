@@ -7,7 +7,15 @@ import {
 } from 'src/app/directives/text-select.directive';
 import { DomSanitizer } from '@angular/platform-browser';
 
+const COMMENT_TAG_NAME = 'mark';
 const COMMENT_ATTRIBUTE_NAME = 'comment-id';
+
+interface SelectionRectangle {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+}
 
 @Component({
     selector: 'app-preview-dialog',
@@ -24,6 +32,11 @@ export class PreviewDialogComponent implements OnInit {
 
     public myhtml: any = '';
     public threadId: string|number = null;
+    private templatePlaceHolders: Array<string> = [];
+
+    public hostRectangle: SelectionRectangle | null = null;
+    private selectedText: string = '';
+    private selectionInfo:any = null;
 
     constructor(
         public dialogRef: MatDialogRef<PreviewDialogComponent>,
@@ -41,41 +54,24 @@ export class PreviewDialogComponent implements OnInit {
         }
 
         document.querySelector('.mat-dialog-container').classList.add('not-scrollable');
-
-        this.http.get({
-            'path': `reports/view?id=${this.report.id}`
-        }).subscribe((response: any) => {
-            console.group('Report');
-            console.log(response);
-            console.groupEnd();
-            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
-            this.report.content = response.body.view.content ? response.body.view.content : '';
-            //this.myhtml = response.body.view.content;
-            //this.mystyle = this.sanitizer.bypassSecurityTrustStyle(response.body.view.styles);
-            this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
-            //this.loadReport();
-        });
+        this.loadReport();
     }
 
     public loadReport(): void {
-        const iframe = document.getElementById('previewFrame');
-        const doc = (iframe as HTMLIFrameElement).contentWindow.document;
-        const regex = new RegExp('href="\/reports\/' + this.report.id, 'gi');
-        this.report.content = this.report.content.replace(
-            regex, () => {
-                return `href="`;
-            });
-        const reportTpl = `
-    		<html>
-    			<head>
-    				<style type="text/css">${this.report.styles}</style>
-    			</head>
-    			<body>${this.report.content}</body>
-    		</html>
-		`;
-        doc.open();
-        doc.write(reportTpl);
-        doc.close();
+        this.http.get({
+            'path': `reports/view?id=${this.report.id}`
+        }).subscribe((response: any) => {
+            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
+            this.report.content = response.body.view.content ? response.body.view.content : '';
+            this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
+        });
+
+        this.http.get({
+            'path': `reports/${this.report.id}`
+        }).subscribe((response: any) => {
+            this.report = response.body;
+            this.loadTemplate(this.report.templateId);
+        });
     }
 
     closeDialog(): void {
@@ -83,27 +79,66 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     public renderRectangles(event: TextSelectEvent): void {
+        // There is a selection, validate it is part of any report placeholder
+        let found = false;
+        let key = null;
+        let value = null;
+        const eventSelection: Selection = event.selection;
+        if (!!!eventSelection) {
+            this.hostRectangle = null;
+            this.selectedText = "";
+            return;
+        }
 
-        console.group("Text Select Event");
-        console.log("Text:", event.text);
-        console.log("Viewport Rectangle:", event.viewportRectangle);
-        console.log("Host Rectangle:", event.hostRectangle);
-        console.log("Selection:", event.selection);
-        console.groupEnd();
+        let node:any = eventSelection.anchorNode;
 
-        // If a new selection has been created, the viewport and host rectangles will
-        // exist. Or, if a selection is being removed, the rectangles will be null.
-        /*if (event.hostRectangle) {
+        while (node !== null) {
+            for (let i = 0; i < this.templatePlaceHolders.length; i++) {
+                key = this.templatePlaceHolders[i];
+                value = this.report[key];
+
+                if (node.outerHTML && value === node.outerHTML) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+                break;
+            node = node.parentNode;
+        }
+
+        // Display comment CTA
+        if (found && event.hostRectangle) {
+            /*let textNode = (eventSelection.anchorNode as Text);
+            let parentNode = eventSelection.anchorNode.parentNode;
+            const targetNode = textNode.splitText(eventSelection.anchorOffset);
+            targetNode.splitText(Math.min(eventSelection['extentOffset'], targetNode.length));
+            const mark:HTMLElement = document.createElement(COMMENT_TAG_NAME);
+            mark.setAttribute(COMMENT_ATTRIBUTE_NAME, '1231313');
+            parentNode.insertBefore(mark, targetNode);
+            mark.appendChild(targetNode);*/
+
+            console.log(node['outerHTML'], key, value);
 
             this.hostRectangle = event.hostRectangle;
             this.selectedText = event.text;
-
-        } else {
-
-            this.hostRectangle = null;
-            this.selectedText = "";
-
-        }*/
+            const selectedNode = eventSelection.anchorNode;
+            let idx;
+            for (idx = 0; idx < selectedNode.parentNode.childNodes.length; idx++) {
+                if (selectedNode.parentNode.childNodes[idx] === selectedNode)
+                    break;
+            }
+            this.selectionInfo = {
+                selectedNodeName: selectedNode.nodeName,
+                parentNodeName: selectedNode.parentNode.nodeName,
+                selectedNodeData: selectedNode['data'],
+                parentIndex: idx,
+                parentChildrenLen: selectedNode.parentNode.childNodes.length,
+                offset: Math.min(eventSelection.anchorOffset, eventSelection['extentOffset']),
+                len: Math.max(eventSelection.anchorOffset, eventSelection['extentOffset']),
+                section: key,
+            };
+        }
     }
 
     public contentOnClick(event: CustomClickEvent): void {
@@ -113,13 +148,31 @@ export class PreviewDialogComponent implements OnInit {
         }
     }
 
-    public onCommentResolved(commentId: string): void {
+    public onCommentAction(evt: any): void {
+        this.selectionInfo = null;
+        this.loadReport();
+    }
+
+    private loadTemplate(templateId: string | number): void {
+        if (!!!templateId) return;
         this.http.get({
-            'path': `reports/view?id=${this.report.id}`
+            'path': `templates/${templateId}`
         }).subscribe((response: any) => {
-            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
-            this.report.content = response.body.view.content ? response.body.view.content : '';
-            this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
+            const template = response.body;
+            this.templatePlaceHolders =
+                template.content.match(/{{[{]?(.*?)[}]?}}/g)
+                    .map(e => {
+                        const replacer1 = new RegExp('{', 'g');
+                        const replacer2 = new RegExp('}', 'g');
+                        return e.replace(replacer1, '').replace(replacer2, '');
+                    })
+                    .filter(e => {
+                        return this.report.hasOwnProperty(e);
+                    });
         });
+    }
+
+    public createCommentFromSelection() {
+        this.threadId = 'CREATE_NEW';
     }
 }
