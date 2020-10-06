@@ -3,11 +3,17 @@
         <i class="material-icons">close</i>
     </button>
     <!-- Rounded switch -->
-    <label class="switch">
-        <input type="checkbox" [(ngModel)]="switchState" (change)="switchToggled()">
-        <span class="slider round"></span>
-    </label>
-    <h1>Comentarios</h1>
+    <div class="comment_header">
+        <div>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="switchState" (change)="switchToggled()">
+                <span class="slider round button_toggle"></span>
+            </label>
+        </div>
+        <div>
+            <h1>Comentarios</h1>
+        </div>
+    </div>
 </header>
 
 <section>
