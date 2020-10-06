@@ -163,7 +163,7 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         let anchorNode = selection.anchorNode;
         let parents = [];
         while(true) {
-            if (anchorNode.parentElement) {
+            if (anchorNode && anchorNode.parentElement) {
                 parents.unshift(anchorNode.parentElement.tagName);
                 anchorNode = anchorNode.parentElement;
             } else
