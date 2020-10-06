@@ -1,11 +1,4 @@
 <body class="dialog">
-<div class="dialog__comments">
-    <app-comment-box *ngIf="report" [report]="report"
-                     [showHeader]="true" [(threadId)]="threadId"
-                     (commentAction)="onCommentAction($event)"
-                     [textSelection]="selectionInfo">
-    </app-comment-box>
-</div>
     <div class="dialog__iframe" textSelect (textSelectEvent)="renderRectangles($event)" (clickEvent)="contentOnClick($event)">
         <a class="preview-icon" (click)="closeDialog()"><span class="icon icon-times"></span></a>
         <div *ngIf="myhtml" [innerHTML]="myhtml"></div>
@@ -26,5 +19,12 @@
                 Comentar
             </a>
         </div>
+    </div>
+    <div class="dialog__comments">
+        <app-comment-box *ngIf="report" [report]="report"
+                         [showHeader]="true" [(threadId)]="threadId"
+                         (commentAction)="onCommentAction($event)"
+                         [textSelection]="selectionInfo">
+        </app-comment-box>
     </div>
 </body>

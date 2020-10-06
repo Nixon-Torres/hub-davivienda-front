@@ -202,16 +202,21 @@ app-comment-box{
 						line-height: 20px;
 					}
 
-					.resolved-icon {
+					.resolved-content {
 						display: flex;
 						justify-content: space-between;
-						.check {
-							font-size: 20px;
-							color: #aed6ff;
-						}
-						.eye {
-							font-size: 15px;
-							color: #0080FF;
+						.resolved-icon {
+							display: flex;
+							.check {
+								font-size: 20px;
+								color: #aed6ff;
+								margin: 0 5px;
+							}
+							.eye {
+								font-size: 15px;
+								color: #0080FF;
+								margin: 0 5px;
+							}
 						}
 						.btn-answer {
 							color: #616161;
