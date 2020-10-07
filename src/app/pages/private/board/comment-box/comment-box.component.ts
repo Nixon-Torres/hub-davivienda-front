@@ -11,6 +11,8 @@ import {
 import { AuthService } from '../../../../services/auth.service';
 import { HttpService } from '../../../../services/http.service';
 import { Comment } from './comment-box.model';
+import {switchMap} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 const TYPE_GENERAL = 'GENERAL';
 const TYPE_THREAD = 'THREAD';
@@ -206,8 +208,22 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 resolved: true,
                 resolverId: this.user.id
             }
-        }).subscribe(
+        }).pipe(
+            switchMap((resp: any) => {
+                if (!!!this.threadId || this.threadId === 'CREATE_NEW') return of(null);
+                const filter = {
+                    resolved: false,
+                };
+                return this.http.get({
+                    path: `commentThreads/${this.threadId}/comments/count?where=${JSON.stringify(filter)}`,
+                });
+            }))
+            .subscribe(
             (resp: any) => {
+                if (resp.body && resp.body.hasOwnProperty('count') &&
+                    resp.body.count === 0) {
+                    this.resolveThread();
+                }
                 comment.resolved = true;
                 this.loadComments();
                 this.commentAction.emit({
@@ -297,6 +313,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
             }
         }).subscribe(
             (resp: any) => {
+                this.thread.resolved = true;
                 this.loadComments();
                 this.commentAction.emit({
                     action: 'resolved',
