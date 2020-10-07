@@ -76,11 +76,35 @@ app-comment-box{
 			}
 
 			&.comment-form {
-				background-color: #F8F8F8;
-				margin-bottom: 100%;
-
+				background-color: #F4F9FF;
+				border-left: solid 3px #0080FF;
+				@media only screen and (max-width: 768px) {
+					margin: 15px 20px;
+				}
+				
 				.mat-card-header {
 					border-bottom: solid 1px #E2EAF1;
+				}
+				&.new_reply {
+					margin-bottom: 0;
+					margin-top: 10%;
+					border: solid 1px #D8E9FD;
+					background-color: #ffffff;
+					box-shadow: none;
+					.mat-card-header {
+						border: none;
+					}
+				}
+			}
+
+			&.comment {
+				background-color: #F4F9FF;
+				border-left: solid 3px #0080FF;
+				@media only screen and (max-width: 768px) {
+					margin: 15px 20px;
+					.comment-close {
+						display: none;
+					}
 				}
 			}
 
@@ -189,6 +213,10 @@ app-comment-box{
 					margin-left: 19px;
 					font-size: 0.75rem;
 					max-width: 130px;
+					@media only screen and (max-width: 768px) {
+						max-width: 130px;
+    					margin: 20px 15px;
+					}
 				}
 
 				.actions {
@@ -230,6 +258,12 @@ app-comment-box{
 							line-height: 20px;
 							background-color: #fff;
 							border: solid 1px;
+							height: 22px;
+							border-radius: 3px;
+							@media only screen and (max-width: 768px) {
+								height: 27px;
+								margin-left: 15px;
+							}
 							&:focus {
 								outline: none;
 							}
@@ -238,6 +272,14 @@ app-comment-box{
 				}
 				.reply_comment {
 					padding: 12px 0px 12px 20px;
+					margin-top: 10%;
+					border: solid 1px #D8E9FD;
+					background-color: #ffffff;
+					box-shadow: none;
+					@media only screen and (max-width: 768px) {
+						margin-left: 15px;
+						padding: 12px 0px 12px 0px;
+					}
 					textarea {
 						width: 96%;
 						height: 35px;
@@ -258,6 +300,10 @@ app-comment-box{
 								background-color: #FF003B;
 							}
 						}
+					}
+					.resolved-icon {
+						justify-content: flex-end;
+						width: 100%;
 					}
 				}
 
