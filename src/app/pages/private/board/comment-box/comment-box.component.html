@@ -2,34 +2,112 @@
     <button class="close-btn" (click)="hideComments()">
         <i class="material-icons">close</i>
     </button>
-    <h1>Comentarios</h1>
+    <!-- Rounded switch -->
+    <div class="comment_header">
+        <div>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="switchState" (change)="switchToggled()">
+                <span class="slider round button_toggle"></span>
+            </label>
+        </div>
+        <div>
+            <h1>Comentarios {{switchState ? 'Específicos' : 'Generales'}}</h1>
+        </div>
+    </div>
 </header>
 
 <section>
-    <mat-card id="{{ comment.id }}" class="comment" *ngFor="let comment of list.comments">
+    <div class="add-action" *ngIf="!flagAdd">
+        <p *ngIf="!!!switchState || !thread?.resolved">
+            <button (click)="displayCommentForm()">
+                <i class="material-icons">add</i>
+            </button>
+            <span>Nuevo comentario</span>
+        </p>
+    </div>
+    <mat-card id="{{ _comment.id }}" class="comment" *ngFor="let _comment of list.comments; let idx = index">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
                 <!-- <img src="../../../../../assets/images/user/images.png"> -->
             </div>
 
-            <mat-card-title>{{ comment.user?.name }}</mat-card-title>
-            <mat-card-subtitle>{{ comment.user?.charge }}</mat-card-subtitle>
-            <button class="comment-close" (click)="deleteComment(comment.id)" *ngIf="!comment.resolved">
+            <mat-card-title>{{ _comment.user?.name }}</mat-card-title>
+            <mat-card-subtitle>{{ _comment.user?.charge }}</mat-card-subtitle>
+            <mat-card-subtitle class="publication_time">{{_comment.createdAt | date: 'h:mm a d LLL' }}</mat-card-subtitle>
+            <button class="comment-close" (click)="deleteComment(_comment.id)" *ngIf="!_comment.resolved">
                 <span class="icon icon-trash-alt"></span>
             </button>
         </mat-card-header>
         <mat-card-content>
-            <p>{{ comment.text }}</p>
+            <p>{{ _comment.text }}</p>
             <div class="actions">
-                <button (click)="resolveComment(comment)" mat-stroked-button class="btn-resolve" [disabled]="comment.resolved">
-                    {{comment.resolved ? 'Resuelto': 'Resolver'}}
-                </button>
+                <div class="resolved-content">
+                    <button *ngIf="!_comment.resolved" class="btn-answer" (click)="displayChildrenCommentForm(idx)">
+                        Responder...
+                    </button>
+                    <p *ngIf="_comment.resolved && _comment.children?.length">{{getChildrenNumberLabel(_comment)}}</p>
+                    <div class="resolved-icon">
+                        <button (click)="resolveComment(_comment)" mat-icon-button class="check" [disabled]="_comment.resolved">
+                            <i [ngClass]="{'far fa-check-circle' : true, 'resolved': _comment.resolved, 'unresolved': !_comment.resolved}"></i>
+                        </button>
+                        <button *ngIf="_comment.children?.length" (click)="collapseChildren(_comment)" mat-icon-button class="check" [disabled]="_comment.resolved">
+                            <i [ngClass]="{'fas eye' : true, 'fa-eye-slash': !!!_comment.collapse, 'fa-eye': !!_comment.collapse}"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Reply comments -->
+            <div *ngIf="!!!_comment.collapse">
+                <mat-card class="form reply_comment"
+                                  id="{{ child.id }}" *ngFor="let child of _comment.children; let cIdx = index">
+                    <mat-card-header>
+                        <div mat-card-avatar>
+                            <div class="avatar"></div>
+                        </div>
+
+                        <mat-card-title>{{ child.user?.name }}</mat-card-title>
+                        <mat-card-subtitle class="publication_time">{{child.createdAt | date: 'h:mm a d LLL'}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>{{ child.text }}</p>
+                        <div class="actions">
+                            <div class="resolved-content">
+                                <div class="resolved-icon">
+                                    <button (click)="resolveComment(child)" mat-icon-button class="check" [disabled]="child.resolved">
+                                        <i [ngClass]="{'far fa-check-circle' : true, 'resolved': child.resolved, 'unresolved': !child.resolved}"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <!-- Create a new Reply -->
+                <mat-card class="comment-form" *ngIf="flagAddChild && replyIdx === idx">
+                    <mat-card-header>
+                        <div mat-card-avatar>
+                            <div class="avatar"></div>
+                            <!-- <img src="../../../../../assets/images/user/images.png"> -->
+                        </div>
+                        <mat-card-title>{{ user?.name }}</mat-card-title>
+                        <mat-card-subtitle>{{ user?.charge }}</mat-card-subtitle>
+                        <button class="comment-close" (click)="hideChildCommentForm()">
+                            <span class="icon icon-times"></span>
+                        </button>
+                    </mat-card-header>
+                    <mat-card-content class="form">
+                        <textarea placeholder="Escriba aquí..." [(ngModel)]="comment.text" (click)="expandArea()" [ngClass]="expandStyle"></textarea>
+                        <button type="button" name="button" class="send-btn" (click)="sendComment(_comment.id)">
+                            <i class="material-icons">arrow_forward</i>
+                        </button>
+                    </mat-card-content>
+                </mat-card>
             </div>
         </mat-card-content>
     </mat-card>
 
-    <mat-card class="comment-form hide">
+    <!-- Create a new Comment -->
+    <mat-card class="comment-form" *ngIf="flagAdd">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
@@ -42,21 +120,12 @@
             </button>
         </mat-card-header>
         <mat-card-content class="form">
-            <textarea class="autoExpand" placeholder="Escriba aquí..." [(ngModel)]="comment.text"></textarea>
-            <button type="button" name="button" class="send-btn" (click)="sendComment()">
+            <textarea placeholder="Escriba aquí..." [(ngModel)]="comment.text" (click)="expandArea()" [ngClass]="expandStyle"></textarea>
+            <button type="button" name="button" class="send-btn" (click)="sendComment(null)">
                 <i class="material-icons">arrow_forward</i>
             </button>
         </mat-card-content>
     </mat-card>
-
-    <div class="add-action">
-        <p>
-            <button (click)="displayCommentForm()">
-                <i class="material-icons">add</i>
-            </button>
-            <span>Nuevo comentario</span>
-        </p>
-    </div>
 </section>
 
 <!-- <footer>

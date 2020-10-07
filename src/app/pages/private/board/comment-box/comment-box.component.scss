@@ -201,6 +201,64 @@ app-comment-box{
 						font-size: 0.7rem;
 						line-height: 20px;
 					}
+
+					.resolved-content {
+						display: flex;
+						justify-content: space-between;
+						.resolved-icon {
+							display: flex;
+							.unresolved {
+								font-size: 20px;
+								color: #aed6ff;
+								margin: 0 5px;
+							}
+                            .resolved {
+                                font-size: 20px;
+                                color: #19D600;
+                                margin: 0 5px;
+                            }
+							.eye {
+								font-size: 15px;
+								color: #0080FF;
+								margin: 0 5px;
+							}
+						}
+						.btn-answer {
+							color: #616161;
+							padding: 0px 8px;
+							font-size: 0.7rem;
+							line-height: 20px;
+							background-color: #fff;
+							border: solid 1px;
+							&:focus {
+								outline: none;
+							}
+						}
+					}
+				}
+				.reply_comment {
+					padding: 12px 0px 12px 20px;
+					textarea {
+						width: 96%;
+						height: 35px;
+						padding: 6px;
+						resize: none;
+						border-radius: 5px;
+						border: solid 1px #E2EAF1;
+						font-size: 14px;
+						font-family: "Helvetica Neue", sans-serif;
+						overflow: auto;
+						&:focus {
+							outline: none;
+						}
+					}
+					mat-card-header {
+						div {
+							.avatar {
+								background-color: #FF003B;
+							}
+						}
+					}
 				}
 
 			}
@@ -208,7 +266,6 @@ app-comment-box{
 
 		.add-action {
 			margin-top: 20px;
-			margin-bottom: 100%;
 
 			p {
 				text-align: center;
@@ -248,5 +305,86 @@ app-comment-box{
 	\* ========================================================= */
 	.hide {
 		display: none;
+	}
+
+}
+
+
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px !important;
+}
+
+.slider.round:before {
+	border-radius: 50% !important;
+}
+
+.slider.round {
+	width: 17px !important;
+}
+
+input:checked + .slider {
+	background-color: #2196F3 !important;
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px #2196F3 !important;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px) !important;
+	-ms-transform: translateX(26px) !important;
+	transform: translateX(26px) !important;
+}
+
+.switch [type=checkbox] + span:not(.lever) {
+	position: relative;
+	padding-left: 35px;
+	cursor: pointer;
+	display: inline-block;
+	height: 25px;
+	line-height: 25px;
+	font-size: 1rem;
+	user-select: none;
+	&.button_toggle {
+		height: 20px;
+		padding-left: 30px;
+		background-color: #ffffff !important;
+		border: solid 3px #A5ABB1;
+
+	}
+}
+
+.comment_header {
+	display: flex;
+	align-items: center;
+	.switch {
+		position: relative;
+		width: 30px;
+		height: auto;
+		margin-bottom: 0;
+		.button_toggle {
+			&::before {
+				height: 20px !important;
+				width: 20px !important;
+				left: -2px !important;
+				bottom: -3px !important;
+				border: solid 3px #A5ABB1;
+			}
+		}
+		input:checked {
+			+ .slider.button_toggle {
+				background-color: #19D600 !important;
+				border: none;
+				&::before {
+					transform: translateX(14px) !important;
+					border: none;
+					height: 17px !important;
+					width: 17px !important;
+					left: -3px !important;
+					bottom: 2px !important;
+				}
+			}
+		}
 	}
 }
