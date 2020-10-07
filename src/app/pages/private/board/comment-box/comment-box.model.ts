@@ -7,4 +7,5 @@ export interface Comment {
     type: string;
     threadId: string;
     textSelection: any;
+    parentId: string;
 }

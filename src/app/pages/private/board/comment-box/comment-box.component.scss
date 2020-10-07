@@ -207,11 +207,16 @@ app-comment-box{
 						justify-content: space-between;
 						.resolved-icon {
 							display: flex;
-							.check {
+							.unresolved {
 								font-size: 20px;
 								color: #aed6ff;
 								margin: 0 5px;
 							}
+                            .resolved {
+                                font-size: 20px;
+                                color: #19D600;
+                                margin: 0 5px;
+                            }
 							.eye {
 								font-size: 15px;
 								color: #0080FF;
@@ -346,7 +351,7 @@ input:checked + .slider:before {
 		padding-left: 30px;
 		background-color: #ffffff !important;
 		border: solid 3px #A5ABB1;
-		
+
 	}
 }
 
