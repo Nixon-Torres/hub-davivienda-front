@@ -653,3 +653,8 @@ section .pr-full-bg .container .brief-section,
 .brief-section .brief-content {
     padding: 0;
 }
+
+
+.brief-section .doscolumn-container .social-bar {
+    left: 65%;
+}

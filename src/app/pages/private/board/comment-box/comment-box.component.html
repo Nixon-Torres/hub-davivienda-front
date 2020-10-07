@@ -3,14 +3,28 @@
         <i class="material-icons">close</i>
     </button>
     <!-- Rounded switch -->
-    <label class="switch">
-        <input type="checkbox" [(ngModel)]="switchState" (change)="switchToggled()">
-        <span class="slider round"></span>
-    </label>
-    <h1>Comentarios</h1>
+    <div class="comment_header">
+        <div>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="switchState" (change)="switchToggled()">
+                <span class="slider round button_toggle"></span>
+            </label>
+        </div>
+        <div>
+            <h1>Comentarios</h1>
+        </div>
+    </div>
 </header>
 
 <section>
+    <div class="add-action" *ngIf="!flagAdd">
+        <p>
+            <button (click)="displayCommentForm()">
+                <i class="material-icons">add</i>
+            </button>
+            <span>Nuevo comentario</span>
+        </p>
+    </div>
     <mat-card id="{{ comment.id }}" class="comment" *ngFor="let comment of list.comments; let idx = index">
         <mat-card-header>
             <div mat-card-avatar>
@@ -20,6 +34,7 @@
 
             <mat-card-title>{{ comment.user?.name }}</mat-card-title>
             <mat-card-subtitle>{{ comment.user?.charge }}</mat-card-subtitle>
+            <mat-card-subtitle class="publication_time">2:45 PM 29 Jun</mat-card-subtitle>
             <button class="comment-close" (click)="deleteComment(comment.id)" *ngIf="!comment.resolved">
                 <span class="icon icon-trash-alt"></span>
             </button>
@@ -30,7 +45,34 @@
                 <button *ngIf="showResolveButton(idx)" (click)="resolveComment(comment)" mat-stroked-button class="btn-resolve" [disabled]="comment.resolved">
                     {{comment.resolved ? 'Resuelto': 'Resolver'}}
                 </button>
+                <div class="resolved-content">
+                    <button class="btn-answer">
+                        Responder...
+                    </button>
+                    <div class="resolved-icon">
+                        <i class="far fa-check-circle check"></i>
+                        <i class="fas fa-eye-slash eye"></i>
+                    </div>
+                </div>
             </div>
+        <!-- Reply comment -->
+        <mat-card-content class="form reply_comment">
+            <mat-card-header>
+                <div mat-card-avatar>
+                    <div class="avatar"></div>
+                </div>
+    
+                <mat-card-title>{{ comment.user?.name }}</mat-card-title>
+                <mat-card-subtitle class="publication_time">2:45 PM 29 Jun</mat-card-subtitle>
+                <button class="comment-close" (click)="deleteComment(comment.id)" *ngIf="!comment.resolved">
+                    <span class="icon icon-trash-alt"></span>
+                </button>
+            </mat-card-header>
+            <textarea placeholder="Escriba aquí..." (click)="expandArea()" [ngClass]="expandStyle"></textarea>
+            <button type="button" name="button" class="send-btn" (click)="sendComment()">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </mat-card-content>
         </mat-card-content>
     </mat-card>
 
@@ -53,15 +95,6 @@
             </button>
         </mat-card-content>
     </mat-card>
-
-    <div class="add-action" *ngIf="!flagAdd">
-        <p>
-            <button (click)="displayCommentForm()">
-                <i class="material-icons">add</i>
-            </button>
-            <span>Nuevo comentario</span>
-        </p>
-    </div>
 </section>
 
 <!-- <footer>
