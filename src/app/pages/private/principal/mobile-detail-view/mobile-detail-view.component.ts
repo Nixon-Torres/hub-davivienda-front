@@ -24,6 +24,7 @@ export class MobileDetailViewComponent implements OnInit {
     };
     public isMediumUser = false;
     public isAdvancedUser = false;
+    public commentToggle = false;
     public users: any = [];
     public unresolvedComments: any;
     showComments = false;

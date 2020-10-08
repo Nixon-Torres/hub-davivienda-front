@@ -30,6 +30,12 @@ body {
 	margin: auto;
 }
 
+button {
+	&:focus {
+		outline: none !important;
+	}
+}
+
 // TODO
 .content-wrap {
 	@include display-flex;
