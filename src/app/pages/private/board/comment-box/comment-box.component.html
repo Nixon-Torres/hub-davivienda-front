@@ -51,7 +51,7 @@
                         <button (click)="resolveComment(_comment)" mat-icon-button class="check" [disabled]="_comment.resolved">
                             <i [ngClass]="{'far fa-check-circle' : true, 'resolved': _comment.resolved, 'unresolved': !_comment.resolved}"></i>
                         </button>
-                        <button *ngIf="_comment.children?.length" (click)="collapseChildren(_comment)" mat-icon-button class="check" [disabled]="_comment.resolved">
+                        <button *ngIf="_comment.children?.length" (click)="collapseChildren(_comment)" mat-icon-button class="check">
                             <i [ngClass]="{'fas eye' : true, 'fa-eye-slash': !!!_comment.collapse, 'fa-eye': !!_comment.collapse}"></i>
                         </button>
                     </div>
