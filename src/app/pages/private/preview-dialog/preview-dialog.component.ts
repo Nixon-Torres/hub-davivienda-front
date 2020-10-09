@@ -66,8 +66,20 @@ export class PreviewDialogComponent implements OnInit {
             this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
         });
 
+        let include:Array<any> = [
+            {
+                relation: 'blocks',
+                scope: {
+                    order: 'createdAt ASC',
+                }
+            }];
+
+        const filter = {
+            include
+        };
+
         this.http.get({
-            'path': `reports/${this.report.id}`
+            'path': `reports/${this.report.id}?filter=${JSON.stringify(filter)}`
         }).subscribe((response: any) => {
             this.report = response.body;
             this.loadTemplate(this.report.templateId);
@@ -83,6 +95,7 @@ export class PreviewDialogComponent implements OnInit {
         let found = false;
         let key = null;
         let value = null;
+        let block = null;
         const eventSelection: Selection = event.selection;
         if (!!!eventSelection) {
             this.hostRectangle = null;
@@ -99,12 +112,44 @@ export class PreviewDialogComponent implements OnInit {
 
                 if (node.outerHTML && value === node.outerHTML) {
                     found = true;
+                    block = null;
                     break;
                 }
             }
             if (found)
                 break;
             node = node.parentNode;
+        }
+
+        // Try with blocks
+        if (!found && this.report.blocks && this.report.blocks.length > 0) {
+            node = eventSelection.anchorNode;
+            const placeholders = ['content', 'title'];
+
+            while (node !== null) {
+                for (let i = 0; i < placeholders.length; i++) {
+                    key = placeholders[i];
+                    for (let j = 0; j < this.report.blocks.length; j++) {
+                        value = this.report.blocks[j][key];
+                        let localId = 'unknown';
+                        try {
+                            localId = node.getAttribute('hub-block');
+                        } catch (e) {
+                        }
+                        if (this.report.blocks[j].localId === localId &&
+                            node.outerHTML && value === node.outerHTML) {
+                            found = true;
+                            block = localId;
+                            break;
+                        }
+                    }
+                    if (found)
+                        break;
+                }
+                if (found)
+                    break;
+                node = node.parentNode;
+            }
         }
 
         // Display comment CTA
@@ -137,6 +182,7 @@ export class PreviewDialogComponent implements OnInit {
                 offset: Math.min(eventSelection.anchorOffset, eventSelection['extentOffset']),
                 len: Math.max(eventSelection.anchorOffset, eventSelection['extentOffset']),
                 section: key,
+                block,
             };
         }
     }
