@@ -91,6 +91,7 @@ app-comment-box{
 					border: solid 1px #D8E9FD;
 					background-color: #ffffff;
 					box-shadow: none;
+					margin-left: 25px;
 					.mat-card-header {
 						border: none;
 					}
@@ -276,6 +277,7 @@ app-comment-box{
 					border: solid 1px #D8E9FD;
 					background-color: #ffffff;
 					box-shadow: none;
+					margin-left: 25px;
 					@media only screen and (max-width: 768px) {
 						margin-left: 15px;
 						padding: 12px 0px 12px 0px;
