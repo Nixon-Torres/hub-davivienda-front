@@ -100,11 +100,8 @@
 }
 
 .indicator {
-    position: absolute;
+	position: relative;
 	z-index: 2;
-	left: 23%;
-    margin-top: 20px;
-
     &__cta {
         position: absolute;
         z-index: 2;
@@ -116,11 +113,11 @@
         background-color: #ffffff ;
         border-radius: 7px;
     	border: solid 2px #0080FF;
-        bottom: 0px ;
+		top: 0;
+    	right: 17em;
         box-shadow: 2px 2px 5px fade( #000000, 30% ) ;
         color: #0080FF !important;
         cursor: pointer;
-        left: 0px ;
         padding: 5px 15px;
         position: absolute;
         transform: translateX( -50% );
