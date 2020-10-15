@@ -653,20 +653,3 @@ section .pr-full-bg .container .brief-section,
 .brief-section .brief-content {
     padding: 0;
 }
-
-@media only screen and (min-width: 1024px) {
-    .container-fluid.pr-full-bg .brief-section .doscolumn-container {
-        display: flex;
-    } 
-    .container-fluid.pr-full-bg .brief-section .podcast-video {
-        position: relative;
-        margin-left: -10%;
-        left: 0;
-    }
-    .brief-section.smart-content-section.bottom {
-        max-width: initial;
-    }
-    .container-fluid .smart-content-section .doscolumn-container.bottom {
-        display: initial;
-    }
-}

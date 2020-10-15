@@ -1442,7 +1442,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public openPreviewDialog(): void {
         const paramsDialog = {
-            width: '80vw',
+            width: '90vw',
             height: '80vh',
             data: {
                 reportId: this.report.id,
