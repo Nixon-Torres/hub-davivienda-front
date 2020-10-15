@@ -250,7 +250,7 @@ export class RightContentComponent implements OnInit {
 
     openDialog(): void {
         const createDialogRef = this.dialog.open(CreateReportDialogComponent, {
-            width: '1500px',
+            width: '80vw',
             data: {
                 folderId: (this.icurrentObj.currentFolder ? this.icurrentObj.currentFolder : false),
                 stateId: '5e068d1cb81d1c5f29b62977'

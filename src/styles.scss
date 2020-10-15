@@ -863,6 +863,9 @@ margin-top: 2%;
 	}
 }
 .cdk-overlay-container{
+	.cdk-overlay-pane {
+		max-width: initial !important;
+	}
 	.mat-select-panel{
 		min-width: calc(100% + 45px) !important;
 		font-size: 14px !important;
