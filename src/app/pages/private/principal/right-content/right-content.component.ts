@@ -18,8 +18,8 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { TagsDialogComponent } from '../tags-dialog/tags-dialog.component';
 import { AddWordsDialogComponent } from '../add-words-dialog/add-words-dialog.component';
 import { start } from 'repl';
-import {concat, forkJoin, of, Subscription, throwError, zip} from 'rxjs';
-import {first, map, switchMap} from 'rxjs/operators';
+import {concat, forkJoin, of, Subject, Subscription, throwError, zip} from 'rxjs';
+import {first, map, switchMap, takeUntil} from 'rxjs/operators';
 import {tryCatch} from 'rxjs/internal-compatibility';
 import {log} from 'util';
 
@@ -85,8 +85,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
     public tabIndex = 0;
     public canClearFilters: boolean;
     public finishFilter = false;
-    private duplicatedSubs: Subscription;
-    private cloneSubs: Subscription;
+    private _destroyed$: Subject<any>;
 
     @Input()
     set currentObj(value: any) {
@@ -270,12 +269,13 @@ export class RightContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this._destroyed$ = new Subject<any>();
         this.setFilterOptions();
     }
 
     ngOnDestroy() {
-        this.duplicatedSubs.unsubscribe();
-        this.cloneSubs.unsubscribe();
+        this._destroyed$.next();
+        this._destroyed$.complete();
     }
 
     public setFilterOptions() {
@@ -328,9 +328,10 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 );
             }),
             first(),
+            takeUntil(this._destroyed$)
         );
 
-        this.duplicatedSubs = duplicatedReport$.subscribe(
+        duplicatedReport$.subscribe(
             (resp: any)  => {
                 this.loadReports();
                 this.folderService.loadStates();
@@ -1062,7 +1063,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
         const clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
-        this.cloneSubs = this.http.get({
+        this.http.get({
             path: 'reports',
             data: {
                 where: {
@@ -1073,7 +1074,10 @@ export class RightContentComponent implements OnInit, OnDestroy {
             },
             encode: true
         })
-            .pipe(first())
+            .pipe(
+                first(),
+                takeUntil(this._destroyed$)
+            )
             .subscribe(({body}) => {
             clone.blocks = !!body[0].blocks.length ? body[0].blocks.map(block => {
                 delete block.id;
