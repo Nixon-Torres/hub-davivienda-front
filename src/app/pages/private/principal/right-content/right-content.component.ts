@@ -274,8 +274,12 @@ export class RightContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.duplicatedSubs.unsubscribe();
-        this.cloneSubs.unsubscribe();
+        if (this.duplicatedSubs) {
+            this.duplicatedSubs.unsubscribe();
+        }
+        if (this.cloneSubs) {
+            this.cloneSubs.unsubscribe();
+        }
     }
 
     public setFilterOptions() {
