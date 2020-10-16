@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormArray, FormControl, Form, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,14 +18,17 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { TagsDialogComponent } from '../tags-dialog/tags-dialog.component';
 import { AddWordsDialogComponent } from '../add-words-dialog/add-words-dialog.component';
 import { start } from 'repl';
-import { forkJoin } from 'rxjs';
+import {concat, forkJoin, of, Subscription, throwError, zip} from 'rxjs';
+import {first, map, switchMap} from 'rxjs/operators';
+import {tryCatch} from 'rxjs/internal-compatibility';
+import {log} from 'util';
 
 @Component({
     selector: 'app-right-content',
     templateUrl: './right-content.component.html',
     styleUrls: ['./right-content.component.scss']
 })
-export class RightContentComponent implements OnInit {
+export class RightContentComponent implements OnInit, OnDestroy {
 
     @Output() valueChange = new EventEmitter();
     @Output() changeView = new EventEmitter();
@@ -82,6 +85,8 @@ export class RightContentComponent implements OnInit {
     public tabIndex = 0;
     public canClearFilters: boolean;
     public finishFilter = false;
+    private duplicatedSubs: Subscription;
+    private cloneSubs: Subscription;
 
     @Input()
     set currentObj(value: any) {
@@ -268,6 +273,11 @@ export class RightContentComponent implements OnInit {
         this.setFilterOptions();
     }
 
+    ngOnDestroy() {
+        this.duplicatedSubs.unsubscribe();
+        this.cloneSubs.unsubscribe();
+    }
+
     public setFilterOptions() {
         this.filterOptions = [{
             value: 'Proceso de revisión',
@@ -281,14 +291,53 @@ export class RightContentComponent implements OnInit {
     private saveReport(clone: any): void {
         const type = clone && clone.type;
         const reportTypeId = clone && clone.reportTypeId;
-        this.http.post({
+        const duplicatedReport$ = this.http.post({
             path: `${type || reportTypeId ? 'reports' : 'contents'}`,
             data: clone
-        }).subscribe(() => {
-            this.loadReports();
-            this.folderService.loadStates();
-            this.folderService.loadFolders();
-        });
+        }).pipe(
+            switchMap(({body}: any) => {
+                if (!body) {
+                    return throwError('Report not found');
+                }
+                const reportBlocks = !!clone.blocks.length ? clone.blocks.map(block => (
+                    this.http.post({
+                        path: 'reports/' + body.id + '/blocks',
+                        data: block
+                    }).pipe(first())
+                )) : [of('')];
+                const reportRelated = !!clone.relateds.length ? clone.relateds.map(related => (
+                    this.http.post({
+                        path: 'reportsRelated',
+                        data: {...related, reportId: body.id}
+                    }).pipe(first())
+                )) : [of('')];
+                const reportFiles = !!clone.files.length ? clone.files.map(file => (
+                    this.http.post({
+                        path: 'media/upload',
+                        data: {...file, resourceId: body.id}
+                    }).pipe(first())
+                )) : [of('')];
+                const reportGlossary = !!clone.glossary.length ? clone.glossary.map(word => (
+                    this.http.put({
+                        path: 'reports/' + body.id + '/glossary/rel/' + word.id
+                    }).pipe(first())
+                )) : [of(clone.glossary)];
+                return zip(
+                    of(body),
+                    forkJoin(concat(...reportBlocks), ...reportRelated, ...reportFiles, ...reportGlossary)
+                );
+            }),
+            first(),
+        );
+
+        this.duplicatedSubs = duplicatedReport$.subscribe(
+            (resp: any)  => {
+                this.loadReports();
+                this.folderService.loadStates();
+                this.folderService.loadFolders();
+            },
+            (error) => console.error(error)
+        );
     }
 
     private getFolders(): void {
@@ -1013,22 +1062,50 @@ export class RightContentComponent implements OnInit {
         const clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
+        this.cloneSubs = this.http.get({
+            path: 'reports',
+            data: {
+                where: {
+                    id: clone.id,
+                },
+                limit: 1,
+                include: ['blocks', 'relateds', 'files', 'glossary']
+            },
+            encode: true
+        })
+            .pipe(first())
+            .subscribe(({body}) => {
+            clone.blocks = !!body[0].blocks.length ? body[0].blocks.map(block => {
+                delete block.id;
+                delete block.reportId;
+                return block;
+            }) : body[0].blocks;
+            clone.relateds = !!body[0].relateds.length ? body[0].relateds.map(related => {
+                delete related.reportId;
+                delete related.id;
+                return related;
+            }) : body[0].relateds;
+            clone.files = !!body[0].files.length ? body[0].files.map(file => {
+                delete file.resourceId;
+                return file;
+            }) : body[0].files;
+            clone.glossary = !!body[0].glossary.length ? body[0].glossary : [];
 
-        const type = clone && clone.type;
-        const reportTypeId = clone && clone.reportTypeId;
-        if (!(type || reportTypeId)) {
-          clone.title = `Duplicado ${clone.title}`;
-        }
+            const type = clone && clone.type;
+            const reportTypeId = clone && clone.reportTypeId;
+            if (!(type || reportTypeId)) {
+                clone.title = `Duplicado ${clone.title}`;
+            }
+            clone.stateId = this.DRAFT_KEY;
+            clone.trash = false;
+            delete clone.id;
+            delete clone.section;
+            delete clone.state;
+            delete clone.user;
+            delete clone.ownerId;
 
-        clone.stateId = this.DRAFT_KEY;
-        clone.trash = false;
-        delete clone.id;
-        delete clone.section;
-        delete clone.state;
-        delete clone.user;
-        delete clone.ownerId;
-
-        this.saveReport(clone);
+            this.saveReport(clone);
+        });
     }
 
     public onDeleteReport(pos: number) {
