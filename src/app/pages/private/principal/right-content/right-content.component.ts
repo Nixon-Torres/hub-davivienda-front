@@ -313,7 +313,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 )) : [of('')];
                 const reportFiles = !!clone.files.length ? clone.files.map(file => (
                     this.http.post({
-                        path: 'media/upload',
+                        path: `media/${file.id}/clone`,
                         data: {...file, resourceId: body.id}
                     }).pipe(first())
                 )) : [of('')];
