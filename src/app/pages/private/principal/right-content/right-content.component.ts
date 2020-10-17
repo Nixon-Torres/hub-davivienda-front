@@ -18,10 +18,8 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { TagsDialogComponent } from '../tags-dialog/tags-dialog.component';
 import { AddWordsDialogComponent } from '../add-words-dialog/add-words-dialog.component';
 import { start } from 'repl';
-import {concat, forkJoin, of, Subscription, throwError, zip} from 'rxjs';
-import {first, map, switchMap} from 'rxjs/operators';
-import {tryCatch} from 'rxjs/internal-compatibility';
-import {log} from 'util';
+import {concat, forkJoin, of, Subject, throwError, zip} from 'rxjs';
+import {first, switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-right-content',
@@ -85,8 +83,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
     public tabIndex = 0;
     public canClearFilters: boolean;
     public finishFilter = false;
-    private duplicatedSubs: Subscription;
-    private cloneSubs: Subscription;
+    private _destroyed$: Subject<any>;
 
     @Input()
     set currentObj(value: any) {
@@ -270,16 +267,13 @@ export class RightContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this._destroyed$ = new Subject<any>();
         this.setFilterOptions();
     }
 
     ngOnDestroy() {
-        if (this.duplicatedSubs) {
-            this.duplicatedSubs.unsubscribe();
-        }
-        if (this.cloneSubs) {
-            this.cloneSubs.unsubscribe();
-        }
+        this._destroyed$.next();
+        this._destroyed$.complete();
     }
 
     public setFilterOptions() {
@@ -317,7 +311,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 )) : [of('')];
                 const reportFiles = !!clone.files.length ? clone.files.map(file => (
                     this.http.post({
-                        path: 'media/upload',
+                        path: `media/${file.id}/clone`,
                         data: {...file, resourceId: body.id}
                     }).pipe(first())
                 )) : [of('')];
@@ -332,9 +326,10 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 );
             }),
             first(),
+            takeUntil(this._destroyed$)
         );
 
-        this.duplicatedSubs = duplicatedReport$.subscribe(
+        duplicatedReport$.subscribe(
             (resp: any)  => {
                 this.loadReports();
                 this.folderService.loadStates();
@@ -1066,7 +1061,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
         const clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
-        this.cloneSubs = this.http.get({
+        this.http.get({
             path: 'reports',
             data: {
                 where: {
@@ -1077,7 +1072,10 @@ export class RightContentComponent implements OnInit, OnDestroy {
             },
             encode: true
         })
-            .pipe(first())
+            .pipe(
+                first(),
+                takeUntil(this._destroyed$)
+            )
             .subscribe(({body}) => {
             clone.blocks = !!body[0].blocks.length ? body[0].blocks.map(block => {
                 delete block.id;
