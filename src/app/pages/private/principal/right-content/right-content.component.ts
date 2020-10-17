@@ -18,10 +18,8 @@ import { AsideFoldersService } from 'src/app/services/aside-folders.service';
 import { TagsDialogComponent } from '../tags-dialog/tags-dialog.component';
 import { AddWordsDialogComponent } from '../add-words-dialog/add-words-dialog.component';
 import { start } from 'repl';
-import {concat, forkJoin, of, Subject, Subscription, throwError, zip} from 'rxjs';
-import {first, map, switchMap, takeUntil} from 'rxjs/operators';
-import {tryCatch} from 'rxjs/internal-compatibility';
-import {log} from 'util';
+import {concat, forkJoin, of, Subject, throwError, zip} from 'rxjs';
+import {first, switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-right-content',
