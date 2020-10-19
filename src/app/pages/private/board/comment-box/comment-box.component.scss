@@ -20,7 +20,7 @@ app-comment-box{
 
 	header {
 		height: 52px;
-		padding: 0px 12px;
+		padding: 0px 25px;
 		font-weight: bold;
 		border-bottom: solid 1px #EAEAEA;
 
@@ -67,6 +67,7 @@ app-comment-box{
 		.mat-card {
 			padding: 0px;
 			margin-bottom: 12px;
+			padding-bottom: 10px;
 			box-shadow: none;
 			border: solid 1px #E2EAF1;
 			transform: position 1s;
@@ -234,22 +235,44 @@ app-comment-box{
 					.resolved-content {
 						display: flex;
 						justify-content: space-between;
+						align-items: center;
 						.resolved-icon {
 							display: flex;
+							align-items: center;
 							.unresolved {
-								font-size: 20px;
-								color: #aed6ff;
+								height: 22px;
+    							width: 22px;
+								color: #a5abb1;
 								margin: 0 5px;
+								border: solid 1px #60aefc;
+								background-color: #ffffff;
+								border-radius: 20px;
+								padding-bottom: 5px;
+								display: flex;
+								justify-content: center;
+								align-items: center;
 							}
                             .resolved {
-                                font-size: 20px;
-                                color: #19D600;
-                                margin: 0 5px;
+                                height: 22px;
+    							width: 22px;
+								color: #19D600;
+								border: solid 1px #19D600;
+								margin: 0 5px;
+								background-color: #ffffff;
+								border-radius: 20px;
+								padding-bottom: 5px;
+								display: flex;
+								justify-content: center;
+								align-items: center;
                             }
 							.eye {
 								font-size: 15px;
 								color: #0080FF;
 								margin: 0 5px;
+							}
+							.resolved_text {
+								margin: 0;
+								color: #000000;
 							}
 						}
 						.btn-answer {
@@ -261,6 +284,7 @@ app-comment-box{
 							border: solid 1px;
 							height: 22px;
 							border-radius: 3px;
+							margin-left: 9%;
 							@media only screen and (max-width: 768px) {
 								height: 27px;
 								margin-left: 15px;
@@ -272,7 +296,7 @@ app-comment-box{
 					}
 				}
 				.reply_comment {
-					padding: 12px 0px 12px 20px;
+					padding: 12px 0px 12px 0px;
 					margin-top: 10%;
 					border: solid 1px #D8E9FD;
 					background-color: #ffffff;
@@ -316,7 +340,8 @@ app-comment-box{
 			margin-top: 20px;
 
 			p {
-				text-align: center;
+				display: flex;
+    			justify-content: center;
 
 				button {
 					width: 26px;
@@ -327,6 +352,7 @@ app-comment-box{
 					border-radius: 50%;
 					padding: 1px 1px 0px 0px;
 					background-color: #0080FF;
+					margin: 0 10px;
 				}
 
 				span {
@@ -435,4 +461,13 @@ input:checked + .slider:before {
 			}
 		}
 	}
+}
+
+.no_comments {
+	text-align: center;
+	color: #A5ABB1;
+	display: block;
+	margin-top: 8px;
+	font-size: 0.7rem;
+	padding: 0 15px;
 }

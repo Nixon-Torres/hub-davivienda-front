@@ -25,6 +25,9 @@
             <span>Nuevo comentario</span>
         </p>
     </div>
+    <div class="no_comments">
+        <p>No hay comentarios aun sobre este informe. Sea el primero en agregar uno.</p>
+    </div>
     <mat-card id="{{ _comment.id }}" class="comment" *ngFor="let _comment of list.comments; let idx = index">
         <mat-card-header>
             <div mat-card-avatar>
@@ -48,8 +51,9 @@
                     </button>
                     <p *ngIf="_comment.resolved && _comment.children?.length">{{getChildrenNumberLabel(_comment)}}</p>
                     <div class="resolved-icon">
+                        <p class="resolved_text" *ngIf="_comment.children?.length">Resuelto</p>
                         <button (click)="resolveComment(_comment)" mat-icon-button class="check" [disabled]="_comment.resolved">
-                            <i [ngClass]="{'far fa-check-circle' : true, 'resolved': _comment.resolved, 'unresolved': !_comment.resolved}"></i>
+                            <i [ngClass]="{'fas fa-check' : true, 'resolved': _comment.resolved, 'unresolved': !_comment.resolved}"></i>
                         </button>
                         <button *ngIf="_comment.children?.length" (click)="collapseChildren(_comment)" mat-icon-button class="check">
                             <i [ngClass]="{'fas eye' : true, 'fa-eye-slash': !!!_comment.collapse, 'fa-eye': !!_comment.collapse}"></i>
@@ -75,7 +79,7 @@
                             <div class="resolved-content">
                                 <div class="resolved-icon">
                                     <button (click)="resolveComment(child)" mat-icon-button class="check" [disabled]="child.resolved">
-                                        <i [ngClass]="{'far fa-check-circle' : true, 'resolved': child.resolved, 'unresolved': !child.resolved}"></i>
+                                        <i [ngClass]="{'fas fa-check' : true, 'resolved': child.resolved, 'unresolved': !child.resolved}"></i>
                                     </button>
                                 </div>
                             </div>
