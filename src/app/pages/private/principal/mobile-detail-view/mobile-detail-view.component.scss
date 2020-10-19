@@ -69,6 +69,7 @@ iframe {
      i {
          font-size: 23px;
          color: #0080FF;
+         cursor: pointer;
      }
      &.reply {
         color: #0080FF;
@@ -89,6 +90,9 @@ iframe {
         @media only screen and (max-width: 600px) {
             margin: 10px 2%;
         }
+        @media only screen and (min-width: 1024px) {
+            margin: 5%;
+        }
     }
 
     .coment_toggle {
@@ -98,6 +102,9 @@ iframe {
         width: auto;
         z-index: 9;
         margin-top: 2%;
+        @media only screen and (min-width: 1024px) {
+            margin-left: 6%;
+        }
         &::before {
             content: '';
             width: 0;
@@ -120,7 +127,10 @@ iframe {
             z-index: -9;
             left: -100%;
             top: 0;
-
+            @media only screen and (min-width: 1024px) {
+                left: -250%;
+                max-height: 85em;
+            }
         }
         div {
             display: flex;
@@ -129,6 +139,7 @@ iframe {
             background-color: #ffffff;
             padding: 15px;
             border: solid 1px #EAEDF2;
+            cursor: pointer;
             &:first-child {
                 border-bottom: solid 1px #EAEDF2;
             }
