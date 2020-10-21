@@ -4,7 +4,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PreviewDialogComponent } from './preview-dialog.component';
 import { CommentBoxModule } from '../board/comment-box/comment-box.module';
 import { MatGridListModule } from '@angular/material';
-import { TextSelectDirective } from 'src/app/directives/text-select.directive';
+import { TextSelectModule } from 'src/app/directives/text-select.module';
 
 const materialModules: any[] = [
     MatGridListModule,
@@ -14,18 +14,18 @@ const materialModules: any[] = [
 @NgModule({
     declarations: [
         PreviewDialogComponent,
-        TextSelectDirective,
     ],
     imports: [
         CommonModule,
         CommentBoxModule,
         materialModules,
+        TextSelectModule,
     ],
     entryComponents: [
         PreviewDialogComponent
     ],
     exports: [
-        TextSelectDirective,
+        TextSelectModule,
     ]
 })
 

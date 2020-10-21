@@ -78,7 +78,6 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.comment.reportId = this.report.id;
         this.switchState = false;
-        this.loadComments();
     }
 
     expandArea(): void {
@@ -252,6 +251,11 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 this.comment.threadId = null;
                 this.list.comments = [];
                 this.displayCommentForm();
+            } else if (this.threadId === 'LOAD_LATEST') {
+                this.threadId = null;
+                this.comment.threadId = null;
+                this.list.comments = [];
+                this.switchToggled();
             } else {
                 this.loadComments();
             }
