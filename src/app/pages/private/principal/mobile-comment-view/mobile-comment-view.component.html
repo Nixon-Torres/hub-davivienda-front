@@ -4,5 +4,9 @@
         <p>Comentarios</p>
     </div>
 </div>
-<app-comment-box (unresolved)="unresolvedComments=$event" *ngIf="report"
-    [report]="report" [showHeader]="false"></app-comment-box>
+
+<app-comment-box *ngIf="report" [report]="report"
+                 [showHeader]="false" [(threadId)]="threadId"
+                 (commentAction)="onCommentAction($event)"
+                 [textSelection]="textSelection">
+</app-comment-box>
