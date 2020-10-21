@@ -81,6 +81,7 @@ export class MobileDetailViewComponent implements OnInit {
     changeViewComments() {
         this.showComments = false;
         this.threadId = null;
+        this.selectionInfo = null;
     }
 
     ngOnInit() {
@@ -501,10 +502,12 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public createCommentFromSelection() {
-        this.zone.run(() => {
-            this.threadId = 'CREATE_NEW';
-            this.showComments = true;
-        });
+        if (!!this.selectionInfo) {
+            this.zone.run(() => {
+                this.threadId = 'CREATE_NEW';
+                this.showComments = true;
+            });
+        }
     }
 
     public loadCommentCounts() {
