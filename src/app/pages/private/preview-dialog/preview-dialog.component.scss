@@ -3,7 +3,7 @@
 	height: 100%;
 
 	&__iframe {
-		width: 65%;
+		width: 70%;
 		overflow-y: scroll;
 		&::-webkit-scrollbar {
 			width: 7px;
@@ -30,7 +30,7 @@
 	}
 
 	&__comments {
-		width: 24%;
+		width: 29%;
 		h1 {
 			font-weight: bold;
 		}
@@ -52,6 +52,21 @@
 						align-items: center;
 						.mat-card-title {
 							margin-bottom: 0;
+						}
+					}
+					.reply_comment {
+						margin-top: 10%;
+						margin-left: 35px;
+						&:nth-child(2n) {
+							background-color: #F4F9FF;
+							border: 0;
+						}
+						@media only screen and (max-width: 1024px) {
+							margin-top: 20%;
+						}
+						@media only screen and (max-width: 991px) {
+							margin-top: 10%;
+							margin-left: 0;
 						}
 					}
 				}
@@ -104,6 +119,9 @@
 					}
 				}
 			}
+		}
+		.comment_header {
+			display: flex;
 		}
 	}
 }
