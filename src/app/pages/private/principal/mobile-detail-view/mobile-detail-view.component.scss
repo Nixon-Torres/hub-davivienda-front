@@ -21,6 +21,9 @@ iframe {
         align-items: center;
         color: #616161;
         width: auto;
+        @media only screen and (max-width: 330px) {
+            max-width: 45%;
+        }
         p {
             font-size: 0.875em;
             font-weight: bold;
@@ -30,7 +33,7 @@ iframe {
     .comment_icons {
         width: 38%;
         @media only screen and (max-width: 400px) {
-            width: 52%;
+            width: 45%;
         }
         .notification_alert {
             top: -4px;
@@ -92,6 +95,7 @@ iframe {
         }
         @media only screen and (min-width: 1024px) {
             margin: 5%;
+            padding-top: 5px;
         }
     }
 
@@ -123,7 +127,7 @@ iframe {
             height: 1000vw;
             max-height: 80em;
             position: absolute;
-            background: #a5abb1b8;
+            background: #a5abb18a;
             z-index: -9;
             left: -100%;
             top: 0;
