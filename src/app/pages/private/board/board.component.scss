@@ -219,6 +219,9 @@ $default-font: "Helvetica Neue", Medium;
         max-width: 1440px;
         width: 88% !important;
         position: relative;
+        @media only screen and (max-width: 1024px) {
+            width: 95% !important; 
+        }
     }
 
     .thumb-image {
@@ -313,11 +316,47 @@ $default-font: "Helvetica Neue", Medium;
                 }
 
                 &.add-comment {
+                    display: none;
                     img {
                         margin-right: 8px;
                     }
                 }
 
+            }
+            .comment_icons {
+                &.board {
+                    float: right;
+                    @media only screen and (max-width: 850px) {
+                        float: none;
+                    }
+                    .preview-mobile__comment {
+                        position: relative;
+                        margin: 0 15px;
+                        cursor: pointer;
+                    }
+                    i {
+                        font-size: 23px;
+                        color: #0080ff;
+                    }
+                    .notification_alert {
+                        top: auto;
+                        width: 20px;
+                        height: 20px;
+                        margin-left: -10px;
+                        margin-top: 0px;
+                        font-size: 11px;
+                        line-height: 18px;
+                        border: 2px solid #fff;
+                        background-color: #ff003b;
+                        color: #fff;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        position: absolute;
+                        border-radius: 50%;
+                        text-align: center;
+                    }
+                }
             }
         }
 
@@ -1114,6 +1153,9 @@ $default-font: "Helvetica Neue", Medium;
                 font-size: 16px;
                 font-weight: bold;
                 color: #d4dadf;
+                @media only screen and (max-width: 1024px) {
+                    font-size: 13px;
+                }
             }
         }
 
@@ -1209,6 +1251,9 @@ $default-font: "Helvetica Neue", Medium;
 
             .selected-image {
                 width: 260px !important;
+                @media only screen and (max-width: 768px) {
+                    width: 200px !important;
+                }
             }
 
             .external-source-input {
@@ -1592,7 +1637,8 @@ $default-font: "Helvetica Neue", Medium;
         background: #f5f7fb;
         border: 1px solid #eff1f6;
         @media only screen and (max-width: 1024px) {
-            width: 190px;
+            width: 194px;
+            padding-right: 10px;
          }
         @media only screen and (max-width: 768px) {
             width: 120px;
@@ -1971,3 +2017,4 @@ ngs-code-editor {
     position: relative;
     vertical-align: baseline;
 }
+
