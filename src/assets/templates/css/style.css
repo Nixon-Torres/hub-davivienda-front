@@ -552,6 +552,24 @@ p.left-arrow-paragraph::before{
     padding: 0rem 1rem !important;
 }
 
+@media (min-width: 850px) and (max-width: 1024px) {
+    .article-ralation .article-block-section .block .block-img {
+        width: 190px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 860px) {
+    .person-portfolio {
+        margin-left: 30px !important;
+    }
+    .person-portfolio .pf-descrition {
+        width: 65% !important;
+    }
+    .container-fluid .smart-content-section .doscolumn-container.bottom {
+        width: 100%;
+    }
+}
+
 
 @media screen and (max-width: 767px) {
     .row{

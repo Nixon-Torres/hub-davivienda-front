@@ -19,8 +19,8 @@ app-comment-box{
 	\* ========================================================= */
 
 	header {
-		height: 52px;
-		padding: 0px 12px;
+		height: 70px;
+		padding: 0px 25px;
 		font-weight: bold;
 		border-bottom: solid 1px #EAEAEA;
 
@@ -40,6 +40,14 @@ app-comment-box{
 			i {
 				font-size: 16px;
 				color: #A5ABB1;
+				width: 100%;
+			}
+			span {
+				font-size: 0.7em;
+				font-family: Roboto,"Helvetica Neue",sans-serif;
+				color: #616161;
+				position: relative;
+				top: -12px;
 			}
 		}
 	}
@@ -67,6 +75,7 @@ app-comment-box{
 		.mat-card {
 			padding: 0px;
 			margin-bottom: 12px;
+			padding-bottom: 10px;
 			box-shadow: none;
 			border: solid 1px #E2EAF1;
 			transform: position 1s;
@@ -88,10 +97,9 @@ app-comment-box{
 				&.new_reply {
 					margin-bottom: 0;
 					margin-top: 10%;
-					border: solid 1px #D8E9FD;
-					background-color: #ffffff;
+					border: 0;
 					box-shadow: none;
-					margin-left: 25px;
+					margin-left: 19px;
 					.mat-card-header {
 						border: none;
 					}
@@ -101,7 +109,7 @@ app-comment-box{
 			&.comment {
 				background-color: #F4F9FF;
 				border-left: solid 3px #0080FF;
-				@media only screen and (max-width: 768px) {
+				@media only screen and (max-width: 991px) {
 					margin: 15px 20px;
 					.comment-close {
 						display: none;
@@ -214,7 +222,7 @@ app-comment-box{
 					margin-left: 19px;
 					font-size: 0.75rem;
 					max-width: 130px;
-					@media only screen and (max-width: 768px) {
+					@media only screen and (max-width: 991px) {
 						max-width: 130px;
     					margin: 20px 15px;
 					}
@@ -222,6 +230,9 @@ app-comment-box{
 
 				.actions {
 					height: 20px;
+					@media only screen and (max-width: 991px) {
+						height: auto;
+					}
 
 					.btn-resolve {
 						float: right;
@@ -234,22 +245,48 @@ app-comment-box{
 					.resolved-content {
 						display: flex;
 						justify-content: space-between;
+						align-items: center;
+						flex-wrap: wrap;
 						.resolved-icon {
 							display: flex;
+							align-items: center;
+							@media only screen and (max-width: 991px) {
+								margin: 0px 15px;
+							}
 							.unresolved {
-								font-size: 20px;
-								color: #aed6ff;
+								height: 22px;
+    							width: 22px;
+								color: #a5abb1;
 								margin: 0 5px;
+								border: solid 1px #60aefc;
+								background-color: #ffffff;
+								border-radius: 20px;
+								padding-bottom: 5px;
+								display: flex;
+								justify-content: center;
+								align-items: center;
 							}
                             .resolved {
-                                font-size: 20px;
-                                color: #19D600;
-                                margin: 0 5px;
+                                height: 22px;
+    							width: 22px;
+								color: #19D600;
+								border: solid 1px #19D600;
+								margin: 0 5px;
+								background-color: #ffffff;
+								border-radius: 20px;
+								padding-bottom: 5px;
+								display: flex;
+								justify-content: center;
+								align-items: center;
                             }
 							.eye {
 								font-size: 15px;
 								color: #0080FF;
 								margin: 0 5px;
+							}
+							.resolved_text {
+								margin: 0;
+								color: #000000;
 							}
 						}
 						.btn-answer {
@@ -261,6 +298,7 @@ app-comment-box{
 							border: solid 1px;
 							height: 22px;
 							border-radius: 3px;
+							margin-left: 19px;
 							@media only screen and (max-width: 768px) {
 								height: 27px;
 								margin-left: 15px;
@@ -269,15 +307,21 @@ app-comment-box{
 								outline: none;
 							}
 						}
+						p {
+							margin-bottom: 0;
+						}
 					}
 				}
 				.reply_comment {
-					padding: 12px 0px 12px 20px;
-					margin-top: 10%;
+					padding: 12px 0px 12px 0px;
+					margin-top: 25%;
 					border: solid 1px #D8E9FD;
 					background-color: #ffffff;
 					box-shadow: none;
-					margin-left: 25px;
+					margin-left: 17px;
+					@media only screen and (max-width: 1024px) {
+						margin-left: 0;
+					}
 					@media only screen and (max-width: 768px) {
 						margin-left: 15px;
 						padding: 12px 0px 12px 0px;
@@ -316,7 +360,8 @@ app-comment-box{
 			margin-top: 20px;
 
 			p {
-				text-align: center;
+				display: flex;
+    			justify-content: center;
 
 				button {
 					width: 26px;
@@ -327,6 +372,7 @@ app-comment-box{
 					border-radius: 50%;
 					padding: 1px 1px 0px 0px;
 					background-color: #0080FF;
+					margin: 0 10px;
 				}
 
 				span {
@@ -404,7 +450,7 @@ input:checked + .slider:before {
 }
 
 .comment_header {
-	display: flex;
+	display: none;
 	align-items: center;
 	.switch {
 		position: relative;
@@ -435,4 +481,15 @@ input:checked + .slider:before {
 			}
 		}
 	}
+}
+
+.no_comments {
+	text-align: center;
+	color: #A5ABB1;
+	display: block;
+	margin-top: 8px;
+	font-size: 0.7rem;
+	padding: 0 15px;
+	margin-bottom: 1em;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
