@@ -7,11 +7,12 @@
 				<span class="cnt">{{user.roles[0]}}</span>
 			</li>
 		</ul>
-		<ul *ngIf="showGruopsUser" class="options--list variation">	
+		<ul *ngIf="showGruopsUser" class="options--list variation">
 			<li  *ngFor="let group of list.groups" [ngClass]="{active: isActive(group.id)}" (click)="setActive(group.id)">
 			    <a >{{group.name}}</a>
 			    <span class="cnt">{{group.users ? group.users.length : 0}}</span>
 			</li>
+            <li>x</li>
 		</ul>
 	</div>
 </div>
