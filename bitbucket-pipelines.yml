@@ -23,6 +23,7 @@ pipelines:
               - apt-get install -y zip # required for packaging up the application
               - pip install boto3 # required for codedeploy_deploy.py
               - npm install
+              - npm run postinstall
               #- bower install --allow-root
               - npm run build-admin --prod
               - chmod +x scripts/*
