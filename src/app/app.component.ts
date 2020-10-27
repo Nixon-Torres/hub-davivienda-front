@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { VERSION } from '../environments/version'
+import { VERSION } from '../environments/version';
 
 @Component({
     selector: 'app-root',
