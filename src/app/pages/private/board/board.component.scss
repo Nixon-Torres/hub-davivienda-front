@@ -974,7 +974,7 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
 
             h2 {
-                margin: 0px 0px 20px;
+                margin: 0px 0px 0px;
                 font-size: 17px;
             }
         }
@@ -1970,4 +1970,8 @@ ngs-code-editor {
     line-height: 0;
     position: relative;
     vertical-align: baseline;
+}
+
+.ck.ck-editor__editable .image {
+    margin-top: 0;
 }
