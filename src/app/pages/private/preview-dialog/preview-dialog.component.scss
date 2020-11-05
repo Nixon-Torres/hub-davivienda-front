@@ -46,7 +46,10 @@
 			section  {
 				.mat-card {
 					background-color: #F4F9FF;
-    				border-left: solid 3px #0080FF;
+					border-left: solid 3px #0080FF;
+					@media only screen and (max-width: 1024px) {
+						margin-top: 15px;
+					}
 					.mat-card-header {
 						display: flex;
 						align-items: center;
@@ -67,6 +70,16 @@
 						@media only screen and (max-width: 991px) {
 							margin-top: 10%;
 							margin-left: 0;
+						}
+					}
+					.actions {
+						.resolved-content {
+							.resolved-icon {
+								.resolved {
+									height: 22px;
+									width: 22px;
+								}
+							}
 						}
 					}
 				}
