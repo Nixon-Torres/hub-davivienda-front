@@ -45,13 +45,17 @@ header {
             text-decoration: none;
             border-left: 1px solid #EDEDED;
             border-right: 1px solid #EDEDED;
-            @media only screen and (max-width: 720px) {
+            @media only screen and (max-width: 991px) {
                 height: 25px;
+                padding: 0;
             }
 
             img.logo-board {
                 height: 24px;
                 margin: 23px 8px 0 15px;
+                @media only screen and (max-width: 991px) {
+                    margin-top: 0;
+                }
             }
 
             span {
