@@ -75,11 +75,11 @@
                     [disabled]="readonly">
                     <span class="icon icon-save"></span>Guardar
                 </button>
-                
-                <div class="comment_icons board">
+
+                <div (click)="openPreviewDialog()" class="comment_icons board">
                     <div class="preview-mobile__comment">
                         <i class="fas fa-comments"></i>
-                        <span class="notification_alert">99</span>
+                        <span class="notification_alert">{{commentsCount}}</span>
                     </div>
                 </div>
 
