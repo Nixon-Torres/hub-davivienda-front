@@ -82,6 +82,24 @@
 							}
 						}
 					}
+					&.resolved {
+						background-color: #ffffff;
+						border: solid 1px #cad2d7;
+						.mat-card-header {
+							color: #cad2d7;
+							.avatar {
+								background-color: #cad2d7;
+							}
+							.publication_time  {
+								color: #cad2d7;
+							}
+						}
+						.mat-card-content {
+							p {
+								color: #cad2d7;
+							}
+						}
+					}
 				}
 				mat-card {
 					&.comment-form {

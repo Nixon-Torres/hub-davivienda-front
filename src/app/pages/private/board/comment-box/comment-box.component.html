@@ -29,7 +29,7 @@
     <div class="no_comments">
         <p>No hay comentarios aun sobre este informe. Sea el primero en agregar uno.</p>
     </div>
-    <mat-card id="{{ _comment.id }}" class="comment" *ngFor="let _comment of list.comments; let idx = index">
+    <mat-card id="{{ _comment.id }}" class="comment" *ngFor="let _comment of list.comments; let idx = index" [ngClass]="{'resolved': _comment.resolved, 'unresolved': !_comment.resolved}">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
