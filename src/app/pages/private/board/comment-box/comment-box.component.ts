@@ -97,6 +97,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 relation: 'children',
                 scope: {
                     order: 'createdAt ASC',
+                    include: 'user',
                 }
             }];
 
