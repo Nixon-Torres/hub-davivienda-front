@@ -20,7 +20,8 @@
         <app-comment-box *ngIf="report" [report]="report"
                          [showHeader]="true" [(threadId)]="threadId"
                          (commentAction)="onCommentAction($event)"
-                         [textSelection]="selectionInfo">
+                         [textSelection]="selectionInfo"
+                         (propagate)="closeDialog()">
         </app-comment-box>
     </div>
 </body>

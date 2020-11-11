@@ -90,11 +90,20 @@ export class PreviewDialogComponent implements OnInit {
         this.dialogRef.close();
     }
 
+    static striphtml(value:string|null) {
+        if (!value || (value === '')) {
+            return '';
+        } else {
+            return value
+                .replace(/&nbsp;/g, '\xa0');
+        }
+    }
+
     public renderRectangles(event: TextSelectEvent): void {
         // There is a selection, validate it is part of any report placeholder
         let found = false;
         let key = null;
-        let value = null;
+        let value: string|null = null;
         let block = null;
         const eventSelection: Selection = event.selection;
         if (!!!eventSelection) {
@@ -110,7 +119,8 @@ export class PreviewDialogComponent implements OnInit {
                 key = this.templatePlaceHolders[i];
                 value = this.report[key];
 
-                if (node.outerHTML && value === node.outerHTML) {
+                const nodeHtml = PreviewDialogComponent.striphtml(node.outerHTML);
+                if (nodeHtml && value === nodeHtml) {
                     found = true;
                     block = null;
                     break;
@@ -136,8 +146,9 @@ export class PreviewDialogComponent implements OnInit {
                             localId = node.getAttribute('hub-block');
                         } catch (e) {
                         }
+                        const nodeHtml = PreviewDialogComponent.striphtml(node.outerHTML);
                         if (this.report.blocks[j].localId === localId &&
-                            node.outerHTML && value === node.outerHTML) {
+                            nodeHtml && value === nodeHtml) {
                             found = true;
                             block = localId;
                             break;
@@ -154,17 +165,6 @@ export class PreviewDialogComponent implements OnInit {
 
         // Display comment CTA
         if (found && event.hostRectangle) {
-            /*let textNode = (eventSelection.anchorNode as Text);
-            let parentNode = eventSelection.anchorNode.parentNode;
-            const targetNode = textNode.splitText(eventSelection.anchorOffset);
-            targetNode.splitText(Math.min(eventSelection['extentOffset'], targetNode.length));
-            const mark:HTMLElement = document.createElement(COMMENT_TAG_NAME);
-            mark.setAttribute(COMMENT_ATTRIBUTE_NAME, '1231313');
-            parentNode.insertBefore(mark, targetNode);
-            mark.appendChild(targetNode);*/
-
-            console.log(node['outerHTML'], key, value);
-
             this.hostRectangle = event.hostRectangle;
             this.selectedText = event.text;
             const selectedNode = eventSelection.anchorNode;
@@ -173,6 +173,7 @@ export class PreviewDialogComponent implements OnInit {
                 if (selectedNode.parentNode.childNodes[idx] === selectedNode)
                     break;
             }
+
             this.selectionInfo = {
                 selectedNodeName: selectedNode.nodeName,
                 parentNodeName: selectedNode.parentNode.nodeName,

@@ -389,6 +389,15 @@ export class MobileDetailViewComponent implements OnInit {
         });
     }
 
+    static striphtml(value:string|null) {
+        if (!value || (value === '')) {
+            return '';
+        } else {
+            return value
+                .replace(/&nbsp;/g, '\xa0');
+        }
+    }
+
     public renderRectangles(event: TextSelectEvent): void {
         // There is a selection, validate it is part of any report placeholder
         let found = false;
@@ -409,7 +418,8 @@ export class MobileDetailViewComponent implements OnInit {
                 key = this.templatePlaceHolders[i];
                 value = this.report[key];
 
-                if (node.outerHTML && value === node.outerHTML) {
+                const nodeHtml = MobileDetailViewComponent.striphtml(node.outerHTML);
+                if (nodeHtml && value === nodeHtml) {
                     found = true;
                     block = null;
                     break;
@@ -435,8 +445,9 @@ export class MobileDetailViewComponent implements OnInit {
                             localId = node.getAttribute('hub-block');
                         } catch (e) {
                         }
+                        const nodeHtml = MobileDetailViewComponent.striphtml(node.outerHTML);
                         if (this.report.blocks[j].localId === localId &&
-                            node.outerHTML && value === node.outerHTML) {
+                            nodeHtml && value === nodeHtml) {
                             found = true;
                             block = localId;
                             break;
