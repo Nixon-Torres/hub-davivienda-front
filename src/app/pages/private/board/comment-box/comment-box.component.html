@@ -20,7 +20,7 @@
 <section>
     <div class="add-action" *ngIf="!flagAdd">
         <p *ngIf="!!!switchState || !thread?.resolved">
-            <button (click)="displayCommentForm()">
+            <button (click)="displayCommentForm(); scrollToElement(target)">
                 <i class="material-icons">add</i>
             </button>
             <span>Nuevo comentario</span>
@@ -131,6 +131,7 @@
             </button>
         </mat-card-content>
     </mat-card>
+    <span #target class="scroll_anchor">...</span>
 </section>
 
 <!-- <footer>

@@ -343,4 +343,8 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 this.thread = null;
             });
     }
+
+    scrollToElement($scrollAnchor): void {
+        $scrollAnchor.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      }
 }
