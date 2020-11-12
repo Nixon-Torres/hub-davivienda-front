@@ -91,11 +91,15 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     static striphtml(value:string|null) {
-        if (!value || (value === '')) {
-            return '';
+        if (!value || (value === '') || typeof value  != 'string') {
+            return null;
         } else {
             return value
-                .replace(/&nbsp;/g, '\xa0');
+                .replace(/\s/g, '')
+                .replace(/×/g, '')
+                .replace(/<.*?>/g, '')
+                .replace(/\xa0/g, '')
+                .replace(/&nbsp;/g, '');
         }
     }
 
@@ -117,10 +121,12 @@ export class PreviewDialogComponent implements OnInit {
         while (node !== null) {
             for (let i = 0; i < this.templatePlaceHolders.length; i++) {
                 key = this.templatePlaceHolders[i];
-                value = this.report[key];
+                value = PreviewDialogComponent.striphtml(this.report[key]);
+                if (!!!value) continue;
 
                 const nodeHtml = PreviewDialogComponent.striphtml(node.outerHTML);
-                if (nodeHtml && value === nodeHtml) {
+                if (!!!nodeHtml) continue;
+                if (nodeHtml && nodeHtml === value) {
                     found = true;
                     block = null;
                     break;
@@ -140,15 +146,18 @@ export class PreviewDialogComponent implements OnInit {
                 for (let i = 0; i < placeholders.length; i++) {
                     key = placeholders[i];
                     for (let j = 0; j < this.report.blocks.length; j++) {
-                        value = this.report.blocks[j][key];
+                        value = PreviewDialogComponent.striphtml(this.report.blocks[j][key]);
+                        if (!!!value) continue;
                         let localId = 'unknown';
                         try {
                             localId = node.getAttribute('hub-block');
                         } catch (e) {
                         }
+
                         const nodeHtml = PreviewDialogComponent.striphtml(node.outerHTML);
+                        if (!!!nodeHtml) continue;
                         if (this.report.blocks[j].localId === localId &&
-                            nodeHtml && value === nodeHtml) {
+                            nodeHtml && nodeHtml === value) {
                             found = true;
                             block = localId;
                             break;
