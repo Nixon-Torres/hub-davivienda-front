@@ -108,6 +108,9 @@
 								padding: 5px 2px 5px 8px;;
 								textarea {
 									height: 35px;
+									@media only screen and (min-width: 1822px) {
+										height: 75px;
+									}
 									&::-webkit-scrollbar {
 										display: none;
 									}
@@ -158,14 +161,13 @@
 }
 
 .indicator {
-	position: relative;
+	position: absolute;
+    left: 30em;
+    top: 55%;
     z-index: 2;
-    width: 100%;
     &__cta {
-       /*  position: absolute;
+        position: absolute;
         z-index: 2;
-        left: 60px;
-        margin-top: 40px; */
     }
 
     &__cta-link {
