@@ -61,6 +61,8 @@ app-comment-box{
 		transition: overflow .5s;
 		@media only screen and (max-width: 768px) {
 			padding: 0;
+		}
+		@media only screen and (max-width: 600px) {
 			overflow: hidden;
 		}
 
