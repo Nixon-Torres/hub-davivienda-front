@@ -61,6 +61,7 @@ app-comment-box{
 		transition: overflow .5s;
 		@media only screen and (max-width: 768px) {
 			padding: 0;
+			overflow: hidden;
 		}
 
 		&::-webkit-scrollbar {
@@ -508,6 +509,11 @@ input:checked + .slider:before {
 	padding: 0 15px;
 	margin-bottom: 1em;
 	font-family: Roboto, "Helvetica Neue", sans-serif;
+	@media only screen and (max-width: 720px) {
+		min-height: 40px;
+		margin: 0;
+		padding-top: 20px;
+	}
 }
 
 .scroll_anchor {
