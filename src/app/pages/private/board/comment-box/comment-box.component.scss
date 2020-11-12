@@ -259,8 +259,8 @@ app-comment-box{
 								margin: 0px 15px;
 							}
 							.unresolved {
-								height: 22px;
-    							width: 22px;
+								height: 20px;
+    							width: 24px;
 								color: #a5abb1;
 								margin: 0 5px;
 								border: solid 1px #60aefc;
@@ -272,8 +272,8 @@ app-comment-box{
 								align-items: center;
 							}
                             .resolved {
-                                height: 22px;
-    							width: 22px;
+                                height: 20px;
+    							width: 24px;
 								color: #19D600;
 								border: solid 1px #19D600;
 								margin: 0 5px;
@@ -508,4 +508,11 @@ input:checked + .slider:before {
 	padding: 0 15px;
 	margin-bottom: 1em;
 	font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.scroll_anchor {
+	position: relative;
+	top: 3em;
+	opacity: 0;
+	visibility: hidden;
 }
