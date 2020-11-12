@@ -390,11 +390,15 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     static striphtml(value:string|null) {
-        if (!value || (value === '')) {
-            return '';
+        if (!value || (value === '') || typeof value  != 'string') {
+            return null;
         } else {
             return value
-                .replace(/&nbsp;/g, '\xa0');
+                .replace(/\s/g, '')
+                .replace(/×/g, '')
+                .replace(/<.*?>/g, '')
+                .replace(/\xa0/g, '')
+                .replace(/&nbsp;/g, '');
         }
     }
 
@@ -416,9 +420,11 @@ export class MobileDetailViewComponent implements OnInit {
         while (node !== null) {
             for (let i = 0; i < this.templatePlaceHolders.length; i++) {
                 key = this.templatePlaceHolders[i];
-                value = this.report[key];
+                value = MobileDetailViewComponent.striphtml(this.report[key]);
+                if (!!!value) continue;
 
                 const nodeHtml = MobileDetailViewComponent.striphtml(node.outerHTML);
+                if (!!!nodeHtml) continue;
                 if (nodeHtml && value === nodeHtml) {
                     found = true;
                     block = null;
@@ -439,13 +445,15 @@ export class MobileDetailViewComponent implements OnInit {
                 for (let i = 0; i < placeholders.length; i++) {
                     key = placeholders[i];
                     for (let j = 0; j < this.report.blocks.length; j++) {
-                        value = this.report.blocks[j][key];
+                        value = MobileDetailViewComponent.striphtml(this.report.blocks[j][key]);
+                        if (!!!value) continue;
                         let localId = 'unknown';
                         try {
                             localId = node.getAttribute('hub-block');
                         } catch (e) {
                         }
                         const nodeHtml = MobileDetailViewComponent.striphtml(node.outerHTML);
+                        if (!!!nodeHtml) continue;
                         if (this.report.blocks[j].localId === localId &&
                             nodeHtml && value === nodeHtml) {
                             found = true;
