@@ -1081,7 +1081,7 @@ $default-font: "Helvetica Neue", Medium;
         }
 
         .ck.ck-editor__editable > h2 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-weight: bold !important;
             color: #EC2023 !important;
             font-size: 20px !important;
@@ -1749,6 +1749,7 @@ $default-font: "Helvetica Neue", Medium;
         font-size: 17px !important;
         font-weight: 500;
         font-family: 'Helvetica-Neue';
+        margin: 15px 0;
     }
 
     h2 {
