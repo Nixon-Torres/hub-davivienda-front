@@ -389,19 +389,6 @@ export class MobileDetailViewComponent implements OnInit {
         });
     }
 
-    static striphtml(value:string|null) {
-        if (!value || (value === '') || typeof value  != 'string') {
-            return null;
-        } else {
-            return value
-                .replace(/\s/g, '')
-                .replace(/×/g, '')
-                .replace(/<.*?>/g, '')
-                .replace(/\xa0/g, '')
-                .replace(/&nbsp;/g, '');
-        }
-    }
-
     public renderRectangles(event: TextSelectEvent): void {
         // There is a selection, validate it is part of any report placeholder
         let found = false;
@@ -416,58 +403,15 @@ export class MobileDetailViewComponent implements OnInit {
         }
 
         let node:any = eventSelection.anchorNode;
-
-        while (node !== null) {
-            for (let i = 0; i < this.templatePlaceHolders.length; i++) {
-                key = this.templatePlaceHolders[i];
-                value = MobileDetailViewComponent.striphtml(this.report[key]);
-                if (!!!value) continue;
-
-                const nodeHtml = MobileDetailViewComponent.striphtml(node.outerHTML);
-                if (!!!nodeHtml) continue;
-                if (nodeHtml && value === nodeHtml) {
-                    found = true;
-                    block = null;
-                    break;
-                }
-            }
-            if (found)
+        let parentNode:any = node.parentNode ? node.parentNode : node;
+        while (parentNode !== null) {
+            if (parentNode.getAttribute && !!parentNode.getAttribute('hub-section-id')) {
+                key = parentNode.getAttribute('hub-section-id');
+                found = true;
+                block = parentNode.getAttribute('hub-block');
                 break;
-            node = node.parentNode;
-        }
-
-        // Try with blocks
-        if (!found && this.report.blocks && this.report.blocks.length > 0) {
-            node = eventSelection.anchorNode;
-            const placeholders = ['content', 'title'];
-
-            while (node !== null) {
-                for (let i = 0; i < placeholders.length; i++) {
-                    key = placeholders[i];
-                    for (let j = 0; j < this.report.blocks.length; j++) {
-                        value = MobileDetailViewComponent.striphtml(this.report.blocks[j][key]);
-                        if (!!!value) continue;
-                        let localId = 'unknown';
-                        try {
-                            localId = node.getAttribute('hub-block');
-                        } catch (e) {
-                        }
-                        const nodeHtml = MobileDetailViewComponent.striphtml(node.outerHTML);
-                        if (!!!nodeHtml) continue;
-                        if (this.report.blocks[j].localId === localId &&
-                            nodeHtml && value === nodeHtml) {
-                            found = true;
-                            block = localId;
-                            break;
-                        }
-                    }
-                    if (found)
-                        break;
-                }
-                if (found)
-                    break;
-                node = node.parentNode;
             }
+            parentNode = parentNode.parentNode;
         }
 
         // Display comment CTA
@@ -480,8 +424,6 @@ export class MobileDetailViewComponent implements OnInit {
             mark.setAttribute(COMMENT_ATTRIBUTE_NAME, '1231313');
             parentNode.insertBefore(mark, targetNode);
             mark.appendChild(targetNode);*/
-
-            console.log(node['outerHTML'], key, value);
 
             this.hostRectangle = event.hostRectangle;
             this.selectedText = event.text;
