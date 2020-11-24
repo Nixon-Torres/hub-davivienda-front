@@ -311,7 +311,7 @@
                                                     <li><button class="icon icon-edit"
                                                             (click)="gotoPage(report.id)">Editar</button></li>
                                                     <li><button class="icon icon-copy"
-                                                            (click)="onCloneReport(i)">Duplicar</button></li>
+                                                            (click)="onCloneReport(i, true)">Duplicar</button></li>
                                                     <li><button class="icon icon-trash-alt"
                                                             (click)="onDeleteReport(i)">Eliminar</button></li>
                                                     <li><button class="icon icon-search-plus"
@@ -333,7 +333,7 @@
         </section>
         <div class="paginations" *ngIf="pager.pages.length">
             <div class="paginator_button" *ngIf="pager.selected > 0" (click)="loadReports(ifilter, pager.pages[pager.selected - 2])">
-                <a class="arrow_left">&#x3c;</a>                
+                <a class="arrow_left">&#x3c;</a>
             </div>
             <a class="label paginator_label">Página</a>
             <a class="paginator_numbers" *ngFor="let item of pager.filterPages; index as i"
