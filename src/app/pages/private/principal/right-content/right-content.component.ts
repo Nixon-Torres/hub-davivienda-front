@@ -1057,8 +1057,12 @@ export class RightContentComponent implements OnInit, OnDestroy {
         this.canClearFilters = false;
     }
 
-    public onCloneReport(pos: number) {
-        const clone = Object.assign({}, this.list.reports[pos]);
+    public onCloneReport(pos: number, isReviewed: boolean = false) {
+        let clone = null;
+        if(isReviewed)
+            clone = Object.assign({}, this.list.reviewed[pos]);
+        else
+            clone = Object.assign({}, this.list.reports[pos]);
         clone.name = `Duplicado ${clone.name}`;
         clone.slug = `duplicado-${clone.slug}`;
         this.http.get({
