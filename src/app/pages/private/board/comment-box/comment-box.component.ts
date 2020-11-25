@@ -45,7 +45,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     flagAdd: boolean = false;
     flagAddChild: boolean = false;
     expandStyle: string = '';
-    switchState: boolean;
+    public switchState: boolean = false;
     replyIdx: number = -1;
     thread: any = null;
 
@@ -268,6 +268,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     switchToggled() {
+        console.log('Toggled');
         if (!this.switchState)
           this.threadId = null;
         else {
