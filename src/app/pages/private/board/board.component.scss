@@ -974,7 +974,8 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
 
             h2 {
-                margin: 0px 0px 0px;
+                margin: 0;
+                margin-bottom: 10px;
                 font-size: 17px;
             }
         }
