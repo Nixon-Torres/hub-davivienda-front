@@ -552,6 +552,11 @@ p.left-arrow-paragraph::before{
     padding: 0rem 1rem !important;
 }
 
+@media only screen and (max-width: 1280px) {
+    .container .brief-section .doscolumn-container .social-bar {
+        top: 55%;
+    }
+}
 
 @media screen and (max-width: 767px) {
     .row{
