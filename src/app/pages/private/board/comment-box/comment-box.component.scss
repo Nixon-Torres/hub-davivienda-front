@@ -19,8 +19,8 @@ app-comment-box{
 	\* ========================================================= */
 
 	header {
-		height: 52px;
-		padding: 0px 12px;
+		height: 70px;
+		padding: 0px 25px;
 		font-weight: bold;
 		border-bottom: solid 1px #EAEAEA;
 
@@ -36,10 +36,20 @@ app-comment-box{
 			cursor: pointer;
 			padding: 18px 0px 0px;
 			background: transparent;
+			position: relative;
+			left: 25px;
 
 			i {
 				font-size: 16px;
 				color: #A5ABB1;
+				width: 100%;
+			}
+			span {
+				font-size: 0.7em;
+				font-family: Roboto,"Helvetica Neue",sans-serif;
+				color: #616161;
+				position: relative;
+				top: -12px;
 			}
 		}
 	}
@@ -51,6 +61,9 @@ app-comment-box{
 		transition: overflow .5s;
 		@media only screen and (max-width: 768px) {
 			padding: 0;
+		}
+		@media only screen and (max-width: 600px) {
+			overflow: hidden;
 		}
 
 		&::-webkit-scrollbar {
@@ -67,6 +80,7 @@ app-comment-box{
 		.mat-card {
 			padding: 0px;
 			margin-bottom: 12px;
+			padding-bottom: 10px;
 			box-shadow: none;
 			border: solid 1px #E2EAF1;
 			transform: position 1s;
@@ -76,11 +90,35 @@ app-comment-box{
 			}
 
 			&.comment-form {
-				background-color: #F8F8F8;
-				margin-bottom: 100%;
-
+				background-color: #F4F9FF;
+				border-left: solid 3px #0080FF;
+				@media only screen and (max-width: 768px) {
+					margin: 15px 20px;
+				}
+				
 				.mat-card-header {
 					border-bottom: solid 1px #E2EAF1;
+				}
+				&.new_reply {
+					margin-bottom: 0;
+					margin-top: 10%;
+					border: 0;
+					box-shadow: none;
+					margin-left: 19px;
+					.mat-card-header {
+						border: none;
+					}
+				}
+			}
+
+			&.comment {
+				background-color: #F4F9FF;
+				border-left: solid 3px #0080FF;
+				@media only screen and (max-width: 991px) {
+					margin: 15px 0px;
+					.comment-close {
+						display: none;
+					}
 				}
 			}
 
@@ -172,6 +210,11 @@ app-comment-box{
 						position: relative;
 						bottom: 25px;
 						right: 15px;
+						@media only screen and (min-width: 1822px) {
+							bottom: 0;
+							top: 3.5em;
+							right: 31px;
+						}
 						@media only screen and (max-width: 1024px) {
 						right: 10px;
 						}
@@ -188,11 +231,16 @@ app-comment-box{
 					color: #616161;
 					margin-left: 19px;
 					font-size: 0.75rem;
-					max-width: 130px;
+					@media only screen and (max-width: 991px) {
+    					margin: 20px 15px;
+					}
 				}
 
 				.actions {
 					height: 20px;
+					@media only screen and (max-width: 991px) {
+						height: auto;
+					}
 
 					.btn-resolve {
 						float: right;
@@ -201,6 +249,127 @@ app-comment-box{
 						font-size: 0.7rem;
 						line-height: 20px;
 					}
+
+					.resolved-content {
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						flex-wrap: wrap;
+						.resolved-icon {
+							display: flex;
+							align-items: center;
+							@media only screen and (max-width: 991px) {
+								margin: 0px 15px;
+							}
+							.unresolved {
+								height: 20px;
+    							width: 24px;
+								color: #a5abb1;
+								margin: 0 5px;
+								border: solid 1px #60aefc;
+								background-color: #ffffff;
+								border-radius: 20px;
+								padding-bottom: 5px;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+							}
+                            .resolved {
+                                height: 20px;
+    							width: 24px;
+								color: #19D600;
+								border: solid 1px #19D600;
+								margin: 0 5px;
+								background-color: #ffffff;
+								border-radius: 20px;
+								padding-bottom: 5px;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								@media only screen and (max-width: 991px) {
+									height: 15px;
+									width: 20px;
+									margin: 0 12px;
+								}
+                            }
+							.eye {
+								font-size: 15px;
+								color: #0080FF;
+								margin: 0 5px;
+							}
+							.resolved_text {
+								margin: 0;
+								color: #000000;
+							}
+						}
+						.btn-answer {
+							color: #616161;
+							padding: 0px 8px;
+							font-size: 0.7rem;
+							line-height: 20px;
+							background-color: #fff;
+							border: solid 1px;
+							height: 22px;
+							border-radius: 3px;
+							margin-left: 19px;
+							@media only screen and (max-width: 768px) {
+								height: 27px;
+								margin-left: 15px;
+							}
+							&:focus {
+								outline: none;
+							}
+						}
+						p {
+							margin-bottom: 0;
+							margin-top: 0;
+						}
+					}
+				}
+				.reply_comment {
+					padding: 12px 0px 12px 0px;
+					margin-top: 25%;
+					border: solid 1px #D8E9FD;
+					background-color: #ffffff;
+					box-shadow: none;
+					margin-left: 17px;
+					&:nth-child(2n) {
+						background-color: #F4F9FF;
+						border: 0;
+					}
+					@media only screen and (max-width: 1024px) {
+						margin-left: 0;
+						margin-top: 25px;
+					}
+					@media only screen and (max-width: 768px) {
+						margin-left: 15px;
+						padding: 12px 0px 12px 0px;
+					}
+					textarea {
+						width: 96%;
+						height: 35px;
+						padding: 6px;
+						resize: none;
+						border-radius: 5px;
+						border: solid 1px #E2EAF1;
+						font-size: 14px;
+						font-family: "Helvetica Neue", sans-serif;
+						overflow: auto;
+						&:focus {
+							outline: none;
+						}
+					}
+					mat-card-header {
+						div {
+							.avatar {
+								background-color: #FF003B;
+							}
+						}
+					}
+					.resolved-icon {
+						justify-content: flex-end;
+						width: 100%;
+					}
 				}
 
 			}
@@ -208,10 +377,10 @@ app-comment-box{
 
 		.add-action {
 			margin-top: 20px;
-			margin-bottom: 100%;
 
 			p {
-				text-align: center;
+				display: flex;
+    			justify-content: center;
 
 				button {
 					width: 26px;
@@ -222,6 +391,7 @@ app-comment-box{
 					border-radius: 50%;
 					padding: 1px 1px 0px 0px;
 					background-color: #0080FF;
+					margin: 0 10px;
 				}
 
 				span {
@@ -249,4 +419,108 @@ app-comment-box{
 	.hide {
 		display: none;
 	}
+
+}
+
+
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px !important;
+}
+
+.slider.round:before {
+	border-radius: 50% !important;
+}
+
+.slider.round {
+	width: 17px !important;
+}
+
+input:checked + .slider {
+	background-color: #2196F3 !important;
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px #2196F3 !important;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px) !important;
+	-ms-transform: translateX(26px) !important;
+	transform: translateX(26px) !important;
+}
+
+.switch [type=checkbox] + span:not(.lever) {
+	position: relative;
+	padding-left: 35px;
+	cursor: pointer;
+	display: inline-block;
+	height: 25px;
+	line-height: 25px;
+	font-size: 1rem;
+	user-select: none;
+	&.button_toggle {
+		height: 21px;
+		padding-left: 31px;
+		background-color: #ffffff !important;
+		border: solid 3px #A5ABB1;
+
+	}
+}
+
+.comment_header {
+	display: none;
+	align-items: center;
+	.switch {
+		position: relative;
+		width: 30px;
+		height: auto;
+		margin-bottom: 0;
+		.button_toggle {
+			&::before {
+				height: 20px !important;
+				width: 20px !important;
+				left: -2px !important;
+				bottom: -3px !important;
+				border: solid 3px #A5ABB1;
+			}
+		}
+		input:checked {
+			+ .slider.button_toggle {
+				background-color: #19D600 !important;
+				border: none;
+				&::before {
+					transform: translateX(14px) !important;
+					border: none;
+					height: 14px !important;
+					width: 14px !important;
+					left: 0px !important;
+					bottom: 4px !important;
+				}
+			}
+		}
+	}
+}
+
+.no_comments {
+	text-align: center;
+	color: #A5ABB1;
+	display: block;
+	margin-top: 8px;
+	font-size: 0.7rem;
+	padding: 0 15px;
+	margin-bottom: 1em;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+	@media only screen and (max-width: 720px) {
+		min-height: 40px;
+		margin: 0;
+		padding-top: 20px;
+	}
+}
+
+.scroll_anchor {
+	position: relative;
+	top: 3em;
+	opacity: 0;
+	visibility: hidden;
 }

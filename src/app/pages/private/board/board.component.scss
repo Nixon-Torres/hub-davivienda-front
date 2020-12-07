@@ -219,6 +219,9 @@ $default-font: "Helvetica Neue", Medium;
         max-width: 1440px;
         width: 88% !important;
         position: relative;
+        @media only screen and (max-width: 1024px) {
+            width: 95% !important; 
+        }
     }
 
     .thumb-image {
@@ -313,11 +316,47 @@ $default-font: "Helvetica Neue", Medium;
                 }
 
                 &.add-comment {
+                    display: none;
                     img {
                         margin-right: 8px;
                     }
                 }
 
+            }
+            .comment_icons {
+                &.board {
+                    float: right;
+                    @media only screen and (max-width: 850px) {
+                        float: none;
+                    }
+                    .preview-mobile__comment {
+                        position: relative;
+                        margin: 0 15px;
+                        cursor: pointer;
+                    }
+                    i {
+                        font-size: 23px;
+                        color: #0080ff;
+                    }
+                    .notification_alert {
+                        top: auto;
+                        width: 20px;
+                        height: 20px;
+                        margin-left: -10px;
+                        margin-top: 0px;
+                        font-size: 11px;
+                        line-height: 18px;
+                        border: 2px solid #fff;
+                        background-color: #ff003b;
+                        color: #fff;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        position: absolute;
+                        border-radius: 50%;
+                        text-align: center;
+                    }
+                }
             }
         }
 
@@ -974,7 +1013,7 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
 
             h2 {
-                margin: 0px 0px 20px;
+                margin: 0px 0px 10px;
                 font-size: 17px;
             }
         }
@@ -1081,7 +1120,7 @@ $default-font: "Helvetica Neue", Medium;
         }
 
         .ck.ck-editor__editable > h2 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-weight: bold !important;
             color: #EC2023 !important;
             font-size: 20px !important;
@@ -1114,6 +1153,9 @@ $default-font: "Helvetica Neue", Medium;
                 font-size: 16px;
                 font-weight: bold;
                 color: #d4dadf;
+                @media only screen and (max-width: 1024px) {
+                    font-size: 13px;
+                }
             }
         }
 
@@ -1209,6 +1251,9 @@ $default-font: "Helvetica Neue", Medium;
 
             .selected-image {
                 width: 260px !important;
+                @media only screen and (max-width: 768px) {
+                    width: 200px !important;
+                }
             }
 
             .external-source-input {
@@ -1460,10 +1505,10 @@ $default-font: "Helvetica Neue", Medium;
 
 .remove-section {
     position: absolute;
-    right: 17px;
+    right: 50px;
     font-size: 12px;
     color: #616161;
-    top: 1px;
+    top: -5px;
     cursor: pointer;
     z-index: 1000;
 
@@ -1592,7 +1637,8 @@ $default-font: "Helvetica Neue", Medium;
         background: #f5f7fb;
         border: 1px solid #eff1f6;
         @media only screen and (max-width: 1024px) {
-            width: 190px;
+            width: 194px;
+            padding-right: 10px;
          }
         @media only screen and (max-width: 768px) {
             width: 120px;
@@ -1749,14 +1795,15 @@ $default-font: "Helvetica Neue", Medium;
         font-size: 17px !important;
         font-weight: 500;
         font-family: 'Helvetica-Neue';
+        margin: 15px 0;
     }
 
     h2 {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     p {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         line-height: 20px;
     }
 }
@@ -1844,19 +1891,19 @@ $default-font: "Helvetica Neue", Medium;
 /* The switch - the box around the slider */
 .switch {
     top: 9px;
-    position: absolute !important;
+    position: absolute;
     right: 15px;
-    display: inline-block !important;;
-    width: 60px !important;;
-    height: 34px !important;
-    z-index: 999 !important;
+    display: inline-block;;
+    width: 60px;
+    height: 34px;
+    z-index: 999;
 }
 
 /* Hide default HTML checkbox */
 .switch input {
-    opacity: 0 !important;;
-    width: 0 !important;;
-    height: 0 !important;;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .grapes-container [type=checkbox]:checked + span:not(.lever):before {
@@ -1971,3 +2018,4 @@ ngs-code-editor {
     position: relative;
     vertical-align: baseline;
 }
+

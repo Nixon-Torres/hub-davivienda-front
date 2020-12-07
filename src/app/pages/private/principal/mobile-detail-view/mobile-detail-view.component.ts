@@ -1,10 +1,25 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, NgZone } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ConfirmationDialogComponent } from '../../board/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { RevisionModalComponent } from '../../board/revision-modal/revision-modal.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import {
+    CustomClickEvent,
+    TextSelectEvent,
+} from 'src/app/directives/text-select.directive';
+
+const COMMENT_TAG_NAME = 'mark';
+const COMMENT_ATTRIBUTE_NAME = 'comment-id';
+
+interface SelectionRectangle {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+}
 
 @Component({
     selector: 'app-mobile-detail-view',
@@ -24,15 +39,28 @@ export class MobileDetailViewComponent implements OnInit {
     };
     public isMediumUser = false;
     public isAdvancedUser = false;
+    public commentToggle = false;
     public users: any = [];
     public unresolvedComments: any;
-    showComments = false;
+    public showComments:boolean = false;
     listComments: any;
+    public myhtml: any = '';
+    public threadId: string|number = null;
+    private templatePlaceHolders: Array<string> = [];
+
+    public hostRectangle: SelectionRectangle | null = null;
+    private selectedText: string = '';
+    private selectionInfo:any = null;
+    public countGeneral: string = '';
+    public countSpecific: string = '';
+
     constructor(
         private http: HttpService,
         private auth: AuthService,
         public dialog: MatDialog,
-        private router: Router
+        private router: Router,
+        private sanitizer: DomSanitizer,
+        private zone: NgZone,
     ) {
         this.auth.user.subscribe((user) => {
             this.user = user;
@@ -52,6 +80,8 @@ export class MobileDetailViewComponent implements OnInit {
 
     changeViewComments() {
         this.showComments = false;
+        this.threadId = null;
+        this.selectionInfo = null;
     }
 
     ngOnInit() {
@@ -60,46 +90,46 @@ export class MobileDetailViewComponent implements OnInit {
             return;
         }
 
-        this.loadComments();
-
-        this.http.get({
-            path: `reports/view?id=${this.report.id}`
-        }).subscribe((response: any) => {
-            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
-            this.report.content = response.body.view.content ? response.body.view.content : '';
-            this.loadReport();
-        });
+        this.loadReport();
+        this.loadCommentCounts();
     }
 
     public loadReport(): void {
-        const iframe = document.getElementById('previewFrame');
-        if (iframe) {
-            const doc = (iframe as HTMLIFrameElement).contentWindow.document;
-            const regex = new RegExp('href="\/reports\/' + this.report.id, 'gi');
-            this.report.content = this.report.content.replace(
-                regex, () => {
-                    return `href="`;
-                });
-            const reportTpl = `
-                <html>
-                    <head>
-                        <style type="text/css">${this.report.styles}</style>
-                    </head>
-                    <body>${this.report.content}</body>
-                </html>
-            `;
+        this.http.get({
+            'path': `reports/view?id=${this.report.id}`
+        }).subscribe((response: any) => {
+            this.report.styles = response.body.view.styles ? response.body.view.styles : '';
+            this.report.content = response.body.view.content ? response.body.view.content : '';
+            this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
+        });
 
-            doc.open();
-            doc.write(reportTpl);
-            doc.close();
-        }
+        let include:Array<any> = [
+            {
+                relation: 'blocks',
+                scope: {
+                    order: 'createdAt ASC',
+                }
+            }];
+
+        const filter = {
+            include
+        };
+
+        this.http.get({
+            'path': `reports/${this.report.id}?filter=${JSON.stringify(filter)}`
+        }).subscribe((response: any) => {
+            this.report = response.body;
+            this.loadTemplate(this.report.templateId);
+        });
     }
 
     closeDialog(): void {
     }
 
-    openCommentDialog(report: any): void {
+    openCommentDialog(report: any, specific: boolean): void {
         this.showComments = true;
+        if (specific)
+            this.threadId = 'LOAD_LATEST';
     }
 
     public canSendToRevision(): boolean {
@@ -164,7 +194,7 @@ export class MobileDetailViewComponent implements OnInit {
                 }
             });
             refDialog.afterClosed().subscribe(() => {
-                this.openCommentDialog(this.report.id);
+                this.openCommentDialog(this.report.id, false);
             });
         } else {
             this.publishConfirmation();
@@ -340,4 +370,145 @@ export class MobileDetailViewComponent implements OnInit {
         });
     }
 
+    private loadTemplate(templateId: string | number): void {
+        if (!!!templateId) return;
+        this.http.get({
+            'path': `templates/${templateId}`
+        }).subscribe((response: any) => {
+            const template = response.body;
+            this.templatePlaceHolders =
+                template.content.match(/{{[{]?(.*?)[}]?}}/g)
+                    .map(e => {
+                        const replacer1 = new RegExp('{', 'g');
+                        const replacer2 = new RegExp('}', 'g');
+                        return e.replace(replacer1, '').replace(replacer2, '');
+                    })
+                    .filter(e => {
+                        return this.report.hasOwnProperty(e);
+                    });
+        });
+    }
+
+    public renderRectangles(event: TextSelectEvent): void {
+        // There is a selection, validate it is part of any report placeholder
+        let found = false;
+        let key = null;
+        let value = null;
+        let block = null;
+        const eventSelection: Selection = event.selection;
+        if (!!!eventSelection) {
+            this.hostRectangle = null;
+            this.selectedText = "";
+            return;
+        }
+
+        let node:any = eventSelection.anchorNode;
+        let parentNode:any = node.parentNode ? node.parentNode : node;
+        while (parentNode !== null) {
+            if (parentNode.getAttribute && !!parentNode.getAttribute('hub-section-id')) {
+                key = parentNode.getAttribute('hub-section-id');
+                found = true;
+                block = parentNode.getAttribute('hub-block');
+                break;
+            }
+            parentNode = parentNode.parentNode;
+        }
+
+        // Display comment CTA
+        if (found && event.hostRectangle) {
+            /*let textNode = (eventSelection.anchorNode as Text);
+            let parentNode = eventSelection.anchorNode.parentNode;
+            const targetNode = textNode.splitText(eventSelection.anchorOffset);
+            targetNode.splitText(Math.min(eventSelection['extentOffset'], targetNode.length));
+            const mark:HTMLElement = document.createElement(COMMENT_TAG_NAME);
+            mark.setAttribute(COMMENT_ATTRIBUTE_NAME, '1231313');
+            parentNode.insertBefore(mark, targetNode);
+            mark.appendChild(targetNode);*/
+
+            this.hostRectangle = event.hostRectangle;
+            this.selectedText = event.text;
+            const selectedNode = eventSelection.anchorNode;
+            let idx;
+            for (idx = 0; idx < selectedNode.parentNode.childNodes.length; idx++) {
+                if (selectedNode.parentNode.childNodes[idx] === selectedNode)
+                    break;
+            }
+            this.selectionInfo = {
+                selectedNodeName: selectedNode.nodeName,
+                parentNodeName: selectedNode.parentNode.nodeName,
+                selectedNodeData: selectedNode['data'],
+                parentIndex: idx,
+                parentChildrenLen: selectedNode.parentNode.childNodes.length,
+                offset: Math.min(eventSelection.anchorOffset, eventSelection['extentOffset']),
+                len: Math.max(eventSelection.anchorOffset, eventSelection['extentOffset']),
+                section: key,
+                block,
+            };
+        }
+    }
+
+    public contentOnClick(event: CustomClickEvent): void {
+        if (event.target.attributes[COMMENT_ATTRIBUTE_NAME] &&
+            this.threadId !== event.target.attributes[COMMENT_ATTRIBUTE_NAME].value) {
+            this.zone.run(() => {
+                this.threadId = event.target.attributes[COMMENT_ATTRIBUTE_NAME].value;
+                this.showComments = true;
+            });
+        }
+    }
+
+    public onCommentAction(evt: any): void {
+        this.selectionInfo = null;
+        this.loadReport();
+    }
+
+    public createCommentFromSelection() {
+        if (!!this.selectionInfo) {
+            this.zone.run(() => {
+                this.threadId = 'CREATE_NEW';
+                this.showComments = true;
+            });
+        }
+    }
+
+    public loadCommentCounts() {
+        let where = {
+            reportId: this.report.id,
+            type: 'GENERAL',
+            resolved: false,
+        };
+        this.http.get({
+            path: `comments/count?where=${JSON.stringify(where)}`
+        }).subscribe(
+            (response) => {
+                if (response.body && response.body.hasOwnProperty('count')) {
+                    this.countGeneral = String(response.body['count']);
+                    if (this.countGeneral.length === 1 && this.countGeneral !== '0')
+                        this.countGeneral = '0' + this.countGeneral;
+                    else if (this.countGeneral === '0')
+                        this.countGeneral = null;
+                }
+            }
+        );
+
+        where.type = 'THREAD';
+        this.http.get({
+            path: `comments/count?where=${JSON.stringify(where)}`
+        }).subscribe(
+            (response) => {
+                if (response.body && response.body.hasOwnProperty('count')) {
+                    this.countSpecific = String(response.body['count']);
+                    if (this.countSpecific.length === 1 && this.countSpecific !== '0')
+                        this.countSpecific = '0' + this.countSpecific;
+                    else if (this.countSpecific === '0')
+                        this.countSpecific = null;
+                }
+            }
+        );
+    }
+
+    public toggleCommentMenu() {
+        this.commentToggle = !this.commentToggle;
+        this.loadCommentCounts();
+    }
 }
