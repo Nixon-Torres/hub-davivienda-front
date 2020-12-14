@@ -509,6 +509,7 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public toggleCommentMenu() {
+        console.log('toggleCommentMenu!', this.selectionInfo);
         this.commentToggle = !this.commentToggle;
         this.loadCommentCounts();
     }
