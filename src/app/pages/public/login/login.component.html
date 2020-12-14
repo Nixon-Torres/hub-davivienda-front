@@ -3,23 +3,57 @@
         <div class="logo">
             <img src="../assets/images/section/davivienda.svg">
         </div>
-        <div class="logo-subtxt">
-            <p>Inicie sesion en HUB de contenidos</p>
+        <div class="log_content">
+            <div class="logo-subtxt">
+                <p>Inicie sesion en HUB de contenidos</p>
+            </div>
+
+            <div class="log-form">
+                <form [formGroup]="loginForm" (submit)="login()">
+                    <input type="text" formControlName="email" title="username" placeholder="Correo electrónico" email>
+                    <input type="password" formControlName="password" title="username" placeholder="Contraseña"
+                        password>
+                    <div>
+                        <input type="checkbox" formControlName="remember" id="css">
+                        <label class="small-label" for="css">Mantener mi cuenta abierta</label>
+                    </div>
+                    <div>
+                        <p *ngIf="showErrorMsg" class="form-error">Usuario o contraseña invalido, por favor contactar al
+                            administrador para gestionar el acceso</p>
+                    </div>
+                    <button type="submit" class="btn login margin" [disabled]="!loginForm.valid">Iniciar sesión >
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <div class="log-form">
-            <form [formGroup]="loginForm" (submit)="login()">
-                <input type="text" formControlName="email" title="username" placeholder="Correo electrónico" email>
-                <input type="password" formControlName="password" title="username" placeholder="Contraseña" autocomplete="off" password>
-                <div>
-                    <input type="checkbox" formControlName="remember" id="css">
-                    <label class="small-label" for="css">Mantener mi cuenta abierta</label>
-                </div>
-                <div>
-                    <p *ngIf="showErrorMsg" class="form-error">Usuario o contraseña invalido, por favor contactar al administrador para gestionar el acceso</p>
-                </div>
-                <button type="submit" class="btn login margin" [disabled]="!loginForm.valid">Iniciar sesión > </button>
-            </form>
+        <!-- Validation content -->
+        <!-- Para visualizar el contenido de Autenticación se debe eliminar primero el "style="none" -->
+        <!-- Para aplicar los estilos de valido e invalido, se puede agregar las clases "valid" e "invalid" 
+         al lado de la primera clase de "log_validation" con eso se agregaran los estilos que daran forma de si el campo es valido o no. -->
+        <div class="log_validation invalid" style="display: none;">
+            <div class="lock_icon">
+                <i class="fas fa-lock"></i>
+                <i class="fas fa-lock-open"></i>
+            </div>
+            <h1 class="log_validation__title">Autenticación de ID VISION Davivienda</h1>
+            <p class="log_validation__description">
+                Se ha enviado un código de verificación a su correo electrónico <span>xxxxxgonzales19@vision.com</span>
+            </p>
+            <p class="log_validation__description">Ingrese el código para continuar</p>
+            <div class="log_validation__inputs">
+                <input type="text" name="" id="" maxlength="1">
+                <input type="text" name="" id="" maxlength="1">
+                <input type="text" name="" id="" maxlength="1">
+                <input type="text" name="" id="" maxlength="1">
+                <input type="text" name="" id="" maxlength="1">
+                <input type="text" name="" id="" maxlength="1">
+            </div>
+            <p class="code_error">El código ingresado no es correcto o ya se encuentra expirado.</p>
+            <div class="log_validation__buttons">
+                <button>Reenviar código</button>
+                <button>Verificar Código</button>
+            </div>
         </div>
     </div>
 </div>
