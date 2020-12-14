@@ -13,7 +13,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding: 0 60px 0 80px;
+		padding: 0 60px 0 60px;
 		box-sizing: border-box;
 
 		.logo {
@@ -100,5 +100,142 @@
 			font-weight: 300;
 		}		
 
+	}
+}
+
+.log_validation {
+	.lock_icon {
+		padding: 15px;
+		border-radius: 50px;
+		border: solid 1px #0080FF;
+		width: 37px;
+		text-align: center;
+		.fa-lock-open {
+			display: none;
+		}
+		i {
+			font-size: 37px;
+			color: #0080FF;
+			position: relative;
+			bottom: 3px;
+		}
+	}
+	&__title {
+		color: #0080FF;
+		font-size: 1.375em;
+		font-weight: bold;
+		margin: 20px 0;
+	}
+	&__description {
+		margin: 20px 0;
+		color: #616161;
+		span {
+			font-weight: bold;
+		}
+	}
+	&__inputs {
+		display: flex;
+		input {
+			max-width: 50px;
+			height: 73px;
+			margin: 0 5px;
+			border: solid 1px #E2E2E2;
+			border-radius: 5px;
+			color: #616161;
+			font-size: 2em;
+			text-align: center;
+			font-weight: bold;
+			@media only screen and (max-width: 480px) {
+				max-width: 38px;
+				height: 45px;
+			}
+			@media only screen and (max-width: 400px) {
+				max-width: 25px;
+				height: 35px;
+				font-size: 1.5em;
+			}
+			&:focus {
+				outline-color: #0080FF;
+			}
+		}
+		.code_error {
+			display: none;
+		}
+	}
+	&__buttons {
+		display: flex;
+		justify-content: space-between;
+		width: 80%;
+		margin: 20px auto;
+		@media only screen and (max-width: 480px) {
+			width: 100%;
+		}
+		button {
+			color: #616161;
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+	}
+	.code_error {
+		display: none;
+	}
+
+	&.invalid {
+		.lock_icon {
+			border-color: #FF003B;
+			i {
+				color: #FF003B;
+			}
+		}
+		.log_validation__inputs {
+			input {
+				border-color: #FF003B;
+			}
+		}
+		.code_error {
+			display: block;
+			margin: 15px 0;
+			color: #FF003B;
+			font-size: 0.75em;
+			padding-left: 15px;
+		}
+		.log_validation__buttons {
+			button {
+				&:first-child {
+					padding: 7px 20px;
+					border-radius: 15px;
+					background-color: #EFF7FF;
+				}
+			}
+		}
+	}
+
+	&.valid {
+		.lock_icon {
+			border-color: #19D600;
+			.fa-lock {
+				display: none;
+			}
+			.fa-lock-open {
+				display: block;
+				color: #19D600;
+			}
+		}
+		.log_validation__inputs {
+			input {
+				border-color: #19D600;
+			}
+		}
+		.log_validation__buttons {
+			button {
+				&:first-child {
+					background: none;
+				}
+			}
+		}
+		.code_error {
+			display: none;
+		}
 	}
 }
