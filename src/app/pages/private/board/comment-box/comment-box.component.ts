@@ -253,7 +253,6 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 this.list.comments = [];
                 this.displayCommentForm();
             } else if (this.threadId === 'LOAD_LATEST') {
-                this.threadId = null;
                 this.comment.threadId = null;
                 this.list.comments = [];
                 this.switchToggled();
@@ -330,7 +329,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     loadThread() {
-        if (!!!this.threadId || this.threadId === 'CREATE_NEW') {
+        if (!!!this.threadId || this.threadId === 'CREATE_NEW' || this.threadId === 'LOAD_LATEST') {
             this.thread = null;
             return;
         }
