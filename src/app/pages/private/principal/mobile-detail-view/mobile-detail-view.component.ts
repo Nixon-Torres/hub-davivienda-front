@@ -463,6 +463,7 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public createCommentFromSelection() {
+        console.log('Comment button pressed!', this.selectionInfo);
         if (!!this.selectionInfo) {
             this.zone.run(() => {
                 this.threadId = 'CREATE_NEW';
