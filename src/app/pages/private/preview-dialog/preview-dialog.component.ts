@@ -127,14 +127,17 @@ export class PreviewDialogComponent implements OnInit {
                     break;
             }
 
+            // extentOffset is not available on macOS
+            const extentOffset = eventSelection['extentOffset'] || eventSelection.focusOffset;
+
             this.selectionInfo = {
                 selectedNodeName: selectedNode.nodeName,
                 parentNodeName: selectedNode.parentNode.nodeName,
                 selectedNodeData: selectedNode['data'],
                 parentIndex: idx,
                 parentChildrenLen: selectedNode.parentNode.childNodes.length,
-                offset: Math.min(eventSelection.anchorOffset, eventSelection['extentOffset']),
-                len: Math.max(eventSelection.anchorOffset, eventSelection['extentOffset']),
+                offset: Math.min(eventSelection.anchorOffset, extentOffset),
+                len: Math.max(eventSelection.anchorOffset, extentOffset),
                 section: key,
                 block,
             };
