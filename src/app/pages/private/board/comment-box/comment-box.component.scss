@@ -168,7 +168,7 @@ app-comment-box{
 					margin-right: 13px;
 
 					span::before {
-						margin: 0px;
+						margin-right: 10px;
 						font-size: 14px;
 						color: #A5ABB1;
 					}
@@ -296,6 +296,7 @@ app-comment-box{
 								font-size: 15px;
 								color: #0080FF;
 								margin: 0 5px;
+								padding: 0;
 							}
 							.resolved_text {
 								margin: 0;
