@@ -97,6 +97,7 @@ export class PreviewDialogComponent implements OnInit {
         let value: string|null = null;
         let block = null;
         const eventSelection: Selection = event.selection;
+        console.log(`Event Selection`, eventSelection);
         if (!!!eventSelection) {
             this.hostRectangle = null;
             this.selectedText = "";
