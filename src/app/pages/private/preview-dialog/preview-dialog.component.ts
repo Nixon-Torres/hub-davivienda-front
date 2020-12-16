@@ -1,4 +1,10 @@
-import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Inject,
+    ViewEncapsulation,
+    NgZone,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from '../../../services/http.service';
 import {
@@ -43,6 +49,7 @@ export class PreviewDialogComponent implements OnInit {
         private http: HttpService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private sanitizer: DomSanitizer,
+        private zone: NgZone,
     ) {
         this.report.id = this.data.reportId;
     }
@@ -118,7 +125,7 @@ export class PreviewDialogComponent implements OnInit {
 
         // Display comment CTA
         if (found && event.hostRectangle) {
-            this.hostRectangle = event.hostRectangle;
+            this.hostRectangle = event.viewportRectangle;
             this.selectedText = event.text;
             const selectedNode = eventSelection.anchorNode;
             let idx;
@@ -148,7 +155,9 @@ export class PreviewDialogComponent implements OnInit {
     public contentOnClick(event: CustomClickEvent): void {
         if (event.target.attributes[COMMENT_ATTRIBUTE_NAME] &&
             this.threadId !== event.target.attributes[COMMENT_ATTRIBUTE_NAME].value) {
-            this.threadId = event.target.attributes[COMMENT_ATTRIBUTE_NAME].value;
+            this.zone.run(() => {
+                this.threadId = event.target.attributes[COMMENT_ATTRIBUTE_NAME].value;
+            });
         }
     }
 
@@ -177,6 +186,8 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     public createCommentFromSelection() {
-        this.threadId = 'CREATE_NEW';
+        this.zone.run(() => {
+            this.threadId = 'CREATE_NEW';
+        });
     }
 }
