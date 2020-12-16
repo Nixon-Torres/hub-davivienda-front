@@ -6,7 +6,9 @@
     <div class="dialog__comments">
         <div
         *ngIf="hostRectangle"
-        class="indicator">
+        class="indicator"
+        [style.left.px]="hostRectangle.left + 430"
+        [style.top.px]="hostRectangle.top - 50">
         <div class="indicator__cta">
             <a
                 (mousedown)="$event.preventDefault()"
