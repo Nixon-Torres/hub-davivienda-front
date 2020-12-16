@@ -10,6 +10,10 @@
             <span class="material-icons">arrow_back_ios</span>
             <p>{{report && report.state && report.state.name ? report.state.name : 'Por revisar'}}</p>
         </div>
+        <div *ngIf="!!selectionInfo" class="preview-mobile__comment reply" (click)="createCommentFromSelection()">
+            <i class="fas fa-comment-medical"></i>
+            <p>Comentar+</p>
+        </div>
         <div class="comment_icons">
             <div class="preview-mobile__comment" (click)="toggleCommentMenu()">
                 <i class="fas fa-comments"></i>
@@ -28,10 +32,6 @@
                     <span *ngIf="!!countSpecific" class="notification_alert toggle_alert">{{countSpecific}}</span>
                 </div>
             </div>
-        </div>
-        <div class="preview-mobile__comment reply" (click)="createCommentFromSelection()">
-            <i class="fas fa-comment-medical"></i>
-            <p>Comentar+</p>
         </div>
         <div class="preview-mobile__buttons">
             <div class="preview-mobile__post" *ngIf="canSendToRevision()">
