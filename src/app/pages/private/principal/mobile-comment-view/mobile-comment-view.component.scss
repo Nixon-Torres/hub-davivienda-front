@@ -29,7 +29,7 @@ app-mobile-comment-view {
         background-color: #fff;
         box-shadow: 0px 10px 10px -7px #e8e8e8;
         position: relative;
-        padding-left: 26px;
+        padding-left: 15px;
         &__back {
             display: flex;
             align-items: center;
@@ -37,6 +37,12 @@ app-mobile-comment-view {
             p {
                 font-size: 0.875em;
                 font-weight: bold;
+            }
+            span {
+                font-weight: bold;
+                margin-right: 10px;
+                font-size: 27px;
+                color: #A0A0A0;
             }
         }
     

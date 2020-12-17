@@ -557,6 +557,23 @@ p.left-arrow-paragraph::before{
         top: 55%;
     }
 }
+@media (min-width: 850px) and (max-width: 1024px) {
+    .article-ralation .article-block-section .block .block-img {
+        width: 190px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 860px) {
+    .person-portfolio {
+        margin-left: 30px !important;
+    }
+    .person-portfolio .pf-descrition {
+        width: 65% !important;
+    }
+    .container-fluid .smart-content-section .doscolumn-container.bottom {
+        width: 100%;
+    }
+}
 
 @media screen and (max-width: 767px) {
     .row{
@@ -657,4 +674,26 @@ section .pr-full-bg .container .brief-section,
 
 .brief-section .brief-content {
     padding: 0;
+}
+
+
+.brief-section .doscolumn-container .social-bar {
+    left: 65%;
+}
+
+@media only screen and (min-width: 1024px) {
+    .container-fluid.pr-full-bg .brief-section .doscolumn-container {
+        display: flex;
+    }
+    .container-fluid.pr-full-bg .brief-section .podcast-video {
+        position: relative;
+        margin-left: -10%;
+        left: 0;
+    }
+    .brief-section.smart-content-section.bottom {
+        max-width: initial;
+    }
+    .container-fluid .smart-content-section .doscolumn-container.bottom {
+        display: initial;
+    }
 }

@@ -30,6 +30,12 @@ body {
 	margin: auto;
 }
 
+button {
+	&:focus {
+		outline: none !important;
+	}
+}
+
 // TODO
 .content-wrap {
 	@include display-flex;
@@ -1257,6 +1263,12 @@ mat-expansion-panel {
 		font-style: italic;
 		line-height: 1.2;
 		height: 30px !important;
+	}
+
+	.dialog__iframe {
+		.mark, mark {
+			background-color: #FF003B40;
+		}
 	}
 
 	@media only screen and (max-width: 720px) {

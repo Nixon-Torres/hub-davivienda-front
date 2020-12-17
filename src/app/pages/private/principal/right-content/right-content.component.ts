@@ -330,6 +330,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
         );
         duplicatedReport$.subscribe(
             () => {
+
                 this.loadReports();
                 this.folderService.loadStates();
                 this.folderService.loadFolders();
