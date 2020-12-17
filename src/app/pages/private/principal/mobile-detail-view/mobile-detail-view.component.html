@@ -1,35 +1,61 @@
-<div [hidden]="showComments">
+<div *ngIf="showComments">
+    <app-mobile-comment-view (changeView)="changeViewComments()" [report]="report"
+                             (commentAction)="onCommentAction($event)"
+                             [textSelection]="selectionInfo" [(threadId)]="threadId">
+    </app-mobile-comment-view>
+</div>
+<div *ngIf="!showComments">
     <div class="preview-mobile">
         <div class="preview-mobile__back" (click)="back()">
             <span class="material-icons">arrow_back_ios</span>
             <p>{{report && report.state && report.state.name ? report.state.name : 'Por revisar'}}</p>
         </div>
-
-        <div class="preview-mobile__comment" (click)="openCommentDialog(report)" >
-            <i class="far fa-comment-alt"></i>
-            <p>Comentarios</p>
+        <div *ngIf="!!selectionInfo" class="preview-mobile__comment reply" (click)="createCommentFromSelection()">
+            <i class="fas fa-comment-medical"></i>
+            <p>Comentar</p>
+        </div>
+        <div class="comment_icons">
+            <div class="preview-mobile__comment" (click)="toggleCommentMenu()">
+                <i class="fas fa-comments"></i>
+                <p>Comentarios</p>
+                <span *ngIf="!!countGeneral || !!countSpecific" class="notification_alert"></span>
+            </div>
+            <div class="coment_toggle" *ngIf="commentToggle">
+                <div (click)="openCommentDialog(report, false)">
+                    <i class="fas fa-comments"></i>
+                    <p>Comentarios Generales</p>
+                    <span *ngIf="!!countGeneral" class="notification_alert toggle_alert">{{countGeneral}}</span>
+                </div>
+                <div  (click)="openCommentDialog(report, true)">
+                    <i class="fas fa-comments"></i>
+                    <p>Comentarios Específicos</p>
+                    <span *ngIf="!!countSpecific" class="notification_alert toggle_alert">{{countSpecific}}</span>
+                </div>
+            </div>
         </div>
         <div class="preview-mobile__buttons">
             <div class="preview-mobile__post" *ngIf="canSendToRevision()">
                 <button mat-flat-button class="bttn bttn-primary" (click)="onSendToRevisionAction()">Enviar a revisi&oacute;n</button>
             </div>
-    
+        </div>
+        <div class="preview-mobile__buttons">
             <div class="preview-mobile__post" *ngIf="canReturnToEdit()">
                 <button mat-flat-button class="bttn bttn-primary" (click)="returnToEdit()">Devolver a revisi&oacute;n</button>
             </div>
-    
+        </div>
+        <div class="preview-mobile__buttons">
             <div class="preview-mobile__post" *ngIf="canApprove()">
                 <button mat-flat-button class="bttn bttn-primary" (click)="approve()">Aprobar</button>
             </div>
-    
+        </div>
+        <div class="preview-mobile__buttons">
             <div class="preview-mobile__post" *ngIf="canPublish()">
                 <button mat-flat-button class="bttn bttn-primary" (click)="validateUnresolvedComments()">Publicar</button>
             </div>
         </div>
     </div>
 
-    <iframe id="previewFrame" src="about:blank"></iframe>
+    <div textSelect (textSelectEvent)="renderRectangles($event)" (clickEvent)="contentOnClick($event)">
+        <div *ngIf="myhtml" [innerHTML]="myhtml"></div>
+    </div>
 </div>
-
-<app-mobile-comment-view [hidden]="!showComments" (changeView)="changeViewComments()" [report]="report">
-</app-mobile-comment-view>
