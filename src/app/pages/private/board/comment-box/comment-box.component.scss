@@ -115,7 +115,7 @@ app-comment-box{
 				background-color: #F4F9FF;
 				border-left: solid 3px #0080FF;
 				@media only screen and (max-width: 991px) {
-					margin: 15px 20px;
+					margin: 15px 0px;
 					.comment-close {
 						display: none;
 					}
@@ -168,7 +168,8 @@ app-comment-box{
 					margin-right: 13px;
 
 					span::before {
-						margin-right: 10px;
+						content: '';
+						margin: 0px;
 						font-size: 14px;
 						color: #A5ABB1;
 					}
@@ -296,7 +297,6 @@ app-comment-box{
 								font-size: 15px;
 								color: #0080FF;
 								margin: 0 5px;
-								padding: 0;
 							}
 							.resolved_text {
 								margin: 0;
@@ -429,8 +429,17 @@ app-comment-box{
 	border-radius: 34px !important;
 }
 
-.slider.round:before {
+.slider.round::before {
 	border-radius: 50% !important;
+	position: absolute!important;
+    content: ""!important;
+    height: 20px!important;
+    width: 20px!important;
+    left: 4px!important;
+    bottom: 4px!important;
+    background-color: #fff!important;
+    -webkit-transition: .4s!important;
+    transition: .4s!important;
 }
 
 .slider.round {
@@ -445,7 +454,8 @@ input:focus + .slider {
 	box-shadow: 0 0 1px #2196F3 !important;
 }
 
-input:checked + .slider:before {
+input:checked + .slider::before {
+	content: '';
 	-webkit-transform: translateX(26px) !important;
 	-ms-transform: translateX(26px) !important;
 	transform: translateX(26px) !important;
@@ -475,10 +485,12 @@ input:checked + .slider:before {
 	.switch {
 		position: relative;
 		width: 30px;
-		height: auto;
-		margin-bottom: 0;
+		right: 15px;
+		display: inline-block;;
+		z-index: 999;
 		.button_toggle {
 			&::before {
+				content: '';
 				height: 20px !important;
 				width: 20px !important;
 				left: -2px !important;
@@ -491,6 +503,7 @@ input:checked + .slider:before {
 				background-color: #19D600 !important;
 				border: none;
 				&::before {
+					content: '';
 					transform: translateX(14px) !important;
 					border: none;
 					height: 14px !important;
@@ -499,6 +512,11 @@ input:checked + .slider:before {
 					bottom: 4px !important;
 				}
 			}
+		}
+		input {
+			opacity: 0;
+			width: 0;
+			height: 0;
 		}
 	}
 }
