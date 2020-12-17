@@ -9,8 +9,10 @@ pipelines:
             - apt-get install -y zip # required for packaging up the application
             - pip install boto3 # required for codedeploy_deploy.py
             - npm install
+            - npm run postinstall
             #- bower install --allow-root
             - npm run build --prod
+            - grep -Rl '8.2.14' dist/hub-contenidos-front/ | xargs -I {} sed -i 's/8.2.14/Unknown/g' {}
             - chmod +x scripts/*
             - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME
             - zip -r /tmp/artifact.zip * # package up the application for deployment
