@@ -334,8 +334,7 @@
                     type="text" placeholder="Presentación Slideshare (URL)"
                     *ngIf="false && report?.template?.key === 'presentation'">
                 <div class="divider" [ngClass]="{'invisible': report?.template?.key === 'presentation'}"></div>
-                <div class="control-wrapper deep-content"
-                    [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
+                <div class="control-wrapper deep-content">
                     <div class="inline-editor-block" id="editor4" #editor4>
                     </div>
                     <span [ngClass]="{'invisible': editor4Data !== ''}" class="placeholder" unselectable="on">
@@ -414,8 +413,7 @@
                     </div>
                 </div>
 
-                <div class="add-new-editor-block" *ngIf="!readonly"
-                    [ngClass]="{'invisible': report?.template?.key === 'presentation'}">
+                <div class="add-new-editor-block" *ngIf="!readonly">
                     <div class="btn-section">
                         <button (click)="addMenuVisible = !addMenuVisible" mat-flat-button
                             class="bttn bttn-default btn-circle" [ngClass]="{'close' : addMenuVisible}">

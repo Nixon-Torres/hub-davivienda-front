@@ -10,7 +10,7 @@
         <div class="log-form">
             <form [formGroup]="loginForm" (submit)="login()">
                 <input type="text" formControlName="email" title="username" placeholder="Correo electrónico" email>
-                <input type="password" formControlName="password" title="username" placeholder="Contraseña" password>
+                <input type="password" formControlName="password" title="username" placeholder="Contraseña" autocomplete="off" password>
                 <div>
                     <input type="checkbox" formControlName="remember" id="css">
                     <label class="small-label" for="css">Mantener mi cuenta abierta</label>

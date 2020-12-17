@@ -1,8 +1,8 @@
 export const environment = {
-    production: true,
-    URL_API: 'https://stg-hub.qdata.io/api/',
-    URL_SOCKET:  'https://stg-hub.qdata.io/',
-    DRAFT_KEY: '5e068d1cb81d1c5f29b62977',
-    STORAGE_FILES: 'https://stg-hub.qdata.io/public/assets/',
-    STORAGE_URL: 'https://stg-hub.qdata.io/',
+  production: true,
+  URL_API: 'https://vision.davivienda.com/api/',
+  URL_SOCKET:  'https://vision.davivienda.com/',
+  DRAFT_KEY: '5e068d1cb81d1c5f29b62977',
+  STORAGE_FILES: 'https://vision.davivienda.com/public/assets/',
+  STORAGE_URL: 'https://vision.davivienda.com/',
 };
