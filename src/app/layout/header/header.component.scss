@@ -314,3 +314,10 @@ header {
         }
     }
 }
+
+@media not all and (min-resolution:.001dpcm)
+    { @supports (-webkit-appearance:none) {
+        .user_content {
+            width: 21%;
+        }
+}}

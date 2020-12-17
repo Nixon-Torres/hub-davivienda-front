@@ -10,8 +10,8 @@ iframe {
 .preview-mobile {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
-    align-items: center;
+    justify-content: space-between;
+    align-items: center; 
     padding: 15px;
     background-color: #fff;
     box-shadow: 0px 10px 10px -7px #e8e8e8;
@@ -56,7 +56,7 @@ iframe {
                 width: 21px;
                 height: 21px;
                 margin-left: 10px;
-                margin-top: -16px;
+                margin-top: -10px;
                 line-height: 16px;
             }
          }
