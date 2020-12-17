@@ -1,9 +1,9 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
 
-import { LoginContext, AccessTokenInterface, UserInterface } from './auth.service.model';
-import { HttpService } from './http.service';
-import { CookieStorage } from './storage/cookie.storage';
+import {LoginContext, AccessTokenInterface, UserInterface} from './auth.service.model';
+import {HttpService} from './http.service';
+import {CookieStorage} from './storage/cookie.storage';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +12,7 @@ export class AuthService {
     private tokenName = '94a08da1fecbb6e8b46990538c7b50b2-*';
     public user: ReplaySubject<any>;
     public loggedIn = false;
+    doubleFactor = false;
 
     private isMarketer = false;
     private isBasic = false;
@@ -54,11 +55,22 @@ export class AuthService {
         return this.isBasic;
     }
 
-    public login(context: LoginContext): Observable<any> {
+    public login(context: any, twoFactor?: string): Observable<any> {
+        if (twoFactor !== null) {
+            context.twofactor = twoFactor;
+        } else {
+            context.twofactor = null;
+        }
         return new Observable((observer) => {
             this.getToken(context, (error: any, token: AccessTokenInterface) => {
                 if (error) {
                     observer.error(error);
+                    observer.complete();
+                    return;
+                }
+                if (token.sent === true) {
+                    const user: UserInterface = {email: context.email};
+                    observer.next(user);
                     observer.complete();
                     return;
                 }
@@ -78,7 +90,7 @@ export class AuthService {
                     this.isMarketer = !!(roles && roles.find((role) => role === 'marketing'));
                     this.isBasic = !(roles && roles.find((role) => (role === 'Admin' || role === 'medium')));
                     this.user.next(user);
-                    observer.next(true);
+                    observer.next(user);
                     observer.complete();
                 });
             });
@@ -101,7 +113,7 @@ export class AuthService {
     }
 
     private getToken(input: any, fn: any) {
-        this.http.post({ path: 'users/login', data: input }).subscribe(
+        this.http.post({path: 'users/login', data: input}).subscribe(
             (response: any) => {
                 fn(null, response.body);
             },
@@ -170,17 +182,23 @@ export class AuthService {
         }).subscribe(
             (response: any) => {
                 const body = response.body;
-                this.http.get({ path: 'me' }).subscribe(
+                this.http.get({path: 'me'}).subscribe(
                     (res: any) => {
                         body.roles = res.body.roles;
-                        if (fn) { fn(null, body); }
+                        if (fn) {
+                            fn(null, body);
+                        }
                     }, (error) => {
-                        if (fn) { fn(error, null); }
+                        if (fn) {
+                            fn(error, null);
+                        }
                     }
                 );
             },
             (error) => {
-                if (fn) { fn(error, null); }
+                if (fn) {
+                    fn(error, null);
+                }
             }
         );
     }
