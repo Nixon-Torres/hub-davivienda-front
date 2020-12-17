@@ -11,7 +11,7 @@ pipelines:
             - npm install
             - npm run postinstall
             #- bower install --allow-root
-            - npm run build --prod
+            - npm run build --prod -- --configuration=stage
             - grep -Rl '8.2.14' dist/hub-contenidos-front/ | xargs -I {} sed -i 's/8.2.14/Unknown/g' {}
             - chmod +x scripts/*
             - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME
