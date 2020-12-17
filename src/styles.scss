@@ -30,6 +30,12 @@ body {
 	margin: auto;
 }
 
+button {
+	&:focus {
+		outline: none !important;
+	}
+}
+
 // TODO
 .content-wrap {
 	@include display-flex;
@@ -1257,6 +1263,18 @@ mat-expansion-panel {
 		font-style: italic;
 		line-height: 1.2;
 		height: 30px !important;
+	}
+
+	section {
+		.mark, mark {
+			background-color: #FF003B40;
+		}
+	}
+
+	app-mobile-detail-view {
+		.brief-section .doscolumn-container .social-bar {
+			left: 93%;
+		}
 	}
 
 	@media only screen and (max-width: 720px) {

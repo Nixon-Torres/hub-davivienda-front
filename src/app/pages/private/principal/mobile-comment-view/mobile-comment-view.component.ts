@@ -10,9 +10,21 @@ import {HttpService} from '../../../../services/http.service';
 export class MobileCommentViewComponent implements OnInit {
     @Input() report: any;
     @Output() changeView = new EventEmitter();
-    constructor(
-    ) {
+    @Input('textSelection') private textSelection: any = null;
+    _threadId: string|number;
+    @Input()
+    set threadId(val: string|number) {
+        this.threadIdChange.emit(val);
+        this._threadId = val;
     }
+    get threadId() : string|number {
+        return this._threadId;
+    }
+    @Output()
+    threadIdChange: EventEmitter<string|number> = new EventEmitter<string|number>();
+    @Output() commentAction: EventEmitter<object> = new EventEmitter<object>();
+    constructor(
+    ) { }
 
     back() {
         this.changeView.emit({
@@ -30,5 +42,9 @@ export class MobileCommentViewComponent implements OnInit {
     }
 
     closeDialog(): void {
+    }
+
+    onCommentAction(evt) {
+        this.commentAction.emit(evt);
     }
 }

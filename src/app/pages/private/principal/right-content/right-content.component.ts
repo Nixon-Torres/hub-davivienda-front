@@ -328,8 +328,9 @@ export class RightContentComponent implements OnInit, OnDestroy {
             first(),
             takeUntil(this._destroyed$)
         );
+
         duplicatedReport$.subscribe(
-            () => {
+            (resp: any)  => {
                 this.loadReports();
                 this.folderService.loadStates();
                 this.folderService.loadFolders();
@@ -1080,37 +1081,37 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 takeUntil(this._destroyed$)
             )
             .subscribe(({body}) => {
-                clone.blocks = !!body[0].blocks.length ? body[0].blocks.map(block => {
-                    delete block.id;
-                    delete block.reportId;
-                    return block;
-                }) : body[0].blocks;
-                clone.relateds = !!body[0].relateds.length ? body[0].relateds.map(related => {
-                    delete related.reportId;
-                    delete related.id;
-                    return related;
-                }) : body[0].relateds;
-                clone.files = !!body[0].files.length ? body[0].files.map(file => {
-                    delete file.resourceId;
-                    return file;
-                }) : body[0].files;
-                clone.glossary = !!body[0].glossary.length ? body[0].glossary : [];
+            clone.blocks = !!body[0].blocks.length ? body[0].blocks.map(block => {
+                delete block.id;
+                delete block.reportId;
+                return block;
+            }) : body[0].blocks;
+            clone.relateds = !!body[0].relateds.length ? body[0].relateds.map(related => {
+                delete related.reportId;
+                delete related.id;
+                return related;
+            }) : body[0].relateds;
+            clone.files = !!body[0].files.length ? body[0].files.map(file => {
+                delete file.resourceId;
+                return file;
+            }) : body[0].files;
+            clone.glossary = !!body[0].glossary.length ? body[0].glossary : [];
 
-                const type = clone && clone.type;
-                const reportTypeId = clone && clone.reportTypeId;
-                if (!(type || reportTypeId)) {
-                    clone.title = `Duplicado ${clone.title}`;
-                }
-                clone.stateId = this.DRAFT_KEY;
-                clone.trash = false;
-                delete clone.id;
-                delete clone.section;
-                delete clone.state;
-                delete clone.user;
-                delete clone.ownerId;
+            const type = clone && clone.type;
+            const reportTypeId = clone && clone.reportTypeId;
+            if (!(type || reportTypeId)) {
+                clone.title = `Duplicado ${clone.title}`;
+            }
+            clone.stateId = this.DRAFT_KEY;
+            clone.trash = false;
+            delete clone.id;
+            delete clone.section;
+            delete clone.state;
+            delete clone.user;
+            delete clone.ownerId;
 
-                this.saveReport(clone);
-            });
+            this.saveReport(clone);
+        });
     }
 
     public onDeleteReport(pos: number) {
@@ -1178,10 +1179,26 @@ export class RightContentComponent implements OnInit, OnDestroy {
         if (this.isTabletVersion()) {
             return this.gotoPage(report.id);
         }
-        this.changeView.emit({
-            mobile: true,
-            report,
-        });
+
+        if (this.isMobileVersion()) {
+            this.changeView.emit({
+                mobile: true,
+                report,
+            });
+            return;
+        }
+
+        // Desktop
+        const paramsDialog = {
+            width: '99vw',
+            height: '99vh',
+            data: {
+                reportId: report.id,
+                styles: report.styles,
+                content: report.content,
+            }
+        };
+        this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
     public openHighlightDialog(id) {
