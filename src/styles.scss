@@ -871,6 +871,9 @@ margin-top: 2%;
 .cdk-overlay-container{
 	.cdk-overlay-pane {
 		max-width: initial !important;
+		@media (max-width: 991px) and (orientation: landscape) {
+			width: 95vw !important;
+		} 
 	}
 	.mat-select-panel{
 		min-width: calc(100% + 45px) !important;
