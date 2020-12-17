@@ -403,52 +403,15 @@ export class MobileDetailViewComponent implements OnInit {
         }
 
         let node:any = eventSelection.anchorNode;
-
-        while (node !== null) {
-            for (let i = 0; i < this.templatePlaceHolders.length; i++) {
-                key = this.templatePlaceHolders[i];
-                value = this.report[key];
-
-                if (node.outerHTML && value === node.outerHTML) {
-                    found = true;
-                    block = null;
-                    break;
-                }
-            }
-            if (found)
+        let parentNode:any = node.parentNode ? node.parentNode : node;
+        while (parentNode !== null) {
+            if (parentNode.getAttribute && !!parentNode.getAttribute('hub-section-id')) {
+                key = parentNode.getAttribute('hub-section-id');
+                found = true;
+                block = parentNode.getAttribute('hub-block');
                 break;
-            node = node.parentNode;
-        }
-
-        // Try with blocks
-        if (!found && this.report.blocks && this.report.blocks.length > 0) {
-            node = eventSelection.anchorNode;
-            const placeholders = ['content', 'title'];
-
-            while (node !== null) {
-                for (let i = 0; i < placeholders.length; i++) {
-                    key = placeholders[i];
-                    for (let j = 0; j < this.report.blocks.length; j++) {
-                        value = this.report.blocks[j][key];
-                        let localId = 'unknown';
-                        try {
-                            localId = node.getAttribute('hub-block');
-                        } catch (e) {
-                        }
-                        if (this.report.blocks[j].localId === localId &&
-                            node.outerHTML && value === node.outerHTML) {
-                            found = true;
-                            block = localId;
-                            break;
-                        }
-                    }
-                    if (found)
-                        break;
-                }
-                if (found)
-                    break;
-                node = node.parentNode;
             }
+            parentNode = parentNode.parentNode;
         }
 
         // Display comment CTA
@@ -461,8 +424,6 @@ export class MobileDetailViewComponent implements OnInit {
             mark.setAttribute(COMMENT_ATTRIBUTE_NAME, '1231313');
             parentNode.insertBefore(mark, targetNode);
             mark.appendChild(targetNode);*/
-
-            console.log(node['outerHTML'], key, value);
 
             this.hostRectangle = event.hostRectangle;
             this.selectedText = event.text;
@@ -502,6 +463,7 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public createCommentFromSelection() {
+        console.log('Comment button pressed!', this.selectionInfo);
         if (!!this.selectionInfo) {
             this.zone.run(() => {
                 this.threadId = 'CREATE_NEW';
@@ -547,6 +509,7 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public toggleCommentMenu() {
+        console.log('toggleCommentMenu!', this.selectionInfo);
         this.commentToggle = !this.commentToggle;
         this.loadCommentCounts();
     }

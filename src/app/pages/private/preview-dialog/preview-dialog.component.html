@@ -3,10 +3,12 @@
         <a class="preview-icon" (click)="closeDialog()"><span class="icon icon-times"></span></a>
         <div *ngIf="myhtml" [innerHTML]="myhtml"></div>
     </div>
-    <div
+    <div class="dialog__comments">
+        <div
         *ngIf="hostRectangle"
-        class="indicator">
-
+        class="indicator"
+        [style.left.px]="hostRectangle.left + 430"
+        [style.top.px]="hostRectangle.top - 50">
         <div class="indicator__cta">
             <a
                 (mousedown)="$event.preventDefault()"
@@ -17,11 +19,11 @@
             </a>
         </div>
     </div>
-    <div class="dialog__comments">
         <app-comment-box *ngIf="report" [report]="report"
                          [showHeader]="true" [(threadId)]="threadId"
                          (commentAction)="onCommentAction($event)"
-                         [textSelection]="selectionInfo">
+                         [textSelection]="selectionInfo"
+                         (propagate)="closeDialog()">
         </app-comment-box>
     </div>
 </body>

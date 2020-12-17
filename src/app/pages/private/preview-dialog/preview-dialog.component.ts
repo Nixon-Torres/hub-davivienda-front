@@ -1,4 +1,10 @@
-import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Inject,
+    ViewEncapsulation,
+    NgZone,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from '../../../services/http.service';
 import {
@@ -43,6 +49,7 @@ export class PreviewDialogComponent implements OnInit {
         private http: HttpService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private sanitizer: DomSanitizer,
+        private zone: NgZone,
     ) {
         this.report.id = this.data.reportId;
     }
@@ -94,9 +101,10 @@ export class PreviewDialogComponent implements OnInit {
         // There is a selection, validate it is part of any report placeholder
         let found = false;
         let key = null;
-        let value = null;
+        let value: string|null = null;
         let block = null;
         const eventSelection: Selection = event.selection;
+        console.log(`Event Selection`, eventSelection);
         if (!!!eventSelection) {
             this.hostRectangle = null;
             this.selectedText = "";
@@ -104,68 +112,20 @@ export class PreviewDialogComponent implements OnInit {
         }
 
         let node:any = eventSelection.anchorNode;
-
-        while (node !== null) {
-            for (let i = 0; i < this.templatePlaceHolders.length; i++) {
-                key = this.templatePlaceHolders[i];
-                value = this.report[key];
-
-                if (node.outerHTML && value === node.outerHTML) {
-                    found = true;
-                    block = null;
-                    break;
-                }
-            }
-            if (found)
+        let parentNode:any = node.parentNode ? node.parentNode : node;
+        while (parentNode !== null) {
+            if (parentNode.getAttribute && !!parentNode.getAttribute('hub-section-id')) {
+                key = parentNode.getAttribute('hub-section-id');
+                found = true;
+                block = parentNode.getAttribute('hub-block');
                 break;
-            node = node.parentNode;
-        }
-
-        // Try with blocks
-        if (!found && this.report.blocks && this.report.blocks.length > 0) {
-            node = eventSelection.anchorNode;
-            const placeholders = ['content', 'title'];
-
-            while (node !== null) {
-                for (let i = 0; i < placeholders.length; i++) {
-                    key = placeholders[i];
-                    for (let j = 0; j < this.report.blocks.length; j++) {
-                        value = this.report.blocks[j][key];
-                        let localId = 'unknown';
-                        try {
-                            localId = node.getAttribute('hub-block');
-                        } catch (e) {
-                        }
-                        if (this.report.blocks[j].localId === localId &&
-                            node.outerHTML && value === node.outerHTML) {
-                            found = true;
-                            block = localId;
-                            break;
-                        }
-                    }
-                    if (found)
-                        break;
-                }
-                if (found)
-                    break;
-                node = node.parentNode;
             }
+            parentNode = parentNode.parentNode;
         }
 
         // Display comment CTA
         if (found && event.hostRectangle) {
-            /*let textNode = (eventSelection.anchorNode as Text);
-            let parentNode = eventSelection.anchorNode.parentNode;
-            const targetNode = textNode.splitText(eventSelection.anchorOffset);
-            targetNode.splitText(Math.min(eventSelection['extentOffset'], targetNode.length));
-            const mark:HTMLElement = document.createElement(COMMENT_TAG_NAME);
-            mark.setAttribute(COMMENT_ATTRIBUTE_NAME, '1231313');
-            parentNode.insertBefore(mark, targetNode);
-            mark.appendChild(targetNode);*/
-
-            console.log(node['outerHTML'], key, value);
-
-            this.hostRectangle = event.hostRectangle;
+            this.hostRectangle = event.viewportRectangle;
             this.selectedText = event.text;
             const selectedNode = eventSelection.anchorNode;
             let idx;
@@ -173,14 +133,19 @@ export class PreviewDialogComponent implements OnInit {
                 if (selectedNode.parentNode.childNodes[idx] === selectedNode)
                     break;
             }
+
+            // extentOffset is not available on macOS
+            const extentOffset = eventSelection.hasOwnProperty('extentOffset') ?
+                eventSelection['extentOffset'] : eventSelection.focusOffset;
+
             this.selectionInfo = {
                 selectedNodeName: selectedNode.nodeName,
                 parentNodeName: selectedNode.parentNode.nodeName,
                 selectedNodeData: selectedNode['data'],
                 parentIndex: idx,
                 parentChildrenLen: selectedNode.parentNode.childNodes.length,
-                offset: Math.min(eventSelection.anchorOffset, eventSelection['extentOffset']),
-                len: Math.max(eventSelection.anchorOffset, eventSelection['extentOffset']),
+                offset: Math.min(eventSelection.anchorOffset, extentOffset),
+                len: Math.max(eventSelection.anchorOffset, extentOffset),
                 section: key,
                 block,
             };
@@ -190,7 +155,9 @@ export class PreviewDialogComponent implements OnInit {
     public contentOnClick(event: CustomClickEvent): void {
         if (event.target.attributes[COMMENT_ATTRIBUTE_NAME] &&
             this.threadId !== event.target.attributes[COMMENT_ATTRIBUTE_NAME].value) {
-            this.threadId = event.target.attributes[COMMENT_ATTRIBUTE_NAME].value;
+            this.zone.run(() => {
+                this.threadId = event.target.attributes[COMMENT_ATTRIBUTE_NAME].value;
+            });
         }
     }
 
@@ -219,6 +186,8 @@ export class PreviewDialogComponent implements OnInit {
     }
 
     public createCommentFromSelection() {
-        this.threadId = 'CREATE_NEW';
+        this.zone.run(() => {
+            this.threadId = 'CREATE_NEW';
+        });
     }
 }

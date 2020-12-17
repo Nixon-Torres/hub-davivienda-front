@@ -20,16 +20,16 @@
 <section>
     <div class="add-action" *ngIf="!flagAdd">
         <p *ngIf="!!!switchState || !thread?.resolved">
-            <button (click)="displayCommentForm()">
+            <button (click)="displayCommentForm(); scrollToElement(target)">
                 <i class="material-icons">add</i>
             </button>
             <span>Nuevo comentario</span>
         </p>
     </div>
-    <div class="no_comments">
+    <div *ngIf="list.comments.length === 0" class="no_comments">
         <p>No hay comentarios aun sobre este informe. Sea el primero en agregar uno.</p>
     </div>
-    <mat-card id="{{ _comment.id }}" class="comment" *ngFor="let _comment of list.comments; let idx = index">
+    <mat-card id="{{ _comment.id }}" class="comment" *ngFor="let _comment of list.comments; let idx = index" [ngClass]="{'resolved': _comment.resolved, 'unresolved': !_comment.resolved}">
         <mat-card-header>
             <div mat-card-avatar>
                 <div class="avatar"></div>
@@ -131,6 +131,7 @@
             </button>
         </mat-card-content>
     </mat-card>
+    <span #target class="scroll_anchor">...</span>
 </section>
 
 <!-- <footer>

@@ -62,6 +62,8 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         document.removeEventListener("mouseup", this.handleMouseup, false);
         document.removeEventListener("selectionchange", this.handleSelectionchange, false);
         document.removeEventListener("click", this.handleMouseClick, false);
+        document.removeEventListener("touchstart", this.handleTouchStart, false);
+        document.removeEventListener("touchend", this.handleTouchEnd, false);
     }
 
 
@@ -79,6 +81,7 @@ export class TextSelectDirective implements OnInit, OnDestroy {
                 // initiated by MOUSE-based selections within the current element.
                 this.elementRef.nativeElement.addEventListener("mousedown", this.handleMousedown, false);
                 this.elementRef.nativeElement.addEventListener("click", this.handleMouseClick, false);
+                this.elementRef.nativeElement.addEventListener("touchstart", this.handleTouchStart, false);
 
                 // While the mouse-even takes care of starting new selections within the
                 // current element, we need to listen for the selectionchange event in
@@ -140,6 +143,15 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         }
     };
 
+    private handleTouchStart = (): void => {
+        document.addEventListener("touchend", this.handleTouchEnd, false);
+    };
+
+    private handleTouchEnd = (): void => {
+
+        document.removeEventListener("touchend", this.handleTouchEnd, false);
+        this.processSelection();
+    };
 
     // I determine if the given range is fully contained within the host element.
     private isRangeFullyContained(range: Range): boolean {

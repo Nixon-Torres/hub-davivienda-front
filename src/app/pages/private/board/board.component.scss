@@ -1013,8 +1013,7 @@ $default-font: "Helvetica Neue", Medium;
             height: 100%;
 
             h2 {
-                margin: 0;
-                margin-bottom: 10px;
+                margin: 0px 0px 10px;
                 font-size: 17px;
             }
         }
@@ -1506,10 +1505,10 @@ $default-font: "Helvetica Neue", Medium;
 
 .remove-section {
     position: absolute;
-    right: 17px;
+    right: 50px;
     font-size: 12px;
     color: #616161;
-    top: 1px;
+    top: -5px;
     cursor: pointer;
     z-index: 1000;
 
@@ -1891,7 +1890,7 @@ $default-font: "Helvetica Neue", Medium;
 
 /* The switch - the box around the slider */
 .switch {
-    top: 9px;
+    top: 17px;
     position: absolute;
     right: 15px;
     display: inline-block;;
@@ -1937,7 +1936,7 @@ $default-font: "Helvetica Neue", Medium;
     transition: .4s !important;;
 }
 
-.slider:before {
+.slider::before {
     position: absolute !important;;
     content: "" !important;;
     height: 20px !important;;
@@ -1957,7 +1956,7 @@ input:focus + .slider {
     box-shadow: 0 0 1px #2196F3 !important;;
 }
 
-input:checked + .slider:before {
+input:checked + .slider::before {
     -webkit-transform: translateX(26px) !important;;
     -ms-transform: translateX(26px) !important;;
     transform: translateX(26px) !important;;
@@ -1968,7 +1967,7 @@ input:checked + .slider:before {
     border-radius: 34px !important;;
 }
 
-.slider.round:before {
+.slider.round::before {
     border-radius: 50% !important;;
 }
 

@@ -68,7 +68,7 @@ h2{
 }
 
 .da-lead-section{
-    max-width: 720px;
+    max-width: 600px;
     width: 100%;
     margin: 0 auto;
     padding: 40px 71px;
@@ -112,6 +112,8 @@ h2{
 .brief-section{
     background-color: #F7F7F7;
     margin: 46px;
+    margin-top: 0;
+    padding-top: 20px;
 }
 
 .brief-section.white{
@@ -326,7 +328,7 @@ h2{
 }
 
 .article-ralation{
-    margin: 44px 44px;
+    margin: 0 15px !important;
     padding: 40px 0;
     border-bottom: 1px solid #E3E3E3;
 }
@@ -681,6 +683,11 @@ section .pr-full-bg .container .brief-section,
     left: 65%;
 }
 
+.article-block-section .block-img {
+    max-width: initial;
+    min-width: initial;
+}
+
 @media only screen and (min-width: 1024px) {
     .container-fluid.pr-full-bg .brief-section .doscolumn-container {
         display: flex;
@@ -695,5 +702,24 @@ section .pr-full-bg .container .brief-section,
     }
     .container-fluid .smart-content-section .doscolumn-container.bottom {
         display: initial;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .brief-section .doscolumn-container .social-bar {
+        left: 90%;
+    }
+    .block.onecolumn ol {
+        padding: 0 31px;
+    }
+    .doscolumn_section .graph_block .image_block {
+        text-align: center;
+    }
+    .doscolumn_section .graph_block .image_block img {
+        width: auto;
+    }
+    .brief-section {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 }

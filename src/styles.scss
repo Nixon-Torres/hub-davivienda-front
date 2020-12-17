@@ -1265,9 +1265,15 @@ mat-expansion-panel {
 		height: 30px !important;
 	}
 
-	.dialog__iframe {
+	section {
 		.mark, mark {
 			background-color: #FF003B40;
+		}
+	}
+
+	app-mobile-detail-view {
+		.brief-section .doscolumn-container .social-bar {
+			left: 93%;
 		}
 	}
 

@@ -45,7 +45,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     flagAdd: boolean = false;
     flagAddChild: boolean = false;
     expandStyle: string = '';
-    switchState: boolean;
+    public switchState: boolean = false;
     replyIdx: number = -1;
     thread: any = null;
 
@@ -97,6 +97,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 relation: 'children',
                 scope: {
                     order: 'createdAt ASC',
+                    include: 'user',
                 }
             }];
 
@@ -252,7 +253,6 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 this.list.comments = [];
                 this.displayCommentForm();
             } else if (this.threadId === 'LOAD_LATEST') {
-                this.threadId = null;
                 this.comment.threadId = null;
                 this.list.comments = [];
                 this.switchToggled();
@@ -267,6 +267,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     switchToggled() {
+        console.log('Toggled');
         if (!this.switchState)
           this.threadId = null;
         else {
@@ -328,7 +329,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     loadThread() {
-        if (!!!this.threadId || this.threadId === 'CREATE_NEW') {
+        if (!!!this.threadId || this.threadId === 'CREATE_NEW' || this.threadId === 'LOAD_LATEST') {
             this.thread = null;
             return;
         }
@@ -343,4 +344,8 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 this.thread = null;
             });
     }
+
+    scrollToElement($scrollAnchor): void {
+        $scrollAnchor.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      }
 }
