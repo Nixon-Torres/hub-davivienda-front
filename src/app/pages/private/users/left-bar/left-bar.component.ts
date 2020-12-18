@@ -11,8 +11,8 @@ import {UsersService} from '../../../../services/users.service';
 })
 export class LeftBarComponent implements OnInit {
 
-    private static ROLE: String = 'Admin';
-    private static TITLE: String = 'Perfil Administrador';
+    private static ROLE: string = 'Admin';
+    private static TITLE: string = 'Perfil Administrador';
 
     public list: any = {
         groups: []
@@ -69,7 +69,7 @@ export class LeftBarComponent implements OnInit {
     }
 
     public getName(id) {
-        let found = this.list.groups.find(element => element.id === id);
+        const found = this.list.groups.find(element => element.id === id);
         return found.name;
     }
 
@@ -78,14 +78,24 @@ export class LeftBarComponent implements OnInit {
     }
 
     public setShowGruopsUser() {
-        let found = this.user.roles.find(element => element === LeftBarComponent.ROLE);
+        const found = this.user.roles.find(element => element === LeftBarComponent.ROLE);
         this.showGruopsUser = found === undefined ? false : true;
         return this.showGruopsUser;
     }
 
     public setCurrentUsersGroup(id) {
-        let found = this.list.groups.find(element => element.id === id);
-        this.users.setCurrentUsersGroup(found.users);
+        this.http.get({
+            path: `users`,
+            data: {
+                include: 'files',
+                where: {
+                    userGroupId: id
+                }
+            },
+            encode: true
+        }).subscribe((response: any) => {
+            this.users.setCurrentUsersGroup(response.body);
+        });
     }
 
 }

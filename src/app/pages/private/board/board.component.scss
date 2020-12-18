@@ -220,7 +220,7 @@ $default-font: "Helvetica Neue", Medium;
         width: 88% !important;
         position: relative;
         @media only screen and (max-width: 1024px) {
-            width: 95% !important; 
+            width: 95% !important;
         }
     }
 
@@ -2019,3 +2019,6 @@ ngs-code-editor {
     vertical-align: baseline;
 }
 
+.ck.ck-editor__editable .image {
+    margin-top: 0;
+}

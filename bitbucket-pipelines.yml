@@ -9,9 +9,45 @@ pipelines:
             - apt-get install -y zip # required for packaging up the application
             - pip install boto3 # required for codedeploy_deploy.py
             - npm install
+            - npm run postinstall
             #- bower install --allow-root
-            - npm run build --prod
+            - npm run build --prod -- --configuration=stage
+            - grep -Rl '8.2.14' dist/hub-contenidos-front/ | xargs -I {} sed -i 's/8.2.14/Unknown/g' {}
             - chmod +x scripts/*
             - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME
+            - zip -r /tmp/artifact.zip * # package up the application for deployment
+            - python codedeploy_deploy.py # run the deployment script
+    
+    hub-pro:
+      - step:
+          script:
+              - apt-get update # required to install zip
+              - apt-get install -y zip # required for packaging up the application
+              - npm install
+              - npm run postinstall
+              - npm run build-admin --prod
+              - grep -Rl '8.2.14' dist/hub-contenidos-front/ | xargs -I {} sed -i 's/8.2.14/Unknown/g' {}
+              - cd dist/hub-contenidos-front/
+              - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID1
+              - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY1
+              - export S3_BUCKET=$S3_BUCKET_PRO
+              - aws s3 sync . s3://$S3_BUCKET_PRO/admin --acl public-read --delete  --region $REGION #Deploy in S3
+                    
+
+    hub-stage:
+      - step:
+          script:
+            - apt-get update # required to install zip
+            - apt-get install -y zip # required for packaging up the application
+            - pip install boto3 # required for codedeploy_deploy.py
+            - npm install
+            #- bower install --allow-root
+            - npm run build-admin --prod
+            - chmod +x scripts/*
+            - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME1
+            - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID1
+            - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY1
+            - export APPLICATION_NAME=$APPLICATION_NAME1
+            - export S3_BUCKET=$S3_BUCKET1
             - zip -r /tmp/artifact.zip * # package up the application for deployment
             - python codedeploy_deploy.py # run the deployment script
