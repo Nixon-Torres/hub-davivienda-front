@@ -39,13 +39,11 @@ pipelines:
             - apt-get install -y zip # required for packaging up the application
             - pip install boto3 # required for codedeploy_deploy.py
             - npm install
-            #- bower install --allow-root
+            - npm run postinstall
             - npm run build-admin --prod
-            - chmod +x scripts/*
-            - export DEPLOYMENT_GROUP_NAME=$STAGE_DEPLOYMENT_GROUP_NAME1
+            - cd dist/hub-contenidos-front/
             - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID1
             - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY1
             - export APPLICATION_NAME=$APPLICATION_NAME1
-            - export S3_BUCKET=$S3_BUCKET1
-            - zip -r /tmp/artifact.zip * # package up the application for deployment
-            - python codedeploy_deploy.py # run the deployment script
+            - export S3_BUCKET=$S3_BUCKET_STAGE
+            - aws s3 sync . s3://$S3_BUCKET_STAGE/admin --acl public-read --delete  --region $REGION #Deploy in S3
