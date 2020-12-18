@@ -1,14 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-
+import {trigger, state, style, animate, transition} from '@angular/animations';
 import {AuthService} from '../../../services/auth.service';
 import {UserInterface} from '../../../services/auth.service.model';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    animations: [
+        trigger('showTwoFactor', [
+            transition(':enter', [
+                style({opacity: 0}),
+                animate('300ms', style({opacity: 1}))
+            ])
+        ])
+    ]
 })
 export class LoginComponent implements OnInit {
     public loginForm: FormGroup;
@@ -16,6 +24,7 @@ export class LoginComponent implements OnInit {
     public showErrorMsg: boolean;
     public showFactor: boolean;
     public email: string;
+    public loading = false;
     public classTwoFactor = 'log_validation';
 
     constructor(
@@ -56,16 +65,18 @@ export class LoginComponent implements OnInit {
 
     public login() {
         this.showErrorMsg = false;
+        this.loading = true;
         this._removeClass();
         this.auth.login(this.loginForm.value).subscribe(
             (user: UserInterface) => {
                 if (!!user.email) {
-                    this.hiddenEmail(user.email);
                     this.showFactor = true;
+                    this.hiddenEmail(user.email);
                 }
             },
             () => {
                 this.showErrorMsg = true;
+                this.loading = false;
             }
         );
     }

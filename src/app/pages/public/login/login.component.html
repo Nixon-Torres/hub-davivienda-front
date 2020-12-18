@@ -7,7 +7,7 @@
         <!-- Para visualizar el contenido de Autenticación se debe eliminar primero el "style="none" -->
         <!-- Para aplicar los estilos de valido e invalido, se puede agregar las clases "valid" e "invalid"
          al lado de la primera clase de "log_validation" con eso se agregaran los estilos que daran forma de si el campo es valido o no. -->
-        <div [ngClass]="classTwoFactor" [ngStyle]="{'display': showFactor ? 'block' : 'none'}">
+        <div *ngIf="showFactor" [@showTwoFactor]="showFactor" [ngClass]="classTwoFactor">
             <div class="lock_icon">
                 <i class="fas fa-lock"></i>
                 <i class="fas fa-lock-open"></i>
@@ -34,7 +34,7 @@
                 </div>
             </form>
         </div>
-        <div class="log_content" [ngStyle]="{'display': !showFactor ? 'block' : 'none'}">
+        <div *ngIf="!showFactor" class="log_content">
             <div class="logo-subtxt">
                 <p>Inicie sesion en HUB de contenidos</p>
             </div>
@@ -53,7 +53,7 @@
                         <p *ngIf="showErrorMsg" class="form-error">Usuario o contraseña invalido, por favor contactar al
                             administrador para gestionar el acceso</p>
                     </div>
-                    <button type="submit" class="btn login margin" [disabled]="!loginForm.valid || showFactor">Iniciar
+                    <button type="submit" class="btn login margin" [disabled]="!loginForm.valid || loading">Iniciar
                         sesión >
                     </button>
                 </form>
