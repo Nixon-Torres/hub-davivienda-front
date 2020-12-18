@@ -11,6 +11,7 @@ export interface AccessTokenInterface {
     created?: Date;
     userId?: string;
     user?: any;
+    sent?: boolean;
 }
 
 export interface UserInterface {
