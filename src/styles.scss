@@ -1277,6 +1277,9 @@ mat-expansion-panel {
 	app-mobile-detail-view {
 		.brief-section .doscolumn-container .social-bar {
 			left: 93%;
+			@media (max-width: 768px) and (orientation: landscape) {
+				top: 50%;
+			}
 		}
 	}
 

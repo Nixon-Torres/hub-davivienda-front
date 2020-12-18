@@ -59,10 +59,13 @@ app-comment-box{
 		padding: 12px;
 		overflow: auto;
 		transition: overflow .5s;
+		@media (max-width: 991px) and (orientation: landscape) {
+			overflow: hidden;
+		}
 		@media only screen and (max-width: 768px) {
 			padding: 0;
 		}
-		@media only screen and (max-width: 600px) {
+		@media only screen and (max-width: 991) {
 			overflow: hidden;
 		}
 
@@ -115,7 +118,7 @@ app-comment-box{
 				background-color: #F4F9FF;
 				border-left: solid 3px #0080FF;
 				@media only screen and (max-width: 991px) {
-					margin: 15px 0px;
+					margin: 15px;
 					.comment-close {
 						display: none;
 					}
@@ -165,10 +168,9 @@ app-comment-box{
 					margin-top: 12px;
 					background: transparent;
 					right: 0;
-					margin-right: 13px;
+					margin-right: 21px;
 
 					span::before {
-						content: '';
 						margin: 0px;
 						font-size: 14px;
 						color: #A5ABB1;
@@ -297,6 +299,8 @@ app-comment-box{
 								font-size: 15px;
 								color: #0080FF;
 								margin: 0 5px;
+								position: relative;
+								bottom: 4px;
 							}
 							.resolved_text {
 								margin: 0;
