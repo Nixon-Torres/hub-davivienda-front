@@ -688,14 +688,13 @@ section .pr-full-bg .container .brief-section,
     min-width: initial;
 }
 
-@media only screen and (min-width: 1024px) {
-    .container-fluid.pr-full-bg .brief-section .doscolumn-container {
-        display: flex;
-    }
+
+@media only screen and (min-width: 1025px) {
     .container-fluid.pr-full-bg .brief-section .podcast-video {
-        position: relative;
-        margin-left: -10%;
-        left: 0;
+        margin-left: 6em;
+    }
+    .container-fluid.pr-full-bg .brief-section .doscolumn-container.podcast {
+        padding-left: 10em
     }
     .brief-section.smart-content-section.bottom {
         max-width: initial;
