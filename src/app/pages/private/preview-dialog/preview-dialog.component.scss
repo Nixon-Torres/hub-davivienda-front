@@ -99,6 +99,12 @@
 								color: #cad2d7;
 							}
 						}
+						.resolved-content {
+							.resolved-icon {
+								flex: auto;
+								justify-content: flex-end;
+							}
+						}
 					}
 				}
 				mat-card {

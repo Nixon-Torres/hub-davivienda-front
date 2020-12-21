@@ -871,6 +871,9 @@ margin-top: 2%;
 .cdk-overlay-container{
 	.cdk-overlay-pane {
 		max-width: initial !important;
+		@media (max-width: 991px) and (orientation: landscape) {
+			width: 95vw !important;
+		} 
 	}
 	.mat-select-panel{
 		min-width: calc(100% + 45px) !important;
@@ -1274,6 +1277,9 @@ mat-expansion-panel {
 	app-mobile-detail-view {
 		.brief-section .doscolumn-container .social-bar {
 			left: 93%;
+			@media (max-width: 768px) and (orientation: landscape) {
+				top: 50%;
+			}
 		}
 	}
 

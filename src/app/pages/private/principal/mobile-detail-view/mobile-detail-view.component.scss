@@ -7,15 +7,26 @@ iframe {
     position: relative;
 }
 
+.mobile_detail-container {
+    @media (max-width: 991px) and (orientation: landscape) {
+        width: 80%;
+        overflow-y: hidden;
+    }
+}
+
 .preview-mobile {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center; 
     padding: 15px;
     background-color: #fff;
     box-shadow: 0px 10px 10px -7px #e8e8e8;
     position: relative;
+    @media only screen and (max-width: 480px) {
+        position: fixed;
+        width: 100%;
+        z-index: 9;
+    }
     &__back {
         display: flex;
         align-items: center;
