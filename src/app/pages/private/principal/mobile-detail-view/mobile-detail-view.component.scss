@@ -22,6 +22,11 @@ iframe {
     background-color: #fff;
     box-shadow: 0px 10px 10px -7px #e8e8e8;
     position: relative;
+    @media only screen and (max-width: 480px) {
+        position: fixed;
+        width: 100%;
+        z-index: 9;
+    }
     &__back {
         display: flex;
         align-items: center;

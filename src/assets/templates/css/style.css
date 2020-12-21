@@ -722,3 +722,9 @@ section .pr-full-bg .container .brief-section,
         padding-right: 15px;
     }
 }
+
+@media only screen and (max-width: 480px) {
+    .container.banner {
+        padding-top: 9em;
+    }
+}
