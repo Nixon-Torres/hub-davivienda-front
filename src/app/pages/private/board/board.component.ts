@@ -48,6 +48,25 @@ window.editor = window.editor || {};
     encapsulation: ViewEncapsulation.None
 })
 export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    constructor(
+        public dialog: MatDialog,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private http: HttpService,
+        private auth: AuthService,
+        private renderer: Renderer2,
+        private ref: ElementRef,
+        private fb: FormBuilder
+    ) {
+        this.auth.user.subscribe((user) => {
+            this.user = user;
+            this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
+            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
+            this.isMarketing = this.auth.isMarketing();
+        });
+        // this.closeToggleLists();
+    }
     public STORAGE_URL = environment.STORAGE_FILES;
     public STORAGE_URL_BASE = environment.STORAGE_URL;
 
@@ -94,10 +113,6 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             enabled: false,
         },
     };
-
-    onCodeChanged(value) {
-        this.report.marketingCode = value;
-    }
 
     public list: any = {
         users: [],
@@ -384,25 +399,10 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     editorContentTable: string;
     allowContentTable = false;
     showCommentsView = false;
-    commentsCount: number = 0;
+    commentsCount = 0;
 
-    constructor(
-        public dialog: MatDialog,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private http: HttpService,
-        private auth: AuthService,
-        private renderer: Renderer2,
-        private ref: ElementRef,
-        private fb: FormBuilder
-    ) {
-        this.auth.user.subscribe((user) => {
-            this.user = user;
-            this.isAdvancedUser = this.user.roles.find(e => (e === 'Admin' || e === 'medium'));
-            this.isMediumUser = this.user.roles.find(e => (e === 'medium'));
-            this.isMarketing = this.auth.isMarketing();
-        });
-        // this.closeToggleLists();
+    onCodeChanged(value) {
+        this.report.marketingCode = value;
     }
 
     ngOnInit() {
@@ -427,6 +427,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.activatedRoute.paramMap.subscribe((params: any) => {
             // Load report for edit, but if is a new report load basic data from URI
+            console.log('parametros', params);
             if (params.get('id')) {
                 this.report.id = params.get('id');
                 this.loadReport(this.report.id);
@@ -1465,7 +1466,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             paramsDialog.data.content = this.report.content;
         }
 
-        let dialogRef = this.dialog.open(PreviewDialogComponent, paramsDialog);
+        const dialogRef = this.dialog.open(PreviewDialogComponent, paramsDialog);
         dialogRef.afterClosed().subscribe(() => {
             this.loadCommentsCount();
         });
@@ -2231,16 +2232,16 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public loadCommentsCount() {
-        let where = {
+        const where = {
             reportId: this.report.id,
             resolved: false,
         };
         this.http.get({
             path: `comments/count?where=${JSON.stringify(where)}`
         }).subscribe(
-            (response) => {
+            (response: any) => {
                 if (response.body && response.body.hasOwnProperty('count')) {
-                    this.commentsCount = response.body['count'];
+                    this.commentsCount = response.body.count;
                 }
             }
         );
