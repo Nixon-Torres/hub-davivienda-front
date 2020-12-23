@@ -86,7 +86,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     loadComments() {
-        const where = {
+        const where: any = {
             reportId: this.report.id,
             type: !!!this.threadId ? TYPE_GENERAL : TYPE_THREAD,
             parentId: null,
@@ -130,7 +130,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
             path: 'comments/',
             data: this.comment
         }).subscribe(
-            (response) => {
+            (response: any) => {
                 if (this.threadId === 'CREATE_NEW') {
                     this.threadId = response.body.threadId;
                 }
