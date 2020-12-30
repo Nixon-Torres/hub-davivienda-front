@@ -32,30 +32,40 @@
                     <span *ngIf="!!countSpecific" class="notification_alert toggle_alert">{{countSpecific}}</span>
                 </div>
             </div>
-        </div>
-        <div class="preview-mobile__buttons">
-            <div class="preview-mobile__post" *ngIf="canSendToRevision()">
-                <button mat-flat-button class="bttn bttn-primary" (click)="onSendToRevisionAction()">Enviar a revisi&oacute;n</button>
+
+            <div class="toggle_buttons" (click)="showButtons = !showButtons" *ngIf="!showButtons">
+                <span class="material-icons">keyboard_arrow_down</span>
+            </div>
+            <div class="toggle_buttons active" (click)="showButtons = !showButtons" *ngIf="showButtons">
+                <span class="material-icons">keyboard_arrow_up</span>
             </div>
         </div>
-        <div class="preview-mobile__buttons">
-            <div class="preview-mobile__post" *ngIf="canReturnToEdit()">
-                <button mat-flat-button class="bttn bttn-primary" (click)="returnToEdit()">Devolver a revisi&oacute;n</button>
+    
+        <div class="buttons_section" *ngIf="showButtons">
+            <div class="preview-mobile__buttons">
+                <div class="preview-mobile__post" *ngIf="canSendToRevision()">
+                    <button mat-flat-button class="bttn bttn-primary btn-yellow" (click)="onSendToRevisionAction()">Enviar a revisi&oacute;n</button>
+                </div>
             </div>
-        </div>
-        <div class="preview-mobile__buttons">
-            <div class="preview-mobile__post" *ngIf="canApprove()">
-                <button mat-flat-button class="bttn bttn-primary" (click)="approve()">Aprobar</button>
+            <div class="preview-mobile__buttons">
+                <div class="preview-mobile__post" *ngIf="canReturnToEdit()">
+                    <button mat-flat-button class="bttn bttn-primary btn-yellow" (click)="returnToEdit()">Devolver a revisi&oacute;n</button>
+                </div>
             </div>
-        </div>
-        <div class="preview-mobile__buttons">
-            <div class="preview-mobile__post" *ngIf="canPublish()">
-                <button mat-flat-button class="bttn bttn-primary" (click)="validateUnresolvedComments()">Publicar</button>
+            <div class="preview-mobile__buttons">
+                <div class="preview-mobile__post" *ngIf="canApprove()">
+                    <button mat-flat-button class="bttn bttn-primary btn-cyan" (click)="approve()">Aprobar</button>
+                </div>
+            </div>
+            <div class="preview-mobile__buttons">
+                <div class="preview-mobile__post" *ngIf="canPublish()">
+                    <button mat-flat-button class="bttn bttn-primary btn-green" (click)="validateUnresolvedComments()">Publicar</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div textSelect (textSelectEvent)="renderRectangles($event)" (clickEvent)="contentOnClick($event)">
+    <div class="preview_html" textSelect (textSelectEvent)="renderRectangles($event)" (clickEvent)="contentOnClick($event)">
         <div *ngIf="myhtml" [innerHTML]="myhtml"></div>
     </div>
 </div>
