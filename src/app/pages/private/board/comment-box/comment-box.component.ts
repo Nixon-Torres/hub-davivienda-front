@@ -8,9 +8,9 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
-import { HttpService } from '../../../../services/http.service';
-import { Comment } from './comment-box.model';
+import {AuthService} from '../../../../services/auth.service';
+import {HttpService} from '../../../../services/http.service';
+import {Comment} from './comment-box.model';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 
@@ -27,26 +27,28 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     @Input('showHeader') showHeader = true;
     @Input('report') private report: any;
     @Input('textSelection') private textSelection: any = null;
-    _threadId: string|number;
+    _threadId: string | number;
     @Input()
-    set threadId(val: string|number) {
+    set threadId(val: string | number) {
         this.threadIdChange.emit(val);
         this._threadId = val;
     }
-    get threadId() : string|number {
+
+    get threadId(): string | number {
         return this._threadId;
     }
+
     @Output() propagate = new EventEmitter<string>();
     @Output() unresolved = new EventEmitter<object>();
     @Output()
-    threadIdChange: EventEmitter<string|number> = new EventEmitter<string|number>();
+    threadIdChange: EventEmitter<string | number> = new EventEmitter<string | number>();
     @Output() commentAction: EventEmitter<object> = new EventEmitter<object>();
 
-    flagAdd: boolean = false;
-    flagAddChild: boolean = false;
-    expandStyle: string = '';
-    public switchState: boolean = false;
-    replyIdx: number = -1;
+    flagAdd = false;
+    flagAddChild = false;
+    expandStyle = '';
+    public switchState = false;
+    replyIdx = -1;
     thread: any = null;
 
     public user: any = {};
@@ -63,7 +65,6 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     public list: any = {
         comments: []
     };
-
 
     constructor(
         private http: HttpService,
@@ -85,13 +86,13 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     loadComments() {
-        let where = {
+        const where: any = {
             reportId: this.report.id,
             type: !!!this.threadId ? TYPE_GENERAL : TYPE_THREAD,
             parentId: null,
         };
 
-        let include:Array<any> = [
+        const include: Array<any> = [
             'user',
             {
                 relation: 'children',
@@ -102,7 +103,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
             }];
 
         if (!!this.threadId) {
-            where['threadId'] = this.threadId;
+            where.threadId = this.threadId;
         }
 
         const filter = {
@@ -129,9 +130,10 @@ export class CommentBoxComponent implements OnInit, OnChanges {
             path: 'comments/',
             data: this.comment
         }).subscribe(
-            (response) => {
-                if (this.threadId === 'CREATE_NEW')
-                    this.threadId = response.body['threadId'];
+            (response: any) => {
+                if (this.threadId === 'CREATE_NEW') {
+                    this.threadId = response.body.threadId;
+                }
                 this.comment.text = '';
                 this.loadComments();
                 this.commentAction.emit({
@@ -144,9 +146,8 @@ export class CommentBoxComponent implements OnInit, OnChanges {
         );
     }
 
-    /** Delete a report comment from DOM and database
-    * @param { idComment }
-    */
+    // Delete a report comment from DOM and database
+    // @param { idComment }
     deleteComment(idComment) {
         const self = this;
         this.http.delete({
@@ -157,7 +158,7 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 if (response.ok) {
                     const comment = document.getElementById(idComment);
                     comment.className += ' deleted';
-                    setTimeout(function() {
+                    setTimeout(() => {
                         if (idComment === self.threadId) {
                             self.threadId = null;
                             self.loadComments();
@@ -210,7 +211,9 @@ export class CommentBoxComponent implements OnInit, OnChanges {
             }
         }).pipe(
             switchMap((resp: any) => {
-                if (!!!this.threadId || this.threadId === 'CREATE_NEW') return of(null);
+                if (!!!this.threadId || this.threadId === 'CREATE_NEW') {
+                    return of(null);
+                }
                 const filter = {
                     resolved: false,
                 };
@@ -219,19 +222,19 @@ export class CommentBoxComponent implements OnInit, OnChanges {
                 });
             }))
             .subscribe(
-            (resp: any) => {
-                if (resp.body && resp.body.hasOwnProperty('count') &&
-                    resp.body.count === 0) {
-                    this.resolveThread();
+                (resp: any) => {
+                    if (!!resp && resp.body && resp.body.hasOwnProperty('count') &&
+                        resp.body.count === 0) {
+                        this.resolveThread();
+                    }
+                    comment.resolved = true;
+                    this.loadComments();
+                    this.commentAction.emit({
+                        action: 'resolved',
+                        id: comment.id
+                    });
                 }
-                comment.resolved = true;
-                this.loadComments();
-                this.commentAction.emit({
-                    action: 'resolved',
-                    id: comment.id
-                });
-            }
-        );
+            );
     }
 
     hasUnresolvedComments(commentsList: any): object {
@@ -262,16 +265,16 @@ export class CommentBoxComponent implements OnInit, OnChanges {
         }
     }
 
-    showResolveButton(index:number): boolean {
+    showResolveButton(index: number): boolean {
         return !!!this.threadId || (index === 0 || index === (this.list.comments.length - 1));
     }
 
     switchToggled() {
         console.log('Toggled');
-        if (!this.switchState)
-          this.threadId = null;
-        else {
-            let where = {
+        if (!this.switchState) {
+            this.threadId = null;
+        } else {
+            const where = {
                 reportId: this.report.id,
                 threadId: {neq: null},
                 resolved: false,
@@ -300,16 +303,20 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     getChildrenNumberLabel(comment) {
-        if (comment.children.length === 0)
+        if (comment.children.length === 0) {
             return '';
-        if (comment.children.length === 1)
+        }
+        if (comment.children.length === 1) {
             return '1 respuesta';
-        else
+        } else {
             return String(comment.children.length) + ' respuestas';
+        }
     }
 
     resolveThread() {
-        if (!!!this.threadId) return;
+        if (!!!this.threadId) {
+            return;
+        }
         this.http.patch({
             path: `commentThreads/${this.threadId}`,
             data: {
@@ -346,6 +353,6 @@ export class CommentBoxComponent implements OnInit, OnChanges {
     }
 
     scrollToElement($scrollAnchor): void {
-        $scrollAnchor.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-      }
+        $scrollAnchor.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    }
 }
