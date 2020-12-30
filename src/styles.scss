@@ -628,6 +628,7 @@ $builder-bg: #f5f7fb;
 .mat-dialog-container {
 	padding: 0 !important;
 	overflow-y: hidden !important;
+	overflow-x: hidden !important;
 }
 
 .select2-container .select2-selection--single{
@@ -1292,6 +1293,7 @@ mat-expansion-panel {
 	@media only screen and (max-width: 991px) {
 		div.cdk-overlay-pane {
 			max-width: 100% !important;
+			overflow-y: scroll;
 		}
 	}
 
