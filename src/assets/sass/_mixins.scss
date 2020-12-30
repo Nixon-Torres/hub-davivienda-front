@@ -146,6 +146,34 @@
 	}
 }
 
+// Margin's and Padding's mixin
+@mixin list-loop($className, $styleName) {
+
+	$max: 5;
+	$offset: 1;
+	$unit: 'rem';
+
+  $spacing-index: 0;
+  @while $spacing-index <= $max {
+    #{$className + $spacing-index} { 
+      #{$styleName}: #{$spacing-index + $unit} !important;
+    }
+    $spacing-index: $spacing-index + $offset;
+  }
+}
+
+// Padding's
+@include list-loop('.pt-', 'padding-top');
+@include list-loop('.pl-', 'padding-left');
+@include list-loop('.pr-', 'padding-right');
+@include list-loop('.pb-', 'padding-bottom');
+
+// Margin's
+@include list-loop('.mt-', 'margin-top');
+@include list-loop('.ml-', 'margin-left');
+@include list-loop('.mr-', 'margin-right');
+@include list-loop('.mb-', 'margin-bottom');
+
 @mixin placeholder {
     &::placeholder {
         @content;
