@@ -74,10 +74,22 @@
 	justify-content: flex-start;
 	width: 100%;
 
+	@media (max-width: 990px) {
+		display: block;
+	}
+
 	.two-columns {
 		padding: 36px 24px 24px 24px;
 		position: relative;
 		width: 50%;
+
+		@media (max-width: 990px) {
+			width: 90%;
+		}
+
+		.authors-box {
+			max-width: 100%;
+		}
 
 		&.diff-color {
 			background: #F5F7FB;
