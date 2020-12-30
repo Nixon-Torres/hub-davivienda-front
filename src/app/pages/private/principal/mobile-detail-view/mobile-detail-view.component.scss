@@ -116,7 +116,7 @@ iframe {
     }
 
     &__post {
-        margin: 0 20px;
+        margin: 0 15px;
         button {
             background-color: #0080FF;
             color: #ffffff;
@@ -205,19 +205,13 @@ iframe {
                 color: #616161;
                 border-radius: 10px;
                 font-size: 0.75em;
-            }
-            &:first-child {
-                button {
+                &.btn-yellow {
                     border: solid 1px #f9e333;
                 }
-            }
-            &:nth-child(2) {
-                button {
+                &.btn-cyan {
                     border: solid 1px #00fff5;
                 }
-            }
-            &:last-child {
-                button {
+                &.btn-green {
                     border: solid 1px #19d600;
                 }
             }
