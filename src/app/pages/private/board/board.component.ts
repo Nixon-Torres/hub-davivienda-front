@@ -986,7 +986,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public canApprove(): boolean {
-        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== null && this.report.ownerId !== this.user.id &&
             this.report.stateId === this.states.toReview;
     }
 
