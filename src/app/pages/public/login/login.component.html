@@ -27,7 +27,7 @@
                     <input type="text" formControlName="field5" maxlength="1" (keyup)="_removeClass()">
                     <input type="text" formControlName="field6" maxlength="1" (keyup)="_removeClass()">
                 </div>
-                <p class="code_error">El código ingresado no es correcto o ya se encuentra expirado.</p>
+                <p class="code_error">El código ingresado no es correcto o ya ha expirado.</p>
                 <div class="log_validation__buttons">
                     <button type="button" (click)="login()">Reenviar código</button>
                     <button type="submit" [disabled]="!doubleFactorForm.valid">Verificar Código</button>
