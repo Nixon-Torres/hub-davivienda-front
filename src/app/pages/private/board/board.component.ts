@@ -1388,7 +1388,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             data
         }).subscribe(
             (response: any) => {
-                this.report.id = response.body.id;
+                this.report = response.body;
                 this.onSaveBlocks();
                 this.saveBannerImage();
                 this.saveThumbImage();
