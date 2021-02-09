@@ -1035,7 +1035,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public validateUnresolvedComments() {
-        if (this.unresolvedComments.state) {
+        if (this.unresolvedComments !== undefined && this.unresolvedComments.state) {
             const refDialog = this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {
