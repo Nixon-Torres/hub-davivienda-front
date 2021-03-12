@@ -1,8 +1,10 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
+
 import {LoginContext, AccessTokenInterface, UserInterface} from './auth.service.model';
 import {HttpService} from './http.service';
 import {CookieStorage} from './storage/cookie.storage';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -11,6 +13,7 @@ export class AuthService {
     public user: ReplaySubject<any>;
     public loggedIn = false;
     doubleFactor = false;
+
     private isMarketer = false;
     private isBasic = false;
     constructor(
@@ -43,6 +46,7 @@ export class AuthService {
     public isBasicUser(): any {
         return this.isBasic;
     }
+
     public login(context: any, twoFactor?: string): Observable<any> {
         if (twoFactor !== null) {
             context.twofactor = twoFactor;

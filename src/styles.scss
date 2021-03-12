@@ -30,6 +30,12 @@ body {
 	margin: auto;
 }
 
+button {
+	&:focus {
+		outline: none !important;
+	}
+}
+
 // TODO
 .content-wrap {
 	@include display-flex;
@@ -622,6 +628,7 @@ $builder-bg: #f5f7fb;
 .mat-dialog-container {
 	padding: 0 !important;
 	overflow-y: hidden !important;
+	overflow-x: hidden !important;
 }
 
 .select2-container .select2-selection--single{
@@ -865,6 +872,9 @@ margin-top: 2%;
 .cdk-overlay-container{
 	.cdk-overlay-pane {
 		max-width: initial !important;
+		@media (max-width: 991px) and (orientation: landscape) {
+			width: 95vw !important;
+		} 
 	}
 	.mat-select-panel{
 		min-width: calc(100% + 45px) !important;
@@ -1259,6 +1269,21 @@ mat-expansion-panel {
 		height: 30px !important;
 	}
 
+	section {
+		.mark, mark {
+			background-color: #FF003B40;
+		}
+	}
+
+	app-mobile-detail-view {
+		.brief-section .doscolumn-container .social-bar {
+			left: 93%;
+			@media (max-width: 768px) and (orientation: landscape) {
+				top: 50%;
+			}
+		}
+	}
+
 	@media only screen and (max-width: 720px) {
 		.cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
 			display: none;
@@ -1268,6 +1293,7 @@ mat-expansion-panel {
 	@media only screen and (max-width: 991px) {
 		div.cdk-overlay-pane {
 			max-width: 100% !important;
+			overflow-y: scroll;
 		}
 	}
 

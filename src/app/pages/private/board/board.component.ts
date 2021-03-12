@@ -384,6 +384,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
     editorContentTable: string;
     allowContentTable = false;
     showCommentsView = false;
+    commentsCount: number = 0;
 
     constructor(
         public dialog: MatDialog,
@@ -432,6 +433,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.getEditorsList(this.report.id);
                 this.onLoadAuthors(this.report.id);
                 this.checkIfEditable();
+                this.loadCommentsCount();
             } else if (params.get('stateId')) {
                 const folderId = params.get('folderId');
                 const companyId = params.get('companyId');
@@ -1386,7 +1388,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             data
         }).subscribe(
             (response: any) => {
-                this.report.id = response.body.id;
+                this.report = response.body;
                 this.onSaveBlocks();
                 this.saveBannerImage();
                 this.saveThumbImage();
@@ -1432,6 +1434,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                         response.body.templateId = response.body.templateId ? response.body.templateId : null;
                         // this.report = response.body;
                         this.setLastUpdate(response.body.updatedAt);
+                        this.loadCommentsCount();
                     }
                 }
             },
@@ -1443,8 +1446,8 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public openPreviewDialog(): void {
         const paramsDialog = {
-            width: '90vw',
-            height: '80vh',
+            width: '99vw',
+            height: '99vh',
             data: {
                 reportId: this.report.id,
                 styles: '',
@@ -1462,7 +1465,10 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             paramsDialog.data.content = this.report.content;
         }
 
-        this.dialog.open(PreviewDialogComponent, paramsDialog);
+        let dialogRef = this.dialog.open(PreviewDialogComponent, paramsDialog);
+        dialogRef.afterClosed().subscribe(() => {
+            this.loadCommentsCount();
+        });
     }
 
     public getReviewers(reviewers: Array<object>) {
@@ -2222,5 +2228,21 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     changeView() {
         this.router.navigate(['/app/notifications']);
+    }
+
+    public loadCommentsCount() {
+        let where = {
+            reportId: this.report.id,
+            resolved: false,
+        };
+        this.http.get({
+            path: `comments/count?where=${JSON.stringify(where)}`
+        }).subscribe(
+            (response) => {
+                if (response.body && response.body.hasOwnProperty('count')) {
+                    this.commentsCount = response.body['count'];
+                }
+            }
+        );
     }
 }

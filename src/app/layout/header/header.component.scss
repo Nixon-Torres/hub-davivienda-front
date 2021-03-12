@@ -45,13 +45,17 @@ header {
             text-decoration: none;
             border-left: 1px solid #EDEDED;
             border-right: 1px solid #EDEDED;
-            @media only screen and (max-width: 720px) {
+            @media only screen and (max-width: 991px) {
                 height: 25px;
+                padding: 0;
             }
 
             img.logo-board {
                 height: 24px;
                 margin: 23px 8px 0 15px;
+                @media only screen and (max-width: 991px) {
+                    margin-top: 0;
+                }
             }
 
             span {
@@ -160,6 +164,11 @@ header {
                 width: auto;
                 border-radius: 10px;
                 .user-menu {
+                    @media (max-width: 850px) and (max-height: 450px) {
+                        display: flex;
+                        justify-content: center;
+                        align-items: flex-end;
+                    }
                     span {
                         display: block;
                         position: initial;
@@ -309,4 +318,17 @@ header {
             color: #a5abb1;
         }
     }
+}
+
+@media not all and (min-resolution:.001dpcm)
+    { @supports (-webkit-appearance:none) {
+        .user_content {
+            width: 21%;
+        }
+}}
+
+.d-flex-between-end {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
 }

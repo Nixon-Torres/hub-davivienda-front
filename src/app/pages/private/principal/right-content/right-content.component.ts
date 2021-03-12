@@ -330,6 +330,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
         );
         duplicatedReport$.subscribe(
             () => {
+
                 this.loadReports();
                 this.folderService.loadStates();
                 this.folderService.loadFolders();
@@ -1178,10 +1179,26 @@ export class RightContentComponent implements OnInit, OnDestroy {
         if (this.isTabletVersion()) {
             return this.gotoPage(report.id);
         }
-        this.changeView.emit({
-            mobile: true,
-            report,
-        });
+
+        if (this.isMobileVersion()) {
+            this.changeView.emit({
+                mobile: true,
+                report,
+            });
+            return;
+        }
+
+        // Desktop
+        const paramsDialog = {
+            width: '99vw',
+            height: '99vh',
+            data: {
+                reportId: report.id,
+                styles: report.styles,
+                content: report.content,
+            }
+        };
+        this.dialog.open(PreviewDialogComponent, paramsDialog);
     }
 
     public openHighlightDialog(id) {

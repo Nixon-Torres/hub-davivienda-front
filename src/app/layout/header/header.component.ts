@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
     public sidevarMenu = true;
     public isMobileLayout = false;
     public marketingToggle = false;
+    public showButtons = false;
 
     constructor(
         private router: Router,

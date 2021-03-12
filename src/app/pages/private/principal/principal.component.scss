@@ -22,7 +22,7 @@
 		left: 0;
 		position: absolute;
 		top: 0;
-		width: 150%;
+		width: 100%;
 		z-index: 0;
 		@media only screen and (max-width: 1024px) {
 			width: 94vw;
@@ -36,6 +36,9 @@
 app-left-bar {
 	position: relative;
 	width: 24%;
+	@media only screen and (max-width: 1280px) {
+		width: 29%;
+	}
 	@media only screen and (max-width: 720px) {
 		position: absolute;
 		left: 0;

@@ -10,6 +10,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MobileDetailViewComponent } from './mobile-detail-view.component';
 import { MobileCommentViewModule } from '../mobile-comment-view/mobile-comment-view.module';
+import { TextSelectModule } from 'src/app/directives/text-select.module';
 const materialModules: any[] = [
     MatCardModule,
     MatListModule,
@@ -34,12 +35,14 @@ const materialModules: any[] = [
         FormsModule,
         ReactiveFormsModule,
         materialModules,
+        TextSelectModule,
         MobileCommentViewModule,
     ],
     declarations: [
         MobileDetailViewComponent,
     ],
     exports: [
+        TextSelectModule,
         MobileDetailViewComponent,
     ],
     entryComponents: [

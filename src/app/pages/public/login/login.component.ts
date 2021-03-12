@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {trigger, state, style, animate, transition} from '@angular/animations';
 import {AuthService} from '../../../services/auth.service';
 import {UserInterface} from '../../../services/auth.service.model';
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
     public email: string;
     public loading = false;
     public classTwoFactor = 'log_validation';
+
     constructor(
         private router: Router,
         private auth: AuthService
@@ -47,6 +49,7 @@ export class LoginComponent implements OnInit {
             remember: new FormControl(false)
         });
     }
+
     public initFormDoubleFactor(): void {
         this.doubleFactorForm = new FormGroup({
             field1: new FormControl('', Validators.required),
@@ -57,6 +60,7 @@ export class LoginComponent implements OnInit {
             field6: new FormControl('', Validators.required),
         });
     }
+
     public login() {
         this.showErrorMsg = false;
         this.loading = true;
@@ -74,10 +78,12 @@ export class LoginComponent implements OnInit {
             }
         );
     }
+
     public hiddenEmail(email: string): void {
         const div = (email.split('@')[0].length / 2).toFixed();
         this.email = `xxxx${email.slice(parseInt(div, 10))}`;
     }
+
     public _verifyDoubleFactor() {
         let code = '';
         Object.values(this.doubleFactorForm.value).forEach((value) => {
@@ -97,6 +103,7 @@ export class LoginComponent implements OnInit {
             }
         );
     }
+
     public _removeClass() {
         this.classTwoFactor = this.classTwoFactor.replace(' invalid', '');
     }

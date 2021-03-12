@@ -51,8 +51,8 @@
         </mat-menu>
 
 		<!-- USER MENU -->
-		<div (click)="isMobileLayout = !isMobileLayout">
-            <div class="user-menu h-btn" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing">
+		<div class="user_content" (click)="isMobileLayout = !isMobileLayout">
+            <div class="user-menu h-btn d-flex-between-end" [matMenuTriggerFor]="userMenu" matRipple *ngIf="!marketing">
                 <img [src]="getUserImage()">
                 <span>{{ user.name }}</span>
             </div>
