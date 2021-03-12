@@ -3,7 +3,6 @@ export interface LoginContext {
     password: string;
     remember?: boolean;
 }
-
 export interface AccessTokenInterface {
     id?: string;
     ttl?: number;
@@ -13,14 +12,13 @@ export interface AccessTokenInterface {
     user?: any;
     sent?: boolean;
 }
-
 export interface UserInterface {
     roles?: any;
-    id?: string,
-    email?: string,
-    name?: string,
-    nickname?: string,
-    photo?: string,
-    curriculum?: string,
-    charge?: string
+    id?: string;
+    email?: string;
+    name?: string;
+    nickname?: string;
+    photo?: string;
+    curriculum?: string;
+    charge?: string;
 }

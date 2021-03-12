@@ -16,28 +16,22 @@ export class AuthService {
 
     private isMarketer = false;
     private isBasic = false;
-
     constructor(
         private cookie: CookieStorage,
         private http: HttpService
     ) {
         this.user = new ReplaySubject<any>(1);
-
         if (isDevMode() && this.cookie.get('accessToken')) {
             this.http.setAuthorization(this.cookie.get('accessToken'));
         }
-
         this.reloadUser();
     }
-
     public isLoggedin(): any {
         return this.loggedIn;
     }
-
     public setUser(user: any): void {
         this.user.next(user);
     }
-
     public setUserData(attr: string, value: any): any {
         this.user.subscribe((user) => {
             if (user[attr] !== value) {
@@ -46,11 +40,9 @@ export class AuthService {
             }
         });
     }
-
     public isMarketing(): any {
         return this.isMarketer;
     }
-
     public isBasicUser(): any {
         return this.isBasic;
     }
@@ -78,7 +70,6 @@ export class AuthService {
                     this.cookie.set('accessToken', token.id);
                     this.http.setAuthorization(token.id);
                 }
-
                 this.getCurrentUser(token.userId, (err: any, user: UserInterface) => {
                     if (err) {
                         observer.error(err);
@@ -96,7 +87,6 @@ export class AuthService {
             });
         });
     }
-
     public logout(): Observable<any> {
         return new Observable((observer) => {
             this.removeToken((error: any) => {
@@ -111,7 +101,6 @@ export class AuthService {
             });
         });
     }
-
     private getToken(input: any, fn: any) {
         this.http.post({path: 'users/login', data: input}).subscribe(
             (response: any) => {
@@ -122,7 +111,6 @@ export class AuthService {
             }
         );
     }
-
     private removeToken(fn: any) {
         this.http.post({
             path: 'users/logout'
@@ -131,7 +119,6 @@ export class AuthService {
                 if (isDevMode()) {
                     this.cookie.remove('accessToken');
                 }
-
                 fn(null, response.body);
             },
             (error) => {
@@ -139,7 +126,6 @@ export class AuthService {
             }
         );
     }
-
     public reloadUser() {
         this.http.get({
             path: `me`,
@@ -155,7 +141,6 @@ export class AuthService {
                 (response: any) => {
                     const nuser = response.body;
                     nuser.roles = user.roles;
-
                     if (user && nuser) {
                         this.loggedIn = true;
                         const roles = user.roles;
@@ -170,7 +155,6 @@ export class AuthService {
             );
         });
     }
-
     private getCurrentUser(userId?: string, fn?: any) {
         userId = userId ? userId : null;
         this.http.get({

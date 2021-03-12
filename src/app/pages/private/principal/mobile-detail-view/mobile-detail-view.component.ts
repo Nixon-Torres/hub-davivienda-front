@@ -141,7 +141,7 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public canApprove(): boolean {
-        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== this.user.id &&
+        return this.isAdvancedUser && !this.isMediumUser && this.report.ownerId !== null && this.report.ownerId !== this.user.id &&
             this.report.stateId === this.states.toReview;
     }
 
@@ -174,7 +174,7 @@ export class MobileDetailViewComponent implements OnInit {
     }
 
     public validateUnresolvedComments() {
-        if (this.unresolvedComments.state) {
+        if (this.unresolvedComments !== undefined && this.unresolvedComments.state) {
             const refDialog = this.dialog.open(ConfirmationDialogComponent, {
                 width: '410px',
                 data: {

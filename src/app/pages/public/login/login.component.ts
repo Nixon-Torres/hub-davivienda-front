@@ -38,12 +38,10 @@ export class LoginComponent implements OnInit {
             }
         });
     }
-
     ngOnInit() {
         this.initFormLogin();
         this.initFormDoubleFactor();
     }
-
     public initFormLogin(): void {
         this.loginForm = new FormGroup({
             email: new FormControl('', Validators.required),
@@ -109,5 +107,4 @@ export class LoginComponent implements OnInit {
     public _removeClass() {
         this.classTwoFactor = this.classTwoFactor.replace(' invalid', '');
     }
-
 }
