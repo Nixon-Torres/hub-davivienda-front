@@ -1,7 +1,7 @@
 <body class="dialog report_page">
     <div class="dialog__iframe" textSelect (textSelectEvent)="renderRectangles($event)" (clickEvent)="contentOnClick($event)">
         <a class="preview-icon" (click)="closeDialog()"><span class="icon icon-times"></span></a>
-        <div *ngIf="myhtml" [innerHTML]="myhtml"></div>
+        <div id="marketingCode" *ngIf="myhtml" [innerHTML]="myhtml"></div>
     </div>
     <div class="dialog__comments">
         <div
