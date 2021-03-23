@@ -740,6 +740,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             this.thumb = thumb ? thumb : {};
             this.blocks = this.report.blocks.map(e => {
                 const img = e.files && e.files.length ? e.files[0] : {};
+                e.title = BoardComponent.striphtml(e.title);
                 return {
                     ...e,
                     imageId: img.id,
@@ -1167,6 +1168,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             const blocks = res.body as any;
             this.blocks = blocks.map(e => {
                 const img = e.files && e.files.length ? e.files[0] : {};
+                e.title = BoardComponent.striphtml(e.title);
                 return {
                     ...e,
                     imageId: img.id,
@@ -1390,7 +1392,11 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
             data
         }).subscribe(
             (response: any) => {
+                const template = this.report.template;
                 this.report = response.body;
+                if (!!!this.report.template && template)
+                    this.report.template = template;
+
                 this.onSaveBlocks();
                 this.saveBannerImage();
                 this.saveThumbImage();
@@ -2246,5 +2252,17 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         );
+    }
+
+    static striphtml(value:string|null) {
+        if (!value || (value === '') || typeof value != 'string') {
+            return value;
+        } else {
+            return value
+                .replace(/×/g, '')
+                .replace(/<.*?>/g, '')
+                .replace(/\xa0/g, '')
+                .replace(/&nbsp;/g, '');
+        }
     }
 }
