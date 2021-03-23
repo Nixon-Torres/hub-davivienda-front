@@ -3,7 +3,6 @@ export class Request {
     data?: any;
     headers?: Array<any> = [];
     encode?: boolean = false;
-    long?: boolean = false;
 }
 
 export interface Response {

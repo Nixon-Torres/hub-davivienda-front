@@ -13,7 +13,6 @@ import { environment } from '../../environments/environment';
 export class HttpService {
     public authorization: string = null;
     private _URL_API: string = environment.URL_API;
-    private _URL_API_LONG_PAYLOAD: string = environment.URL_API_LONG_PAYLOAD || environment.URL_API;
 
     constructor(
         private http: HttpClient
@@ -53,8 +52,7 @@ export class HttpService {
 
     public patch(input: Request): Observable<HttpResponse<Response>> {
         let headers = this.headers();
-        const baseURL = input.long && this._URL_API_LONG_PAYLOAD ? this._URL_API_LONG_PAYLOAD : this._URL_API;
-        return this.http.patch<Response>(baseURL + input.path, input.data, {
+        return this.http.patch<Response>(this._URL_API + input.path, input.data, {
             observe: 'response',
             headers: headers
         }).pipe(catchError(this.handleError));

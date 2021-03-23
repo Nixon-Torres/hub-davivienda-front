@@ -1389,8 +1389,7 @@ export class BoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.http[method]({
             path,
-            data,
-            long: true,
+            data
         }).subscribe(
             (response: any) => {
                 const template = this.report.template;
