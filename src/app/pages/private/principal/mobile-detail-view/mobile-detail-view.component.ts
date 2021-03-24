@@ -101,6 +101,26 @@ export class MobileDetailViewComponent implements OnInit {
             this.report.styles = response.body.view.styles ? response.body.view.styles : '';
             this.report.content = response.body.view.content ? response.body.view.content : '';
             this.myhtml = this.sanitizer.bypassSecurityTrustHtml(response.body.view.content);
+            setTimeout(() => {
+                const parent = document.getElementById('marketingCode') as HTMLElement;
+                if (!parent) {
+                    return;
+                }
+                const scripts = parent.getElementsByTagName('script') as unknown as HTMLScriptElement[];
+                const scriptsInitialLength = scripts.length;
+                for (let i = 0; i < scriptsInitialLength; i++) {
+                    const script = scripts[i];
+                    const scriptCopy = document.createElement('script') as HTMLScriptElement;
+                    scriptCopy.type = script.type ? script.type : 'text/javascript';
+                    if (script.innerHTML) {
+                        scriptCopy.innerHTML = script.innerHTML;
+                    } else if (script.src) {
+                        scriptCopy.src = script.src;
+                    }
+                    scriptCopy.async = false;
+                    script.parentNode.replaceChild(scriptCopy, script);
+                }
+            }, 1000);
         });
 
         let include:Array<any> = [

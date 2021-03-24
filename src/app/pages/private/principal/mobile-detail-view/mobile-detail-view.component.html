@@ -40,7 +40,7 @@
                 <span class="material-icons">keyboard_arrow_up</span>
             </div>
         </div>
-    
+
         <div class="buttons_section" *ngIf="showButtons">
             <div class="preview-mobile__buttons">
                 <div class="preview-mobile__post" *ngIf="canSendToRevision()">
@@ -66,6 +66,6 @@
     </div>
 
     <div class="preview_html" textSelect (textSelectEvent)="renderRectangles($event)" (clickEvent)="contentOnClick($event)">
-        <div *ngIf="myhtml" [innerHTML]="myhtml"></div>
+        <div id="marketingCode" *ngIf="myhtml" [innerHTML]="myhtml"></div>
     </div>
 </div>
