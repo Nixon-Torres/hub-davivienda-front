@@ -578,14 +578,14 @@ export class RightContentComponent implements OnInit, OnDestroy {
                     }
                     pendingWhere = JSON.parse(JSON.stringify(query.filter.where));
                     if (this.ifilterreviewed) {
-                        pendingWhere.and.push({ id: { inq: reportsAsReviewer } });
+                        pendingWhere.and.push({ id: 'just_reviewer'});
                         pendingWhere.and.push({ reviewed: false });
                         this.pendignForReview(pendingWhere);
                         if (!this.marketing) {
                             query.filter.where.and.push({ ownerId: this.user.id });
                         }
                     } else {
-                        query.filter.where.and.push({ id: { inq: reportsAsReviewer } });
+                        query.filter.where.and.push({ id: 'just_reviewer' });
                         if (this.isFiltered) {
                             query.filter.where.and.push({ reviewed: this.isReviewed });
                         }
@@ -812,9 +812,11 @@ export class RightContentComponent implements OnInit, OnDestroy {
     public readReportsAsReviewer(fn: any): void {
         let result = [];
 
+        // TODO (jjescof): This query is not needed anymore as it is forcing ids
+        // server side with just_reviwer flag
         this.http.get({
             path: `users/${this.user && this.user.id ? this.user.id : ''}/reportsr`,
-            data: { fields: 'id' },
+            data: { fields: 'id', limit: 1 },
             encode: true
         }).subscribe(
             (response: any) => {
