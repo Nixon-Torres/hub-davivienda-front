@@ -9,7 +9,7 @@ iframe {
 
 .mobile_detail-container {
     @media (max-width: 991px) and (orientation: landscape) {
-        width: 80%;
+        width: 100%;
         overflow-y: hidden;
     }
 }
@@ -24,7 +24,7 @@ iframe {
     position: relative;
     justify-content: space-between;
     @media only screen and (max-width: 480px) {
-        position: fixed;
+        position: absolute;
         width: 100%;
         z-index: 9;
     }
