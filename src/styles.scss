@@ -1284,6 +1284,12 @@ mat-expansion-panel {
 		}
 	}
 
+	@media only screen and (min-width: 1250px) {
+		.brief-section .doscolumn-container .social-bar {
+			right: 33% !important;
+		}
+	}
+
 	@media only screen and (max-width: 720px) {
 		.cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
 			display: none;
