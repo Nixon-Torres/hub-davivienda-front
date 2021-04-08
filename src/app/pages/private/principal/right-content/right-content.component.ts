@@ -83,6 +83,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
     public tabIndex = 0;
     public canClearFilters: boolean;
     public finishFilter = false;
+    public path: any;
     private _destroyed$: Subject<any>;
 
     @Input()
@@ -960,9 +961,16 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 return;
             }
             const reports: Array<string> = this.getCheckboxesSelected();
+            let rsp = this.listForm.value.reports
+                .map((v: any, i: number) => v ? this.list.reports[i] : null)
+                .filter((v: any) => v !== null);
+
+                rsp = rsp.concat(this.listForm.value.reviewed
+                    .map((v: any, i: number) => v ? this.list.reviewed[i] : null)
+                    .filter((v: any) => v !== null));
             this.rcDeeplyDeleteReport(reports, 0, () => {
                 this.loadReports(this.ifilter);
-            });
+            },rsp);
         });
     }
 
@@ -971,9 +979,11 @@ export class RightContentComponent implements OnInit, OnDestroy {
             return fn();
         }
         const report = reportsId[index];
-        const type = reports[index] && reports[index].type;
+        if (reports[0].state.name != "Multimedia") {
+            this.path = reports[index] && 'reports';
+        }
         this.http.delete({
-            path: `${type ? 'reports' : 'contents'}/${report}`
+            path: `${this.path ? 'reports' : 'contents'}/${report}`
         }).subscribe(() => {
             index++;
             this.rcDeeplyDeleteReport(reportsId, index, fn, reports);
