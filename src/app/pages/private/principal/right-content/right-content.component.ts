@@ -961,13 +961,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 return;
             }
             const reports: Array<string> = this.getCheckboxesSelected();
-            let rsp = this.listForm.value.reports
-                .map((v: any, i: number) => v ? this.list.reports[i] : null)
-                .filter((v: any) => v !== null);
-
-                rsp = rsp.concat(this.listForm.value.reviewed
-                    .map((v: any, i: number) => v ? this.list.reviewed[i] : null)
-                    .filter((v: any) => v !== null));
+            const rsp = this.getCheckboxesData();
             this.rcDeeplyDeleteReport(reports, 0, () => {
                 this.loadReports(this.ifilter);
             },rsp);
@@ -990,6 +984,18 @@ export class RightContentComponent implements OnInit, OnDestroy {
         }, (error: any) => {
             console.error(error);
         });
+    }
+
+    public getCheckboxesData() {
+        let rsp = this.listForm.value.reports
+            .map((v: any, i: number) => v ? this.list.reports[i] : null)
+            .filter((v: any) => v !== null);
+
+        rsp = rsp.concat(this.listForm.value.reviewed
+            .map((v: any, i: number) => v ? this.list.reviewed[i] : null)
+            .filter((v: any) => v !== null));
+
+        return rsp;
     }
 
     private rcPutReport(reports: Array<any>, index: number, fn: any): void {
