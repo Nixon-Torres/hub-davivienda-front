@@ -916,11 +916,11 @@ export class RightContentComponent implements OnInit, OnDestroy {
                         key: 'multimedia',
                         trash: true
                     },
-                    fields: ['id', 'type']
+                    fields: ['id', 'type', 'key']
                 },
                 encode: true
             });
-
+            
             forkJoin([observables, observables2]).subscribe((results: any) => {
                 const reportsBody = results && results[0] && results[0].body
                     ? results[0].body
@@ -935,7 +935,7 @@ export class RightContentComponent implements OnInit, OnDestroy {
                 const toDelete = reports.map((a: any) => a.id);
                 this.rcDeeplyDeleteReport(toDelete, 0, () => {
                     this.loadReports(this.ifilter);
-                }, reports);
+                }, reports, '');
             }, (error: any) => {
                 console.error(error);
             });
@@ -964,26 +964,56 @@ export class RightContentComponent implements OnInit, OnDestroy {
             const rsp = this.getCheckboxesData();
             this.rcDeeplyDeleteReport(reports, 0, () => {
                 this.loadReports(this.ifilter);
-            },rsp);
+            },rsp,'selection');
         });
     }
 
-    public rcDeeplyDeleteReport(reportsId: Array<any>, index: number, fn: any, reports?: any) {
-        if (index === reportsId.length) {
-            return fn();
+    public rcDeeplyDeleteReport(reportsId: Array<any>, index: number, fn: any, reports?: any, type?: string) {
+        
+        switch (type) {
+            case 'selection':
+                if (index === reportsId.length) {
+                    return fn();
+                }
+                const report = reportsId[index];
+                if (reports[0].state.name != "Multimedia") {
+                    this.path = reports[index] && 'reports';
+                }
+                this.http.delete({
+                    path: `${this.path ? 'reports' : 'contents'}/${report}`
+                }).subscribe(() => {
+                    index++;
+                    this.rcDeeplyDeleteReport(reportsId, index, fn, reports, 'selection');
+                }, (error: any) => {
+                    console.error(error);
+                });
+            break;
+        
+            default:
+                if (index === reportsId.length) {
+                    return fn();
+                }
+                const report2 = reportsId[index];
+                reports.map((e, i) => {
+                    if (e.key == undefined) {
+                        reports[i] = {
+                            "key" : "null",
+                            "id" : e.id,
+                            "type": "reports"
+                        }
+                    }
+                });
+                const type = reports[index] && reports[index].type;
+                this.http.delete({
+                    path: `${type ? 'reports' : 'contents'}/${report2}`
+                }).subscribe(() => {
+                    index++;
+                    this.rcDeeplyDeleteReport(reportsId, index, fn, reports, '');
+                }, (error: any) => {
+                    console.error(error);
+                });
+            break;
         }
-        const report = reportsId[index];
-        if (reports[0].state.name != "Multimedia") {
-            this.path = reports[index] && 'reports';
-        }
-        this.http.delete({
-            path: `${this.path ? 'reports' : 'contents'}/${report}`
-        }).subscribe(() => {
-            index++;
-            this.rcDeeplyDeleteReport(reportsId, index, fn, reports);
-        }, (error: any) => {
-            console.error(error);
-        });
     }
 
     public getCheckboxesData() {
