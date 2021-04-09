@@ -98,7 +98,8 @@ export class RelatedReportsComponent implements OnInit {
                             name: {
                                 like: this.ifilter, options: 'i'
                             },
-                            trash: false
+                            trash: false,
+                            stateId: "5e068c81d811c55eb40d14d0"
                         }]
                     },
                     order: 'name ASC'
