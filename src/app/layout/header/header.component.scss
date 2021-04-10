@@ -25,6 +25,14 @@ header {
             justify-content: space-between;
             width: 100%;
         }
+        @media only screen and(max-width: 480px) {
+            z-index: 9;
+            position: fixed;
+            bottom: 571px;
+            max-height: 70px;
+            background-color: #fff;
+            border-bottom: 1px solid #E3E4E5;
+        }
         img.logo-principal {
             height: 70px;
             margin-left: -15px;
