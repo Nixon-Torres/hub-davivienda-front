@@ -24,7 +24,7 @@ iframe {
     position: relative;
     justify-content: space-between;
     @media only screen and (max-width: 480px) {
-        position: absolute;
+        position: fixed;
         width: 100%;
         z-index: 9;
     }
