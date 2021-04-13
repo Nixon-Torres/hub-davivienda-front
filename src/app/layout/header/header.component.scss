@@ -263,6 +263,9 @@ header {
         }
         display: block;
         color: #a0a0a0;
+        position: relative;
+        top: 4px;
+        line-height: 1;
         span {
             font-size: 2em;
         }
