@@ -23,6 +23,11 @@ iframe {
     box-shadow: 0px 10px 10px -7px #e8e8e8;
     position: relative;
     justify-content: space-between;
+    @media only screen and (max-width: 720px) {
+        position: fixed;
+        width: 100%;
+        z-index: 9;
+    }
     @media only screen and (max-width: 480px) {
         position: fixed;
         width: 100%;
