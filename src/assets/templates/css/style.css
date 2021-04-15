@@ -734,3 +734,7 @@ section .pr-full-bg .container .brief-section,
         padding-top: 9em;
     }
 }
+
+.modal-open .modal.show {
+    background-color: rgba(0,0,0,.5) !important;
+}
